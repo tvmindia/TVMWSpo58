@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using UserInterface.App_Start;
+using System.Web.Optimization;
 
 namespace SPOffice.UserInterface
 {
@@ -13,6 +15,10 @@ namespace SPOffice.UserInterface
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            MappingConfig.RegisterMaps();
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }
