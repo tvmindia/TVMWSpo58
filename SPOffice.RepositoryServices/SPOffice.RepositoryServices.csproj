@@ -94,12 +94,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IDashboardRepository.cs" />
+    <Compile Include="Contracts\IDatabaseFactory.cs" />
+    <Compile Include="Contracts\IDynamicUIRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DashboardRepository.cs" />
+    <Compile Include="Services\DatabaseFactory.cs" />
+    <Compile Include="Services\DynamicUIRepository.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SPOffice.DataAccessObject\SPOffice.DataAccessObject.csproj">
       <Project>{65408fee-54b1-48f0-9054-a91fd50618c8}</Project>
