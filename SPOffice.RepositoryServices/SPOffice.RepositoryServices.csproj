@@ -100,6 +100,12 @@
     <Folder Include="Contracts\" />
     <Folder Include="Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPOffice.DataAccessObject\SPOffice.DataAccessObject.csproj">
+      <Project>{65408fee-54b1-48f0-9054-a91fd50618c8}</Project>
+      <Name>SPOffice.DataAccessObject</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
