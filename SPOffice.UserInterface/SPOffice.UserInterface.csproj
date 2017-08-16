@@ -113,6 +113,15 @@
       <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SAMTool.BusinessServices">
+      <HintPath>C:\Users\Albert Thomson\Desktop\SP Accounts\DLL updated after final fix\SAMTool.BusinessServices.dll</HintPath>
+    </Reference>
+    <Reference Include="SAMTool.DataAccessObject">
+      <HintPath>C:\Users\Albert Thomson\Desktop\SP Accounts\DLL updated after final fix\SAMTool.DataAccessObject.dll</HintPath>
+    </Reference>
+    <Reference Include="SAMTool.RepositoryServices">
+      <HintPath>C:\Users\Albert Thomson\Desktop\SP Accounts\DLL updated after final fix\SAMTool.RepositoryServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\packages\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.dll</HintPath>
       <Private>True</Private>
@@ -243,6 +252,16 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPOffice.BusinessService\SPOffice.BusinessService.csproj">
+      <Project>{e1efe60a-c133-4bfc-9871-7e3bbbf6ae9e}</Project>
+      <Name>SPOffice.BusinessService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPOffice.DataAccessObject\SPOffice.DataAccessObject.csproj">
+      <Project>{65408fee-54b1-48f0-9054-a91fd50618c8}</Project>
+      <Name>SPOffice.DataAccessObject</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
