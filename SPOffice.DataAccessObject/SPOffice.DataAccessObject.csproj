@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="DTO\Common.cs" />
     <Compile Include="DTO\Enquiry.cs" />
+    <Compile Include="DTO\FollowUp.cs" />
     <Compile Include="DTO\Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
