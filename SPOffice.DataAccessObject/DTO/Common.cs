@@ -165,4 +165,28 @@ namespace SPOffice.DataAccessObject.DTO
         public Common commonObj { get; set; }
     }
 
+    public class Const
+    {
+        public string AppUser { get; }
+        public string DeleteFailure { get; }
+        public string DeleteSuccess { get; }
+        public string Duplicate { get; }
+        public string FKviolation { get; }
+        public string InsertFailure { get; }
+        public string InsertSuccess { get; }
+        public string JobDuplicate { get; }
+        public string LoginAndEmailExist { get; }
+        public string LoginFailed { get; }
+        public string LoginFailedNoRoles { get; }
+        public string NoItems { get; }
+        public string PasswordError { get; }
+        public string SeriesEndDuplication { get; }
+        public string SeriesStartAndEndDuplication { get; }
+        public string SeriesStartDuplication { get; }
+        public string UpdateFailure { get; }
+        public string UpdateSuccess { get; }
+
+        
+    }
+
 }

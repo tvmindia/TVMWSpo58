@@ -233,6 +233,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\EnquiryController.cs" />
     <Compile Include="API\LoginController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Models\AppObjectViewModel.cs" />
     <Compile Include="Models\CommonViewModel.cs" />
     <Compile Include="Models\DynamicUIViewModel.cs" />
+    <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\ManageAccessViewModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />

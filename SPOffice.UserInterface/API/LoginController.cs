@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
+using SPOffice.DataAccessObject.DTO;
 using System;
 using System.Configuration;
 
