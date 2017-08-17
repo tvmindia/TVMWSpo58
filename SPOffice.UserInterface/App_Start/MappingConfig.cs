@@ -33,7 +33,7 @@ namespace UserInterface.App_Start
 
 
 
-                //****SPACCOUNTS MODELS 
+                //****SPOffice MODELS 
                 config.CreateMap<MenuViewModel, Menu>().ReverseMap();
                 
                 config.CreateMap<CommonViewModel, SPOffice.DataAccessObject.DTO.Common>().ReverseMap();

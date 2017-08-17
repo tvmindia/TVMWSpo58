@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using System.Linq;
 
 namespace SPOffice.UserInterface.App_Start
 {
@@ -37,6 +38,15 @@ namespace SPOffice.UserInterface.App_Start
 
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
+
+
+            //SAMTOOL DEPENDENCIES
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "SPOffice.BusinessService.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "SPOffice.RepositoryServices.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
+
+            //SAMTOOL DEPENDENCIES
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "SAMTool.BusinessServices.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "SAMTool.RepositoryServices.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
         }
     }
 }
