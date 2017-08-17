@@ -9,5 +9,6 @@ namespace SPOffice.BusinessService.Contracts
     public interface IFollowUpBusiness
     {
         object InsertUpdateFollowUp(FollowUp _followupObj);
+        FollowUp GetFollowUpDetails(Guid followObj);
     }
 }
