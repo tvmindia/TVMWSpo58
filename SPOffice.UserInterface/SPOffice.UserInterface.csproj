@@ -635,6 +635,7 @@
     <Compile Include="Models\ApplicationViewModel.cs" />
     <Compile Include="Models\AppObjectViewModel.cs" />
     <Compile Include="Models\CommonViewModel.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\DynamicUIViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\FollowUpViewModel.cs" />
@@ -659,6 +660,22 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Down.cshtml" />
+    <Content Include="Views\Account\NotAuthorized.cshtml" />
+    <Content Include="Views\Application\Index.cshtml" />
+    <Content Include="Views\AppObject\Index.cshtml" />
+    <Content Include="Views\AppObject\Subobjects.cshtml" />
+    <Content Include="Views\Dashboard\Admin.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\DynamicUI\UnderConstruction.cshtml" />
+    <Content Include="Views\DynamicUI\_MenuNavBar.cshtml" />
+    <Content Include="Views\Privileges\Index.cshtml" />
+    <Content Include="Views\Privileges\PrivilegesView.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\SAMPanel\Index.cshtml" />
+    <Content Include="Views\Shared\ToolBoxView.cshtml" />
+    <Content Include="Views\Shared\_LayoutPage.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

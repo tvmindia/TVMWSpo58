@@ -4,7 +4,7 @@
     font-family:'Segoe UI'!important;
      background-color:#FEFFFE!important;
      font-size:12px!important;
-
+      color:  #0e1f3d;    
 }
 
 .main-footer {
@@ -15,7 +15,7 @@
 
 .SCHeader {
    font-size: 25px!important;
-    color:  #545454;    
+    color:  #112446;    
     margin-left:4%;
     margin-top:0%;
     text-align:left;
@@ -24,7 +24,7 @@
 }
 
 .ReportTitle {
-     color:  #545454;
+     color:  #112446;
 }
 
 .Subhead {
