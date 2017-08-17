@@ -97,10 +97,14 @@
     <Compile Include="Contracts\IDashboardRepository.cs" />
     <Compile Include="Contracts\IDatabaseFactory.cs" />
     <Compile Include="Contracts\IDynamicUIRepository.cs" />
+    <Compile Include="Contracts\IEnquiryRepository.cs" />
+    <Compile Include="Contracts\IFollowUpRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DashboardRepository.cs" />
     <Compile Include="Services\DatabaseFactory.cs" />
     <Compile Include="Services\DynamicUIRepository.cs" />
+    <Compile Include="Services\EnquiryRepository.cs" />
+    <Compile Include="Services\FollowUpRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

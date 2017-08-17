@@ -1,6 +1,7 @@
 ﻿using UserInterface.Models;
 using SPOffice.DataAccessObject.DTO;
 using SAMTool.DataAccessObject.DTO;
+using SPOffice.UserInterface.Models;
 
 namespace UserInterface.App_Start
 {
@@ -37,7 +38,8 @@ namespace UserInterface.App_Start
                 config.CreateMap<MenuViewModel, Menu>().ReverseMap();
                 
                 config.CreateMap<CommonViewModel, SPOffice.DataAccessObject.DTO.Common>().ReverseMap();
-              
+                config.CreateMap<EnquiryViewModel, Enquiry>().ReverseMap();
+                config.CreateMap < FollowUpViewModel, FollowUp>().ReverseMap();
             });
         }
     }

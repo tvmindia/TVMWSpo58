@@ -90,12 +90,12 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "Allready Exist.."; }
         }
-        
+
         public string NoItems
         {
             get { return "No items"; }
         }
-        
+
         public string PasswordError
         {
             get { return "Password is wrong"; }
@@ -137,7 +137,7 @@ namespace SPOffice.DataAccessObject.DTO
             get { return "App User"; }
         }
         #endregion
-        
+
     }
 
     public class AppConstMessage
@@ -164,5 +164,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string AttachmentURL { get; set; }
         public Common commonObj { get; set; }
     }
+
 
 }
