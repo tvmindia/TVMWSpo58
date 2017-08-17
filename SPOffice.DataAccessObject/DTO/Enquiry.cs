@@ -7,8 +7,7 @@ namespace SPOffice.DataAccessObject.DTO
 {
     public class Enquiry
     {
-        public object commonObj;
-
+       
         public Guid ID { get; set; }
         public int EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
@@ -28,5 +27,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public string EnquiryStatus { get; set; }
         public string DealConverted { get; set; }
+        public Common commonObj { get; set; }
     }
 }

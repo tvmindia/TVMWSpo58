@@ -36,15 +36,15 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[InsertEnquiry]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.VarChar, 20).Value = _enquiriesObj.EnquiryDate;
+                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.DateTime).Value = _enquiriesObj.EnquiryDate;
                         cmd.Parameters.Add("@ContactName", SqlDbType.VarChar, 100).Value = _enquiriesObj.ContactName;
-                        cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 100).Value = _enquiriesObj.@CompanyName;
+                        cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 100).Value = _enquiriesObj.CompanyName;
                         cmd.Parameters.Add("@Email", SqlDbType.VarChar, 150).Value = _enquiriesObj.Email;
                         cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = _enquiriesObj.ContactTitle;
                         cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = _enquiriesObj.Mobile;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _enquiriesObj.GeneralNotes;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.CreatedBy;
-                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = _enquiriesObj.commonObj.CreatedDate;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = DateTime.Now;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
@@ -61,7 +61,8 @@ namespace SPOffice.RepositoryServices.Services
                         AppConst Cobj = new AppConst();
                         throw new Exception(Cobj.InsertFailure);
                     case "1":
-                        _enquiriesObj.ID = Guid.Parse(outputID.Value.ToString());
+                        _enquiriesObj.
+                            ID = Guid.Parse(outputID.Value.ToString());
                         break;
                     default:
                         break;
@@ -93,17 +94,18 @@ namespace SPOffice.RepositoryServices.Services
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[Office].[UpdateEnquiry] ";
+                        cmd.CommandText = "[Office].[UpdateEnquiry]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.VarChar, 20).Value = _enquiriesObj.EnquiryDate;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.ID;
+                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.DateTime).Value = _enquiriesObj.EnquiryDate;
                         cmd.Parameters.Add("@ContactName", SqlDbType.VarChar, 100).Value = _enquiriesObj.ContactName;
                         cmd.Parameters.Add("@Email", SqlDbType.VarChar, 150).Value = _enquiriesObj.Email;
                         cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = _enquiriesObj.ContactTitle;
                         cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = _enquiriesObj.Mobile;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _enquiriesObj.GeneralNotes;
-                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.CreatedBy;
-                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = _enquiriesObj.commonObj.CreatedDate;
-                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _enquiriesObj.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@UpdateStatus", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
 

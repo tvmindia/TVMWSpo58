@@ -16,6 +16,7 @@ namespace SPOffice.UserInterface.API
 {
     public class EnquiryController : ApiController
     {
+        AppConst c = new AppConst();
         #region Constructor_Injection
 
         IEnquiryBusiness _enquiriesBusiness;
@@ -28,7 +29,7 @@ namespace SPOffice.UserInterface.API
         }
         #endregion Constructor_Injection
 
-        Const messages = new Const();
+        //Const messages = new Const();
    #region InsertUpdateEnquiry
         [HttpPost]
         public string InsertUpdateEnquiry(EnquiryViewModel _enquiriesObj)
@@ -37,12 +38,12 @@ namespace SPOffice.UserInterface.API
 
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = new AppUA();
                 _enquiriesObj.commonObj = new CommonViewModel();
-                _enquiriesObj.commonObj.CreatedBy = _appUA.UserName;
-                _enquiriesObj.commonObj.CreatedDate = _appUA.DateTime;
-                _enquiriesObj.commonObj.UpdatedBy = _appUA.UserName;
-                _enquiriesObj.commonObj.UpdatedDate = _appUA.DateTime;
+                _enquiriesObj.commonObj.CreatedBy = "AppUser";
+                _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
+                _enquiriesObj.commonObj.UpdatedBy = "AppUser";
+                _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
 
                 result = _enquiriesBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
