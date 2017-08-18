@@ -98,6 +98,7 @@
     <Compile Include="DTO\Enquiry.cs" />
     <Compile Include="DTO\FollowUp.cs" />
     <Compile Include="DTO\Menu.cs" />
+    <Compile Include="DTO\Proforma.cs" />
     <Compile Include="DTO\Quotation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

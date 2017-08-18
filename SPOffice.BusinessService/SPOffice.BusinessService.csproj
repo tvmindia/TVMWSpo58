@@ -99,6 +99,7 @@
     <Compile Include="Contracts\IDynamicUIBusiness.cs" />
     <Compile Include="Contracts\IEnquiryBusiness.cs" />
     <Compile Include="Contracts\IFollowUpBusiness.cs" />
+    <Compile Include="Contracts\IProformaBusiness.cs" />
     <Compile Include="Contracts\IQuotationBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CommonBusiness.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Services\DynamicUIBusiness.cs" />
     <Compile Include="Services\EnquiryBusiness.cs" />
     <Compile Include="Services\FollowUpBusiness.cs" />
+    <Compile Include="Services\ProformaBusiness.cs" />
     <Compile Include="Services\QuotationBusiness.cs" />
   </ItemGroup>
   <ItemGroup />

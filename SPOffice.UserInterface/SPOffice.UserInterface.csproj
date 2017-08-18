@@ -612,6 +612,7 @@
     <Compile Include="API\EnquiryController.cs" />
     <Compile Include="API\FollowUpController.cs" />
     <Compile Include="API\LoginController.cs" />
+    <Compile Include="API\ProformaController.cs" />
     <Compile Include="API\QuotationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -644,6 +645,7 @@
     <Compile Include="Models\ManageAccessViewModel.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Models\PrivilegesViewModel.cs" />
+    <Compile Include="Models\ProformaViewModel.cs" />
     <Compile Include="Models\QuotationViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />

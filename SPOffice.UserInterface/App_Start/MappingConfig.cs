@@ -41,6 +41,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<EnquiryViewModel, Enquiry>().ReverseMap();
                 config.CreateMap < FollowUpViewModel, FollowUp>().ReverseMap();
                 config.CreateMap<QuotationViewModel, Quotation>().ReverseMap();
+                config.CreateMap<ProformaViewModel, Proforma>().ReverseMap();
             });
         }
     }
