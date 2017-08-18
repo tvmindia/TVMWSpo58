@@ -8,7 +8,7 @@ namespace SPOffice.UserInterface.Models
     public class QuotationViewModel
     {
         public Guid ID { get; set; }
-        public string QuotationID { get; set; }
+        public string QuotationNo { get; set; }
         public Guid CustomerID { get; set; }
         public DateTime QuotationDate { get; set; }
         public DateTime ValidTillDate{ get; set; }
