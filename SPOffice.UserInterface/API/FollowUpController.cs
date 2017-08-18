@@ -46,14 +46,14 @@ namespace SPOffice.UserInterface.API
                 _followupObj.commonObj.UpdatedDate = DateTime.Now;
 
                 result = _followupBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_followupObj));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
 
             }
             catch (Exception ex)
             {
 
                 AppConstMessage cm = c.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
 
         }
