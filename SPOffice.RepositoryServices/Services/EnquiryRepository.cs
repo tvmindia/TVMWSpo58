@@ -24,7 +24,7 @@ namespace SPOffice.RepositoryServices.Services
         {
             try
             {
-                SqlParameter outputStatus, outputID = null;
+                SqlParameter outputStatus, outputID, outputEnquiryNo = null;
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -48,7 +48,9 @@ namespace SPOffice.RepositoryServices.Services
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputEnquiryNo = cmd.Parameters.Add("@EnquiryNo", SqlDbType.VarChar,20);
                         outputID.Direction = ParameterDirection.Output;
+                        outputEnquiryNo.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
 
 
@@ -61,8 +63,8 @@ namespace SPOffice.RepositoryServices.Services
                         AppConst Cobj = new AppConst();
                         throw new Exception(Cobj.InsertFailure);
                     case "1":
-                        _enquiriesObj.
-                            ID = Guid.Parse(outputID.Value.ToString());
+                        _enquiriesObj.ID = Guid.Parse(outputID.Value.ToString());
+                        _enquiriesObj.EnquiryNo = outputEnquiryNo.Value.ToString();
                         break;
                     default:
                         break;
