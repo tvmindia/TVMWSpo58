@@ -9,7 +9,7 @@ namespace SPOffice.DataAccessObject.DTO
     {
        
         public Guid ID { get; set; }
-        public int EnquiryNo { get; set; }
+        public string  EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string ContactTitle { get; set; }
         public string ContactName { get; set; }
