@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,8 +11,8 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         public string QuotationNo { get; set; }
         public Guid CustomerID { get; set; }
-        public DateTime QuotationDate { get; set; }
-        public DateTime ValidTillDate{ get; set; }
+        public string QuotationDate { get; set; }
+        public string ValidTillDate { get; set; }
         public Guid SalesPersonID{ get; set; }
         public string QuoteFromCompCode{ get; set; }
         public string QuoteStage { get; set; }
@@ -29,6 +30,8 @@ namespace SPOffice.UserInterface.Models
         public string GeneralNotes { get; set; }
         public string EmailSentYN{ get; set; }
         public string CompanyName { get; set; }
+
+      
         public decimal Amount { get; set; }
         public string duration { get; set; }
     }
