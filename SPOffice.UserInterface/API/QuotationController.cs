@@ -31,11 +31,11 @@ namespace SPOffice.UserInterface.API
 
         #region GetQuotationList
         [HttpPost]
-        public object GetQuotationDetailsForMobile()
+        public object GetQuotationDetailsForMobile(Quotation duration)
         {
             try
             {
-                List<QuotationViewModel> QuotationsList = Mapper.Map<List<Quotation>, List<QuotationViewModel>>(_quotationBusiness.GetQuotationDetails());
+                List<QuotationViewModel> QuotationsList = Mapper.Map<List<Quotation>, List<QuotationViewModel>>(_quotationBusiness.GetQuotationDetails(duration));
                 return JsonConvert.SerializeObject(new { Result = true, Records = QuotationsList });
             }
             catch (Exception ex)

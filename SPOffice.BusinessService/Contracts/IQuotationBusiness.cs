@@ -9,7 +9,8 @@ namespace SPOffice.BusinessService.Contracts
 {
    public interface IQuotationBusiness
     {
-      
-        List<Quotation> GetQuotationDetails();
+
+        List<Quotation> GetQuotationDetails(Quotation duration);
+       
     }
 }

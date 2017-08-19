@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllQuotation
-        public List<Quotation> GetQuotationDetails()
+        public List<Quotation> GetQuotationDetails(Quotation QuoObj)
         {
            List<Quotation> quotationsList = null;
             try
@@ -35,6 +35,7 @@ namespace SPOffice.RepositoryServices.Services
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetQuotationList]";
+                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = QuoObj.duration;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
@@ -64,9 +65,11 @@ namespace SPOffice.RepositoryServices.Services
                                         _quotationObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _quotationObj.TaxTypeCode);
                                         _quotationObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ?decimal.Parse(sdr["TaxPercApplied"].ToString()) : _quotationObj.TaxPercApplied);
                                         _quotationObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _quotationObj.TaxAmount);
-                                        _quotationObj.GrantTotal = (sdr["GrantTotal"].ToString() != "" ? decimal.Parse(sdr["GrantTotal"].ToString()) : _quotationObj.GrantTotal);
+                                        //_quotationObj.GrantTotal = (sdr["GrantTotal"].ToString() != "" ? decimal.Parse(sdr["GrantTotal"].ToString()) : _quotationObj.GrantTotal);
                                         _quotationObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _quotationObj.Discount);
+                                        _quotationObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _quotationObj.Amount);
                                         _quotationObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _quotationObj.GeneralNotes);
+                                        _quotationObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _quotationObj.CompanyName);
 
                                     }
                                     quotationsList.Add(_quotationObj);
