@@ -43,7 +43,7 @@ namespace SPOffice.RepositoryServices.Services
                             cmd.Parameters.Add("@Status", SqlDbType.VarChar, 150).Value = _followupObj.Status;
                             cmd.Parameters.Add("@ReminderType", SqlDbType.VarChar, 10).Value = _followupObj.ReminderType;
                             cmd.Parameters.Add("@ContactName", SqlDbType.VarChar, 10).Value = _followupObj.ContactName;
-                            cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _followupObj.GeneralNotes;
+                            cmd.Parameters.Add("@Subject", SqlDbType.VarChar, 250).Value = _followupObj.Subject;
                             cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _followupObj.commonObj.CreatedBy;
                             cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = _followupObj.commonObj.CreatedDate;
                             outputStatus = cmd.Parameters.Add("@InsertStatus", SqlDbType.SmallInt);
@@ -104,7 +104,7 @@ namespace SPOffice.RepositoryServices.Services
                             cmd.Parameters.Add("@Status", SqlDbType.VarChar, 10).Value = _followupObj.Status;
                             cmd.Parameters.Add("@ReminderType", SqlDbType.VarChar, 10).Value = _followupObj.ReminderType;
                             cmd.Parameters.Add("@ContactName", SqlDbType.VarChar, 50).Value = _followupObj.ContactName;
-                            cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _followupObj.GeneralNotes;
+                            cmd.Parameters.Add("@Subject", SqlDbType.VarChar, 250).Value = _followupObj.Subject;
                             cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _followupObj.commonObj.UpdatedBy;
                             cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _followupObj.commonObj.UpdatedDate;
                             outputStatus = cmd.Parameters.Add("@UpdateStatus", SqlDbType.SmallInt);
