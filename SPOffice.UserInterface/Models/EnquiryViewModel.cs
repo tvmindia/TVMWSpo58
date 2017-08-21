@@ -11,7 +11,7 @@ namespace SPOffice.UserInterface.Models
 
         public Guid ID { get; set; }
         public string  EnquiryNo { get; set; }
-        public DateTime EnquiryDate { get; set; }
+        public string EnquiryDate { get; set; }
         public string ContactTitle { get; set; }
         public string ContactName { get; set; }
         public string CompanyName { get; set; }
