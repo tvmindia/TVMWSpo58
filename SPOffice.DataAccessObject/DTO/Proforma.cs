@@ -10,7 +10,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string OriginCompCode { get; set; }
         public string InvoiceNo { get; set; }
         public Guid CustomerID { get; set; }
-        public DateTime InvoiceDate { get; set; }
+        public String InvoiceDate { get; set; }
         public DateTime ValidTillDate { get; set; }
         public string Subject { get; set; }
         public string SentToEmails { get; set; }
@@ -24,5 +24,6 @@ namespace SPOffice.DataAccessObject.DTO
         public Decimal TaxAmount { get; set; }
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
+        public decimal Amount { get; set; }
     }
 }

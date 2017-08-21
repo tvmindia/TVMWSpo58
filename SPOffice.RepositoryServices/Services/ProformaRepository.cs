@@ -47,23 +47,23 @@ namespace SPOffice.RepositoryServices.Services
                                     Proforma _proformaObj = new Proforma();
                                     {
                                         _proformaObj.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _proformaObj.CustomerID);
-                                        _proformaObj.OriginCompCode = (sdr["OriginCompCode"].ToString() != "" ? sdr["OriginCompCode"].ToString() : _proformaObj.OriginCompCode);
+                                        //_proformaObj.OriginCompCode = (sdr["OriginCompCode"].ToString() != "" ? sdr["OriginCompCode"].ToString() : _proformaObj.OriginCompCode);
                                         _proformaObj.InvoiceNo = (sdr["InvoiceNo"].ToString() != "" ? sdr["InvoiceNo"].ToString() : _proformaObj.InvoiceNo);
-                                        _proformaObj.InvoiceDate = (sdr["InvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["InvoiceDate"].ToString()) : _proformaObj.InvoiceDate);
-                                        _proformaObj.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()) : _proformaObj.ValidTillDate);
-                                        _proformaObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _proformaObj.Subject);
-                                        _proformaObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _proformaObj.BodyHeader);
-                                        _proformaObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _proformaObj.BodyFooter);
-                                        _proformaObj.SentToAddress = (sdr["SentToAddress"].ToString() != "" ? sdr["SentToAddress"].ToString() : _proformaObj.SentToAddress);
-                                        _proformaObj.SentToEmails = (sdr["SentToEmails"].ToString() != "" ? sdr["SentToEmails"].ToString() : _proformaObj.SentToEmails);
-                                        _proformaObj.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? sdr["EmailSentYN"].ToString() : _proformaObj.EmailSentYN);
+                                        _proformaObj.InvoiceDate = (sdr["InvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["InvoiceDate"].ToString()).ToString(s.dateformat) : _proformaObj.InvoiceDate);
+                                        //_proformaObj.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()) : _proformaObj.ValidTillDate);
+                                        //_proformaObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _proformaObj.Subject);
+                                        //_proformaObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _proformaObj.BodyHeader);
+                                        //_proformaObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _proformaObj.BodyFooter);
+                                        //_proformaObj.SentToAddress = (sdr["SentToAddress"].ToString() != "" ? sdr["SentToAddress"].ToString() : _proformaObj.SentToAddress);
+                                        //_proformaObj.SentToEmails = (sdr["SentToEmails"].ToString() != "" ? sdr["SentToEmails"].ToString() : _proformaObj.SentToEmails);
+                                        //_proformaObj.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? sdr["EmailSentYN"].ToString() : _proformaObj.EmailSentYN);
                                         _proformaObj.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : _proformaObj.ContactPerson);
                                         _proformaObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _proformaObj.TaxTypeCode);
                                         _proformaObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _proformaObj.TaxPercApplied);
                                         _proformaObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _proformaObj.TaxAmount);                         
                                         _proformaObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _proformaObj.Discount);
                                         _proformaObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _proformaObj.GeneralNotes);
-
+                                        _proformaObj.Amount = (sdr["Amount"].ToString() != "" ? Decimal.Parse(sdr["Amount"].ToString()) : _proformaObj.Amount);
                                     }
                                     proformaList.Add(_proformaObj);
                                 }
