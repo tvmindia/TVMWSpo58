@@ -7,6 +7,7 @@ namespace SPOffice.UserInterface.Models
 {
     public class CustomerViewModel
     {
+        public Guid ID { get; set; }
         public string PONo { get; set; }
         public DateTime PODate { get; set; }
         public DateTime POReceivedDate { get; set; }
@@ -26,5 +27,6 @@ namespace SPOffice.UserInterface.Models
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
+        public string ContactPerson { get; set; }
     }
 }

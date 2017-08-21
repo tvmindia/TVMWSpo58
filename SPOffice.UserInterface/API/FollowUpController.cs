@@ -62,11 +62,11 @@ namespace SPOffice.UserInterface.API
 
         #region GetFollowupList
         [HttpPost]
-        public Object GetFollowUpDetailsForMobile(FollowUpViewModel followObj)
+        public string GetFollowUpDetailsForMobile(FollowUp followObj)
         {
             try
             {
-                List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>,List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
+                FollowUpViewModel followUpObj = Mapper.Map <FollowUp,FollowUpViewModel>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
               
                 return JsonConvert.SerializeObject(new { Result = true, Records = followUpObj });
             }

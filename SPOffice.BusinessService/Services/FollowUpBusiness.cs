@@ -39,9 +39,9 @@ namespace SPOffice.BusinessService.Services
             }
 
 
-        public List<FollowUp> GetFollowUpDetails(Guid followObj)
+        public FollowUp GetFollowUpDetails(Guid EnquiryID)
         {
-            return _followupRepository.GetFollowUpDetails(followObj);
+            return _followupRepository.GetFollowUpDetails(EnquiryID);
         }
     }
 }

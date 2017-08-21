@@ -10,6 +10,6 @@ namespace SPOffice.RepositoryServices.Contracts
     {
         FollowUp InsertFollowUp(FollowUp _followupObj);
         object UpdateFollowUp(FollowUp _followupObj);
-        List<FollowUp> GetFollowUpDetails(Guid followObj);
+        FollowUp GetFollowUpDetails(Guid EnquiryID);
     }
 }

@@ -143,9 +143,9 @@ namespace SPOffice.RepositoryServices.Services
 
         #region GetAllFollowup
 
-        public List<FollowUp> GetFollowUpDetails(Guid EnquiryID)
+        public FollowUp GetFollowUpDetails(Guid EnquiryID)
         {
-            List<FollowUp> _followUpList = null;
+            FollowUp _followUpObj = new FollowUp();
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -165,10 +165,10 @@ namespace SPOffice.RepositoryServices.Services
                         {
                             if ((sdr != null) && (sdr.HasRows))
                             {
-                                _followUpList = new List<FollowUp>();
+                               
                                 while (sdr.Read())
                                 {
-                                    FollowUp _followUpObj = new FollowUp();
+                                    
                                     {
                                         _followUpObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _followUpObj.ID);
                                         _followUpObj.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : _followUpObj.EnquiryID);
@@ -195,7 +195,7 @@ namespace SPOffice.RepositoryServices.Services
                 throw ex;
             }
 
-            return _followUpList;
+            return _followUpObj;
         }
 
         #endregion GetAllFollowup
