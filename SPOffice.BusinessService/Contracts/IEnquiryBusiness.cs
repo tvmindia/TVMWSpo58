@@ -9,5 +9,6 @@ namespace SPOffice.BusinessService.Contracts
     public interface IEnquiryBusiness
     {
         object InsertUpdateEnquiry(Enquiry _enquiriesObj);
+        List<Enquiry>GetAllEnquiryList(Enquiry EqyObj);
     }
 }

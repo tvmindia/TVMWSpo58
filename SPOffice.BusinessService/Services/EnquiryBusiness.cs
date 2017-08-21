@@ -36,5 +36,10 @@ namespace SPOffice.BusinessService.Services
             }
             return result;
         }
+
+        public List<Enquiry>GetAllEnquiryList(Enquiry EqyObj)
+        {
+            return _enquiryRepository.GetAllEnquiryList(EqyObj);
+        }
     }
 }

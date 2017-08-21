@@ -30,7 +30,7 @@ namespace SPOffice.UserInterface.API
         #endregion Constructor_Injection
 
         //Const messages = new Const();
-   #region InsertUpdateEnquiry
+        #region InsertUpdateEnquiry
         [HttpPost]
         public string InsertUpdateEnquiry(EnquiryViewModel _enquiriesObj)
         {
@@ -58,8 +58,27 @@ namespace SPOffice.UserInterface.API
 
         }
 
-#endregion InsertUpdateEnquiry
-        }
-}
+        #endregion InsertUpdateEnquiry
 
+
+        #region GetAllEnquiryType
+        [HttpPost]
+        public Object GetEnquiryListForMobile(Enquiry EqyObj)
+        {
+            try
+            {
+                List<EnquiryViewModel> enquiryObj = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiriesBusiness.GetAllEnquiryList(EqyObj));
+               
+                return JsonConvert.SerializeObject(new { Result = true, Records = enquiryObj });
+
+            }
+            catch (Exception ex)
+            {
+
+                return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
+            }
+        }
+        #endregion GetAllEnquiryType
+    }
+}
     

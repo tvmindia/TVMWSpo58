@@ -28,5 +28,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string EnquiryStatus { get; set; }
         public string DealConverted { get; set; }
         public Common commonObj { get; set; }
+        
+        public string duration { get; set; }
     }
 }

@@ -172,7 +172,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _followUpObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _followUpObj.ID);
                                         _followUpObj.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : _followUpObj.EnquiryID);
                                         _followUpObj.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : _followUpObj.ContactName);
-                                        _followUpObj.FollowUpDate = (sdr["FollowUpDate"].ToString() != "" ? DateTime.Parse(sdr["FollowUpDate"].ToString()): _followUpObj.FollowUpDate);
+                                        _followUpObj.FollowUpDate = (sdr["FollowUpDate"].ToString() != "" ? DateTime.Parse(sdr["FollowUpDate"].ToString()).ToString(s.dateformat): _followUpObj.FollowUpDate);
                                         _followUpObj.FollowUpTime = (sdr["FollowUpTime"].ToString() != "" ? sdr["FollowUpTime"].ToString() : _followUpObj.FollowUpTime);
                                         _followUpObj.Priority = (sdr["Priority"].ToString() != "" ? sdr["Priority"].ToString() : _followUpObj.Priority);
                                         _followUpObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _followUpObj.Subject);

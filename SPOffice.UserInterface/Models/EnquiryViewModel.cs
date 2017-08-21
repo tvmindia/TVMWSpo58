@@ -10,7 +10,7 @@ namespace SPOffice.UserInterface.Models
     {
 
         public Guid ID { get; set; }
-        public int EnquiryNo { get; set; }
+        public string  EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string ContactTitle { get; set; }
         public string ContactName { get; set; }
@@ -29,5 +29,6 @@ namespace SPOffice.UserInterface.Models
         public string EnquiryStatus { get; set; }
         public string DealConverted { get; set; }
         public CommonViewModel commonObj { get; set; }
+        public string duration { get; set; }
     }
 }
