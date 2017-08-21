@@ -143,9 +143,9 @@ namespace SPOffice.RepositoryServices.Services
 
         #region GetAllFollowup
 
-        public FollowUp GetFollowUpDetails(Guid EnquiryID)
+        public List<FollowUp> GetFollowUpDetails(Guid EnquiryID)
         {
-            FollowUp _followUpObj = new FollowUp();
+            List<FollowUp> followUpList = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -165,10 +165,10 @@ namespace SPOffice.RepositoryServices.Services
                         {
                             if ((sdr != null) && (sdr.HasRows))
                             {
-                               
+                                followUpList = new List<FollowUp>();
                                 while (sdr.Read())
                                 {
-                                    
+                                    FollowUp _followUpObj = new FollowUp();
                                     {
                                         _followUpObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _followUpObj.ID);
                                         _followUpObj.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : _followUpObj.EnquiryID);
@@ -183,7 +183,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _followUpObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _followUpObj.GeneralNotes);
                                         
                                     }
-                                    
+                                    followUpList.Add(_followUpObj);
                                 }
                             }
                         }
@@ -195,7 +195,7 @@ namespace SPOffice.RepositoryServices.Services
                 throw ex;
             }
 
-            return _followUpObj;
+            return followUpList;
         }
 
         #endregion GetAllFollowup
