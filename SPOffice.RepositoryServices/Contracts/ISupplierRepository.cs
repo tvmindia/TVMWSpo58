@@ -9,6 +9,6 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface ISupplierRepository
     {
-        List<Supplier> GetAllSuppliersForMobile();
+        List<Supplier> GetAllSuppliersForMobile(Supplier duration);
     }
 }

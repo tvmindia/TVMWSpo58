@@ -193,5 +193,64 @@ namespace SPOffice.RepositoryServices.Services
         }
         #endregion GetAllEnquiryList
 
+
+
+        #region SearchEnquiryList
+        public List<Enquiry> SearchEnquiriesList(Enquiry EqyObj)
+        {
+            List<Enquiry> EnquiryList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[SearchEnquiry]";
+                        cmd.Parameters.Add("@FilterWords", SqlDbType.NVarChar,-1).Value = EqyObj.FilterWords;
+                       
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                EnquiryList = new List<Enquiry>();
+                                while (sdr.Read())
+                                {
+                                    Enquiry _enquiryObj = new Enquiry();
+                                    {
+                                        _enquiryObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _enquiryObj.ID);
+                                        _enquiryObj.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : _enquiryObj.ContactTitle);
+                                        _enquiryObj.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : _enquiryObj.ContactName);
+                                        _enquiryObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _enquiryObj.CompanyName);
+                                        _enquiryObj.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : _enquiryObj.EnquiryNo);
+                                        _enquiryObj.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : _enquiryObj.Mobile);
+                                        _enquiryObj.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : _enquiryObj.EnquiryStatus); 
+                                        _enquiryObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(s.dateformat) : _enquiryObj.EnquiryDate);
+                                    }
+                                    EnquiryList.Add(_enquiryObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return EnquiryList;
+
+        }
+        #endregion SearchEnquiryList
+
+
     }
 }

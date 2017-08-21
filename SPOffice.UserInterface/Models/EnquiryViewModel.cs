@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPOffice.DataAccessObject.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,5 +31,11 @@ namespace SPOffice.UserInterface.Models
         public string DealConverted { get; set; }
         public CommonViewModel commonObj { get; set; }
         public string duration { get; set; }
+        public string FilterWords { get; set; }
+        public List<EnquiryViewModel> OpenList { get; set; }
+        public List<EnquiryViewModel> ConvertList { get; set; }
+        public List<EnquiryViewModel> NonConvertList { get; set; }
     }
+
+    
 }

@@ -25,5 +25,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
+        public string duration { get; set; }
     }
 }

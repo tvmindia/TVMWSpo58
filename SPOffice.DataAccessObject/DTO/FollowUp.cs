@@ -19,5 +19,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string Status { get; set; }
         public string GeneralNotes { get; set; }
         public Common commonObj { get; set; }
+        
     }
 }

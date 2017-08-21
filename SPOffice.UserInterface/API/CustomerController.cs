@@ -31,11 +31,11 @@ namespace SPOffice.UserInterface.API
             Const messages = new Const();
 
             [HttpPost]
-            public object GetCustomerDetailsMobile()
+            public object GetCustomerDetailsMobile(Customer duration)
             {
                 try
                 {
-                    List<CustomerViewModel> CustomerList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomersForMobile());
+                    List<CustomerViewModel> CustomerList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomersForMobile(duration));
                     //if (CustomerList.Count == 0) throw new Exception(messages.NoItems);
                     return JsonConvert.SerializeObject(new { Result = true, Records = CustomerList });
                 }

@@ -79,6 +79,25 @@ namespace SPOffice.UserInterface.API
             }
         }
         #endregion GetAllEnquiryType
+
+
+        #region SearchEnquiry
+        [HttpPost]
+        public string SearchEnquiryList(Enquiry enqObj)
+        {
+            try
+            {
+               EnquiryViewModel enquiryObj = Mapper.Map<Enquiry,EnquiryViewModel>(_enquiriesBusiness.SearchEnquiriesList(enqObj));
+                return JsonConvert.SerializeObject(new { Result = true, Records = new { Open = enquiryObj.OpenList, Converted = enquiryObj.ConvertList, NotConverted = enquiryObj.NonConvertList } });
+
+            }
+            catch (Exception ex)
+            {
+
+                return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
+            }
+        }
+        #endregion GetOutstandingInvoices
     }
 }
     

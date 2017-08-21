@@ -12,5 +12,6 @@ namespace SPOffice.RepositoryServices.Contracts
         Enquiry InsertEnquiry(Enquiry _enquiriesObj);
         object UpdateEnquiry(Enquiry _enquiriesObj);
         List<Enquiry>GetAllEnquiryList(Enquiry EqyObj);
+        List<Enquiry> SearchEnquiriesList(Enquiry enqObj);
     }
 }

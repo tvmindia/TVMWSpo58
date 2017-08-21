@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllSupplierMobile
-        public List<Supplier> GetAllSuppliersForMobile()
+        public List<Supplier> GetAllSuppliersForMobile(Supplier supObj)
         {
             List<Supplier> supplierList = null;
             try
@@ -35,6 +35,7 @@ namespace SPOffice.RepositoryServices.Services
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetAllSupplierOrder]";
+                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = supObj.duration;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())

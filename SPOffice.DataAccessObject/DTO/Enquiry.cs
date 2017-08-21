@@ -7,9 +7,9 @@ namespace SPOffice.DataAccessObject.DTO
 {
     public class Enquiry
     {
-       
+
         public Guid ID { get; set; }
-        public string  EnquiryNo { get; set; }
+        public string EnquiryNo { get; set; }
         public string EnquiryDate { get; set; }
         public string ContactTitle { get; set; }
         public string ContactName { get; set; }
@@ -27,8 +27,12 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public string EnquiryStatus { get; set; }
         public string DealConverted { get; set; }
+        public string FilterWords { get; set; }
         public Common commonObj { get; set; }
-        
         public string duration { get; set; }
+        public List<Enquiry> OpenList { get; set; }
+        public List<Enquiry> ConvertList { get; set; }
+        public List<Enquiry> NonConvertList { get; set; }
+          
     }
 }

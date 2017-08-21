@@ -18,9 +18,9 @@ namespace SPOffice.BusinessService.Services
         {
             _proformaRepository = proformaRepository;
         }
-        public List<Proforma> GetProformaDetails()
+        public List<Proforma> GetProformaDetails(Proforma duration)
         {
-            return _proformaRepository.GetProformaDetails();
+            return _proformaRepository.GetProformaDetails( duration);
         }
     }
 }
