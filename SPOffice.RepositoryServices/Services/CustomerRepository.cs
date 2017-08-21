@@ -51,7 +51,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.POReceivedDate = (sdr["POReceivedDate"].ToString() != "" ? DateTime.Parse(sdr["POReceivedDate"].ToString()) : _customerObj.POReceivedDate);
                                         _customerObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()) : _customerObj.PODate);
                                         _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
-                                        _customerObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _customerObj.POStatus);
+                                        _customerObj.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _customerObj.Description);
                                         _customerObj.POKeywords = (sdr["POKeywords"].ToString() != "" ? sdr["POKeywords"].ToString() : _customerObj.POKeywords);
                                         _customerObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _customerObj.GeneralNotes);
                                         _customerObj.POContent = (sdr["POContent"].ToString() != "" ? sdr["POContent"].ToString() : _customerObj.POContent);
@@ -62,7 +62,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _customerObj.TaxAmount);
                                         _customerObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _customerObj.Discount);
                                         _customerObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _customerObj.TaxPercApplied);
-                                        _customerObj.GrossAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _customerObj.TaxAmount);
+                                        _customerObj.GrossAmount = (sdr["GrossAmount"].ToString() != "" ? decimal.Parse(sdr["GrossAmount"].ToString()) : _customerObj.GrossAmount);
+                                        _customerObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _customerObj.Amount);
                                     }
                                     customerList.Add(_customerObj);
                                 }

@@ -7,8 +7,9 @@ namespace SPOffice.DataAccessObject.DTO
 {
     public class Supplier
     {
+        public Guid ID { get; set; }
         public string PONo { get; set; }
-        public DateTime PODate { get; set; }
+        public string PODate { get; set; }
         public DateTime POIssuedDate { get; set; }
         public Guid SupplierID { get; set; }
         public string POFromCompCode { get; set; }
@@ -23,5 +24,9 @@ namespace SPOffice.DataAccessObject.DTO
         public string TaxTypeCode { get; set; }
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
+        public string ContactPerson { get; set; }
+        public decimal Amount { get; set; }
+        public string POStatus { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -23,5 +23,7 @@ namespace SPOffice.UserInterface.Models
         public decimal TaxAmount { get; set; }
         public string TaxTypeCode { get; set; }
         public string GeneralNotes { get; set; }
+        public decimal Amount { get; set; }
+        public string Description { get; set; }
     }
 }

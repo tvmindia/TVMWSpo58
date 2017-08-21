@@ -46,22 +46,23 @@ namespace SPOffice.RepositoryServices.Services
                                 {
                                     Supplier _supplierObj = new Supplier();
                                     {
+                                        _supplierObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _supplierObj.ID);
                                         _supplierObj.SupplierID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _supplierObj.SupplierID);
                                         _supplierObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _supplierObj.PONo);
-                                        _supplierObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()) : _supplierObj.POIssuedDate);
-                                        _supplierObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()) : _supplierObj.PODate);
-                                        _supplierObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _supplierObj.POFromCompCode);
-                                        _supplierObj.SupplierMailingAddress = (sdr["SupplierMailingAddress"].ToString() != "" ? sdr["SupplierMailingAddress"].ToString() : _supplierObj.SupplierMailingAddress);
-                                        _supplierObj.ShipToAddress = (sdr["ShipToAddress"].ToString() != "" ? sdr["ShipToAddress"].ToString() : _supplierObj.ShipToAddress);
-                                        _supplierObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _supplierObj.GeneralNotes);
-                                        _supplierObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _supplierObj.BodyHeader);
-                                        _supplierObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _supplierObj.BodyFooter);
-                                        _supplierObj.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? sdr["EmailSentYN"].ToString() : _supplierObj.EmailSentYN);
-                                        
+                                        //_supplierObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()) : _supplierObj.POIssuedDate);
+                                        _supplierObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _supplierObj.PODate);
+                                        //_supplierObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _supplierObj.POFromCompCode);
+                                        //_supplierObj.SupplierMailingAddress = (sdr["SupplierMailingAddress"].ToString() != "" ? sdr["SupplierMailingAddress"].ToString() : _supplierObj.SupplierMailingAddress);
+                                        //_supplierObj.ShipToAddress = (sdr["ShipToAddress"].ToString() != "" ? sdr["ShipToAddress"].ToString() : _supplierObj.ShipToAddress);
+                                        //_supplierObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _supplierObj.GeneralNotes);
+                                        //_supplierObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _supplierObj.BodyHeader);
+                                        //_supplierObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _supplierObj.BodyFooter);
+                                        _supplierObj.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : _supplierObj.ContactPerson);
+                                        _supplierObj.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _supplierObj.Description);
                                         _supplierObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _supplierObj.TaxAmount);
                                         _supplierObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _supplierObj.Discount);
                                         _supplierObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _supplierObj.TaxPercApplied);
-                                        _supplierObj.GrantTotal = (sdr["GrantTotal"].ToString() != "" ? decimal.Parse(sdr["GrantTotal"].ToString()) : _supplierObj.GrantTotal);
+                                        _supplierObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _supplierObj.Amount);
                                     }
                                     supplierList.Add(_supplierObj);
                                 }
