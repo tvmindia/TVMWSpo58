@@ -28,5 +28,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string Description { get; set; }
         public string duration { get; set; }
         public string CompanyName { get; set; }
+        
+        
     }
 }
