@@ -9,6 +9,6 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface IQuotationRepository
     {
-        List<Quotation> GetQuotationDetails(Quotation duration);
+        List<Quotation> GetQuotationDetails(string duration);
     }
 }

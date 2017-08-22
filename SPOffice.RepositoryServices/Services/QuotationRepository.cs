@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllQuotation
-        public List<Quotation> GetQuotationDetails(Quotation QuoObj)
+        public List<Quotation> GetQuotationDetails(string duration)
         {
            List<Quotation> quotationsList = null;
             try
@@ -35,7 +35,7 @@ namespace SPOffice.RepositoryServices.Services
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetQuotationList]";
-                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = QuoObj.duration;
+                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = duration;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())

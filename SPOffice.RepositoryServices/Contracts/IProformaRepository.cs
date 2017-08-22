@@ -9,6 +9,6 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface IProformaRepository
     {
-        List<Proforma> GetProformaDetails(Proforma duration);
+        List<Proforma> GetProformaDetails(string duration);
     }
 }

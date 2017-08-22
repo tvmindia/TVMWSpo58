@@ -17,7 +17,7 @@ namespace SPOffice.BusinessService.Services
         {
             _quotationRepository = quotationRepository;
         }
-        public List<Quotation> GetQuotationDetails(Quotation duration)
+        public List<Quotation> GetQuotationDetails(string duration)
         {
             return _quotationRepository.GetQuotationDetails(duration);
         }

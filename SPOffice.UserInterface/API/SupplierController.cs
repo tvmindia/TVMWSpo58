@@ -32,11 +32,11 @@ namespace SPOffice.UserInterface.API
 
         #region GetAllSuppliersForMobile
         [HttpPost]
-        public string GetAllSuppliersDetailForMobile(Supplier duration)
+        public string GetAllSuppliersDetailForMobile(SupplierViewModel supplierObj)
         {
             try
             {
-                List<SupplierViewModel> suppliersList = Mapper.Map<List<Supplier>, List<SupplierViewModel>>(_supplierBusiness.GetAllSuppliersForMobile(duration));
+                List<SupplierViewModel> suppliersList = Mapper.Map<List<Supplier>, List<SupplierViewModel>>(_supplierBusiness.GetAllSuppliersForMobile(supplierObj.duration));
                 return JsonConvert.SerializeObject(new { Result = true, Records = suppliersList });
             }
             catch (Exception ex)

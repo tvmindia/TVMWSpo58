@@ -62,7 +62,7 @@ namespace SPOffice.UserInterface.API
 
         #region GetFollowupList
         [HttpPost]
-        public object GetFollowUpDetailsForMobile(FollowUp followObj)
+        public object GetFollowUpDetailsForMobile(FollowUpViewModel followObj)
         {
             try
             {

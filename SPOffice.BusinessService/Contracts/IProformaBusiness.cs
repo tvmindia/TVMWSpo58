@@ -9,6 +9,6 @@ namespace SPOffice.BusinessService.Contracts
 {
     public interface IProformaBusiness
     {
-        List<Proforma> GetProformaDetails(Proforma duration);
+        List<Proforma> GetProformaDetails(string duration);
     }
 }

@@ -63,11 +63,11 @@ namespace SPOffice.UserInterface.API
 
         #region GetAllEnquiryType
         [HttpPost]
-        public Object GetEnquiryListForMobile(Enquiry EqyObj)
+        public Object GetEnquiryListForMobile(EnquiryViewModel EqyObj)
         {
             try
             {
-                List<EnquiryViewModel> enquiryObj = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiriesBusiness.GetAllEnquiryList(EqyObj));
+                List<EnquiryViewModel> enquiryObj = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiriesBusiness.GetAllEnquiryList(Mapper.Map<EnquiryViewModel,Enquiry>(EqyObj)));
                
                 return JsonConvert.SerializeObject(new { Result = true, Records = enquiryObj });
 
@@ -83,11 +83,11 @@ namespace SPOffice.UserInterface.API
 
         #region SearchEnquiry
         [HttpPost]
-        public string SearchEnquiryList(Enquiry enqObj)
+        public string SearchEnquiryList(EnquiryViewModel enqObj)
         {
             try
             {
-               EnquiryViewModel enquiryObj = Mapper.Map<Enquiry,EnquiryViewModel>(_enquiriesBusiness.SearchEnquiriesList(enqObj));
+               EnquiryViewModel enquiryObj = Mapper.Map<Enquiry,EnquiryViewModel>(_enquiriesBusiness.SearchEnquiriesList(Mapper.Map<EnquiryViewModel,Enquiry>(enqObj)));
                 return JsonConvert.SerializeObject(new { Result = true, Records = new { Open = enquiryObj.OpenList, Converted = enquiryObj.ConvertList, NotConverted = enquiryObj.NonConvertList } });
 
             }

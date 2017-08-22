@@ -29,11 +29,11 @@ namespace SPOffice.UserInterface.API
 
         #region GetProformaList
         [HttpPost]
-        public object GetProformaDetailsForMobile(Proforma duration)
+        public object GetProformaDetailsForMobile(ProformaViewModel proformaObj)
         {
             try
             {
-                List<ProformaViewModel> ProformaList = Mapper.Map<List<Proforma>, List<ProformaViewModel>>(_proformaBusiness.GetProformaDetails(duration));
+                List<ProformaViewModel> ProformaList = Mapper.Map<List<Proforma>, List<ProformaViewModel>>(_proformaBusiness.GetProformaDetails(proformaObj.duration));
                 return JsonConvert.SerializeObject(new { Result = true, Records = ProformaList });
             }
             catch (Exception ex)

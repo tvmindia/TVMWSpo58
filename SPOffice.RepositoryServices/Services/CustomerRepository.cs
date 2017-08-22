@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllCustomerMobile
-        public List<Customer> GetAllCustomersForMobile(Customer CusObj)
+        public List<Customer> GetAllCustomersForMobile(string duration)
         {
             List<Customer> customerList = null;
             try
@@ -35,7 +35,7 @@ namespace SPOffice.RepositoryServices.Services
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetAllCustomerOrder]";
-                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = CusObj.duration;
+                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = duration;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())

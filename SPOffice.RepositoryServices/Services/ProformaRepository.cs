@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllProforma
-        public List<Proforma> GetProformaDetails(Proforma perObj)
+        public List<Proforma> GetProformaDetails(string duration)
         {
             List<Proforma> proformaList = null;
             try
@@ -35,7 +35,7 @@ namespace SPOffice.RepositoryServices.Services
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetAllProformaInvoiceList]";
-                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = perObj.duration;
+                        cmd.Parameters.Add("@duration", SqlDbType.Int).Value = duration;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
