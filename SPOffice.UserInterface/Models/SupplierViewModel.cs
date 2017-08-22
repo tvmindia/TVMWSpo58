@@ -8,6 +8,7 @@ namespace SPOffice.UserInterface.Models
     public class SupplierViewModel
     {
         public Guid ID { get; set; }
+        public string PONo { get; set; }
         public string PODate { get; set; }
         public DateTime POIssuedDate { get; set; }
         public Guid SupplierID { get; set; }
