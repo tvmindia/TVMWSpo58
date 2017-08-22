@@ -37,10 +37,7 @@ namespace SPOffice.UserInterface.API
             object result = null;
 
             try
-            {
-                AppUA _appUA = new AppUA();
-                _enquiriesObj.commonObj = new CommonViewModel();
-              
+            {              
                 _enquiriesObj.commonObj.CreatedDate = DateTime.Now;       
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
                 result = _enquiriesBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj));

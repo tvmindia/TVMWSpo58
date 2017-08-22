@@ -35,11 +35,8 @@ namespace SPOffice.UserInterface.API
         public string InsertUpdateFollowUp(FollowUpViewModel _followupObj)
         {
             object result = null;
-
             try
             {
-                AppUA _appUA = new AppUA();
-                _followupObj.commonObj = new CommonViewModel();    
                 _followupObj.commonObj.CreatedDate = DateTime.Now;
                 _followupObj.commonObj.UpdatedDate = DateTime.Now;
 
