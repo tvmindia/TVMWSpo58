@@ -27,6 +27,6 @@ namespace SPOffice.UserInterface.Models
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
-        public string ContactPerson { get; set; }
+        public string CompanyName { get; set; }
     }
 }
