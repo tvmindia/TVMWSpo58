@@ -9,7 +9,6 @@ namespace SPOffice.BusinessService.Contracts
 {
     public interface ICommonBusiness
     {
-        UA GetUA();
         string ConvertCurrency(decimal value, int DecimalPoints = 0, bool Symbol = true);
         
     }
