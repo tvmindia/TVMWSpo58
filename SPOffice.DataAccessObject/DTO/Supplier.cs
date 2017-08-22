@@ -24,7 +24,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string TaxTypeCode { get; set; }
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
-        public string ContactPerson { get; set; }
+        public string CompanyName { get; set; }
         public decimal Amount { get; set; }
         public string POStatus { get; set; }
         public string Description { get; set; }
