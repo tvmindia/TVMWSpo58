@@ -23,6 +23,15 @@ namespace UserInterface.Models
     {
     }
 
+
+    public class DashboardStatusViewModel
+    {
+        public string duration { get; set; }
+        public int OpenEnquiryCount { get; set; }
+        public int ConvertedEnquiryCount { get; set; }
+        public int NonConvertedEnquiryCount { get; set; }
+    }
+
     
     
      

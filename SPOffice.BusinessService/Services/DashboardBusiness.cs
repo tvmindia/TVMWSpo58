@@ -8,16 +8,17 @@ using System.Web;
 
 namespace SPOffice.BusinessService.Services
 {
-    public class DashboardBusiness : IDashboardBusiness
-    {
-        private IDashboardRepository _dashboardRepository;
-        private ICommonBusiness _commonBusiness;
-        public DashboardBusiness(IDashboardRepository dashboardRepository, ICommonBusiness commonBusiness)
+	public class DashboardBusiness:IDashboardBusiness
+	{
+        IDashboardRepository _dashboardrepository;
+        public DashboardBusiness(IDashboardRepository dashboardrepository)
         {
-            _dashboardRepository = dashboardRepository;
-            _commonBusiness = commonBusiness;
+            _dashboardrepository = dashboardrepository;
         }
-       
+        public DashboardStatus GetCountOfEnquiries(string duration)
+        {
+            return _dashboardrepository.GetCountOfEnquiries(duration);
+        }
 
     }
 }

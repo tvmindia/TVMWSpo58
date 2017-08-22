@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SPOffice.BusinessService.Contracts
 {
-    public interface IDashboardBusiness
+   public interface IDashboardBusiness
     {
-       
+        DashboardStatus GetCountOfEnquiries(string duration);
     }
 }
