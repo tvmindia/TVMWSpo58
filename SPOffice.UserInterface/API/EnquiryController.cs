@@ -40,11 +40,9 @@ namespace SPOffice.UserInterface.API
             {
                 AppUA _appUA = new AppUA();
                 _enquiriesObj.commonObj = new CommonViewModel();
-                _enquiriesObj.commonObj.CreatedBy = "AppUser";
-                _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
-                _enquiriesObj.commonObj.UpdatedBy = "AppUser";
+              
+                _enquiriesObj.commonObj.CreatedDate = DateTime.Now;       
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
-
                 result = _enquiriesBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj));
                 return JsonConvert.SerializeObject(new { Result = true, Records = result });
 

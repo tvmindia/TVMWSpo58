@@ -18,14 +18,14 @@ namespace SPOffice.UserInterface.API
 
         AppConst c = new AppConst();
         #region Constructor_Injection
-
+        
         IFollowUpBusiness _followupBusiness;
-
+       
 
         public FollowUpController(IFollowUpBusiness followupBusiness)
         {
             _followupBusiness = followupBusiness;
-
+          
         }
         #endregion Constructor_Injection
 
@@ -39,10 +39,8 @@ namespace SPOffice.UserInterface.API
             try
             {
                 AppUA _appUA = new AppUA();
-                _followupObj.commonObj = new CommonViewModel();
-                _followupObj.commonObj.CreatedBy = "AppUser";
+                _followupObj.commonObj = new CommonViewModel();    
                 _followupObj.commonObj.CreatedDate = DateTime.Now;
-                _followupObj.commonObj.UpdatedBy = "AppUser";
                 _followupObj.commonObj.UpdatedDate = DateTime.Now;
 
                 result = _followupBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_followupObj));
