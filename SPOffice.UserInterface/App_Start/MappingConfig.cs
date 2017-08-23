@@ -45,6 +45,9 @@ namespace UserInterface.App_Start
                 config.CreateMap<ProformaViewModel, Proforma>().ReverseMap();
                 config.CreateMap<CustomerViewModel, Customer>().ReverseMap();
                 config.CreateMap<SupplierViewModel, Supplier>().ReverseMap();
+
+                config.CreateMap<ProductViewModel, Product>().ReverseMap();
+                config.CreateMap<UnitViewModel, Unit>().ReverseMap();
             });
         }
     }
