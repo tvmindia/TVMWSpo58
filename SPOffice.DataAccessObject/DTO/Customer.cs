@@ -27,7 +27,7 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
-        public string CompanyName { get; set; }
+        public string CustomerName { get; set; }
         
         
     }
