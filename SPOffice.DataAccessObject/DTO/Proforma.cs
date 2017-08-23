@@ -12,7 +12,7 @@ namespace SPOffice.DataAccessObject.DTO
       
         public Guid ID { get; set; }
         public String InvoiceDate { get; set; }
-        public DateTime ValidTillDate { get; set; }
+        public string ValidTillDate { get; set; }
         public string Subject { get; set; }
         public string SentToEmails { get; set; }
         public string ContactPerson { get; set; }
