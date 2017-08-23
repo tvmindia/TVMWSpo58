@@ -9,6 +9,6 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface ICustomerRepository
     {
-        List<Customer> GetAllCustomersForMobile(string duration);
+        List<Customer> GetAllCustomerPOForMobile(string duration);
     }
 }

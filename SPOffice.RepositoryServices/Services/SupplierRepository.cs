@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllSupplierMobile
-        public List<Supplier> GetAllSuppliersForMobile(string duration)
+        public List<Supplier> GetAllSupplierPOForMobile(string duration)
         {
             List<Supplier> supplierList = null;
             try
@@ -79,6 +79,6 @@ namespace SPOffice.RepositoryServices.Services
 
             return supplierList;
         }
-        #endregion GetAllCustomerMobile
+        #endregion GetAllSupplierMobile
     }
 }

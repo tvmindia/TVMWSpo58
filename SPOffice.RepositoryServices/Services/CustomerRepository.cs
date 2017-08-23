@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllCustomerMobile
-        public List<Customer> GetAllCustomersForMobile(string duration)
+        public List<Customer> GetAllCustomerPOForMobile(string duration)
         {
             List<Customer> customerList = null;
             try
