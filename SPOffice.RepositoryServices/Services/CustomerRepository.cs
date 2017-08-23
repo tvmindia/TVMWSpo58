@@ -50,7 +50,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _customerObj.CustomerID);
                                         _customerObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.ID);
                                         _customerObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _customerObj.PONo);
-                                        _customerObj.POReceivedDate = (sdr["POReceivedDate"].ToString() != "" ? DateTime.Parse(sdr["POReceivedDate"].ToString()) : _customerObj.POReceivedDate);
+                                        _customerObj.POReceivedDate = (sdr["POReceivedDate"].ToString() != "" ? (sdr["POReceivedDate"].ToString()) : _customerObj.POReceivedDate);
                                         _customerObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat): _customerObj.PODate);
                                         _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
                                         _customerObj.POStatus = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _customerObj.POStatus);

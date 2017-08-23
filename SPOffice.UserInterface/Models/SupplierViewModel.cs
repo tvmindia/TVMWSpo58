@@ -10,7 +10,7 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         public string PONo { get; set; }
         public string PODate { get; set; }
-        public DateTime POIssuedDate { get; set; }
+        public string POIssuedDate { get; set; }
         public Guid SupplierID { get; set; }
         public string POFromCompCode { get; set; }
         public string SupplierMailingAddress { get; set; }
