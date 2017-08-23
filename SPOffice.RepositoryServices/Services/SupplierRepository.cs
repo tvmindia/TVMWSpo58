@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllSupplierMobile
-        public List<Supplier> GetAllSuppliersForMobile(string duration)
+        public List<Supplier> GetAllSupplierPOForMobile(string duration)
         {
             List<Supplier> supplierList = null;
             try
@@ -58,7 +58,7 @@ namespace SPOffice.RepositoryServices.Services
                                         //_supplierObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _supplierObj.GeneralNotes);
                                         //_supplierObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _supplierObj.BodyHeader);
                                         //_supplierObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _supplierObj.BodyFooter);
-                                        _supplierObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _supplierObj.CompanyName);
+                                        _supplierObj.SupplierName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _supplierObj.SupplierName);
                                         _supplierObj.POStatus = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _supplierObj.POStatus);
                                         _supplierObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _supplierObj.TaxAmount);
                                         _supplierObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _supplierObj.Discount);
@@ -79,6 +79,6 @@ namespace SPOffice.RepositoryServices.Services
 
             return supplierList;
         }
-        #endregion GetAllCustomerMobile
+        #endregion GetAllSupplierMobile
     }
 }

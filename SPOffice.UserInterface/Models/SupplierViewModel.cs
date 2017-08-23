@@ -10,7 +10,7 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         public string PONo { get; set; }
         public string PODate { get; set; }
-        public DateTime POIssuedDate { get; set; }
+        public string POIssuedDate { get; set; }
         public Guid SupplierID { get; set; }
         public string POFromCompCode { get; set; }
         public string SupplierMailingAddress { get; set; }
@@ -24,7 +24,7 @@ namespace SPOffice.UserInterface.Models
         public string TaxTypeCode { get; set; }
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
-        public string CompanyName { get; set; }
+        public string SupplierName { get; set; }
         public decimal Amount { get; set; }
         public string POStatus { get; set; }
         public string Description { get; set; }

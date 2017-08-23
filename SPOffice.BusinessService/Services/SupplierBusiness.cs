@@ -17,9 +17,9 @@ namespace SPOffice.BusinessService.Services
             _supplierRepository = supplierRepository;
         }
 
-        public List<Supplier> GetAllSuppliersForMobile(string duration)
+        public List<Supplier> GetAllSupplierPOForMobile(string duration)
         {
-            return _supplierRepository.GetAllSuppliersForMobile(duration);
+            return _supplierRepository.GetAllSupplierPOForMobile(duration);
         }
     }
 }
