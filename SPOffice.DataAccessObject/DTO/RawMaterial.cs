@@ -7,6 +7,9 @@ namespace SPOffice.DataAccessObject.DTO
 {
     public class RawMaterial
     {
-
+        public Guid? ID { get; set; }
+        public string  MaterialCode { get; set; }
+        public string Description { get; set; }
+        public Common commonObj { get; set; }
     }
 }

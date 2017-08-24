@@ -702,6 +702,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\CourierAgency\Index.cshtml" />
+    <Content Include="Views\RawMaterial\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -712,7 +713,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Courier\" />
-    <Folder Include="Views\RawMaterial\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
