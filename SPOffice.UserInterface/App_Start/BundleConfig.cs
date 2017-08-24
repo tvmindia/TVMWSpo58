@@ -53,6 +53,8 @@ namespace UserInterface.App_Start
 
 
             bundles.Add(new ScriptBundle("~/bundles/Product").Include("~/Scripts/UserJS/Product.js"));
+            bundles.Add(new ScriptBundle("~/bundles/CourierAgency").Include("~/Scripts/UserJS/CourierAgency.js"));
+            bundles.Add(new ScriptBundle("~/bundles/RawMaterial").Include("~/Scripts/UserJS/RawMaterial.js"));
 
 
 

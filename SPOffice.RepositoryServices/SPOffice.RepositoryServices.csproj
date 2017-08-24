@@ -94,6 +94,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ICourierRepository.cs" />
     <Compile Include="Contracts\ICustomerRepository.cs" />
     <Compile Include="Contracts\IDashboardRepository.cs" />
     <Compile Include="Contracts\IDatabaseFactory.cs" />
@@ -103,8 +104,10 @@
     <Compile Include="Contracts\IProductRepository.cs" />
     <Compile Include="Contracts\IProformaRepository.cs" />
     <Compile Include="Contracts\IQuotationRepository.cs" />
+    <Compile Include="Contracts\IRawMaterialRepository.cs" />
     <Compile Include="Contracts\ISupplierRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CourierReository.cs" />
     <Compile Include="Services\CustomerRepository.cs" />
     <Compile Include="Services\DashboardRepository.cs" />
     <Compile Include="Services\DatabaseFactory.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Services\ProductRepository.cs" />
     <Compile Include="Services\ProformaRepository.cs" />
     <Compile Include="Services\QuotationRepository.cs" />
+    <Compile Include="Services\RawMaterialRepository.cs" />
     <Compile Include="Services\SupplierRepository.cs" />
   </ItemGroup>
   <ItemGroup />

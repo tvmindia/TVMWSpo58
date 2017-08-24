@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\Common.cs" />
+    <Compile Include="DTO\CourierAgency.cs" />
     <Compile Include="DTO\Customer.cs" />
     <Compile Include="DTO\Dashboard.cs" />
     <Compile Include="DTO\Enquiry.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\Proforma.cs" />
     <Compile Include="DTO\Quotation.cs" />
+    <Compile Include="DTO\RawMaterial.cs" />
     <Compile Include="DTO\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
