@@ -701,6 +701,7 @@
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\CourierAgency\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -48,6 +48,7 @@ namespace UserInterface.App_Start
 
                 config.CreateMap<ProductViewModel, Product>().ReverseMap();
                 config.CreateMap<UnitViewModel, Unit>().ReverseMap();
+                config.CreateMap<CourierAgencyViewModel, CourierAgency>().ReverseMap();
             });
         }
     }
