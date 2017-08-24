@@ -50,6 +50,11 @@ namespace UserInterface.App_Start
                 config.CreateMap<UnitViewModel, Unit>().ReverseMap();
                 config.CreateMap<CourierAgencyViewModel, CourierAgency>().ReverseMap();
                 config.CreateMap<RawMaterialViewModel, RawMaterial>().ReverseMap();
+
+                config.CreateMap<QuoteHeaderViewModel, QuoteHeader>().ReverseMap();
+                config.CreateMap<QuoteDetailViewModel, QuoteDetail>().ReverseMap();
+
+
             });
         }
     }

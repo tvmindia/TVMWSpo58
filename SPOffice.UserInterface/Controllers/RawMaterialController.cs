@@ -72,10 +72,10 @@ namespace SPOffice.UserInterface.Controllers
             object result = null;
             try
             {
-                //AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUA"] as AppUA;
                 rawMaterialViewModel.commonObj = new CommonViewModel();
-                rawMaterialViewModel.commonObj.CreatedBy = "Albert Thomson";
-                rawMaterialViewModel.commonObj.CreatedDate = DateTime.Now;
+                rawMaterialViewModel.commonObj.CreatedBy = _appUA.UserName;
+                rawMaterialViewModel.commonObj.CreatedDate = _appUA.DateTime;
                 rawMaterialViewModel.commonObj.UpdatedBy = rawMaterialViewModel.commonObj.CreatedBy;
                 rawMaterialViewModel.commonObj.UpdatedDate = rawMaterialViewModel.commonObj.CreatedDate;
                 switch (string.IsNullOrEmpty(rawMaterialViewModel.ID.ToString()))

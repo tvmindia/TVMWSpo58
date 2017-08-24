@@ -90,10 +90,10 @@ namespace SPOffice.UserInterface.Controllers
             object result = null;
             try
             {
-                //AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUA"] as AppUA;
                 productViewModel.commonObj = new CommonViewModel();
-                productViewModel.commonObj.CreatedBy = "Albert Thomson";
-                productViewModel.commonObj.CreatedDate = DateTime.Now;
+                productViewModel.commonObj.CreatedBy = _appUA.UserName;
+                productViewModel.commonObj.CreatedDate = _appUA.DateTime;
                 productViewModel.commonObj.UpdatedBy = productViewModel.commonObj.CreatedBy;
                 productViewModel.commonObj.UpdatedDate = productViewModel.commonObj.CreatedDate;
                 switch (string.IsNullOrEmpty(productViewModel.ID.ToString()))

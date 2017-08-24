@@ -612,6 +612,7 @@
     <Content Include="Scripts\UserJS\Privileges.js" />
     <Content Include="Scripts\UserJS\PrivilegesView.js" />
     <Content Include="Scripts\UserJS\Product.js" />
+    <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\RawMaterial.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
     <Content Include="Scripts\UserJS\User.js" />
@@ -642,6 +643,7 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\RawMaterialController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
@@ -652,6 +654,7 @@
     <Compile Include="Models\ApplicationViewModel.cs" />
     <Compile Include="Models\AppObjectViewModel.cs" />
     <Compile Include="Models\CommonViewModel.cs" />
+    <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CourierAgencyViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
@@ -665,6 +668,7 @@
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\ProformaViewModel.cs" />
     <Compile Include="Models\QuotationViewModel.cs" />
+    <Compile Include="Models\QuoteHeaderViewModel.cs" />
     <Compile Include="Models\RawMaterialViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
@@ -703,6 +707,7 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\CourierAgency\Index.cshtml" />
     <Content Include="Views\RawMaterial\Index.cshtml" />
+    <Content Include="Views\Quotation\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
