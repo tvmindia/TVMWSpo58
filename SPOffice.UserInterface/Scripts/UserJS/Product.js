@@ -185,7 +185,12 @@ function SaveSuccess(data, status) {
         case "OK":
             BindAllProducts();
             notyAlert('success', JsonResult.Record.Message);
-            $("#ID").val(JsonResult.Record.ID);
+            if (JsonResult.Record.ID)
+            {
+                $("#ID").val(JsonResult.Record.ID);
+            }
+        
+          
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
