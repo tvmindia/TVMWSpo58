@@ -16,7 +16,8 @@ namespace SPOffice.DataAccessObject.DTO
         public Guid? SalesPersonID { get; set; }
         public string QuoteFromCompCode { get; set; }
         public Company company { get; set; }
-        public string QuoteStage { get; set; }
+        public string Stage { get; set; }
+        public QuoteStage quoteStage { get; set; }
         public string QuoteSubject { get; set; }
         public string SentToEmails { get; set; }
         public string ContactPerson { get; set; }
@@ -29,6 +30,7 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal TaxAmount { get; set; }
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
+        public decimal GrossAmount { get; set; }
         public Common commonObj { get; set; }
         public QuoteDetail quoteDetail { get; set; }
     }
@@ -44,6 +46,12 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal Rate { get; set; }
         public Guid? ProductID { get; set; }
         public Product product { get; set; }
+        public Common commonObj { get; set; }
+    }
+    public class QuoteStage
+    {
+        public string Code { get; set; }
+        public string Description { get; set; }
         public Common commonObj { get; set; }
     }
 }

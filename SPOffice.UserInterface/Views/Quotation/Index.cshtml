@@ -28,26 +28,27 @@
             }
         </div>
     </div>
+   
     <div class="row summaryboxes">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-2 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Overdue <b><span id="overdueamt">₹ 0.00</span></b></span>
-                    <span class="info-box-more">Invoices <small><span id="overdueinvoice">0</span></small></span>
+                    <span class="info-box-text">DRAFT <b><span id="draftCount">0</span></b></span>
+                  
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-2 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Open Invoices <b><span id="openamt">₹ 0.00</span></b></span>
-                    <span class="info-box-more">Invoices <small><span id="openinvoice">0</span></small></span>
+                    <span class="info-box-text">DELIVERED <b><span id="deliveredCount">0</span></b></span>
+                   
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -58,13 +59,25 @@
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-2 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Fully Paid <b><span id="paidamt">₹ 0.00</span></b></span>
-                    <span class="info-box-more">Invoices <small><span id="paidinvoice">0</span></small></span>
+                    <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
+                   
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cart-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">CLOSED <b><span id="closedCount">0</span></b></span>
+
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -110,7 +123,7 @@
 
             <div class="row" id="OverlayHeader">
                 <div class="col-md-6" style="text-align:left">
-                    <span id="lblInvoiceNo" class="SCHeader">New Invoice</span>
+                    <span id="lblInvoiceNo" class="SCHeader"></span>
                 </div>
                 <div class="col-md-6" id="btnPatchAdd" style="min-height:25px; padding-right:25px;">
 
@@ -131,6 +144,7 @@
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", @value = Guid.Empty })
+                                    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
                                     @Html.LabelFor(model => model.QuotationNo, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
@@ -180,7 +194,7 @@
 
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.customer.CustomerID, htmlAttributes: new { @class = "control-label " })
+                                    @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label " })
 
 
                                 </div>
@@ -222,7 +236,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control HeaderBox datepicker" } })
+                                        @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -270,63 +284,23 @@
                             <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.QuoteStage, htmlAttributes: new { @class = "control-label " })
+                                    @Html.LabelFor(model => model.Stage, htmlAttributes: new { @class = "control-label " })
 
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.QuoteStage, new List<SelectListItem>(), "-- Select Company --", new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "ddlCompany" })
-                                        @Html.ValidationMessageFor(model => model.QuoteStage, "", new { @class = "text-danger" })
+                                        @Html.DropDownListFor(model => model.Stage, new List<SelectListItem>(), "-- Select Stage --", new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "ddlCompany" })
+                                        @Html.ValidationMessageFor(model => model.Stage, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
                             </div>
-                            <div class="form-group col-md-12"></div>
-
-
-                        </div>
-                        <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmtCaption">Invoiced Amount</div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblinvoicedAmt">₹ 0.00</div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmtCaption">Paid Amount</div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblpaidAmt">₹ 0.00</div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmtCaption">Balance Due</div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblbalalnceAmt">₹ 0.00</div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-12  ">&nbsp;</div>
-                    <div class="col-md-12  ">&nbsp;</div>
-                    <div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Commercials</div>
-                    <div class="col-md-12">
-                        <div class="col-md-12">
-                            <div class="form-group col-md-4">
+                        
+                            <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.QuoteSubject, htmlAttributes: new { @class = "control-label" })
-
-
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
@@ -338,7 +312,7 @@
                                 </div>
 
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.QuoteBodyHead, htmlAttributes: new { @class = "control-label" })
 
@@ -346,7 +320,165 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control HeaderBox"} })
+                                        @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">
+                            <div class="form-group col-md-12">
+                                <div class="col-md-12 text-right">
+                                    <div class="rightAmtCaption">Quote Stage</div>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                    <div class="rightAmt" id="lblQuoteStage">CLOSED</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-12 text-right">
+                                    <div class="rightAmtCaption">Email Sent(Y/N) Amount</div>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                    <div class="rightAmt" id="lblEmailSent">YES</div>
+                                </div>
+                            </div>
+                          
+
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-12  ">&nbsp;</div>
+                    <div class="col-md-12  ">&nbsp;</div>
+                    <div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Item Details</div>
+                  
+                    <div class="col-md-12">
+                        <div class="row">
+
+
+                            <table id="ItemDetailsTable" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="text-center TableHead">
+                                        <th>ID</th>
+                                        <th>SlNo.</th>
+                                        <th>Product Code</th>
+                                        <th>Description</th>
+                                        <th>Unit</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>Amount</th>
+                                        <th>...</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12  ">&nbsp;</div>
+                    <div class="col-md-12  ">&nbsp;</div>
+                    <div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Commercial Details</div>
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                        
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-4">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.GrossAmount, htmlAttributes: new { @class = "control-label" })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.GrossAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)", @id = "txtnettaxableamt", @readonly = "true" } })
+                                            @Html.ValidationMessageFor(model => model.GrossAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label" })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)" } })
+                                        @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.NetTaxableAmount, htmlAttributes: new { @class = "control-label" })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NetTaxableAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)" } })
+                                        @Html.ValidationMessageFor(model => model.NetTaxableAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "control-label " })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+
+                                        @Html.DropDownListFor(model => model.TaxTypeCode, new List<SelectListItem>(), "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = 0, style = "padding:4px 12px;", @id = "ddlTaxType" })
+                                        @Html.ValidationMessageFor(model => model.TaxTypeCode, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.TaxPercApplied, htmlAttributes: new { @class = "control-label" })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.TaxPercApplied, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isnumber(event)" } })
+                                        @Html.ValidationMessageFor(model => model.TaxPercApplied, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                         
+                           
+                            <div class="form-group col-md-4">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.TaxAmount, htmlAttributes: new { @class = "control-label" })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.TaxAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @id = "txtTaxAmt", @readonly = "true" } })
+                                            @Html.ValidationMessageFor(model => model.TaxAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -356,79 +488,14 @@
                             <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-4">
                                 <div class="col-md-12">
-                                    @*@Html.LabelFor(model => model.quoteDetail.gr, htmlAttributes: new { @class = "control-label" })*@
+                                    @Html.LabelFor(model => model.TotalAmount, htmlAttributes: new { @class = "control-label" })
 
 
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @*@Html.EditorFor(model => model.NetTaxableAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @id = "txtNetTaxableAmt", @readonly = "true" } })
-                                        @Html.ValidationMessageFor(model => model.NetTaxableAmount, "", new { @class = "text-danger" })*@
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-                            <div class="form-group col-md-4">
-                                <div class="col-md-12">
-                                    @*@Html.LabelFor(model => model.TaxTypeObj.Code, htmlAttributes: new { @class = "control-label " })*@
-
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @*@Html.DropDownListFor(model => model.TaxTypeObj.Code, Model.TaxTypeObj.TaxTypesList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = 0, style = "padding:4px 12px;", @id = "ddlTaxType" })*@
-                                        @*@Html.ValidationMessageFor(model => model.TaxTypeObj.Code, "", new { @class = "text-danger" })*@
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-                            <div class="form-group col-md-4" @*style="margin-top:15%"*@>
-                                <div class="col-md-12">
-                                    @*@Html.LabelFor(model => model.TaxPercApplied, htmlAttributes: new { @class = "control-label" })*@
-
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @*@Html.EditorFor(model => model.TaxPercApplied, new { htmlAttributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)", @id = "txtTaxPercApp" } })
-                                        @Html.ValidationMessageFor(model => model.TaxPercApplied, "", new { @class = "text-danger" })*@
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-                            <div class="form-group col-md-12"></div>
-                            <div class="form-group col-md-4">
-                                <div class="col-md-12">
-                                    @*@Html.LabelFor(model => model.TaxAmount, htmlAttributes: new { @class = "control-label" })*@
-
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @*@Html.EditorFor(model => model.TaxAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @id = "txtTaxAmt", @readonly = "true" } })
-                                        @Html.ValidationMessageFor(model => model.TaxAmount, "", new { @class = "text-danger" })*@
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-                            <div class="form-group col-md-4">
-                                <div class="col-md-12">
-                                    @*@Html.LabelFor(model => model.TotalInvoiceAmount, htmlAttributes: new { @class = "control-label" })*@
-
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @*@Html.EditorFor(model => model.TotalInvoiceAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @id = "txtTotalInvAmt", @readonly = "true" } })
-                                        @Html.ValidationMessageFor(model => model.TotalInvoiceAmount, "", new { @class = "text-danger" })*@
+                                        @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @id = "txtTotalAmt", @readonly = "true" } })
+                                            @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -445,12 +512,26 @@
                         <div class="col-md-10">
                             <div class="form-group col-md-12">
                                 <div class="col-md-12">
-                                    @*@Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label" })*@
+                                    @Html.LabelFor(model => model.QuoteBodyFoot, htmlAttributes: new { @class = "control-label" })
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @*@Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control HeaderBox multiline4", @id = "txtNotes", @rows = 4 } })
-                                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })*@
+                                        @Html.EditorFor(model => model.QuoteBodyFoot, new { htmlAttributes = new { @class = "form-control HeaderBox multiline4", @rows = 4 } })
+                                        @Html.ValidationMessageFor(model => model.QuoteBodyFoot, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox multiline4", @id = "txtGeneralNotes", @rows = 4 } })
+                                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -464,7 +545,7 @@
                     <div class="col-md-12  ">&nbsp;</div>
                     <div class="col-md-12  ">&nbsp;</div>
                     <div>
-                        @*@Html.Partial("Fileupload");*@
+                        @Html.Partial("Fileupload");
                     </div>
 
                     <div class="col-md-12  ">&nbsp;</div>

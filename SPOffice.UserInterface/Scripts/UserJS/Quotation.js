@@ -2,7 +2,7 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 $(document).ready(function () {
     try {
-        debugger;
+    
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
@@ -23,7 +23,7 @@ $(document).ready(function () {
              order: [],
              searching: true,
              paging: true,
-             data: null,
+             data: GetAllQuotations(),
              pageLength: 15,
              language: {
                  search: "_INPUT_",
@@ -34,16 +34,16 @@ $(document).ready(function () {
                { "data": "QuotationDate", "defaultContent": "<i>-</i>" },
                { "data": "QuotationNo", "defaultContent": "<i>-</i>" },
                { "data": "QuoteSubject", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CustomerName", "defaultContent": "<i>-</i>" },
+               { "data": "customer.CustomerName", "defaultContent": "<i>-</i>" },
                { "data": "ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "company.Name","defaultContent": "<i>-</i>" },
-               { "data": "QuoteStage", "defaultContent": "<i>-</i>" },
+               { "data": "quoteStage.Description", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                  { className: "text-right", "targets": [5, 6] },
-                   { className: "text-left", "targets": [1, 3] },
-             { className: "text-center", "targets": [2, 4, 7] }
+                  { className: "text-right", "targets": [] },
+                   { className: "text-left", "targets": [2,3,4,5,6,7] },
+             { className: "text-center", "targets": [1,8] }
 
              ]
          });
@@ -54,32 +54,32 @@ $(document).ready(function () {
         $('input[type="text"].Roundoff').on('focus', function () {
             $(this).select();
         });
-        showLoader();
-        List();
+       // showLoader();
+       // List();
 
-        $('.Roundoff').on('change', function () {
-            var CustomerInvoiceViewModel = new Object();
-            CustomerInvoiceViewModel.GrossAmount = $('#txtGrossAmt').val();
-            CustomerInvoiceViewModel.Discount = ((parseInt($('#txtDiscount').val())) > (parseInt($('#txtGrossAmt').val()))) ? "0.00" : $('#txtDiscount').val();
-            CustomerInvoiceViewModel.NetTaxableAmount = (CustomerInvoiceViewModel.GrossAmount - CustomerInvoiceViewModel.Discount)
-            CustomerInvoiceViewModel.TaxType = $('#ddlTaxType').val() != "" ? GetTaxRate($('#ddlTaxType').val()) : $('#txtTaxPercApp').val();
-            CustomerInvoiceViewModel.TaxPercentage = CustomerInvoiceViewModel.TaxType
-            CustomerInvoiceViewModel.TaxAmount = (CustomerInvoiceViewModel.NetTaxableAmount * CustomerInvoiceViewModel.TaxPercentage) / 100
-            CustomerInvoiceViewModel.TotalInvoiceAmount = (CustomerInvoiceViewModel.NetTaxableAmount + CustomerInvoiceViewModel.TaxAmount)
-            $('#txtNetTaxableAmt').val(CustomerInvoiceViewModel.NetTaxableAmount);
-            $('#txtTaxPercApp').val(CustomerInvoiceViewModel.TaxPercentage);
-            $('#txtTaxAmt').val(CustomerInvoiceViewModel.TaxAmount);
-            $('#txtTotalInvAmt').val(CustomerInvoiceViewModel.TotalInvoiceAmount);
-            if ((parseInt($('#txtDiscount').val())) > (parseInt($('#txtGrossAmt').val()))) {
-                $('#txtDiscount').val("0.00");
-            }
+        //$('.Roundoff').on('change', function () {
+        //    var CustomerInvoiceViewModel = new Object();
+        //    CustomerInvoiceViewModel.GrossAmount = $('#txtGrossAmt').val();
+        //    CustomerInvoiceViewModel.Discount = ((parseInt($('#txtDiscount').val())) > (parseInt($('#txtGrossAmt').val()))) ? "0.00" : $('#txtDiscount').val();
+        //    CustomerInvoiceViewModel.NetTaxableAmount = (CustomerInvoiceViewModel.GrossAmount - CustomerInvoiceViewModel.Discount)
+        //    CustomerInvoiceViewModel.TaxType = $('#ddlTaxType').val() != "" ? GetTaxRate($('#ddlTaxType').val()) : $('#txtTaxPercApp').val();
+        //    CustomerInvoiceViewModel.TaxPercentage = CustomerInvoiceViewModel.TaxType
+        //    CustomerInvoiceViewModel.TaxAmount = (CustomerInvoiceViewModel.NetTaxableAmount * CustomerInvoiceViewModel.TaxPercentage) / 100
+        //    CustomerInvoiceViewModel.TotalInvoiceAmount = (CustomerInvoiceViewModel.NetTaxableAmount + CustomerInvoiceViewModel.TaxAmount)
+        //    $('#txtNetTaxableAmt').val(CustomerInvoiceViewModel.NetTaxableAmount);
+        //    $('#txtTaxPercApp').val(CustomerInvoiceViewModel.TaxPercentage);
+        //    $('#txtTaxAmt').val(CustomerInvoiceViewModel.TaxAmount);
+        //    $('#txtTotalInvAmt').val(CustomerInvoiceViewModel.TotalInvoiceAmount);
+        //    if ((parseInt($('#txtDiscount').val())) > (parseInt($('#txtGrossAmt').val()))) {
+        //        $('#txtDiscount').val("0.00");
+        //    }
 
-        });
-        $('#txtTaxPercApp').on('keypress', function () {
-            debugger;
-            if ($('#ddlTaxType').val() != "")
-                $('#ddlTaxType').val('')
-        });
+        //});
+        //$('#txtTaxPercApp').on('keypress', function () {
+        //    debugger;
+        //    if ($('#ddlTaxType').val() != "")
+        //        $('#ddlTaxType').val('')
+        //});
 
     }
     catch (x) {
@@ -126,7 +126,7 @@ function DeleteSuccess(data, status) {
 }
 
 function SaveSuccess(data, status) {
-    debugger;
+   
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
@@ -157,7 +157,7 @@ function SaveSuccess(data, status) {
 
 
 function Edit(Obj) {
-    debugger;
+   
     $('#CustomerInvoiceForm')[0].reset();
     var rowData = DataTables.CustInvTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
@@ -166,20 +166,9 @@ function Edit(Obj) {
     openNav();
 }
 function AddNew() {
-    debugger;
-    $('#CustomerInvoiceForm')[0].reset();
-    $('#lblinvoicedAmt').text("₹ 0.00");
-    $('#lblpaidAmt').text("₹ 0.00");
-    $('#lblbalalnceAmt').text("₹ 0.00");
-    $('#ID').val('');
-    $('#lblInvoiceNo').text("New Invoice");
-    $('#ddlCustomer').prop('disabled', false);
-    $('#txtInvNo').prop('disabled', false);
-    $('#ddlRefInvoice').prop('disabled', true);
-    $('#ddlInvoiceType').prop('disabled', false);
-    ChangeButtonPatchView('CustomerInvoices', 'btnPatchAdd', 'Add');
+    ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
     openNav();
-    clearUploadControl();
+  //  clearUploadControl();
 }
 
 function Reset() {
@@ -188,7 +177,7 @@ function Reset() {
 }
 function PaintInvoiceDetails() {
     debugger;
-    ChangeButtonPatchView('CustomerInvoices', 'btnPatchAdd', 'Edit');
+    ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
     var InvoiceID = $('#ID').val();
     var CustomerInvoicesViewModel = GetCustomerInvoiceDetails(InvoiceID);
     $('#lblInvoiceNo').text(CustomerInvoicesViewModel.InvoiceNo);
@@ -232,25 +221,34 @@ function PaintInvoiceDetails() {
 
 }
 //---------------Bind logics-------------------
-function GetAllInvoicesAndSummary() {
+function GetAllQuotations() {
     try {
 
         var data = {};
         var ds = {};
-        ds = GetDataFromServer("CustomerInvoices/GetInvoicesAndSummary/", data);
+        ds = GetDataFromServer("Quotation/GetAllQuotations/", data);
         if (ds != '') {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
+            BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed);
             return ds.Records;
         }
         if (ds.Result == "ERROR") {
-            alert(ds.Message);
+            notyAlert('error', ds.message);
         }
     }
     catch (e) {
         notyAlert('error', e.message);
     }
+}
+
+function BindSummarBox(Draft, Delivered, InProgress, Closed)
+{
+    $("#draftCount").text(Draft);
+    $("#deliveredCount").text(Delivered);
+    $("#inProgressCount").text(InProgress);
+    $("#closedCount").text(Closed);
 }
 //onchange function for the customer dropdown to fill:- due date and Address 
 function FillCustomerDefault(this_Obj) {
@@ -341,8 +339,6 @@ function GetCustomerInvoiceDetails() {
         notyAlert('error', e.message);
     }
 }
-
-
 //-----------------------------------------------------------------------------------------------------------------//
 
 function InvoicesTypeChange() {

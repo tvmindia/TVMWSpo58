@@ -17,9 +17,39 @@ namespace SPOffice.BusinessService.Services
         {
             _quotationRepository = quotationRepository;
         }
+
+        public object DeleteQuotation(Guid ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<QuoteHeader> GetAllQuotations()
+        {
+            List<QuoteHeader> quoteHeaderList = null;
+            try
+            {
+                quoteHeaderList = _quotationRepository.GetAllQuotations();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quoteHeaderList;
+        }
+
         public List<Quotation> GetQuotationDetails(string duration)
         {
             return _quotationRepository.GetQuotationDetails(duration);
+        }
+
+        public object InsertQuotation(QuoteHeader quoteHeader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object UpdateQuotation(QuoteHeader quoteHeader)
+        {
+            throw new NotImplementedException();
         }
     }
 }

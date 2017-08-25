@@ -9,6 +9,21 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface IQuotationRepository
     {
+        /// <summary>
+        /// For API
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <returns>List<Quotation></returns>
         List<Quotation> GetQuotationDetails(string duration);
+
+
+        /// <summary>
+        /// For web
+        /// </summary>
+        /// <returns></returns>
+        List<QuoteHeader> GetAllQuotations();
+        object InsertQuotation(QuoteHeader quoteHeader);
+        object UpdateQuotation(QuoteHeader quoteHeader);
+        object DeleteQuotation(Guid ID);
     }
 }

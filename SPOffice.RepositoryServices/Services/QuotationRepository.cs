@@ -19,7 +19,105 @@ namespace SPOffice.RepositoryServices.Services
             _databaseFactory = databaseFactory;
         }
 
-        #region GetAllQuotation
+        public object DeleteQuotation(Guid ID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<QuoteHeader> GetAllQuotations()
+        {
+            List<QuoteHeader> quoteHeaderList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllQuotations]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                quoteHeaderList = new List<QuoteHeader>();
+                                while (sdr.Read())
+                                {
+                                    QuoteHeader _quoteHeader = new QuoteHeader();
+                                    {
+                                        _quoteHeader.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _quoteHeader.ID);
+                                        _quoteHeader.QuotationNo = (sdr["QuotationNo"].ToString() != "" ? sdr["QuotationNo"].ToString() : _quoteHeader.QuotationNo);
+                                        _quoteHeader.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _quoteHeader.CustomerID);
+                                        _quoteHeader.customer = new Customer();
+                                        {
+                                            _quoteHeader.customer.ID = (Guid)_quoteHeader.CustomerID;
+                                            _quoteHeader.customer.CustomerName= (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _quoteHeader.customer.CustomerName);
+                                        }
+                                        _quoteHeader.QuotationDate = (sdr["QuotationDate"].ToString() != "" ? DateTime.Parse(sdr["QuotationDate"].ToString()).ToString(settings.dateformat) : _quoteHeader.QuotationDate);
+                                        _quoteHeader.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()).ToString(settings.dateformat) : _quoteHeader.ValidTillDate);
+
+                                        _quoteHeader.SalesPersonID = (sdr["SalesPersonID"].ToString() != "" ? Guid.Parse(sdr["SalesPersonID"].ToString()) : _quoteHeader.SalesPersonID);
+                                        _quoteHeader.QuoteFromCompCode = (sdr["QuoteFromCompCode"].ToString() != "" ? sdr["QuoteFromCompCode"].ToString() : _quoteHeader.QuoteFromCompCode);
+                                        _quoteHeader.company = new Company();
+                                        {
+                                            _quoteHeader.company.Code = _quoteHeader.QuoteFromCompCode;
+                                            _quoteHeader.company.Name= (sdr["QuoteFromCompanyName"].ToString() != "" ? sdr["QuoteFromCompanyName"].ToString() : _quoteHeader.company.Name);
+                                        }
+                                        _quoteHeader.Stage = (sdr["QuoteStage"].ToString() != "" ? sdr["QuoteStage"].ToString() : _quoteHeader.Stage);
+                                        _quoteHeader.quoteStage = new QuoteStage();
+                                        {
+                                            _quoteHeader.quoteStage.Code = _quoteHeader.Stage;
+                                            _quoteHeader.quoteStage.Description= (sdr["QuoteDescription"].ToString() != "" ? sdr["QuoteDescription"].ToString() : _quoteHeader.quoteStage.Description);
+                                        }
+                                        _quoteHeader.QuoteSubject = (sdr["QuoteSubject"].ToString() != "" ? sdr["QuoteSubject"].ToString() : _quoteHeader.QuoteSubject);
+                                        _quoteHeader.SentToEmails = (sdr["SentToEmails"].ToString() != "" ? sdr["SentToEmails"].ToString() : _quoteHeader.SentToEmails);
+                                        _quoteHeader.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : _quoteHeader.ContactPerson);
+                                        _quoteHeader.SentToAddress = (sdr["SentToAddress"].ToString() != "" ? sdr["SentToAddress"].ToString() : _quoteHeader.SentToAddress);
+                                        _quoteHeader.QuoteBodyHead = (sdr["QuoteBodyHead"].ToString() != "" ? sdr["QuoteBodyHead"].ToString() : _quoteHeader.QuoteBodyHead);
+                                        _quoteHeader.QuoteBodyFoot = (sdr["QuoteBodyFoot"].ToString() != "" ? sdr["QuoteBodyFoot"].ToString() : _quoteHeader.QuoteBodyFoot);
+                                        _quoteHeader.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _quoteHeader.Discount);
+                                        _quoteHeader.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _quoteHeader.TaxTypeCode);
+                                        _quoteHeader.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _quoteHeader.TaxPercApplied);
+                                        _quoteHeader.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _quoteHeader.TaxAmount);
+                                        _quoteHeader.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _quoteHeader.GeneralNotes);
+                                        _quoteHeader.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? sdr["EmailSentYN"].ToString() : _quoteHeader.EmailSentYN);
+                                        _quoteHeader.GrossAmount = (sdr["GrossAmount"].ToString() != "" ? decimal.Parse(sdr["GrossAmount"].ToString()) : _quoteHeader.GrossAmount);
+                                        _quoteHeader.commonObj = new Common();
+                                        {
+                                            _quoteHeader.commonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : _quoteHeader.commonObj.CreatedBy);
+                                            _quoteHeader.commonObj.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : _quoteHeader.commonObj.CreatedDate);
+                                            _quoteHeader.commonObj.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(settings.dateformat) : string.Empty);
+                                        }
+                                    }
+                                    quoteHeaderList.Add(_quoteHeader);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return quoteHeaderList;
+        }
+        public object InsertQuotation(QuoteHeader quoteHeader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object UpdateQuotation(QuoteHeader quoteHeader)
+        {
+            throw new NotImplementedException();
+        }
+        #region GetQuotationDetails
         public List<Quotation> GetQuotationDetails(string duration)
         {
            List<Quotation> quotationsList = null;
@@ -88,8 +186,7 @@ namespace SPOffice.RepositoryServices.Services
 
             return quotationsList;
         }
-
-        #endregion GetAllQuotation
+        #endregion GetQuotationDetails
     }
 }
     

@@ -708,6 +708,7 @@
     <Content Include="Views\CourierAgency\Index.cshtml" />
     <Content Include="Views\RawMaterial\Index.cshtml" />
     <Content Include="Views\Quotation\Index.cshtml" />
+    <Content Include="Views\Shared\Fileupload.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

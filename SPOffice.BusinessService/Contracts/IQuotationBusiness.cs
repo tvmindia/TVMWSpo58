@@ -11,6 +11,12 @@ namespace SPOffice.BusinessService.Contracts
     {
 
         List<Quotation> GetQuotationDetails(string duration);
-       
+
+
+        List<QuoteHeader> GetAllQuotations();
+        object InsertQuotation(QuoteHeader quoteHeader);
+        object UpdateQuotation(QuoteHeader quoteHeader);
+        object DeleteQuotation(Guid ID);
+
     }
 }
