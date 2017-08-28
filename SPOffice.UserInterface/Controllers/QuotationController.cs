@@ -108,6 +108,7 @@ namespace SPOffice.UserInterface.Controllers
             quoteHeaderVM.TaxTypeList = selectListItem;
             return View(quoteHeaderVM);
         }
+        #region GetAllQuotations
         [HttpGet]
         public string GetAllQuotations()
         {
@@ -126,6 +127,79 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
+        #endregion GetAllQuotations
+        #region GetQuationDetailsByID
+        [HttpGet]
+        public string GetQuationDetailsByID(string ID)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                 QuoteHeaderViewModel quoteHeaderViewModel = Mapper.Map<QuoteHeader,QuoteHeaderViewModel>(_quotationBusiness.GetQuationDetailsByID(Guid.Parse(ID)));
+                 return JsonConvert.SerializeObject(new { Result = "OK", Record = quoteHeaderViewModel });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetQuationDetailsByID
+
+        #region InsertUpdateQuotaion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string InsertUpdateQuotaion(QuoteHeaderViewModel quoteHeaderVM)
+        {
+            try
+            {
+                object result = null;
+                if (ModelState.IsValid)
+                {
+                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    quoteHeaderVM.commonObj = new CommonViewModel();
+                    quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate = _appUA.DateTime;
+                    quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
+                    quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
+                    switch (string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
+                    {
+                        case true:
+                            result = _quotationBusiness.InsertQuotation(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
+                            break;
+                        case false:
+                            result = _quotationBusiness.UpdateQuotation(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
+                            break;
+                    }
+
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                }
+                else
+                {
+                    List<string> modelErrors = new List<string>();
+                    foreach (var modelState in ModelState.Values)
+                    {
+                        foreach (var modelError in modelState.Errors)
+                        {
+                            modelErrors.Add(modelError.ErrorMessage);
+                        }
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                }
+            }
+            catch(Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+
+
+        }
+        #endregion InsertUpdateQuotaion
 
 
 

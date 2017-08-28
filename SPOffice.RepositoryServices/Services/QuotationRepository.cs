@@ -110,7 +110,81 @@ namespace SPOffice.RepositoryServices.Services
         }
         public object InsertQuotation(QuoteHeader quoteHeader)
         {
-            throw new NotImplementedException();
+            SqlParameter outputStatus, outputID;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[InsertQuotation]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@QuotationNo", SqlDbType.VarChar, 20).Value = quoteHeader.QuotationNo;
+                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quoteHeader.CustomerID;
+                        cmd.Parameters.Add("@QuotationDate", SqlDbType.DateTime).Value = quoteHeader.QuotationDate;
+                        cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = quoteHeader.ValidTillDate;
+                        cmd.Parameters.Add("@SalesPersonID", SqlDbType.UniqueIdentifier).Value = quoteHeader.SalesPersonID;
+                        cmd.Parameters.Add("@QuoteFromCompCode", SqlDbType.VarChar,10).Value = quoteHeader.QuoteFromCompCode;
+                        cmd.Parameters.Add("@QuoteStage", SqlDbType.VarChar,10).Value = quoteHeader.Stage;
+                        cmd.Parameters.Add("@QuoteSubject", SqlDbType.VarChar,500).Value = quoteHeader.QuoteSubject;
+                       // cmd.Parameters.Add("@SentToEmails", SqlDbType.NVarChar,-1).Value = quoteHeader.SentToEmails;
+                        cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar,100).Value = quoteHeader.ContactPerson;
+                        cmd.Parameters.Add("@SentToAddress", SqlDbType.NVarChar,-1).Value = quoteHeader.SentToAddress;
+                        cmd.Parameters.Add("@QuoteBodyHead", SqlDbType.NVarChar,-1).Value = quoteHeader.QuoteBodyHead;
+                        cmd.Parameters.Add("@QuoteBodyFoot", SqlDbType.NVarChar,-1).Value = quoteHeader.QuoteBodyFoot;
+
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = quoteHeader.Discount;
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar,10).Value = quoteHeader.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = quoteHeader.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = quoteHeader.TaxAmount;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar,-1).Value = quoteHeader.GeneralNotes;
+                     //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
+                      
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.InsertFailure);
+                    case "1":
+                        //success
+                        return new
+                        {
+                            ID = outputID.Value.ToString(),
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.InsertSuccess
+                        };
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                ID = outputID.Value.ToString(),
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.InsertSuccess
+            };
         }
 
         public object UpdateQuotation(QuoteHeader quoteHeader)

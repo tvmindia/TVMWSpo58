@@ -54,7 +54,8 @@ namespace UserInterface.Models
         [Required(ErrorMessage = "Quote Header required")]
         [Display(Name = "Quote Header")]
         public string QuoteBodyHead { get; set; }
-
+        [Required(ErrorMessage = "Quote Footer required")]
+        [Display(Name = "Quote Footer")]
         public string QuoteBodyFoot { get; set; }
 
         [Required(ErrorMessage = "Cash Discount required")]
@@ -71,6 +72,7 @@ namespace UserInterface.Models
         [Required(ErrorMessage = "Tax Amount required")]
         [Display(Name = "Tax Amount Applied")]
         public decimal TaxAmount { get; set; }
+        [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
         [Required(ErrorMessage = "Gross Amount required")]

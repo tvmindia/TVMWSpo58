@@ -42,6 +42,14 @@ namespace SPOffice.BusinessService.Services
             return _quotationRepository.GetAllQuoteStages();
         }
 
+        public QuoteHeader GetQuationDetailsByID(Guid ID)
+        {
+
+            List<QuoteHeader> QuotList = GetAllQuotations();
+            QuoteHeader quoteHeader = QuotList != null ? QuotList.Where(Q => Q.ID == ID).SingleOrDefault():null;
+            return quoteHeader;
+        }
+
         public List<Quotation> GetQuotationDetails(string duration)
         {
             return _quotationRepository.GetQuotationDetails(duration);
@@ -49,7 +57,7 @@ namespace SPOffice.BusinessService.Services
 
         public object InsertQuotation(QuoteHeader quoteHeader)
         {
-            throw new NotImplementedException();
+            return _quotationRepository.InsertQuotation(quoteHeader);
         }
 
         public object UpdateQuotation(QuoteHeader quoteHeader)

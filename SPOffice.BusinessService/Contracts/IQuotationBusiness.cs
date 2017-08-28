@@ -19,6 +19,7 @@ namespace SPOffice.BusinessService.Contracts
         object DeleteQuotation(Guid ID);
 
         List<QuoteStage> GetAllQuoteStages();
+        QuoteHeader GetQuationDetailsByID(Guid ID);
 
     }
 }

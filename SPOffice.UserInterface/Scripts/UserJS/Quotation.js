@@ -164,7 +164,7 @@ function Delete() {
 }
 
 function saveInvoices() {
-    debugger;
+   
     $('#btnSave').trigger('click');
 }
 
@@ -192,17 +192,12 @@ function SaveSuccess(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
-            var res;
-            if ($('#ID').val() == "") {
-                res = Advanceadjustment(); //calling advance adjustment popup if inserting
-            }
-            if (!res) {
-                notyAlert('success', JsonResult.Message);
-            }
+           
+            notyAlert('success', JsonResult.Message);
             $('#ID').val(JsonResult.Records.ID);
             $('#deleteId').val(JsonResult.Records.ID);
-            PaintInvoiceDetails()
-            List();
+            //PaintInvoiceDetails()
+           // List();
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -220,12 +215,55 @@ function SaveSuccess(data, status) {
 
 function Edit(Obj) {
    
-    $('#CustomerInvoiceForm')[0].reset();
-    var rowData = DataTables.CustInvTable.row($(Obj).parents('tr')).data();
+    $('#QuoteForm')[0].reset();
+    var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
     $('#deleteId').val(rowData.ID);
-    PaintInvoiceDetails();
+    BindQuationDetails(rowData.ID);
     openNav();
+}
+function BindQuationDetails(ID)
+{
+    try
+    {
+        var jsresult = GetQuationDetailsByID(ID)
+        if(jsresult)
+        {
+            //bind
+            $("#txtQuotationNo").val(jsresult.QuotationNo);
+            $("#QuotationDate").val(jsresult.QuotationDate);
+            $("#ValidTillDate").val(jsresult.ValidTillDate);
+
+
+        }
+
+    }
+    catch(e)
+    {
+        notyAlert('error', e.Message);
+    }
+}
+
+function GetQuationDetailsByID(ID) {
+    try {
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Quotation/GetQuationDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+         
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
 }
 function AddNew() {
     ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
@@ -237,51 +275,7 @@ function Reset() {
     debugger;
     PaintInvoiceDetails();
 }
-function PaintInvoiceDetails() {
-    debugger;
-    ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
-    var InvoiceID = $('#ID').val();
-    var CustomerInvoicesViewModel = GetCustomerInvoiceDetails(InvoiceID);
-    $('#lblInvoiceNo').text(CustomerInvoicesViewModel.InvoiceNo);
-    $('#txtInvNo').val(CustomerInvoicesViewModel.InvoiceNo);
-    $('#txtInvDate').val(CustomerInvoicesViewModel.InvoiceDateFormatted);
-    $('#ddlCompany').val(CustomerInvoicesViewModel.companiesObj.Code);
-    $('#ddlCustomer').val(CustomerInvoicesViewModel.customerObj.ID);
-    $('#hdfCustomerID').val(CustomerInvoicesViewModel.customerObj.ID);
-    $('#ddlCustomer').prop('disabled', true);
-    //------------------------------------------------
-    $('#ddlInvoiceType').prop('disabled', true);
 
-    debugger;
-    $('#ddlInvoiceType').val(CustomerInvoicesViewModel.InvoiceType);
-
-    BindInvocieReferenceDropDown(CustomerInvoicesViewModel.customerObj.ID);//dropdownbinding
-    if ($('#ddlInvoiceType').val() == 'PB')
-        $('#ddlRefInvoice').val(CustomerInvoicesViewModel.RefInvoice);
-    else
-        $('#ddlRefInvoice').val(-1);
-    InvoicesTypeChange();
-
-    //------------------------------------------------
-    $('#txtBillingAddress').val(CustomerInvoicesViewModel.BillingAddress);
-    $('#ddlPaymentTerm').val(CustomerInvoicesViewModel.paymentTermsObj.Code);
-    $('#txtPayDueDate').val(CustomerInvoicesViewModel.PaymentDueDateFormatted);
-    $('#txtGrossAmt').val(CustomerInvoicesViewModel.GrossAmount);
-    $('#txtDiscount').val(CustomerInvoicesViewModel.Discount);
-    $('#txtNetTaxableAmt').val(CustomerInvoicesViewModel.GrossAmount - CustomerInvoicesViewModel.Discount);
-    $('#ddlTaxType').val(CustomerInvoicesViewModel.TaxTypeObj.Code);
-    $('#txtTaxPercApp').val(CustomerInvoicesViewModel.TaxPercApplied);
-    $('#txtTaxAmt').val(CustomerInvoicesViewModel.TaxAmount);
-    $('#txtTotalInvAmt').val(CustomerInvoicesViewModel.TotalInvoiceAmount);
-    $('#txtNotes').val(CustomerInvoicesViewModel.Notes);
-    $('#ID').val(CustomerInvoicesViewModel.ID);
-    $('#lblinvoicedAmt').text(CustomerInvoicesViewModel.TotalInvoiceAmountstring);
-    $('#lblpaidAmt').text(CustomerInvoicesViewModel.PaidAmountstring);
-    $('#lblbalalnceAmt').text(CustomerInvoicesViewModel.BalanceDuestring);
-    clearUploadControl();
-    PaintImages(InvoiceID);
-
-}
 //---------------Bind logics-------------------
 function GetAllQuotations() {
     try {
@@ -312,155 +306,5 @@ function BindSummarBox(Draft, Delivered, InProgress, Closed)
     $("#inProgressCount").text(InProgress);
     $("#closedCount").text(Closed);
 }
-//onchange function for the customer dropdown to fill:- due date and Address 
-function FillCustomerDefault(this_Obj) {
-    try {
-        debugger;
-        var ID = this_Obj.value;
-        var CustomerViewModel = GetCustomerDetails(ID);
-        $('#txtBillingAddress').val(CustomerViewModel.BillingAddress);
-        $('#ddlPaymentTerm').val(CustomerViewModel.PaymentTermCode);
-        $('#ddlPaymentTerm').trigger('change');
-        //if ($('#ddlInvoiceType').val() == "PB") {
-        //Bind only if invoice type is PB 
-        BindInvocieReferenceDropDown(ID);
-        // }
-
-    }
-    catch (e) {
-
-    }
-}
-function GetCustomerDetails(ID) {
-    try {
-        var data = { "ID": ID };
-        var ds = {};
-        ds = GetDataFromServer("CustomerInvoices/GetCustomerDetails/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            alert(ds.Message);
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
-function GetDueDate(this_Obj) {
-    try {
-        debugger;
-        var Code = this_Obj.value;
-        var PaymentTermViewModel = GetPaymentTermDetails(Code);
-        $('#txtPayDueDate').val(PaymentTermViewModel);
-    }
-    catch (e) {
-
-    }
-}
-function GetPaymentTermDetails(Code) {
-    debugger;
-    try {
-        var data = { "Code": Code, "InvDate": $('#txtInvDate').val() };
-        var ds = {};
-        ds = GetDataFromServer("CustomerInvoices/GetDueDate/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            alert(ds.Message);
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
-function GetCustomerInvoiceDetails() {
-    try {
-        var InvoiceID = $('#ID').val();
-        var data = { "ID": InvoiceID };
-        var ds = {};
-        ds = GetDataFromServer("CustomerInvoices/GetCustomerInvoiceDetails/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            alert(ds.Message);
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
-//-----------------------------------------------------------------------------------------------------------------//
-
-function InvoicesTypeChange() {
-    debugger;
-    if ($('#ddlInvoiceType').val() == "PB") {
-        $('#ddlRefInvoice').prop('disabled', false);
-        $('#txtInvNo').prop('disabled', true);
-        $('#txtInvNo').val('');
-    }
-    else if ($('#ddlInvoiceType').val() == "WB") {
-        $('#ddlRefInvoice').prop('disabled', true);
-        $('#txtInvNo').prop('disabled', true);
-        $('#txtInvNo').val('');
-        $('#ddlRefInvoice').val(-1);
-    }
-    else {
-        $('#ddlRefInvoice').prop('disabled', true);
-        $('#ddlRefInvoice').val(-1);
-        $('#txtInvNo').prop('disabled', false);
-    }
 
 
-}
-
-function BindInvocieReferenceDropDown(ID) {
-    debugger;
-    try {
-        var item = GetAllCustomerInvociesByID(ID);
-        if (item) {
-            $('#ddlRefInvoice').empty();
-            $('#ddlRefInvoice').append(new Option('-- Select Invoice --', -1));
-            for (var i = 0; i < item.length; i++) {
-                var opt = new Option(item[i].InvoiceNo + '-' + item[i].companiesObj.Name, item[i].ID);
-                $('#ddlRefInvoice').append(opt);
-            }
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
-
-function GetAllCustomerInvociesByID(CustomerID) {
-    try {
-        debugger;
-
-        var data = { "CustomerID": CustomerID };
-        var ds = {};
-        ds = GetDataFromServer("CustomerInvoices/GetAllCustomerInvociesByCustomerID/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            alert(ds.Message);
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
