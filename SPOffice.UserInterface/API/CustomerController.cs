@@ -35,7 +35,7 @@ namespace SPOffice.UserInterface.API
             {
                 try
                 {
-                    List<CustomerViewModel> CustomerList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomerPOForMobile(customerObj.duration));
+                    List<CustomerViewModel> CustomerList = Mapper.Map<List<CustomerPO>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomerPOForMobile(customerObj.duration));
                     //if (CustomerList.Count == 0) throw new Exception(messages.NoItems);
                     return JsonConvert.SerializeObject(new { Result = true, Records = CustomerList });
                 }

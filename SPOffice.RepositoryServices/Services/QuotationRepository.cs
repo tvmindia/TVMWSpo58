@@ -53,7 +53,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _quoteHeader.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _quoteHeader.ID);
                                         _quoteHeader.QuotationNo = (sdr["QuotationNo"].ToString() != "" ? sdr["QuotationNo"].ToString() : _quoteHeader.QuotationNo);
                                         _quoteHeader.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _quoteHeader.CustomerID);
-                                        _quoteHeader.customer = new Customer();
+                                        _quoteHeader.customer = new CustomerPO();
                                         {
                                             _quoteHeader.customer.ID = (Guid)_quoteHeader.CustomerID;
                                             _quoteHeader.customer.CustomerName= (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _quoteHeader.customer.CustomerName);

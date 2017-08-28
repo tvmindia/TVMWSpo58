@@ -18,7 +18,7 @@ namespace SPOffice.BusinessService.Services
                 _customerRepository = customerRepository;
             }
 
-        public List<Customer> GetAllCustomerPOForMobile(string duration)
+        public List<CustomerPO> GetAllCustomerPOForMobile(string duration)
         {
             return _customerRepository.GetAllCustomerPOForMobile(duration);
         }

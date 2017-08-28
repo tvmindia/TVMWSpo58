@@ -20,9 +20,9 @@ namespace SPOffice.RepositoryServices.Services
         }
 
         #region GetAllCustomerMobile
-        public List<Customer> GetAllCustomerPOForMobile(string duration)
+        public List<CustomerPO> GetAllCustomerPOForMobile(string duration)
         {
-            List<Customer> customerList = null;
+            List<CustomerPO> customerList = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -42,10 +42,10 @@ namespace SPOffice.RepositoryServices.Services
                         {
                             if ((sdr != null) && (sdr.HasRows))
                             {
-                                customerList = new List<Customer>();
+                                customerList = new List<CustomerPO>();
                                 while (sdr.Read())
                                 {
-                                    Customer _customerObj = new Customer();
+                                    CustomerPO _customerObj = new CustomerPO();
                                     {
                                         _customerObj.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _customerObj.CustomerID);
                                         _customerObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.ID);

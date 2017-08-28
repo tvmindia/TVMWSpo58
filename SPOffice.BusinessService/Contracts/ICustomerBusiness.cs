@@ -9,6 +9,6 @@ namespace SPOffice.BusinessService.Contracts
 {
    public interface ICustomerBusiness
     {
-        List<Customer> GetAllCustomerPOForMobile(string duration);
+        List<CustomerPO> GetAllCustomerPOForMobile(string duration);
     }
 }

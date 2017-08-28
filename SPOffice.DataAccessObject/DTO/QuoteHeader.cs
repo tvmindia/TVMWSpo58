@@ -10,7 +10,7 @@ namespace SPOffice.DataAccessObject.DTO
         public Guid? ID { get; set; }
         public string QuotationNo { get; set; }
         public Guid? CustomerID { get; set; }
-        public Customer customer { get; set; }
+        public CustomerPO customer { get; set; }
         public string QuotationDate { get; set; }
         public string ValidTillDate { get; set; }
         public Guid? SalesPersonID { get; set; }

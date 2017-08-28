@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SPOffice.DataAccessObject.DTO
 {
-    public class Customer
+    public class CustomerPO
     {
         public Guid ID { get; set; }
         public string PONo { get; set; }
