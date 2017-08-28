@@ -22,5 +22,11 @@ namespace SPOffice.BusinessService.Services
         {
             return _customerRepository.GetAllCustomerPOForMobile(duration);
         }
+
+        public List<Customer> GetAllCustomers()
+        {
+            return _customerRepository.GetAllCustomers();
+        }
+
     }
 }

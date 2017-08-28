@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
+using SPOffice.UserInterface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +16,29 @@ namespace SPOffice.UserInterface.Controllers
     {
         AppConst c = new AppConst();
         IQuotationBusiness _quotationBusiness;
-        public QuotationController(IQuotationBusiness quotationBusiness)
+        ICustomerBusiness _customerBusiness;
+        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness)
         {
             _quotationBusiness = quotationBusiness;
+            _customerBusiness = customerBusiness;
         }
         // GET: Quotation
         public ActionResult Index()
         {
             QuoteHeaderViewModel quoteHeaderVM = new QuoteHeaderViewModel();
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //quoteHeaderVM.CustomerList = new List<SelectListItem>();
+            //List<CustomerPOViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerPOViewModel>>(_customerBusiness.GetAllCustomers());
+            //foreach (CustomerPOViewModel Cust in CustList)
+            //{
+            //    selectListItem.Add(new SelectListItem
+            //    {
+            //        Text = Cust.,
+            //        Value = Cust.ID.ToString(),
+            //        Selected = false
+            //    });
+            //}
+            //CI.customerObj.CustomerList = selectListItem;
             return View(quoteHeaderVM);
         }
         [HttpGet]

@@ -43,7 +43,7 @@ namespace UserInterface.App_Start
                 config.CreateMap <FollowUpViewModel, FollowUp>().ReverseMap();
                 config.CreateMap<QuotationViewModel, Quotation>().ReverseMap();
                 config.CreateMap<ProformaViewModel, Proforma>().ReverseMap();
-                config.CreateMap<CustomerViewModel, CustomerPO>().ReverseMap();
+                config.CreateMap<CustomerPOViewModel, CustomerPO>().ReverseMap();
                 config.CreateMap<SupplierViewModel, Supplier>().ReverseMap();
 
                 config.CreateMap<ProductViewModel, Product>().ReverseMap();

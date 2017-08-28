@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SPOffice.UserInterface.Models
 {
-    public class CustomerViewModel
+    public class CustomerPOViewModel
     {
         public Guid ID { get; set; }
         public string PONo { get; set; }

@@ -10,5 +10,6 @@ namespace SPOffice.RepositoryServices.Contracts
     public interface ICustomerRepository
     {
         List<CustomerPO> GetAllCustomerPOForMobile(string duration);
+        List<Customer> GetAllCustomers();
     }
 }
