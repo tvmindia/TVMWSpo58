@@ -29,14 +29,17 @@ namespace UserInterface.Models
         [Required(ErrorMessage = "Sales Person required")]
         [Display(Name = "Sales Person")]
         public Guid? SalesPersonID { get; set; }
+        public List<SelectListItem> SalesPersonList { get; set; }
         [Required(ErrorMessage = "Company required")]
         [Display(Name = "Quote From Company")]
         public string QuoteFromCompCode { get; set; }
+        public List<SelectListItem> CompanyList { get; set; }
         public CompanyViewModel company { get; set; }
         [Required(ErrorMessage = "Stage required")]
         [Display(Name = "Quote Stage")]
         public string Stage { get; set; }
         public QuoteStageViewModel quoteStage { get; set; }
+        public List<SelectListItem> QuoteStageList { get; set; }
         [Required(ErrorMessage = "Quote Subject required")]
         [Display(Name = "Quote Subject")]
         public string QuoteSubject { get; set; }
@@ -61,6 +64,7 @@ namespace UserInterface.Models
         [Required(ErrorMessage = "Tax Type required")]
         [Display(Name = "Tax Type")]
         public string TaxTypeCode { get; set; }
+        public List<SelectListItem> TaxTypeList { get; set; }
         [Required(ErrorMessage = "Tax Percentage required")]
         [Display(Name = "Tax Percentage Applied")]
         public decimal TaxPercApplied { get; set; }

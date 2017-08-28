@@ -54,6 +54,12 @@ namespace UserInterface.App_Start
                 config.CreateMap<QuoteDetailViewModel, QuoteDetail>().ReverseMap();
                 config.CreateMap<CompanyViewModel, Company>().ReverseMap();
                 config.CreateMap<QuoteStageViewModel, QuoteStage>().ReverseMap();
+                config.CreateMap<CustomerViewModel, Customer>().ReverseMap();
+                config.CreateMap<EmployeeViewModel, Employee>().ReverseMap();
+                config.CreateMap<EmployeeTypeViewModel, EmployeeType>().ReverseMap();
+                config.CreateMap<EmployeeCategoryViewModel, EmployeeCategory>().ReverseMap();
+                config.CreateMap<SalesPersonViewModel, SalesPerson>().ReverseMap();
+                config.CreateMap<TaxTypeViewModel, TaxType>().ReverseMap();
             });
         }
     }

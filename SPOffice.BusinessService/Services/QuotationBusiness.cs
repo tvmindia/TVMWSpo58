@@ -37,6 +37,11 @@ namespace SPOffice.BusinessService.Services
             return quoteHeaderList;
         }
 
+        public List<QuoteStage> GetAllQuoteStages()
+        {
+            return _quotationRepository.GetAllQuoteStages();
+        }
+
         public List<Quotation> GetQuotationDetails(string duration)
         {
             return _quotationRepository.GetQuotationDetails(duration);

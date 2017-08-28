@@ -17,28 +17,95 @@ namespace SPOffice.UserInterface.Controllers
         AppConst c = new AppConst();
         IQuotationBusiness _quotationBusiness;
         ICustomerBusiness _customerBusiness;
-        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness)
+        ICompanyBusiness _companyBusiness;
+        IEmployeeBusiness _employeeBusiness;
+        ITaxTypeBusiness _taxTypeBusiness;
+        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness, IEmployeeBusiness employeeBusiness, ITaxTypeBusiness taxTypeBusiness)
         {
             _quotationBusiness = quotationBusiness;
             _customerBusiness = customerBusiness;
+            _companyBusiness = companyBusiness;
+            _employeeBusiness = employeeBusiness;
+            _taxTypeBusiness = taxTypeBusiness;
         }
         // GET: Quotation
         public ActionResult Index()
         {
             QuoteHeaderViewModel quoteHeaderVM = new QuoteHeaderViewModel();
-            //List<SelectListItem> selectListItem = new List<SelectListItem>();
-            //quoteHeaderVM.CustomerList = new List<SelectListItem>();
-            //List<CustomerPOViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerPOViewModel>>(_customerBusiness.GetAllCustomers());
-            //foreach (CustomerPOViewModel Cust in CustList)
-            //{
-            //    selectListItem.Add(new SelectListItem
-            //    {
-            //        Text = Cust.,
-            //        Value = Cust.ID.ToString(),
-            //        Selected = false
-            //    });
-            //}
-            //CI.customerObj.CustomerList = selectListItem;
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
+            foreach (CustomerViewModel Cust in CustList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Cust.CompanyName,
+                    Value = Cust.ID.ToString(),
+                    Selected = false
+                });
+            }
+            quoteHeaderVM.CustomerList = selectListItem;
+
+            quoteHeaderVM.CompanyList = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            List<CompanyViewModel> CompaniesList = Mapper.Map<List<Company>, List<CompanyViewModel>>(_companyBusiness.GetAllCompanies());
+            foreach (CompanyViewModel Cmp in CompaniesList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Cmp.Name,
+                    Value = Cmp.Code,
+                    Selected = false
+                });
+            }
+            quoteHeaderVM.CompanyList = selectListItem;
+
+
+            quoteHeaderVM.SalesPersonList = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            List<SalesPersonViewModel> EmployeeList = Mapper.Map<List<SalesPerson>, List<SalesPersonViewModel>>(_employeeBusiness.GetAllSalesPersons());
+            
+            foreach (SalesPersonViewModel SP in EmployeeList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = SP.Name,
+                    Value = SP.ID.ToString(),
+                    Selected = false
+                });
+            }
+
+            quoteHeaderVM.SalesPersonList = selectListItem;
+
+
+
+            selectListItem = new List<SelectListItem>();
+            List<QuoteStageViewModel> QuoteStageList = Mapper.Map<List<QuoteStage>, List<QuoteStageViewModel>>(_quotationBusiness.GetAllQuoteStages());
+            foreach (QuoteStageViewModel QS in QuoteStageList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = QS.Description,
+                    Value = QS.Code.ToString(),
+                    Selected = false
+                });
+            }
+
+            quoteHeaderVM.QuoteStageList = selectListItem;
+
+
+            selectListItem = new List<SelectListItem>();
+            List<TaxTypeViewModel> TaxTypeList = Mapper.Map<List<TaxType>, List<TaxTypeViewModel>>(_taxTypeBusiness.GetAllTaxTypes());
+            foreach (TaxTypeViewModel TT in TaxTypeList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = TT.Description,
+                    Value = TT.Code.ToString(),
+                    Selected = false
+                });
+            }
+
+            quoteHeaderVM.TaxTypeList = selectListItem;
             return View(quoteHeaderVM);
         }
         [HttpGet]

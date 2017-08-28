@@ -54,6 +54,19 @@ $(document).ready(function () {
         $('input[type="text"].Roundoff').on('focus', function () {
             $(this).select();
         });
+
+
+        DataTables.ItemDetailTable = $('#ItemDetailsTable').DataTable(
+      {
+          dom: '<"pull-left"f>rt<"bottom"ip><"clear">',
+          order: [],
+          searching: false,
+          paging: false,
+          data: null,
+          autoWidth: false,
+          columns: EG_Columns(),
+          columnDefs: EG_Columns_Settings()
+      });
        // showLoader();
        // List();
 
@@ -83,9 +96,58 @@ $(document).ready(function () {
 
     }
     catch (x) {
-        notyAlert('error', e.message);
+        notyAlert('error', x.message);
     }
 });
+
+function EG_Columns() {
+    var obj = [
+                { "data": "SCCode", "defaultContent": "<i></i>" },
+                { "data": "ID", "defaultContent": "<i>0</i>" },
+                 { "data": "MaterialID", "defaultContent": "<i></i>" },
+                { "data": "SlNo", "defaultContent": "<i></i>" },
+                { "data": "Material", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'Material', 'Materials', 'FillUOM')); } },
+                { "data": "Description", "defaultContent": "<i></i>" },
+                { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "UOM", "defaultContent": "<i></i>" },
+                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'F', row, 'Rate', 'CalculateAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "BasicAmount", render: function (data, type, row) { return roundoff(data, 1); }, "defaultContent": "<i></i>" },
+                { "data": "TradeDiscount", render: function (data, type, row) { return roundoff(data, 1); }, "defaultContent": "<i></i>" },
+                { "data": "NetAmount", render: function (data, type, row) { return roundoff(data); }, "defaultContent": "<i></i>" },
+                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteItem(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' }
+
+    ]
+
+    return obj
+
+}
+
+function EG_Columns_Settings() {
+
+    var obj = [
+        { "targets": [0], "visible": false, "searchable": false }, { "targets": [1], "visible": false, "searchable": false }, { "targets": [2], "visible": false, "searchable": false },
+            { "width": "5%", "targets": 3 },
+        { "width": "15%", "targets": 4 },
+         { "width": "20%", "targets": 5 },
+           { "width": "8%", "targets": 6 },
+        { "width": "8%", "targets": 7 },
+         { "width": "8%", "targets": 8 },
+          { "width": "10%", "targets": 9 },
+           { "width": "12%", "targets": 10 },
+            { "width": "10%", "targets": 11 },
+        { className: "text-right", "targets": [8] },
+          { className: "text-left disabled", "targets": [5] },
+        { className: "text-center", "targets": [3, 4, 6, 12] },
+          { className: "text-center disabled", "targets": [7] },
+        { className: "text-right disabled", "targets": [9, 10, 11] },
+        { "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }
+
+    ]
+
+    return obj;
+
+}
+
 
 function DeleteInvoices() {
     notyConfirm('Are you sure to delete?', 'Delete()', '', "Yes, delete it!");

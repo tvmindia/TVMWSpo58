@@ -99,6 +99,7 @@
     <Compile Include="DTO\CourierAgency.cs" />
     <Compile Include="DTO\Customer.cs" />
     <Compile Include="DTO\Dashboard.cs" />
+    <Compile Include="DTO\Employee.cs" />
     <Compile Include="DTO\Enquiry.cs" />
     <Compile Include="DTO\FollowUp.cs" />
     <Compile Include="DTO\Menu.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="DTO\QuoteHeader.cs" />
     <Compile Include="DTO\RawMaterial.cs" />
     <Compile Include="DTO\Supplier.cs" />
+    <Compile Include="DTO\TaxType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

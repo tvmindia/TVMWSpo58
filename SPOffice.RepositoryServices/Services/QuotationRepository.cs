@@ -186,7 +186,53 @@ namespace SPOffice.RepositoryServices.Services
 
             return quotationsList;
         }
+
+
         #endregion GetQuotationDetails
+
+        public List<QuoteStage> GetAllQuoteStages()
+        {
+            List<QuoteStage> quoteStageList = new List<QuoteStage>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllQuoteStages]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                              
+                                while (sdr.Read())
+                                {
+                                    QuoteStage quoteStage = new QuoteStage()
+                                    {
+                                        Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty),
+                                        Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : string.Empty)
+                                    };
+                                    quoteStageList.Add(quoteStage);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return quoteStageList;
+        }
     }
 }
     
