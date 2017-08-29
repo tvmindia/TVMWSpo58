@@ -27,6 +27,8 @@ namespace SPOffice.RepositoryServices.Contracts
         object DeleteQuotation(Guid ID);
 
         List<QuoteStage> GetAllQuoteStages();
+        List<QuoteItem> GetAllQuoteItems(Guid? ID);
+        object DeleteQuoteItem(Guid? ID);
 
     }
 }

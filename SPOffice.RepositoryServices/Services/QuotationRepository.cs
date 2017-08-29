@@ -21,7 +21,50 @@ namespace SPOffice.RepositoryServices.Services
 
         public object DeleteQuotation(Guid ID)
         {
-            throw new NotImplementedException();
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteQuotation]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
         }
 
         public List<QuoteHeader> GetAllQuotations()
@@ -189,8 +232,81 @@ namespace SPOffice.RepositoryServices.Services
 
         public object UpdateQuotation(QuoteHeader quoteHeader)
         {
-            throw new NotImplementedException();
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateQuotation]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quoteHeader.ID;
+                        cmd.Parameters.Add("@QuotationNo", SqlDbType.VarChar, 20).Value = quoteHeader.QuotationNo;
+                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quoteHeader.CustomerID;
+                        cmd.Parameters.Add("@QuotationDate", SqlDbType.DateTime).Value = quoteHeader.QuotationDate;
+                        cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = quoteHeader.ValidTillDate;
+                        cmd.Parameters.Add("@SalesPersonID", SqlDbType.UniqueIdentifier).Value = quoteHeader.SalesPersonID;
+                        cmd.Parameters.Add("@QuoteFromCompCode", SqlDbType.VarChar, 10).Value = quoteHeader.QuoteFromCompCode;
+                        cmd.Parameters.Add("@QuoteStage", SqlDbType.VarChar, 10).Value = quoteHeader.Stage;
+                        cmd.Parameters.Add("@QuoteSubject", SqlDbType.VarChar, 500).Value = quoteHeader.QuoteSubject;
+                        cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = quoteHeader.ContactPerson;
+                        cmd.Parameters.Add("@SentToAddress", SqlDbType.NVarChar, -1).Value = quoteHeader.SentToAddress;
+                        cmd.Parameters.Add("@QuoteBodyHead", SqlDbType.NVarChar, -1).Value = quoteHeader.QuoteBodyHead;
+                        cmd.Parameters.Add("@QuoteBodyFoot", SqlDbType.NVarChar, -1).Value = quoteHeader.QuoteBodyFoot;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = quoteHeader.Discount;
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = quoteHeader.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = quoteHeader.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = quoteHeader.TaxAmount;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = quoteHeader.GeneralNotes;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
         }
+
+       
+
         #region GetQuotationDetails
         public List<Quotation> GetQuotationDetails(string duration)
         {
@@ -263,7 +379,6 @@ namespace SPOffice.RepositoryServices.Services
 
 
         #endregion GetQuotationDetails
-
         public List<QuoteStage> GetAllQuoteStages()
         {
             List<QuoteStage> quoteStageList = new List<QuoteStage>();
@@ -285,7 +400,7 @@ namespace SPOffice.RepositoryServices.Services
                         {
                             if ((sdr != null) && (sdr.HasRows))
                             {
-                              
+
                                 while (sdr.Read())
                                 {
                                     QuoteStage quoteStage = new QuoteStage()
@@ -307,6 +422,120 @@ namespace SPOffice.RepositoryServices.Services
 
             return quoteStageList;
         }
+
+        //-------------------Quote Items------------------
+        //Begin
+        #region GetAllQuoteItems
+        public List<QuoteItem> GetAllQuoteItems(Guid? ID)
+        {
+            List<QuoteItem> quoteItemList = new List<QuoteItem>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetQuotationItems]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@QuoteID", SqlDbType.UniqueIdentifier).Value = ID;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    QuoteItem quoteItem = new QuoteItem();
+                                    {
+                                        quoteItem.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quoteItem.ID);
+                                        quoteItem.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : quoteItem.QuoteID);
+                                        quoteItem.ProductDescription = (sdr["ProductDesc"].ToString() != "" ? sdr["ProductDesc"].ToString() : quoteItem.ProductDescription);
+                                        quoteItem.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : quoteItem.UnitCode);
+                                        quoteItem.UnitDescription= (sdr["UnitDescription"].ToString() != "" ? sdr["UnitDescription"].ToString() : quoteItem.UnitDescription);
+                                        quoteItem.Quantity = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : quoteItem.Quantity);
+                                        quoteItem.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : quoteItem.Rate);
+                                        quoteItem.product = new Product()
+                                        {
+                                            ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
+                                            Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty),
+                                            Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : string.Empty)
+                                        };
+                                        quoteItem.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
+                                        quoteItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
+                                    }
+                                    quoteItemList.Add(quoteItem);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return quoteItemList;
+        }
+
+
+        #endregion GetQuotationDetails
+        #region DeleteQuoteItem
+        public object DeleteQuoteItem(Guid? ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteQuoteItemByID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
+        }
+        #endregion DeleteQuoteItem
+
+        //End
+        //-------------------Quote Items------------------
     }
 }
     

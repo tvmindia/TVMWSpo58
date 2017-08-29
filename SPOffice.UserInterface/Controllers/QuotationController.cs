@@ -20,13 +20,15 @@ namespace SPOffice.UserInterface.Controllers
         ICompanyBusiness _companyBusiness;
         IEmployeeBusiness _employeeBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
-        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness, IEmployeeBusiness employeeBusiness, ITaxTypeBusiness taxTypeBusiness)
+        IProductBusiness _productBusiness;
+        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness, IEmployeeBusiness employeeBusiness, ITaxTypeBusiness taxTypeBusiness, IProductBusiness productBusiness)
         {
             _quotationBusiness = quotationBusiness;
             _customerBusiness = customerBusiness;
             _companyBusiness = companyBusiness;
             _employeeBusiness = employeeBusiness;
             _taxTypeBusiness = taxTypeBusiness;
+            _productBusiness = productBusiness;
         }
         // GET: Quotation
         public ActionResult Index()
@@ -201,7 +203,68 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion InsertUpdateQuotaion
 
+        #region GetQuationDetailsByID
+        [HttpGet]
+        public string GetQuateItemsByQuateHeadID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                List<QuoteItemViewModel> quoteItemViewModelList = Mapper.Map<List<QuoteItem>, List<QuoteItemViewModel>>(_quotationBusiness.GetAllQuoteItems(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = quoteItemViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetQuationDetailsByID
 
+        #region GetAllProductCodes
+        [HttpGet]
+        public string GetAllProductCodes()
+        {
+            try
+            {
+                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+                if(productViewModelList!=null)
+                {
+                 productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code,Description=P.Description }).OrderBy(x => x.Code).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllProductCodes
+
+        #region GetAllUnitCodes
+        [HttpGet]
+        public string GetAllUnitCodes()
+        {
+            try
+            {
+                List<UnitViewModel> unitViewModelList = Mapper.Map<List<Unit>, List<UnitViewModel>>(_productBusiness.GetAllUnits());
+                if (unitViewModelList != null)
+                {
+                    unitViewModelList = unitViewModelList.Select(P => new UnitViewModel { Code = P.Code, Description = P.Description }).OrderBy(x => x.Code).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = unitViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllUnitCodes
 
 
         #region ButtonStyling

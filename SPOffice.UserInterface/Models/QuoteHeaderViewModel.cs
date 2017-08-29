@@ -86,19 +86,22 @@ namespace UserInterface.Models
         public decimal NetTaxableAmount { get; set; }
         public Guid hdnFileID { get; set; }
         public CommonViewModel commonObj { get; set; }
-        public QuoteDetailViewModel quoteDetail { get; set; }
+        public QuoteItemViewModel quoteItem { get; set; }
     }
 
-    public class QuoteDetailViewModel
+    public class QuoteItemViewModel
     {
         public Guid? ID { get; set; }
         public Guid? QuoteID { get; set; }
         public string ProductDescription { get; set; }
         public string UnitCode { get; set; }
+        public string UnitDescription { get; set; }
         public UnitViewModel unit { get; set; }
-        public decimal Qty { get; set; }
+        public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
         public Guid? ProductID { get; set; }
+        public string ProductCode { get; set; }
         public ProductViewModel product { get; set; }
         public CommonViewModel commonObj { get; set; }
     }

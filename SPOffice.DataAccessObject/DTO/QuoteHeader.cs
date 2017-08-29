@@ -32,19 +32,23 @@ namespace SPOffice.DataAccessObject.DTO
         public string EmailSentYN { get; set; }
         public decimal GrossAmount { get; set; }
         public Common commonObj { get; set; }
-        public QuoteDetail quoteDetail { get; set; }
+        public QuoteItem quoteItem { get; set; }
     }
 
-    public class QuoteDetail
+    public class QuoteItem
     {
         public Guid? ID { get; set; }
         public Guid? QuoteID { get; set; }
         public string ProductDescription { get; set; }
         public string UnitCode { get; set; }
+        public string UnitDescription { get; set; }
+        
         public Unit unit { get; set; }
-        public decimal Qty { get; set; }
+        public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
         public Guid? ProductID { get; set; }
+        public string ProductCode { get; set; }
         public Product product { get; set; }
         public Common commonObj { get; set; }
     }

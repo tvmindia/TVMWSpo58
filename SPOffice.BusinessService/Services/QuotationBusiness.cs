@@ -20,7 +20,12 @@ namespace SPOffice.BusinessService.Services
 
         public object DeleteQuotation(Guid ID)
         {
-            throw new NotImplementedException();
+            return _quotationRepository.DeleteQuotation(ID);
+        }
+
+        public object DeleteQuoteItem(Guid? ID)
+        {
+            return _quotationRepository.DeleteQuoteItem(ID);
         }
 
         public List<QuoteHeader> GetAllQuotations()
@@ -35,6 +40,22 @@ namespace SPOffice.BusinessService.Services
                 throw ex;
             }
             return quoteHeaderList;
+        }
+
+        public List<QuoteItem> GetAllQuoteItems(Guid? ID)
+        {
+            List<QuoteItem> quoteItemList = null;
+            try
+            {
+               
+                quoteItemList = _quotationRepository.GetAllQuoteItems(ID);
+                quoteItemList = quoteItemList != null ? quoteItemList.Select(Q => { Q.Amount = Q.Quantity * Q.Rate; return Q; }).ToList() : new List<QuoteItem>();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return quoteItemList;
         }
 
         public List<QuoteStage> GetAllQuoteStages()
@@ -62,7 +83,7 @@ namespace SPOffice.BusinessService.Services
 
         public object UpdateQuotation(QuoteHeader quoteHeader)
         {
-            throw new NotImplementedException();
+            return _quotationRepository.UpdateQuotation(quoteHeader);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
+var _Materials = [];
+var _Units = [];
 $(document).ready(function () {
     try {
     
@@ -58,7 +60,7 @@ $(document).ready(function () {
 
         DataTables.ItemDetailTable = $('#ItemDetailsTable').DataTable(
       {
-          dom: '<"pull-left"f>rt<"bottom"ip><"clear">',
+          dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
           order: [],
           searching: false,
           paging: false,
@@ -67,6 +69,13 @@ $(document).ready(function () {
           columns: EG_Columns(),
           columnDefs: EG_Columns_Settings()
       });
+
+        GetAllProductCodes();
+        GetAllUnitCodes();
+        EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
+        EG_ComboSource('Materials', _Materials, 'Code', 'Description');
+     
+        EG_GridDataTable = DataTables.ItemDetailTable;
        // showLoader();
        // List();
 
@@ -100,51 +109,84 @@ $(document).ready(function () {
     }
 });
 
+
+//-----------------------EDIT GRID DEFN-------------------------------------
+var EG_totalDetailRows = 0;
+var EG_GridData;//DATA SOURCE OBJ ARRAY
+var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
+var EG_SlColumn = 'SlNo';
+var EG_GridInputPerRow = 4;
+var EG_MandatoryFields = 'ID';
+
+
+function EG_TableDefn() {
+    var tempObj = new Object();
+    tempObj.ID = "";
+    tempObj.SlNo = 0;
+    tempObj.ProductCode = "";
+    tempObj.ProductDescription = "";
+    tempObj.UnitCode = "";
+    tempObj.Quantity = "";
+    tempObj.Rate = "";
+    tempObj.Amount = "";
+    return tempObj
+}
+
+
 function EG_Columns() {
-    var obj = [
-                { "data": "SCCode", "defaultContent": "<i></i>" },
+      var obj = [
                 { "data": "ID", "defaultContent": "<i>0</i>" },
-                 { "data": "MaterialID", "defaultContent": "<i></i>" },
                 { "data": "SlNo", "defaultContent": "<i></i>" },
-                { "data": "Material", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'Material', 'Materials', 'FillUOM')); } },
-                { "data": "Description", "defaultContent": "<i></i>" },
+                { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Materials', 'FillDescription')); } },
+                { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
+                 { "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
                 { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateAmount')); }, "defaultContent": "<i></i>" },
-                { "data": "UOM", "defaultContent": "<i></i>" },
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'F', row, 'Rate', 'CalculateAmount')); }, "defaultContent": "<i></i>" },
-                { "data": "BasicAmount", render: function (data, type, row) { return roundoff(data, 1); }, "defaultContent": "<i></i>" },
-                { "data": "TradeDiscount", render: function (data, type, row) { return roundoff(data, 1); }, "defaultContent": "<i></i>" },
-                { "data": "NetAmount", render: function (data, type, row) { return roundoff(data); }, "defaultContent": "<i></i>" },
+               
+                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', '')); }, "defaultContent": "<i></i>" },
+                { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', '')); }, "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteItem(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' }
+                ]
 
-    ]
-
-    return obj
+      return obj;
 
 }
 
 function EG_Columns_Settings() {
 
     var obj = [
-        { "targets": [0], "visible": false, "searchable": false }, { "targets": [1], "visible": false, "searchable": false }, { "targets": [2], "visible": false, "searchable": false },
-            { "width": "5%", "targets": 3 },
-        { "width": "15%", "targets": 4 },
-         { "width": "20%", "targets": 5 },
-           { "width": "8%", "targets": 6 },
-        { "width": "8%", "targets": 7 },
-         { "width": "8%", "targets": 8 },
-          { "width": "10%", "targets": 9 },
-           { "width": "12%", "targets": 10 },
-            { "width": "10%", "targets": 11 },
-        { className: "text-right", "targets": [8] },
-          { className: "text-left disabled", "targets": [5] },
-        { className: "text-center", "targets": [3, 4, 6, 12] },
-          { className: "text-center disabled", "targets": [7] },
-        { className: "text-right disabled", "targets": [9, 10, 11] },
-        { "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }
+        { "targets": [0], "visible": false, "searchable": false },
+            { "width": "5%", "targets": 1 },
+        { "width": "15%", "targets": 2 },
+         { "width": "20%", "targets": 3 },
+           { "width": "8%", "targets": 4 },
+        { "width": "8%", "targets": 5 },
+         { "width": "8%", "targets": 6 },
+          { "width": "10%", "targets": 7 },
+           { "width": "12%", "targets": 8 },
+            //{ "width": "10%", "targets": 11 },
+        //{ className: "text-right", "targets": [8] },
+        //{ className: "text-left disabled", "targets": [5] },
+        //{ className: "text-center", "targets": [3, 4, 6, 12] },
+        //{ className: "text-center disabled", "targets": [7] },
+        //{ className: "text-right disabled", "targets": [9, 10, 11] },
+        //{ "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }
 
     ]
 
     return obj;
+
+}
+
+function FillDescription(row) {
+
+    for (i = 0; i < _Materials.length; i++) {
+        if (_Materials[i].Code == EG_GridData[row - 1]['ProductCode']) {
+            EG_GridData[row - 1]['ProductDescription'] = _Materials[i].Description;
+            //Description
+            EG_Rebind();
+            break;
+        }
+    }
 
 }
 
@@ -154,7 +196,7 @@ function DeleteInvoices() {
 }
 
 function CheckAmount() {
-    debugger;
+  
     if ($("#txtDiscount").val() == "")
         $("#txtDiscount").val(roundoff(0));
 }
@@ -233,7 +275,26 @@ function BindQuationDetails(ID)
             $("#txtQuotationNo").val(jsresult.QuotationNo);
             $("#QuotationDate").val(jsresult.QuotationDate);
             $("#ValidTillDate").val(jsresult.ValidTillDate);
+            $("#ddlCustomer").val(jsresult.CustomerID);
+            $("#SentToAddress").val(jsresult.SentToAddress);
+            $("#ContactPerson").val(jsresult.ContactPerson);
+            $("#ddlSalesPerson").val(jsresult.SalesPersonID);
+            $("#ddlCompany").val(jsresult.company.Code);
+            $("#ddlQuoteStage").val(jsresult.quoteStage.Code);
+            $("#QuoteSubject").val(jsresult.QuoteSubject);
+            $("#QuoteBodyHead").val(jsresult.QuoteBodyHead);
 
+            $("#GrossAmount").val(jsresult.GrossAmount);
+            $("#Discount").val(jsresult.Discount);
+            $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
+            $("#TaxTypeCode").val(jsresult.TaxTypeCode);
+            $("#TaxPercApplied").val(jsresult.TaxPercApplied);
+            $("#TaxAmount").val(jsresult.TaxAmount);
+            $("#TotalAmount").val(jsresult.TotalAmount);
+            $("#QuoteBodyFoot").val(jsresult.QuoteBodyFoot);
+            $("#GeneralNotes").val(jsresult.GeneralNotes);
+            debugger;
+            EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
 
         }
 
@@ -305,6 +366,72 @@ function BindSummarBox(Draft, Delivered, InProgress, Closed)
     $("#deliveredCount").text(Delivered);
     $("#inProgressCount").text(InProgress);
     $("#closedCount").text(Closed);
+}
+
+function GetAllQuoteItems(ID) {
+    try {
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Quotation/GetQuateItemsByQuateHeadID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+           return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+function GetAllProductCodes()
+{
+    try {
+
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("Quotation/GetAllProductCodes/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            _Materials = ds.Records;
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+function GetAllUnitCodes() {
+    try {
+
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("Quotation/GetAllUnitCodes/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            _Units = ds.Records;
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
 }
 
 
