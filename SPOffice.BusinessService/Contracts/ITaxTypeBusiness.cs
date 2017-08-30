@@ -10,5 +10,6 @@ namespace SPOffice.BusinessService.Contracts
     public interface ITaxTypeBusiness
     {
         List<TaxType> GetAllTaxTypes();
+        TaxType GetTaxTypeDetailsByCode(string Code);
     }
 }

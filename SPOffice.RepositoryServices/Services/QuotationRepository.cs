@@ -187,8 +187,8 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = quoteHeader.TaxPercApplied;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = quoteHeader.TaxAmount;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar,-1).Value = quoteHeader.GeneralNotes;
-                     //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
-                      
+                        //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quoteHeader.DetailXML;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -265,6 +265,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = quoteHeader.TaxPercApplied;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = quoteHeader.TaxAmount;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = quoteHeader.GeneralNotes;
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quoteHeader.DetailXML;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);

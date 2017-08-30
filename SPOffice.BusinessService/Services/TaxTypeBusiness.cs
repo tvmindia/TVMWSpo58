@@ -20,5 +20,9 @@ namespace SPOffice.BusinessService.Services
         {
             return _taxTypeRepository.GetAllTaxTypes(); 
         }
+        public TaxType GetTaxTypeDetailsByCode(string Code)
+        {
+            return _taxTypeRepository.GetTaxTypeDetailsByCode(Code);
+        }
     }
 }

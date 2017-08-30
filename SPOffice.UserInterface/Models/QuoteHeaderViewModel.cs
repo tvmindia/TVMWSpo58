@@ -85,8 +85,9 @@ namespace UserInterface.Models
         [Display(Name = "Net Taxable Amount")]
         public decimal NetTaxableAmount { get; set; }
         public Guid hdnFileID { get; set; }
+        public string DetailJSON { get; set; }
         public CommonViewModel commonObj { get; set; }
-        public QuoteItemViewModel quoteItem { get; set; }
+        public List<QuoteItemViewModel> quoteItemList { get; set; }
     }
 
     public class QuoteItemViewModel
@@ -97,9 +98,9 @@ namespace UserInterface.Models
         public string UnitCode { get; set; }
         public string UnitDescription { get; set; }
         public UnitViewModel unit { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal Rate { get; set; }
-        public decimal Amount { get; set; }
+        public decimal? Quantity { get; set; }
+        public decimal? Rate { get; set; }
+        public decimal? Amount { get; set; }
         public Guid? ProductID { get; set; }
         public string ProductCode { get; set; }
         public ProductViewModel product { get; set; }

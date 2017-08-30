@@ -10,5 +10,6 @@ namespace SPOffice.RepositoryServices.Contracts
     public interface ITaxTypeRepository
     {
         List<TaxType> GetAllTaxTypes();
+        TaxType GetTaxTypeDetailsByCode(string Code);
     }
 }

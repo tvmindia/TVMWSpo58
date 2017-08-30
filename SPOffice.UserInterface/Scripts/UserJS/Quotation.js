@@ -1,6 +1,6 @@
 ﻿var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
-var _Materials = [];
+var _Products = [];
 var _Units = [];
 $(document).ready(function () {
     try {
@@ -61,7 +61,7 @@ $(document).ready(function () {
         DataTables.ItemDetailTable = $('#ItemDetailsTable').DataTable(
       {
           dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
-          order: [],
+          ordering:false,
           searching: false,
           paging: false,
           data: null,
@@ -73,7 +73,7 @@ $(document).ready(function () {
         GetAllProductCodes();
         GetAllUnitCodes();
         EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
-        EG_ComboSource('Materials', _Materials, 'Code', 'Description');
+        EG_ComboSource('Products', _Products, 'Code', 'Description');
      
         EG_GridDataTable = DataTables.ItemDetailTable;
        // showLoader();
@@ -116,7 +116,7 @@ var EG_GridData;//DATA SOURCE OBJ ARRAY
 var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
 var EG_SlColumn = 'SlNo';
 var EG_GridInputPerRow = 4;
-var EG_MandatoryFields = 'ID';
+var EG_MandatoryFields = 'ProductCode';
 
 
 function EG_TableDefn() {
@@ -129,22 +129,24 @@ function EG_TableDefn() {
     tempObj.Quantity = "";
     tempObj.Rate = "";
     tempObj.Amount = "";
+    tempObj.ProductID = "";
     return tempObj
 }
 
 
 function EG_Columns() {
       var obj = [
-                { "data": "ID", "defaultContent": "<i>0</i>" },
+                { "data": "ID", "defaultContent": "<i></i>" },
                 { "data": "SlNo", "defaultContent": "<i></i>" },
-                { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Materials', 'FillDescription')); } },
+                { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Products', 'FillDescription')); } },
                 { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
                  { "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
-                { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', '')); }, "defaultContent": "<i></i>" },
-                { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', '')); }, "defaultContent": "<i></i>" },
-                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteItem(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' }
+                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteItem(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
+                { "data": "ProductID", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductID', '')); }, "defaultContent": "<i></i>" }
                 ]
 
       return obj;
@@ -154,7 +156,7 @@ function EG_Columns() {
 function EG_Columns_Settings() {
 
     var obj = [
-        { "targets": [0], "visible": false, "searchable": false },
+        { "targets": [0,9], "visible": false, "searchable": false },
             { "width": "5%", "targets": 1 },
         { "width": "15%", "targets": 2 },
          { "width": "20%", "targets": 3 },
@@ -178,10 +180,12 @@ function EG_Columns_Settings() {
 }
 
 function FillDescription(row) {
+    
+    for (i = 0; i < _Products.length; i++) {
+        if (_Products[i].Code == EG_GridData[row - 1]['ProductCode']) {
+            EG_GridData[row - 1]['ProductDescription'] = _Products[i].Description;
+            EG_GridData[row - 1]['ProductID'] = _Products[i].ID;
 
-    for (i = 0; i < _Materials.length; i++) {
-        if (_Materials[i].Code == EG_GridData[row - 1]['ProductCode']) {
-            EG_GridData[row - 1]['ProductDescription'] = _Materials[i].Description;
             //Description
             EG_Rebind();
             break;
@@ -190,6 +194,89 @@ function FillDescription(row) {
 
 }
 
+
+function CalculateGridAmount(row) {
+    var qty = 0.00;
+    var rate = 0.00;
+    var EGqty = '';
+    var EGrate = '';
+    EGqty = EG_GridData[row - 1]["Quantity"];
+    EGrate = EG_GridData[row - 1]['Rate'];
+    qty = parseFloat(EGqty) || 0;
+    rate = parseFloat(EGrate) || 0;
+    EG_GridData[row - 1]['Rate'] = roundoff(rate);
+    EG_GridData[row - 1]['Amount'] = roundoff(qty * rate);
+    EG_Rebind();
+
+    var total = 0.00;
+    for (i = 0; i < EG_GridData.length; i++) {
+        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
+    }
+    $('#GrossAmount').val(roundoff(total));
+    AmountSummary();
+
+}
+
+function AmountSummary() {
+    var total = 0.00;
+    for (i = 0; i < EG_GridData.length; i++) {
+        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
+    }
+    $('#GrossAmount').val(roundoff(total));
+
+   
+   
+    var discount = parseFloat($('#Discount').val()) || 0;
+    var nettaxableamount = total - discount;
+    $('#NetTaxableAmount').val(roundoff(nettaxableamount));
+
+    var applicabletax=$("#TaxPercApplied").val();
+    $('#TaxAmount').val((roundoff(nettaxableamount) * applicabletax)/100);
+    var totamt = nettaxableamount + (roundoff(nettaxableamount) * applicabletax) / 100;
+    $("#TotalAmount").val(totamt);
+   
+    //var vatp = (parseFloat($('#vatpercentage').val()) || 0);
+    //if (vatp > 0) {
+    //    vatamount = (total * vatp) / 100;
+    //    $('#vatamount').val(roundoff(vatamount));
+    //}
+    //$('#grandtotal').val(roundoff(total + vatamount));
+}
+
+function GetTaxPercentage(curObj)
+{
+   
+    try {
+        if (curObj)
+        {
+            $("#TaxPercApplied").val(0);
+            var data = { "Code": curObj.value };
+            var ds = {};
+            ds = GetDataFromServer("Quotation/GetTaxRate/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+              
+                $("#TaxPercApplied").val(ds.Records);
+                
+                return ds.Records;
+           
+            }
+            if (ds.Result == "ERROR") {
+                return 0;
+            }
+        }
+        else
+        {
+            $("#TaxPercApplied").val(0);
+        }
+        
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
 
 function DeleteInvoices() {
     notyConfirm('Are you sure to delete?', 'Delete()', '', "Yes, delete it!");
@@ -206,8 +293,19 @@ function Delete() {
 }
 
 function saveInvoices() {
+    var validation = EG_Validate();
+    if (validation == "") {
+
+        var result = JSON.stringify(EG_GridData);
+        $("#DetailJSON").val(result);
+        $('#btnSave').trigger('click');
+    }
+    else {
+        notyAlert('error', validation);
+    }
+
    
-    $('#btnSave').trigger('click');
+   
 }
 
 function DeleteSuccess(data, status) {
@@ -236,8 +334,11 @@ function SaveSuccess(data, status) {
         case "OK":
            
             notyAlert('success', JsonResult.Message);
-            $('#ID').val(JsonResult.Records.ID);
-            $('#deleteId').val(JsonResult.Records.ID);
+           
+            if (JsonResult.Record.ID) {
+                $("#ID").val(JsonResult.Record.ID);
+            }
+            $('#deleteId').val(JsonResult.Record.ID);
             //PaintInvoiceDetails()
            // List();
             break;
@@ -329,12 +430,16 @@ function GetQuationDetailsByID(ID) {
 function AddNew() {
     ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
     openNav();
+    EG_ClearTable();
+    Reset();
+    EG_AddBlankRows(5)
   //  clearUploadControl();
 }
 
 function Reset() {
-    debugger;
-    PaintInvoiceDetails();
+   
+    $('#QuoteForm')[0].reset();
+    $('#ID').val('');
 }
 
 //---------------Bind logics-------------------
@@ -400,7 +505,7 @@ function GetAllProductCodes()
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-            _Materials = ds.Records;
+            _Products = ds.Records;
             return ds.Records;
         }
         if (ds.Result == "ERROR") {

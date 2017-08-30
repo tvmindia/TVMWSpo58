@@ -12,10 +12,11 @@ namespace SPOffice.BusinessService.Services
     {
     
         private IQuotationRepository _quotationRepository;
-
-        public QuotationBusiness(IQuotationRepository quotationRepository)
+        ICommonBusiness _commonBusiness;
+        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness)
         {
             _quotationRepository = quotationRepository;
+            _commonBusiness = commonBusiness;
         }
 
         public object DeleteQuotation(Guid ID)
@@ -78,12 +79,32 @@ namespace SPOffice.BusinessService.Services
 
         public object InsertQuotation(QuoteHeader quoteHeader)
         {
-            return _quotationRepository.InsertQuotation(quoteHeader);
+            Object result = null;
+            try
+            {
+                quoteHeader.DetailXML = _commonBusiness.GetXMLfromObject(quoteHeader.quoteItemList, "ProductCode");
+                result = _quotationRepository.InsertQuotation(quoteHeader);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
 
         public object UpdateQuotation(QuoteHeader quoteHeader)
         {
-            return _quotationRepository.UpdateQuotation(quoteHeader);
+            Object result = null;
+            try
+            {
+                quoteHeader.DetailXML= _commonBusiness.GetXMLfromObject(quoteHeader.quoteItemList, "ProductCode");
+                result = _quotationRepository.UpdateQuotation(quoteHeader);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
     }
 }

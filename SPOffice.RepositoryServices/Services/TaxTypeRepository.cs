@@ -64,8 +64,51 @@ namespace SPOffice.RepositoryServices.Services
             return taxTypesList;
         }
 
-       
+
         #endregion GetAllTaxTypes
+
+        #region GetTaxTypeDetailsByCode
+        public TaxType GetTaxTypeDetailsByCode(string Code)
+        {
+            TaxType _taxTypesObj = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Accounts].[GetTaxTypeDetails]";
+                        cmd.Parameters.Add("@Code", SqlDbType.NVarChar, 10).Value = Code;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    _taxTypesObj = new TaxType();
+                                    _taxTypesObj.Code = (sdr["Code"].ToString() != "" ? (sdr["Code"].ToString()) : _taxTypesObj.Code);
+                                    _taxTypesObj.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _taxTypesObj.Description);
+                                    _taxTypesObj.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _taxTypesObj.Rate);
+
+                                }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return _taxTypesObj;
+        }
+        #endregion GetTaxTypeDetailsByCode
 
     }
 }

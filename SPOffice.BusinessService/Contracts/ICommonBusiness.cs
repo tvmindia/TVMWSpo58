@@ -10,6 +10,9 @@ namespace SPOffice.BusinessService.Contracts
     public interface ICommonBusiness
     {
         string ConvertCurrency(decimal value, int DecimalPoints = 0, bool Symbol = true);
-        
+        string GetXMLfromObject(List<QuoteItem> myObj, string mandatoryProperties);
+
+
+
     }
 }

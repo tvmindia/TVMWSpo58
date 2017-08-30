@@ -372,13 +372,14 @@
                                         <th>Rate</th>
                                         <th>Amount</th>
                                         <th>...</th>
+                                        <th>ProductID</th>
 
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
-
+                    @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
 
                     <div class="col-md-12  ">&nbsp;</div>
                     <div class="col-md-12  ">&nbsp;</div>
@@ -408,7 +409,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)" } })
+                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)", onblur = "RoundTxtBox(this)", onkeyup = "AmountSummary()" } })
                                         @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -424,7 +425,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.NetTaxableAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)" } })
+                                        @Html.EditorFor(model => model.NetTaxableAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)", @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.NetTaxableAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -438,8 +439,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-
-                                        @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = 0, style = "padding:4px 12px;" })
+                                       
+                                        @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;",onchange="GetTaxPercentage(this);" })
                                         @Html.ValidationMessageFor(model => model.TaxTypeCode, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -450,8 +451,6 @@
                             <div class="form-group col-md-4">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.TaxPercApplied, htmlAttributes: new { @class = "control-label" })
-
-
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
@@ -582,7 +581,7 @@
 
 
 
-<datalist id="Materials" onfocus='this.size=10;' onblur='this.size=1;'
+<datalist id="Products" onfocus='this.size=10;' onblur='this.size=1;'
           onchange='this.size=1; this.blur();'></datalist>
 <datalist id="UnitCodes" onfocus='this.size=10;' onblur='this.size=1;'
           onchange='this.size=1; this.blur();'></datalist>

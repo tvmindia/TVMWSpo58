@@ -161,12 +161,16 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    //AppUA _appUA = Session["AppUA"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
-                    quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
-                    quoteHeaderVM.commonObj.CreatedDate = _appUA.DateTime;
+                    quoteHeaderVM.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
                     quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
                     quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
+                    //Deserialize items
+                    object ResultFromJS = JsonConvert.DeserializeObject(quoteHeaderVM.DetailJSON);
+                    string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                    quoteHeaderVM.quoteItemList = JsonConvert.DeserializeObject<List<QuoteItemViewModel>>(ReadableFormat);
                     switch (string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
                     {
                         case true:
@@ -265,7 +269,24 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllUnitCodes
-
+        #region GetTaxRate
+       
+        [HttpGet]
+        public string GetTaxRate(string Code)
+        {
+            try
+            {
+                TaxTypeViewModel taxTypesObj = Mapper.Map<TaxType, TaxTypeViewModel>(_taxTypeBusiness.GetTaxTypeDetailsByCode(Code));
+                decimal Rate = taxTypesObj.Rate;
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = Rate });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetTaxRate
 
         #region ButtonStyling
         [HttpGet]
