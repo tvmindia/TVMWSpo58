@@ -671,6 +671,7 @@
     <Compile Include="Models\ProformaViewModel.cs" />
     <Compile Include="Models\QuotationViewModel.cs" />
     <Compile Include="Models\QuoteHeaderViewModel.cs" />
+    <Compile Include="Models\QuoteMailPreviewViewModel.cs" />
     <Compile Include="Models\RawMaterialViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
@@ -712,6 +713,7 @@
     <Content Include="Views\RawMaterial\Index.cshtml" />
     <Content Include="Views\Quotation\Index.cshtml" />
     <Content Include="Views\Shared\Fileupload.cshtml" />
+    <Content Include="Views\Shared\_QuoteMailPreview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

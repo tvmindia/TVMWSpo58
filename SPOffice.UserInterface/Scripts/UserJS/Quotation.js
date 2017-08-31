@@ -107,6 +107,18 @@ $(document).ready(function () {
     catch (x) {
         notyAlert('error', x.message);
     }
+
+
+    $('#MailPreviewModel').on('shown.bs.modal', function () {
+        
+        var QHID = $("#ID").val();
+        if (QHID) {
+            //Bind mail html into model
+            GetMailPreview(QHID);
+
+
+        }
+    })
 });
 
 
@@ -402,6 +414,33 @@ function Edit(Obj) {
     ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
     openNav();
 }
+function PreviewMail()
+{
+    try
+    {
+       
+        $("#MailPreviewModel").modal('show');
+        
+    }
+    catch(e)
+    {
+        notyAlert('error', e.Message);
+    }
+ 
+}
+function GetMailPreview(ID) {
+
+    var data = { "ID": ID };
+    var ds = {};
+    ds = GetDataFromServer("Quotation/GetMailPreview/", data);
+    if (ds == "Nochange") {
+        return; 0
+    }
+    $("#mailmodelcontent").empty();
+    $("#mailmodelcontent").html(ds);
+}
+
+
 function BindQuationDetails(ID)
 {
     try

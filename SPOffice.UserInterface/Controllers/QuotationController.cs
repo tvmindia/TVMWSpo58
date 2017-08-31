@@ -318,6 +318,28 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetTaxRate
 
+        #region GetMailPreview
+        [HttpGet]
+        public ActionResult GetMailPreview(string ID)
+        {
+            QuoteMailPreviewViewModel quoteMailPreviewViewModel = null;
+            try
+            {
+                if(string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID is missing");
+                }
+                quoteMailPreviewViewModel = new QuoteMailPreviewViewModel();
+                quoteMailPreviewViewModel.quoteHeaderViewModel = Mapper.Map<QuoteHeader, QuoteHeaderViewModel>(_quotationBusiness.GetMailPreview(Guid.Parse(ID)));
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return PartialView("_QuoteMailPreview", quoteMailPreviewViewModel);
+        }
+        #endregion GetMailPreview
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
@@ -392,5 +414,7 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         #endregion
+
+
     }
 }

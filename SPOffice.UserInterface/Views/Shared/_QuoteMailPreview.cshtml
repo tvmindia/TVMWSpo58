@@ -1,0 +1,28 @@
+﻿@model SPOffice.UserInterface.Models.QuoteMailPreviewViewModel
+
+<div id="mailcontainerDiv">
+
+    
+
+        <h1>Quote No:@Model.quoteHeaderViewModel.QuotationNo</h1>
+    <table style="width:100%">
+        <tr>
+            <th>Quote No</th>
+            <th>Customer</th>
+            <th>Age</th>
+        </tr>
+        <tr>
+            <td>@Model.quoteHeaderViewModel.QuotationNo</td>
+            <td>@Model.quoteHeaderViewModel.customer.CustomerName</td>
+            <td>50</td>
+        </tr>
+       
+    </table>
+  
+
+</div>
+
+
+
+
+

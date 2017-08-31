@@ -106,5 +106,32 @@ namespace SPOffice.BusinessService.Services
             }
             return result;
         }
+
+        /// <summary>
+        /// Quateheader with quate items
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns>QuoteHeader</returns>
+        public QuoteHeader GetMailPreview(Guid ID)
+        {
+            QuoteHeader quoteHeader = null;
+            try
+            {
+                quoteHeader= GetQuationDetailsByID(ID);
+                if(quoteHeader!=null)
+                {
+                    if ((quoteHeader.ID != Guid.Empty) && (quoteHeader.ID != null))
+                    {
+                        quoteHeader.quoteItemList = GetAllQuoteItems(ID);
+                    }
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return quoteHeader;
+        }
     }
 }
