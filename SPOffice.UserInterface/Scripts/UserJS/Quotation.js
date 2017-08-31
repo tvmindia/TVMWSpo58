@@ -145,7 +145,7 @@ function EG_Columns() {
                
                 { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                 { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteItem(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
+                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
                 { "data": "ProductID", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductID', '')); }, "defaultContent": "<i></i>" }
                 ]
 
@@ -185,6 +185,7 @@ function FillDescription(row) {
         if (_Products[i].Code == EG_GridData[row - 1]['ProductCode']) {
             EG_GridData[row - 1]['ProductDescription'] = _Products[i].Description;
             EG_GridData[row - 1]['ProductID'] = _Products[i].ID;
+            EG_GridData[row - 1]['Rate'] = _Products[i].Rate;
 
             //Description
             EG_Rebind();
@@ -243,25 +244,25 @@ function AmountSummary() {
     //$('#grandtotal').val(roundoff(total + vatamount));
 }
 
-function GetTaxPercentage(curObj)
+function GetTaxPercentage()
 {
    
     try {
+        var curObj=$("#TaxTypeCode").val();
         if (curObj)
         {
             $("#TaxPercApplied").val(0);
-            var data = { "Code": curObj.value };
+            var data = { "Code": curObj };
             var ds = {};
             ds = GetDataFromServer("Quotation/GetTaxRate/", data);
             if (ds != '') {
                 ds = JSON.parse(ds);
             }
             if (ds.Result == "OK") {
-              
+               
                 $("#TaxPercApplied").val(ds.Records);
-                
-                return ds.Records;
-           
+                AmountSummary();
+             return ds.Records;
             }
             if (ds.Result == "ERROR") {
                 return 0;
@@ -278,8 +279,8 @@ function GetTaxPercentage(curObj)
     }
 }
 
-function DeleteInvoices() {
-    notyConfirm('Are you sure to delete?', 'Delete()', '', "Yes, delete it!");
+function Delete() {
+    notyConfirm('Are you sure to delete?', 'DeleteItem(' + curobj + ')', '', "Yes, delete it!");
 }
 
 function CheckAmount() {
@@ -288,8 +289,43 @@ function CheckAmount() {
         $("#txtDiscount").val(roundoff(0));
 }
 
-function Delete() {
-    $('#btnFormDelete').trigger('click');
+function DeleteItem(curobj) {
+
+    try {
+        var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
+        //Event Request Case
+        if ((rowData != null) && (rowData.ID != null))
+        {
+            var data = { "ID": rowData.ID };
+            var ds = {};
+            ds = GetDataFromServer("Quotation/DeleteItemByID/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                switch (ds.Result) {
+                            case "OK":
+                                notyAlert('success', ds.Message);
+                                EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                            break;
+                            case "ERROR":
+                                notyAlert('error', ds.Message);
+                            break;
+                            default:
+                            break;
+                        }
+                return ds.Record;
+            }
+            
+        }
+    }
+    catch (e) {
+
+        notyAlert('error', e.message);
+    }
+
+
+   
 }
 
 function saveInvoices() {
@@ -308,24 +344,24 @@ function saveInvoices() {
    
 }
 
-function DeleteSuccess(data, status) {
-    var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
-        case "OK":
-            AddNew();
-            List();
-            notyAlert('success', JsonResult.Message);
-            break;
-        case "Error":
-            notyAlert('error', JsonResult.Message);
-            break;
-        case "ERROR":
-            notyAlert('error', JsonResult.Message);
-            break;
-        default:
-            break;
-    }
-}
+//function DeleteSuccess(data, status) {
+//    var JsonResult = JSON.parse(data)
+//    switch (JsonResult.Result) {
+//        case "OK":
+//            AddNew();
+//            List();
+//            notyAlert('success', JsonResult.Message);
+//            break;
+//        case "Error":
+//            notyAlert('error', JsonResult.Message);
+//            break;
+//        case "ERROR":
+//            notyAlert('error', JsonResult.Message);
+//            break;
+//        default:
+//            break;
+//    }
+//}
 
 function SaveSuccess(data, status) {
    
@@ -334,13 +370,12 @@ function SaveSuccess(data, status) {
         case "OK":
            
             notyAlert('success', JsonResult.Message);
-           
+            ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
             }
             $('#deleteId').val(JsonResult.Record.ID);
-            //PaintInvoiceDetails()
-           // List();
+           
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -363,6 +398,8 @@ function Edit(Obj) {
     $('#ID').val(rowData.ID);
     $('#deleteId').val(rowData.ID);
     BindQuationDetails(rowData.ID);
+    GetTaxPercentage();
+    ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
     openNav();
 }
 function BindQuationDetails(ID)
@@ -394,8 +431,14 @@ function BindQuationDetails(ID)
             $("#TotalAmount").val(jsresult.TotalAmount);
             $("#QuoteBodyFoot").val(jsresult.QuoteBodyFoot);
             $("#GeneralNotes").val(jsresult.GeneralNotes);
-            debugger;
+             
+            $("#lblQuoteStage").text(jsresult.quoteStage.Description);
+            $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
+            
+            
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
+
+         
 
         }
 
@@ -432,6 +475,9 @@ function AddNew() {
     openNav();
     EG_ClearTable();
     Reset();
+    $("#ddlQuoteStage").val('DFT');
+    $("#lblQuoteStage").text('N/A');
+    $("#lblEmailSent").text('N/A');
     EG_AddBlankRows(5)
   //  clearUploadControl();
 }

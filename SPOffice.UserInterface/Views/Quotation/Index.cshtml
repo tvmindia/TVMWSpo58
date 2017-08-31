@@ -322,6 +322,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+       
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -337,7 +338,7 @@
                                     <div class="rightAmtCaption">Quote Stage</div>
                                 </div>
                                 <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblQuoteStage">CLOSED</div>
+                                    <div class="rightAmt" id="lblQuoteStage"></div>
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
@@ -345,7 +346,7 @@
                                     <div class="rightAmtCaption">Email Sent(Y/N) Amount</div>
                                 </div>
                                 <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblEmailSent">YES</div>
+                                    <div class="rightAmt" id="lblEmailSent"></div>
                                 </div>
                             </div>
                           
@@ -440,7 +441,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-10">
                                        
-                                        @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;",onchange="GetTaxPercentage(this);" })
+                                        @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;",onchange="GetTaxPercentage();" })
                                         @Html.ValidationMessageFor(model => model.TaxTypeCode, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -454,7 +455,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TaxPercApplied, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isnumber(event)" } })
+                                        @Html.EditorFor(model => model.TaxPercApplied, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isnumber(event)", @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.TaxPercApplied, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -511,7 +512,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.QuoteBodyFoot, new { htmlAttributes = new { @class = "form-control HeaderBox multiline4", @rows = 4 } })
+                                        @Html.EditorFor(model => model.QuoteBodyFoot, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.QuoteBodyFoot, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -525,7 +526,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox multiline4", @rows = 4 } })
+                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -559,16 +560,9 @@
         </div>
 
     </div>
-    <div id="ExpensesDelete" hidden="hidden">
-        @using (Ajax.BeginForm("DeleteInvoices", "Quotation", new AjaxOptions { HttpMethod = "POST", OnSuccess = "DeleteSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form" }))
-            {
-            @Html.AntiForgeryToken()
-            <div class="form-actions no-color">
-                @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-4", Value = "0", id = "deleteId" })
-                <input id="btnFormDelete" type="submit" value="Delete" class="btn btn-default" />
-            </div>
-        }
-    </div>
+ 
+
+
     <div class="preloader" id="prelaoder">
         <div class="col-md-12">
             <div class="col-md-12">Loading </div>
@@ -593,7 +587,7 @@
  
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/Quotation")
-@Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/editableGrid")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/editableGrid")
    
 }
 

@@ -19,6 +19,7 @@ namespace UserInterface.Models
         public ToolBoxStructure DepositBtn;
         public ToolBoxStructure WithdrawBtn;
         public ToolBoxStructure ClearBtn;
+        public ToolBoxStructure EmailBtn;
     }
 
     public struct ToolBoxStructure

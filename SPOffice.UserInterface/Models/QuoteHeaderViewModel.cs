@@ -23,7 +23,6 @@ namespace UserInterface.Models
         [Required(ErrorMessage = "Quotation Date required")]
         [Display(Name = "Quotation Date")]
         public string QuotationDate { get; set; }
-        [Required(ErrorMessage = "Valid Till Date required")]
         [Display(Name = "Valid Till Date")]
         public string ValidTillDate { get; set; }
         [Required(ErrorMessage = "Sales Person required")]
@@ -53,16 +52,18 @@ namespace UserInterface.Models
         public string SentToAddress { get; set; }
         [Required(ErrorMessage = "Quote Header required")]
         [Display(Name = "Quote Header")]
+        [DataType(DataType.MultilineText)]
         public string QuoteBodyHead { get; set; }
         [Required(ErrorMessage = "Quote Footer required")]
         [Display(Name = "Quote Footer")]
+        [DataType(DataType.MultilineText)]
         public string QuoteBodyFoot { get; set; }
 
         [Required(ErrorMessage = "Cash Discount required")]
         [Display(Name = "Cash Discount")]
         public decimal Discount { get; set; }
 
-        [Required(ErrorMessage = "Tax Type required")]
+     
         [Display(Name = "Tax Type")]
         public string TaxTypeCode { get; set; }
         public List<SelectListItem> TaxTypeList { get; set; }
@@ -73,6 +74,7 @@ namespace UserInterface.Models
         [Display(Name = "Tax Amount Applied")]
         public decimal TaxAmount { get; set; }
         [Display(Name = "General Notes")]
+        [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
         [Required(ErrorMessage = "Gross Amount required")]

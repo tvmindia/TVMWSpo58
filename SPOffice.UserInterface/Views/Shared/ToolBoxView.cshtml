@@ -211,4 +211,26 @@
         }
 
     }
+
+
+    @if (Model.EmailBtn.Visible)
+    {
+        if (Model.EmailBtn.Disable)
+        {
+
+            <a class="thr_disbtn" title="@Model.EmailBtn.Title-@Model.EmailBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/Email.PNG")">
+                <span class="btnText">@Model.EmailBtn.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a title="@Model.EmailBtn.Title" class="thr_btn" onclick=@Model.EmailBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/Email.PNG")">
+                <span class="btnText">@Model.EmailBtn.Text</span>
+            </a>
+        }
+
+    }
 </div>

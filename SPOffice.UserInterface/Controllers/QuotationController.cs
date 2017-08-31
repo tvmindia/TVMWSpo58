@@ -90,7 +90,15 @@ namespace SPOffice.UserInterface.Controllers
                     Value = QS.Code.ToString(),
                     Selected = false
                 });
+             
             }
+            //default draft selection in drop down
+            var _selected = selectListItem.Where(x => x.Value == "DFT").FirstOrDefault();
+            if(_selected!=null)
+            {
+                _selected.Selected = true;
+            }
+             
 
             quoteHeaderVM.QuoteStageList = selectListItem;
 
@@ -228,6 +236,28 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetQuationDetailsByID
 
+        #region  DeleteItemByID
+        [HttpGet]
+        public string DeleteItemByID(string ID)
+        {
+            object result = null;
+            try
+            {
+                if(string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result=_quotationBusiness.DeleteQuoteItem(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeleteItemByID
+
         #region GetAllProductCodes
         [HttpGet]
         public string GetAllProductCodes()
@@ -237,7 +267,7 @@ namespace SPOffice.UserInterface.Controllers
                 List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
                 if(productViewModelList!=null)
                 {
-                 productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code,Description=P.Description }).OrderBy(x => x.Code).ToList();
+                 productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code,Description=P.Description,Rate=P.Rate }).OrderBy(x => x.Code).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
             }
@@ -313,10 +343,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "AddNew();";
 
-                    ToolboxViewModelObj.deletebtn.Visible = true;
-                    ToolboxViewModelObj.deletebtn.Text = "Delete";
-                    ToolboxViewModelObj.deletebtn.Title = "Delete";
-                    ToolboxViewModelObj.deletebtn.Event = "DeleteInvoices();";
+                   
 
                     ToolboxViewModelObj.savebtn.Visible = true;
                     ToolboxViewModelObj.savebtn.Text = "Save";
@@ -332,6 +359,11 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.CloseBtn.Text = "Close";
                     ToolboxViewModelObj.CloseBtn.Title = "Close";
                     ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+
+                    ToolboxViewModelObj.EmailBtn.Visible = true;
+                    ToolboxViewModelObj.EmailBtn.Text = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Title = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
 
                     break;
                 case "Add":
@@ -351,11 +383,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.CloseBtn.Title = "Close";
                     ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
 
-                    ToolboxViewModelObj.deletebtn.Visible = true;
-                    ToolboxViewModelObj.deletebtn.Disable = true;
-                    ToolboxViewModelObj.deletebtn.Text = "Delete";
-                    ToolboxViewModelObj.deletebtn.Title = "Delete";
-                    ToolboxViewModelObj.deletebtn.Event = "DeleteInvoices();";
+                 
                     break;
                 default:
                     return Content("Nochange");
