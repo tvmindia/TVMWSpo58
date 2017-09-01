@@ -140,12 +140,14 @@ namespace SPOffice.BusinessService.Services
         public async Task<bool> QuoteEmailPush(QuoteHeader quoteHeader)
         {
             bool sendsuccess = false;
+            QuoteHeader qH = null;
             try
             {
+                qH = GetQuationDetailsByID((Guid)quoteHeader.ID);
                 Mail _mail = new Mail();
                 _mail.Body = quoteHeader.MailBody;
-                _mail.Subject = quoteHeader.QuoteSubject;
-                _mail.To = quoteHeader.SentToEmails;
+                _mail.Subject = qH.QuoteSubject;
+                _mail.To = qH.SentToEmails;
                 sendsuccess = await _mailBusiness.MailSendAsync(_mail);
             }
             catch (Exception ex)

@@ -356,6 +356,8 @@ function saveInvoices() {
    
 }
 
+
+
 //function DeleteSuccess(data, status) {
 //    var JsonResult = JSON.parse(data)
 //    switch (JsonResult.Result) {
@@ -410,6 +412,8 @@ function Edit(Obj) {
     var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
     $('#deleteId').val(rowData.ID);
+    $('#QuoteMAilHeaderID').val(rowData.ID);
+    
     BindQuationDetails(rowData.ID);
     GetTaxPercentage();
     ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
@@ -634,10 +638,7 @@ function GetAllUnitCodes() {
     }
 }
 
-function SetHeaderID()
-{
-    $("#QuoteMAilHeaderID").val($("#ID").val());
-}
+
 
 function MailSuccess(data, status)
 {
@@ -654,6 +655,11 @@ function MailSuccess(data, status)
             notyAlert('error', JsonResult.Message);
             break;
     }
+}
+
+
+function SendMailClick() {
+    $('#btnFormSendMail').trigger('click');
 }
 
 

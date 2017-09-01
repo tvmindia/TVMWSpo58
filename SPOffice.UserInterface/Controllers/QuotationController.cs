@@ -357,7 +357,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region SendQuoteMail
 
-        [HttpPost]
+        [HttpPost,ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<string> SendQuoteMail(QuoteHeaderViewModel quoteHeaderVM)
         {
