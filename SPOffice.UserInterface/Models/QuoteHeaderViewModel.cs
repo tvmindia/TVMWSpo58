@@ -88,6 +88,7 @@ namespace UserInterface.Models
         public decimal NetTaxableAmount { get; set; }
         public Guid hdnFileID { get; set; }
         public string DetailJSON { get; set; }
+        public string MailBody { get; set; }
         public CommonViewModel commonObj { get; set; }
         public List<QuoteItemViewModel> quoteItemList { get; set; }
     }

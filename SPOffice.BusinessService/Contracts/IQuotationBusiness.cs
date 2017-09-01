@@ -24,7 +24,7 @@ namespace SPOffice.BusinessService.Contracts
         List<QuoteItem> GetAllQuoteItems(Guid? ID);
         object DeleteQuoteItem(Guid? ID);
         QuoteHeader GetMailPreview(Guid ID);
-
-
+        object UpdateQuoteMailStatus(QuoteHeader quoteHeader);
+        Task<bool> QuoteEmailPush(QuoteHeader quoteHeader);
     }
 }

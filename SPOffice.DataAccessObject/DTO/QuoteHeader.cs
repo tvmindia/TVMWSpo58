@@ -34,6 +34,7 @@ namespace SPOffice.DataAccessObject.DTO
         public Common commonObj { get; set; }
         public List<QuoteItem> quoteItemList { get; set; }
         public string DetailXML { get; set; }
+        public string MailBody { get; set; }
     }
 
     public class QuoteItem

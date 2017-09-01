@@ -102,6 +102,7 @@
     <Compile Include="DTO\Employee.cs" />
     <Compile Include="DTO\Enquiry.cs" />
     <Compile Include="DTO\FollowUp.cs" />
+    <Compile Include="DTO\Mail.cs" />
     <Compile Include="DTO\Menu.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\Proforma.cs" />

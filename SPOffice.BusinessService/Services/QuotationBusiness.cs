@@ -4,6 +4,7 @@ using SPOffice.RepositoryServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace SPOffice.BusinessService.Services
@@ -13,10 +14,12 @@ namespace SPOffice.BusinessService.Services
     
         private IQuotationRepository _quotationRepository;
         ICommonBusiness _commonBusiness;
-        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness)
+        IMailBusiness _mailBusiness;
+        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness)
         {
             _quotationRepository = quotationRepository;
             _commonBusiness = commonBusiness;
+            _mailBusiness = mailBusiness;
         }
 
         public object DeleteQuotation(Guid ID)
@@ -132,6 +135,39 @@ namespace SPOffice.BusinessService.Services
                 throw ex;
             }
             return quoteHeader;
+        }
+
+        public async Task<bool> QuoteEmailPush(QuoteHeader quoteHeader)
+        {
+            bool sendsuccess = false;
+            try
+            {
+                Mail _mail = new Mail();
+                _mail.Body = quoteHeader.MailBody;
+                _mail.Subject = quoteHeader.QuoteSubject;
+                _mail.To = quoteHeader.SentToEmails;
+                sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
+        }
+
+        public object UpdateQuoteMailStatus(QuoteHeader quoteHeader)
+        {
+            Object result = null;
+            try
+            {
+                
+                result = _quotationRepository.UpdateQuoteMailStatus(quoteHeader);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
     }
 }

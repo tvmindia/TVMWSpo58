@@ -109,16 +109,10 @@ $(document).ready(function () {
     }
 
 
-    $('#MailPreviewModel').on('shown.bs.modal', function () {
+    //$('#MailPreviewModel').on('shown.bs.modal', function () {
         
-        var QHID = $("#ID").val();
-        if (QHID) {
-            //Bind mail html into model
-            GetMailPreview(QHID);
-
-
-        }
-    })
+       
+    //})
 });
 
 
@@ -291,8 +285,14 @@ function GetTaxPercentage()
     }
 }
 
-function Delete() {
-    notyConfirm('Are you sure to delete?', 'DeleteItem(' + curobj + ')', '', "Yes, delete it!");
+function Delete(curobj) {
+    var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
+    if (rowData.ID)
+    {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '");', '', "Yes, delete it!");
+    }
+   
+    
 }
 
 function CheckAmount() {
@@ -301,14 +301,14 @@ function CheckAmount() {
         $("#txtDiscount").val(roundoff(0));
 }
 
-function DeleteItem(curobj) {
-
+function DeleteItem(ID) {
+    
     try {
-        var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
+       
         //Event Request Case
-        if ((rowData != null) && (rowData.ID != null))
+        if (ID)
         {
-            var data = { "ID": rowData.ID };
+            var data = { "ID": ID };
             var ds = {};
             ds = GetDataFromServer("Quotation/DeleteItemByID/", data);
             if (ds != '') {
@@ -385,9 +385,10 @@ function SaveSuccess(data, status) {
             ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
+                $('#deleteId').val(JsonResult.Record.ID);
             }
-            $('#deleteId').val(JsonResult.Record.ID);
-           
+            
+            EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -419,7 +420,14 @@ function PreviewMail()
     try
     {
        
-        $("#MailPreviewModel").modal('show');
+        var QHID = $("#ID").val();
+        if (QHID) {
+            //Bind mail html into model
+            GetMailPreview(QHID);
+
+            $("#MailPreviewModel").modal('show');
+        }
+        
         
     }
     catch(e)
@@ -438,6 +446,8 @@ function GetMailPreview(ID) {
     }
     $("#mailmodelcontent").empty();
     $("#mailmodelcontent").html(ds);
+    $("#MailBody").val(ds);
+    
 }
 
 
@@ -621,6 +631,28 @@ function GetAllUnitCodes() {
     }
     catch (e) {
         notyAlert('error', e.message);
+    }
+}
+
+function SetHeaderID()
+{
+    $("#QuoteMAilHeaderID").val($("#ID").val());
+}
+
+function MailSuccess(data, status)
+{
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Result) {
+        case "OK":
+
+            notyAlert('success', JsonResult.Message);
+            break;
+        case "ERROR":
+            notyAlert('error', JsonResult.Message);
+            break;
+        default:
+            notyAlert('error', JsonResult.Message);
+            break;
     }
 }
 

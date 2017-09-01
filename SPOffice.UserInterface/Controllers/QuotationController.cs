@@ -6,6 +6,7 @@ using SPOffice.UserInterface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using UserInterface.Models;
@@ -215,6 +216,8 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion InsertUpdateQuotaion
 
+     
+
         #region GetQuationDetailsByID
         [HttpGet]
         public string GetQuateItemsByQuateHeadID(string ID)
@@ -325,12 +328,24 @@ namespace SPOffice.UserInterface.Controllers
             QuoteMailPreviewViewModel quoteMailPreviewViewModel = null;
             try
             {
-                if(string.IsNullOrEmpty(ID))
+                if (string.IsNullOrEmpty(ID))
                 {
                     throw new Exception("ID is missing");
                 }
                 quoteMailPreviewViewModel = new QuoteMailPreviewViewModel();
                 quoteMailPreviewViewModel.quoteHeaderViewModel = Mapper.Map<QuoteHeader, QuoteHeaderViewModel>(_quotationBusiness.GetMailPreview(Guid.Parse(ID)));
+                if (quoteMailPreviewViewModel.quoteHeaderViewModel!=null)
+                {
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity)); return QI; }).ToList() : null;
+                    if(quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList!=null)
+                    {
+                        quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount = (decimal)quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Sum(q => q.Amount);
+                        quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount - quoteMailPreviewViewModel.quoteHeaderViewModel.Discount;
+                        quoteMailPreviewViewModel.quoteHeaderViewModel.TotalAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount + quoteMailPreviewViewModel.quoteHeaderViewModel.TaxAmount;
+                    }
+                   
+                }
+             
             }
             catch(Exception ex)
             {
@@ -339,6 +354,47 @@ namespace SPOffice.UserInterface.Controllers
             return PartialView("_QuoteMailPreview", quoteMailPreviewViewModel);
         }
         #endregion GetMailPreview
+
+        #region SendQuoteMail
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SendQuoteMail(QuoteHeaderViewModel quoteHeaderVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
+                {
+                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    quoteHeaderVM.commonObj = new CommonViewModel();
+                    quoteHeaderVM.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
+                    quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
+                    
+                    bool sendsuccess = await _quotationBusiness.QuoteEmailPush(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        quoteHeaderVM.EmailSentYN = sendsuccess.ToString();
+                        result = _quotationBusiness.UpdateQuoteMailStatus(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion SendQuoteMail
 
         #region ButtonStyling
         [HttpGet]

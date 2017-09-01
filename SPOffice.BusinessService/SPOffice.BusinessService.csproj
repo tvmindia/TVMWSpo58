@@ -103,6 +103,7 @@
     <Compile Include="Contracts\IEmployeeBusiness.cs" />
     <Compile Include="Contracts\IEnquiryBusiness.cs" />
     <Compile Include="Contracts\IFollowUpBusiness.cs" />
+    <Compile Include="Contracts\IMailBusiness.cs" />
     <Compile Include="Contracts\IProductBusiness.cs" />
     <Compile Include="Contracts\IProformaBusiness.cs" />
     <Compile Include="Contracts\IQuotationBusiness.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Services\EmployeeBusiness.cs" />
     <Compile Include="Services\EnquiryBusiness.cs" />
     <Compile Include="Services\FollowUpBusiness.cs" />
+    <Compile Include="Services\MailBusiness.cs" />
     <Compile Include="Services\ProductBusiness.cs" />
     <Compile Include="Services\ProformaBusiness.cs" />
     <Compile Include="Services\QuotationBusiness.cs" />

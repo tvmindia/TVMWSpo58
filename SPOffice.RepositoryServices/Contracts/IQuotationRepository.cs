@@ -29,6 +29,7 @@ namespace SPOffice.RepositoryServices.Contracts
         List<QuoteStage> GetAllQuoteStages();
         List<QuoteItem> GetAllQuoteItems(Guid? ID);
         object DeleteQuoteItem(Guid? ID);
+        object UpdateQuoteMailStatus(QuoteHeader quoteHeader);
 
     }
 }
