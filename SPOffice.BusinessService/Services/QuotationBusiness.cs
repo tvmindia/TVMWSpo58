@@ -147,7 +147,7 @@ namespace SPOffice.BusinessService.Services
                 Mail _mail = new Mail();
                 _mail.Body = quoteHeader.MailBody;
                 _mail.Subject = qH.QuoteSubject;
-                _mail.To = qH.SentToEmails;
+                _mail.To = quoteHeader.SentToEmails;
                 sendsuccess = await _mailBusiness.MailSendAsync(_mail);
             }
             catch (Exception ex)

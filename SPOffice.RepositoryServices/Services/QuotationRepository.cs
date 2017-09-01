@@ -555,6 +555,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[UpdateQuoteMailStatus]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quoteHeader.ID;
+                        cmd.Parameters.Add("@SentToEmails",SqlDbType.NVarChar, -1).Value = quoteHeader.SentToEmails;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.UpdatedDate;
