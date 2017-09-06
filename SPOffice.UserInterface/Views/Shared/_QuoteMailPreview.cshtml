@@ -3,245 +3,157 @@
 
 <div id="mailcontainerDiv">
 
-    
-    <style>
-    .invoice-box{
-        max-width:800px;
-        margin:auto;
-        padding:30px;
-        border:1px solid #eee;
-        box-shadow:0 0 10px rgba(0, 0, 0, .15);
-        font-size:16px;
-        line-height:24px;
-        font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-        color:#555;
-    }
 
-    .invoice-box table{
-        width:100%;
-        line-height:inherit;
-        text-align:left;
-    }
-
-    .invoice-box table td{
-        padding:5px;
-        vertical-align:top;
-    }
-
-    .invoice-box table tr td:nth-child(2){
-        text-align:right;
-    }
-
-    .invoice-box table tr.top table td{
-        padding-bottom:20px;
-    }
-
-    .invoice-box table tr.top table td.title{
-        font-size:45px;
-        line-height:45px;
-        color:#333;
-    }
-
-    .invoice-box table tr.information table td{
-        padding-bottom:40px;
-    }
-
-    .invoice-box table tr.heading td{
-        background:#eee;
-        border-bottom:1px solid #ddd;
-        font-weight:bold;
-    }
-
-    .invoice-box table tr.details td{
-        padding-bottom:20px;
-    }
-
-    .invoice-box table tr.item td{
-        border-bottom:1px solid #eee;
-    }
-
-    .invoice-box table tr.item.last td{
-        border-bottom:none;
-    }
-
-    .invoice-box table tr.total td:nth-child(2){
-        border-top:2px solid #eee;
-        font-weight:bold;
-    }
-
-    </style>
-     <h1>Quote No:@Model.quoteHeaderViewModel.QuotationNo</h1>
-    <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
+  
+ 
+    <div style="max-width: 800px; box-shadow: 0 0 10px rgba(0, 0, 0, .15); font-size: 16px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555; margin: auto; padding: 30px; border: 1px solid #eee;">
+        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;">
             <tr class="top">
-                <td colspan="2">
-                    <table>
-                        <tr class="heading">
-                            <td>
-                                Quote Subject
-                            </td>
-
-                           
-                        </tr>
-                        <tr class="details">
-                            <td>
-                             
-                                @Model.quoteHeaderViewModel.QuoteSubject
-                            </td>
-                        </tr>
-                        <tr class="heading">
-                            <td>
-                                Quote Head
-                            </td>
-
-
-                        </tr>
-                        <tr class="details">
-                            <td>
-                             @Model.quoteHeaderViewModel.QuoteBodyHead
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-          
-
-           
-
-           
-
-            <tr class="heading">
-                <td>
-                  Items
-                </td>
-
-                <td>
-                    
-                </td>
-            </tr>
-
-         
-
-          
-
-           
-          
-        </table>
-        <table id="ItemDetailsTable" style="font-family: arial, sans-serif;border-collapse: collapse;width: 100%;" cellspacing="0" width="100%">
-                <thead>
-                <tr class="">
+                <td colspan="2" style="vertical-align: top; padding: 5px;" valign="top">
+                      <table style="width: 100%; line-height: inherit; text-align: left;">
+                        <tr><td style="text-align:center;"><h3>Quotaions</h3></td></tr>
+                      </table>
                    
-                    <th style="border: 1px solid #dddddd;text-align: left;padding: 8px;">SlNo.</th>
-                    <th style="border: 1px solid #dddddd;text-align: left;padding: 8px;">Description</th>
-                    <th style="border: 1px solid #dddddd;text-align: left;padding: 8px;">Unit</th>
-                    <th style="border: 1px solid #dddddd;text-align: left;padding: 8px;">Quantity</th>
-                    <th style="border: 1px solid #dddddd;text-align: left;padding: 8px;">Rate</th>
-                    <th style="border: 1px solid #dddddd;text-align: left;padding: 8px;">Amount</th>
-                  
-                  
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr style="width:100%;">
+                <td style="width:400px;"><img src=@Url.Content("~/Content/images/santhiplastics.png") style="width:100%; max-width:100px;"></td>
+                <td style="width:200px;"></td>
+                <td style="width:400px;text-align:right"><span style="text-align:left;">Quote#:</span>@Model.quoteHeaderViewModel.QuotationNo<br/>  
+                <span style="text-align:left;">Date:</span>@Model.quoteHeaderViewModel.QuotationDate               
+              </td>
+                                                                       
+            </tr>
+        </table>
+        <br/>
+        
+        <table>
+            <tr style="width:100%;">
+                <td style="width:400px;text-align:left;">From: @Model.quoteHeaderViewModel.company.Name<br>
+                                @Model.quoteHeaderViewModel.company.BillingAddress<br>
+                                </td>
+                <td style="width:200px;"></td>
+                <td style="width:400px;text-align:right;">To: @Model.quoteHeaderViewModel.customer.CustomerName<br>
+                                @Model.quoteHeaderViewModel.customer.POToCompAddress<br>
+                                </td>
+            </tr>
+
+        </table>
+
+        <br />
+
+
+        <table>
+            <tr>
+               <td>@Model.quoteHeaderViewModel.QuoteSubject</td>
+            </tr>
+        </table>
+
+        <br />
+
+        <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: inherit; text-align: left;" cellspacing="0" width="100%">
+            <thead>
+                <tr class="">
+
+                    <th style="text-align: right;padding: 8px;border: 1px solid #dddddd;">SlNo.</th>
+                    <th style="text-align: right;padding: 8px;border: 1px solid #dddddd;">Description</th>
+                    <th style="text-align: right;padding: 8px;border: 1px solid #dddddd;">Unit</th>
+                    <th style="text-align: right;padding: 8px;border: 1px solid #dddddd;">Quantity</th>
+                    <th style="text-align: right;padding: 8px;border: 1px solid #dddddd;">Rate</th>
+                    <th style="text-align: right;padding: 8px;border: 1px solid #dddddd;">Amount</th>
+
+
 
                 </tr>
                 @if (Model.quoteHeaderViewModel.quoteItemList != null)
                 {
-                    int slno=1;
+                    int slno = 1;
                     foreach (var mp in Model.quoteHeaderViewModel.quoteItemList)
                     {
-                        <tr style="border: 1px solid #dddddd;text-align: left;padding: 8px;">
+                        <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
 
-                            <td style="border: 1px solid #dddddd;text-align: right;padding: 8px;">@slno</td>
-                            <td style="border: 1px solid #dddddd;text-align: right;padding: 8px;">@mp.ProductDescription</td>
-                            <td style="border: 1px solid #dddddd;text-align: right;padding: 8px;">@mp.UnitDescription</td>
-                            <td style="border: 1px solid #dddddd;text-align: right;padding: 8px;">@mp.Quantity</td>
-                            <td style="border: 1px solid #dddddd;text-align: right;padding: 8px;">@mp.Rate</td>
-                            <td style="border: 1px solid #dddddd;text-align: right;padding: 8px;">@mp.Amount</td>
+                            <td style="text-align: right;padding: 8px;">@slno</td>
+                            <td style="text-align: right;padding: 8px;">@mp.ProductDescription</td>
+                            <td style="text-align: right;padding: 8px;">@mp.UnitDescription</td>
+                            <td style="text-align: right;padding: 8px;">@mp.Quantity</td>
+                            <td style="text-align: right;padding: 8px;">@mp.Rate</td>
+                            <td style="text-align: right;padding: 8px;">@mp.Amount</td>
 
                         </tr>
                         slno = slno + 1;
                     }
                 }
-              
+
             </thead>
         </table>
-     
-        <table cellpadding="0" cellspacing="0">
-        
+        <br/>
+
+        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: right;">
+
             <tr class="">
-                <td>
+                <td style="vertical-align: top; padding: 5px;" valign="top">
                     Gross Amount
                 </td>
 
-                <td>
+                <td style="vertical-align: top; text-align: right; padding: 5px;" align="right" valign="top">
                     @Model.quoteHeaderViewModel.GrossAmount
                 </td>
             </tr>
             <tr class="item">
-                <td>
-                   Cash Discount
+                <td style="vertical-align: top;  padding: 5px;" valign="top">
+                    Cash Discount
                 </td>
 
-                <td>
+                <td style="vertical-align: top; text-align: right; padding: 5px;" align="right" valign="top">
                     @Model.quoteHeaderViewModel.Discount
                 </td>
             </tr>
             <tr class="">
-                <td>
+                <td style="vertical-align: top; padding: 5px;" valign="top">
                     Net Taxable Amount
                 </td>
 
-                <td>
+                <td style="vertical-align: top; text-align: right; padding: 5px;" align="right" valign="top">
                     @Model.quoteHeaderViewModel.NetTaxableAmount
                 </td>
             </tr>
             <tr class="">
-                <td>
+                <td style="vertical-align: top; padding: 5px;" valign="top">
                     Tax Amount
                 </td>
 
-                <td>
-                   @Model.quoteHeaderViewModel.TaxAmount
+                <td style="vertical-align: top; text-align: right; padding: 5px;" align="right" valign="top">
+                    @Model.quoteHeaderViewModel.TaxAmount
                 </td>
             </tr>
             <tr class="">
-                <td>
-                    
-                </td>
+                <td style="vertical-align: top; padding: 5px;" valign="top"></td>
 
-                <td>
-                   
-                </td>
+                <td style="vertical-align: top; text-align: right; padding: 5px;" align="right" valign="top"></td>
             </tr>
 
             <tr class="total">
-                <td></td>
+                <td style="vertical-align: top; padding: 5px;" valign="top"></td>
 
-                <td>
-                   Total: @Model.quoteHeaderViewModel.TotalAmount
+                <td style="vertical-align: top; text-align: right; border-top-style: solid; border-top-width: 2px; border-top-color: #eee; font-weight: bold; padding: 5px;" align="right" valign="top">
+                    Total: @Model.quoteHeaderViewModel.TotalAmount
                 </td>
             </tr>
-           
+
         </table>
-        <table>
-            <tr class="heading">
-                <td>
-                    Terms&Conditions
-                </td>
-
-
-            </tr>
+        <table style="width: 100%; line-height: inherit; text-align: left;">
+            
             <tr class="details">
-                <td>
+                <td style="vertical-align: top; padding: 5px 5px 20px;" valign="top">
 
                     @Model.quoteHeaderViewModel.QuoteBodyFoot
                 </td>
             </tr>
         </table>
     </div>
-  
+
 
 </div>
-
-
-
-
-

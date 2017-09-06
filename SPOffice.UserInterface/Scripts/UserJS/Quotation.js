@@ -9,13 +9,14 @@ $(document).ready(function () {
             //Pass the controller name
             var FileObject = new Object;
             if ($('#hdnFileDupID').val() != emptyGUID) {
-                FileObject.ParentID = (($('#ID').val()) != "" ? ($('#ID').val()) : $('#hdnFileDupID').val());
+                FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
             }
             else {
-                FileObject.ParentID = $('#ID').val();
+                FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
             }
+           
 
-            FileObject.ParentType = "CusInvoice";
+            FileObject.ParentType = "Quotation";
             FileObject.Controller = "FileUpload";
             UploadFile(FileObject);
         });
@@ -122,7 +123,7 @@ var EG_GridData;//DATA SOURCE OBJ ARRAY
 var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
 var EG_SlColumn = 'SlNo';
 var EG_GridInputPerRow = 4;
-var EG_MandatoryFields = 'ProductCode';
+var EG_MandatoryFields = 'ProductCode,ProductDescription,UnitCode,Quantity,Rate';
 
 
 function EG_TableDefn() {
@@ -490,7 +491,8 @@ function BindQuationDetails(ID)
             
             
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
-
+            clearUploadControl();
+            PaintImages(ID);
          
 
         }
@@ -638,7 +640,28 @@ function GetAllUnitCodes() {
     }
 }
 
-
+function ValidateEmail()
+{
+    var ste = $('#SentToEmails').val();
+    if (ste)
+    {
+        var atpos = ste.indexOf("@");
+        var dotpos = ste.lastIndexOf(".");
+        if (atpos<1 || dotpos<atpos+2 || dotpos+2>=ste.length) 
+        {
+            notyAlert('error', 'Invalid Email');
+            return false;
+        }
+            //not valid
+            
+        else
+            return true;
+    }
+       
+    else
+        notyAlert('error', 'Enter email address');
+        return false;
+}
 
 function MailSuccess(data, status)
 {

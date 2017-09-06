@@ -643,6 +643,7 @@
     <Compile Include="Controllers\CourierAgencyController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\RawMaterialController.cs" />
@@ -724,6 +725,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Courier\" />
+    <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -144,11 +144,21 @@ namespace SPOffice.BusinessService.Services
             try
             {
                 qH = GetQuationDetailsByID((Guid)quoteHeader.ID);
-                Mail _mail = new Mail();
-                _mail.Body = quoteHeader.MailBody;
-                _mail.Subject = qH.QuoteSubject;
-                _mail.To = quoteHeader.SentToEmails;
-                sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+               
+                if (!string.IsNullOrEmpty(quoteHeader.SentToEmails))
+                {
+                    string[] EmailList = quoteHeader.SentToEmails.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = quoteHeader.MailBody;
+                        _mail.Subject = qH.QuoteSubject;
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+                
+               
             }
             catch (Exception ex)
             {
