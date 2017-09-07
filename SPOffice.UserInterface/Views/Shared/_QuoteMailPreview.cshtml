@@ -7,27 +7,25 @@
   
  
     <div style="max-width: 800px; font-size: 16px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555; margin: auto; padding: 30px; border: 3px solid #adadad;">
-        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;">
+        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;border-bottom-color:#944a83!important;border-bottom:thin solid">
             <tr class="top">
-                <td colspan="2" style="vertical-align: top; padding: 5px;" valign="top">
+                <td style="width:400px;vertical-align: top;  " valign="top"><img src=http://www.santhiplastics.com/images/logo.png style="width:100%; max-width:100px;"></td>
+                <td colspan="2" style="vertical-align: top;  text-align:right" valign="top">
                       <table style="width: 100%; line-height: inherit; text-align: left;">
-                        <tr><td style="text-align:center;"><h3>Quotation</h3></td></tr>
+                        <tr><td style="text-align:right;"><span style="font-size:25px">Quotation</span></td></tr>
                       </table>
                    
                 </td>
             </tr>
         </table>
 
-        <table>
-            <tr style="width:100%;">
-                @*<td style="width:400px;"><img src=@Url.Content("~/Content/images/santhiplastics.png") style="width:100%; max-width:100px;"></td>*@
-                <td style="width:400px;"><img src=http://www.santhiplastics.com/images/logo.png style="width:100%; max-width:100px;"></td>
-                
-                <td style="width:200px;"></td>
+        <table style="line-height:20px;margin-top:5px">
+            <tr style="width:100%;">              
+                <td style="width:600px;"></td>
                 <td style="width:400px;text-align:right">
-                    <table style="width:100%;font-size:13px">
-                        <tr style="width:100%"><td style="width:50%"></td><td style="text-align:left;">Quote#</td><td style="width:2%">:</td><td style="text-align:left;padding-left:5px;">@Model.quoteHeaderViewModel.QuotationNo</td></tr>
-                        <tr style="width:100%"><td></td><td style="text-align:left;">Date</td><td style="width:2%">:</td><td style="text-align:left;padding-left:5px;">@Model.quoteHeaderViewModel.QuotationDate  </td></tr>
+                    <table style="width:100%;font-size:12px">
+                        <tr style="width:100%"><td style="width:50%"></td><td style="text-align:left;">Quote#</td><td style="width:2%">:</td><td style="text-align:right;padding-left:5px;">@Model.quoteHeaderViewModel.QuotationNo</td></tr>
+                        <tr style="width:100%"><td></td><td style="text-align:left;">Date</td><td style="width:2%">:</td><td style="text-align:right;padding-left:5px;">@Model.quoteHeaderViewModel.QuotationDate  </td></tr>
                     </table>
                     
                     <span style="text-align:left;"></span><br/>  
@@ -40,11 +38,11 @@
         
         <table>
             <tr style="width:100%;">
-                <td style="width:400px;text-align:left;">From:<br/>  @Model.quoteHeaderViewModel.company.Name<br/>
+                <td style="width:400px;text-align:left;font-size:15px"><b>From</b><br/>  @Model.quoteHeaderViewModel.company.Name<br/>
                                 @Model.quoteHeaderViewModel.company.BillingAddress<br/>
                                 </td>
                 <td style="width:200px;"></td>
-                <td style="width:400px;text-align:left;">To: <br /> @Model.quoteHeaderViewModel.customer.CustomerName<br/>
+                <td style="width:400px;text-align:left;font-size:15px"><b>To</b> <br /> @Model.quoteHeaderViewModel.customer.CustomerName<br/>
                                 @Model.quoteHeaderViewModel.customer.BillingAddress<br/>
                                 </td>
             </tr>
@@ -52,11 +50,11 @@
         </table>
 
         <br />
-
+        
 
         <table>
             <tr>
-               <td>Sub:<br/>@Model.quoteHeaderViewModel.QuoteSubject</td>
+               <td style="font-size:15px"><b>Sub</b><br/>@Model.quoteHeaderViewModel.QuoteSubject</td>
             </tr>
         </table>
 
@@ -64,7 +62,7 @@
 
         <table>
             <tr>
-                <td>@Model.quoteHeaderViewModel.QuoteBodyHead</td>
+                <td style="font-size:15px;">@Model.quoteHeaderViewModel.QuoteBodyHead</td>
             </tr>
         </table>
         <br />
@@ -157,7 +155,7 @@
         <table style="width: 100%; line-height: inherit; text-align: left;">
             
             <tr class="details">
-                <td style="vertical-align: top; padding: 5px 5px 20px;" valign="top">
+                <td style="vertical-align: top; padding: 5px 5px 20px;font-size:15px;" valign="top">
 
                     @Model.quoteHeaderViewModel.QuoteBodyFoot
                 </td>
