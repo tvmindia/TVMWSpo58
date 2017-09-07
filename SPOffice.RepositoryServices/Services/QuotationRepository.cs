@@ -19,53 +19,7 @@ namespace SPOffice.RepositoryServices.Services
             _databaseFactory = databaseFactory;
         }
 
-        public object DeleteQuotation(Guid ID)
-        {
-            SqlParameter outputStatus = null;
-            try
-            {
-                using (SqlConnection con = _databaseFactory.GetDBConnection())
-                {
-                    using (SqlCommand cmd = new SqlCommand())
-                    {
-                        if (con.State == ConnectionState.Closed)
-                        {
-                            con.Open();
-                        }
-                        cmd.Connection = con;
-                        cmd.CommandText = "[Office].[DeleteQuotation]";
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
-                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
-                        outputStatus.Direction = ParameterDirection.Output;
-                        cmd.ExecuteNonQuery();
-
-
-                    }
-                }
-
-                switch (outputStatus.Value.ToString())
-                {
-                    case "0":
-
-                        throw new Exception(Cobj.DeleteFailure);
-
-                    default:
-                        break;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            return new
-            {
-                Status = outputStatus.Value.ToString(),
-                Message = Cobj.DeleteSuccess
-            };
-        }
+   
 
         public List<QuoteHeader> GetAllQuotations()
         {

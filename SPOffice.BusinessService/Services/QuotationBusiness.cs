@@ -22,11 +22,7 @@ namespace SPOffice.BusinessService.Services
             _mailBusiness = mailBusiness;
         }
 
-        public object DeleteQuotation(Guid ID)
-        {
-            return _quotationRepository.DeleteQuotation(ID);
-        }
-
+    
         public object DeleteQuoteItem(Guid? ID)
         {
             return _quotationRepository.DeleteQuoteItem(ID);

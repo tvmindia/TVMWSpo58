@@ -533,6 +533,7 @@ function AddNew() {
     $("#ddlQuoteStage").val('DFT');
     $("#lblQuoteStage").text('N/A');
     $("#lblEmailSent").text('N/A');
+    clearUploadControl();
     EG_AddBlankRows(5)
   //  clearUploadControl();
 }

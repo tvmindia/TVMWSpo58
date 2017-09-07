@@ -16,7 +16,7 @@ namespace SPOffice.BusinessService.Contracts
         List<QuoteHeader> GetAllQuotations();
         object InsertQuotation(QuoteHeader quoteHeader);
         object UpdateQuotation(QuoteHeader quoteHeader);
-        object DeleteQuotation(Guid ID);
+       
 
         List<QuoteStage> GetAllQuoteStages();
         QuoteHeader GetQuationDetailsByID(Guid ID);
