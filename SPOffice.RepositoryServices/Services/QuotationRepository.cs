@@ -54,6 +54,7 @@ namespace SPOffice.RepositoryServices.Services
                                         {
                                             _quoteHeader.customer.ID = (Guid)_quoteHeader.CustomerID;
                                             _quoteHeader.customer.CustomerName= (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _quoteHeader.customer.CustomerName);
+                                            _quoteHeader.customer.BillingAddress= (sdr["CustomerAddress"].ToString() != "" ? sdr["CustomerAddress"].ToString() : _quoteHeader.customer.BillingAddress);
                                         }
                                         _quoteHeader.QuotationDate = (sdr["QuotationDate"].ToString() != "" ? DateTime.Parse(sdr["QuotationDate"].ToString()).ToString(settings.dateformat) : _quoteHeader.QuotationDate);
                                         _quoteHeader.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()).ToString(settings.dateformat) : _quoteHeader.ValidTillDate);
@@ -64,6 +65,7 @@ namespace SPOffice.RepositoryServices.Services
                                         {
                                             _quoteHeader.company.Code = _quoteHeader.QuoteFromCompCode;
                                             _quoteHeader.company.Name= (sdr["QuoteFromCompanyName"].ToString() != "" ? sdr["QuoteFromCompanyName"].ToString() : _quoteHeader.company.Name);
+                                            _quoteHeader.company.BillingAddress= (sdr["CompanyAddress"].ToString() != "" ? sdr["CompanyAddress"].ToString() : _quoteHeader.company.BillingAddress);
                                         }
                                         _quoteHeader.Stage = (sdr["QuoteStage"].ToString() != "" ? sdr["QuoteStage"].ToString() : _quoteHeader.Stage);
                                         _quoteHeader.quoteStage = new QuoteStage();

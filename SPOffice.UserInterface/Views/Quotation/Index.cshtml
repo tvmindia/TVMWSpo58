@@ -666,7 +666,7 @@
                     <div class="col-md-12">
 
 
-                        @using (Ajax.BeginForm("SendQuoteMail", "Quotation", new AjaxOptions { HttpMethod = "POST", OnSuccess = "MailSuccess", OnFailure = "SaveFailure", OnBegin="ValidateEmail", AllowCache = false, LoadingElementId = "prelaoder", OnComplete = "" }, new { @class = "form-horizontal", role = "form", id = "sendmailform" }))
+                        @using (Ajax.BeginForm("SendQuoteMail", "Quotation", new AjaxOptions { HttpMethod = "POST", OnSuccess = "MailSuccess", OnFailure = "SaveFailure", OnBegin="ValidateEmail", AllowCache = false, LoadingElementId = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", id = "sendmailform" }))
 
                         {
                             @Html.AntiForgeryToken()

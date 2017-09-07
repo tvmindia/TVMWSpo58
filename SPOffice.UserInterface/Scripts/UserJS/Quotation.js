@@ -489,7 +489,7 @@ function BindQuationDetails(ID)
             $("#lblQuoteStage").text(jsresult.quoteStage.Description);
             $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
             
-            
+            $('#SentToEmails').val(jsresult.SentToEmails);
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
             clearUploadControl();
             PaintImages(ID);
@@ -656,7 +656,12 @@ function ValidateEmail()
             //not valid
             
         else
+        {
+            $("#MailPreviewModel").modal('hide');
+            showLoader();
             return true;
+        }
+           
     }
        
     else
@@ -666,6 +671,7 @@ function ValidateEmail()
 
 function MailSuccess(data, status)
 {
+    hideLoader();
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":

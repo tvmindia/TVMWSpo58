@@ -89,5 +89,6 @@ namespace SPOffice.UserInterface.Models
         public string Description { get; set; }
         public string duration { get; set; }
         public string CustomerName { get; set; }
+        public string BillingAddress { get; set; }
     }
 }
