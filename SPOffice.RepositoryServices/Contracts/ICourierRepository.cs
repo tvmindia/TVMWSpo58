@@ -13,5 +13,7 @@ namespace SPOffice.RepositoryServices.Contracts
         object InsertCourierAgency(CourierAgency courierAgency);
         object UpdateCourierAgency(CourierAgency courierAgency);
         object DeleteCourierAgency(string Code);
+
+        List<Courier> GetAllCouriers();
     }
 }

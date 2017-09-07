@@ -14,5 +14,8 @@ namespace SPOffice.BusinessService.Contracts
         object InsertCourierAgency(CourierAgency courierAgency);
         object UpdateCourierAgency(CourierAgency courierAgency);
         object DeleteCourierAgency(string Code);
+
+        List<Courier> GetAllCouriers();
+        Courier GetCourierDetails(Guid ID);
     }
 }

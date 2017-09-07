@@ -60,6 +60,8 @@ namespace UserInterface.App_Start
                 config.CreateMap<EmployeeCategoryViewModel, EmployeeCategory>().ReverseMap();
                 config.CreateMap<SalesPersonViewModel, SalesPerson>().ReverseMap();
                 config.CreateMap<TaxTypeViewModel, TaxType>().ReverseMap();
+                config.CreateMap<CourierViewModel, Courier>().ReverseMap();
+                
             });
         }
     }

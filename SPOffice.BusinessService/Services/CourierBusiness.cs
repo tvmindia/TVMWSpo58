@@ -33,6 +33,8 @@ namespace SPOffice.BusinessService.Services
             return CourierAgencyList;
         }
 
+       
+
         public CourierAgency GetCourierAgencyDetails(string Code)
         {
             List<CourierAgency> CourierAgencyList = null;
@@ -58,6 +60,36 @@ namespace SPOffice.BusinessService.Services
         public object UpdateCourierAgency(CourierAgency courierAgency)
         {
             return _courierRepository.UpdateCourierAgency(courierAgency);
+        }
+        public List<Courier> GetAllCouriers()
+        {
+            List<Courier> CourierList = null;
+            try
+            {
+                CourierList = _courierRepository.GetAllCouriers();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return CourierList;
+        }
+
+        public Courier GetCourierDetails(Guid ID)
+        {
+            List<Courier> CourierList = null;
+            Courier courier = null;
+            try
+            {
+                CourierList = GetAllCouriers();
+                courier = CourierList != null ? CourierList.Where(D => D.ID == ID).SingleOrDefault() : null;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return courier;
         }
     }
 }

@@ -124,6 +124,8 @@ namespace SPOffice.RepositoryServices.Services
             return courierAgencyList;
         }
 
+      
+
         public object InsertCourierAgency(CourierAgency courierAgency)
         {
             SqlParameter outputStatus;
@@ -242,6 +244,73 @@ namespace SPOffice.RepositoryServices.Services
                 Status = outputStatus.Value.ToString(),
                 Message = Cobj.UpdateSuccess
             };
+        }
+
+
+        public List<Courier> GetAllCouriers()
+        {
+            List<Courier> courierList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllCouriers]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                courierList = new List<Courier>();
+                                while (sdr.Read())
+                                {
+                                    Courier _courier = new Courier();
+                                    {
+                                        _courier.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _courier.ID);
+                                        _courier.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : _courier.Type);
+                                        _courier.TransactionDate = (sdr["TransactionDate"].ToString() != "" ? DateTime.Parse(sdr["TransactionDate"].ToString()).ToString(s.dateformat) : _courier.TransactionDate);
+                                        _courier.SourceName = (sdr["SourceName"].ToString() != "" ? sdr["SourceName"].ToString() : _courier.SourceName);
+                                        _courier.SourceAddress = (sdr["SourceAddress"].ToString() != "" ? sdr["SourceAddress"].ToString() : _courier.SourceAddress);
+                                        _courier.DestName = (sdr["DestName"].ToString() != "" ? sdr["DestName"].ToString() : _courier.DestName);
+                                        _courier.DestAddress = (sdr["DestAddress"].ToString() != "" ? sdr["DestAddress"].ToString() : _courier.DestAddress);
+                                        _courier.DistributedTo = (sdr["DistributedTo"].ToString() != "" ? sdr["DistributedTo"].ToString() : _courier.DistributedTo);
+                                        _courier.DistributionDate = (sdr["DistributionDate"].ToString() != "" ? DateTime.Parse(sdr["DistributionDate"].ToString()).ToString(s.dateformat) : _courier.DistributionDate);
+                                        _courier.AgencyCode = (sdr["AgencyCode"].ToString() != "" ? sdr["AgencyCode"].ToString() : _courier.AgencyCode);
+                                        _courier.courierAgency = new CourierAgency();
+                                        {
+                                            _courier.courierAgency.Code = _courier.AgencyCode;
+                                            _courier.courierAgency.Name = (sdr["AgencyName"].ToString() != "" ? sdr["AgencyName"].ToString() : _courier.courierAgency.Name);
+                                        }
+                                        _courier.TrackingRefNo= (sdr["TrackingRefNo"].ToString() != "" ? sdr["TrackingRefNo"].ToString() : _courier.TrackingRefNo);
+                                        _courier.GeneralNotes= (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _courier.GeneralNotes);
+                                        _courier.TrackingURL = (sdr["TrackingURL"].ToString() != "" ? sdr["TrackingURL"].ToString() : _courier.TrackingURL);
+                                        _courier.commonObj = new Common();
+                                        {
+                                            _courier.commonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : _courier.commonObj.CreatedBy);
+                                            _courier.commonObj.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : _courier.commonObj.CreatedDate);
+                                            _courier.commonObj.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(s.dateformat) : string.Empty);
+                                        }
+                                    }
+                                    courierList.Add(_courier);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return courierList;
         }
     }
 }
