@@ -22,6 +22,7 @@ namespace SPOffice.DataAccessObject.DTO
     public class Courier
     {
         public Guid? ID { get; set; }
+        public Guid hdnFileID { get; set; }
         public string Type { get; set; }
         public string TransactionDate { get; set; }
         public string SourceName { get; set; }

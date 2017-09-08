@@ -341,6 +341,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar,10).Value = courier.AgencyCode;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
                         cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = courier.hdnFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = courier.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = courier.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);

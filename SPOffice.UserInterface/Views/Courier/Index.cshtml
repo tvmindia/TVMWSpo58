@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TrackingRefNo, new { htmlAttributes = new { @class = "form-control HeaderBox",@readonly=true } })
+                                        @Html.EditorFor(model => model.TrackingRefNo, new { htmlAttributes = new { @class = "form-control HeaderBox",@readonly=true,@value ="--System Generated Code--" } })
                                         @Html.ValidationMessageFor(model => model.TrackingRefNo, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>

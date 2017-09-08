@@ -173,7 +173,7 @@ function ClearFields() {
 
     $("#DistributionDate").val("");
     $("#ddlAgency").val("");
-    $("#TrackingRefNo").val("");
+    $("#TrackingRefNo").val("--System Generated Code--");
     $("#GeneralNotes").val("");
     $("#TrackingURL").val("");
     ResetForm();
