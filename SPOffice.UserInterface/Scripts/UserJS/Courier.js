@@ -2,6 +2,24 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 $(document).ready(function () {
     try {
+        $('#btnUpload').click(function () {
+            //Pass the controller name
+            var FileObject = new Object;
+            if ($('#hdnFileDupID').val() != emptyGUID) {
+                FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
+            }
+            else {
+                FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
+            }
+
+
+            FileObject.ParentType = "Courier";
+            FileObject.Controller = "FileUpload";
+            UploadFile(FileObject);
+        });
+
+
+
 
         DataTables.CourierTable = $('#CourierTable').DataTable(
          {
@@ -68,6 +86,8 @@ function GetAllCouriers() {
     }
 }
 
+
+
 function openNav(id) {
     var left = $(".main-sidebar").width();
     var total = $(document).width();
@@ -108,16 +128,16 @@ function Save() {
 }
 
 function Delete() {
-    notyConfirm('Are you sure to delete?', 'DeleteCourierAgency()', '', "Yes, delete it!");
+    notyConfirm('Are you sure to delete?', 'DeleteCourier()', '', "Yes, delete it!");
 }
 
-function DeleteCourierAgency() {
+function DeleteCourier() {
     try {
-        var id = $('#Code').val();
+        var id = $('#ID').val();
         if (id != '' && id != null) {
-            var data = { "Code": id };
+            var data = { "ID": id };
             var ds = {};
-            ds = GetDataFromServer("CourierAgency/DeleteCourierAgency/", data);
+            ds = GetDataFromServer("Courier/DeleteCourier/", data);
 
             if (ds != '') {
                 ds = JSON.parse(ds);
@@ -158,6 +178,7 @@ function ClearFields() {
     $("#TrackingURL").val("");
     ResetForm();
     ChangeButtonPatchView("Courier", "btnPatchAdd", "Add"); //ControllerName,id of the container div,Name of the action
+    clearUploadControl();
 }
 
 //-----------------------------------------Reset Validation Messages--------------------------------------//
@@ -188,6 +209,7 @@ function SaveSuccess(data, status) {
             notyAlert('success', JsonResult.Record.Message);
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
+                $("#TrackingRefNo").val(JsonResult.Record.RefNo);
             }
             break;
         case "ERROR":
@@ -252,7 +274,8 @@ function FillCourierDetails(ID) {
     $("#GeneralNotes").val(thisItem.GeneralNotes);
     $("#TrackingURL").val(thisItem.TrackingURL);
    
-
+    clearUploadControl();
+    PaintImages(ID);
 
 }
 

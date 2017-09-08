@@ -312,5 +312,199 @@ namespace SPOffice.RepositoryServices.Services
 
             return courierList;
         }
+
+        public object InsertCourier(Courier courier)
+        {
+            SqlParameter outputStatus, outputID,outrefNo;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[InsertCourier]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@Type", SqlDbType.VarChar, 10).Value = courier.Type;
+                        cmd.Parameters.Add("@TransactionDate", SqlDbType.DateTime).Value = courier.TransactionDate;
+                        cmd.Parameters.Add("@SourceName", SqlDbType.VarChar,250).Value = courier.SourceName;
+                        cmd.Parameters.Add("@SourceAddress", SqlDbType.NVarChar,-1).Value = courier.SourceAddress;
+                        cmd.Parameters.Add("@DestName", SqlDbType.VarChar,150).Value = courier.DestName;
+                        cmd.Parameters.Add("@DestAddress", SqlDbType.NVarChar,-1).Value = courier.DestAddress;
+                        cmd.Parameters.Add("@DistributedTo", SqlDbType.VarChar, 100).Value = courier.DistributedTo;
+                        cmd.Parameters.Add("@DistributionDate", SqlDbType.DateTime).Value = courier.DistributionDate;
+                        cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar,10).Value = courier.AgencyCode;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
+                        cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = courier.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = courier.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        outrefNo = cmd.Parameters.Add("@TrackingRefNo", SqlDbType.VarChar, 50);
+                        outrefNo.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.InsertFailure);
+
+                    case "1":
+                        //success
+
+                        return new
+                        {
+                            ID = outputID.Value.ToString(),
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.InsertSuccess,
+                            RefNo= outrefNo.Value.ToString()
+                        };
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                ID = outputID.Value.ToString(),
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.InsertSuccess,
+                RefNo = outrefNo.Value.ToString()
+            };
+        }
+
+        public object UpdateCourier(Courier courier)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateCourier]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = courier.ID;
+                        cmd.Parameters.Add("@Type", SqlDbType.VarChar, 10).Value = courier.Type;
+                        cmd.Parameters.Add("@TransactionDate", SqlDbType.DateTime).Value = courier.TransactionDate;
+                        cmd.Parameters.Add("@SourceName", SqlDbType.VarChar, 250).Value = courier.SourceName;
+                        cmd.Parameters.Add("@SourceAddress", SqlDbType.NVarChar, -1).Value = courier.SourceAddress;
+                        cmd.Parameters.Add("@DestName", SqlDbType.VarChar, 150).Value = courier.DestName;
+                        cmd.Parameters.Add("@DestAddress", SqlDbType.NVarChar, -1).Value = courier.DestAddress;
+                        cmd.Parameters.Add("@DistributedTo", SqlDbType.VarChar, 100).Value = courier.DistributedTo;
+                        cmd.Parameters.Add("@DistributionDate", SqlDbType.DateTime).Value = courier.DistributionDate;
+                        cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar, 10).Value = courier.AgencyCode;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
+                        cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = courier.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = courier.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
+
+        public object DeleteCourier(Guid ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteCourier]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
+        }
     }
 }

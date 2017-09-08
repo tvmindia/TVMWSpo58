@@ -92,28 +92,28 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion  GetCourierDetails
 
-        #region InsertUpdateCourierAgency
+        #region InsertUpdateCourier
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[AuthSecurityFilter(ProjectObject = "Department", Mode = "W")]
-        public string InsertUpdateCourierAgency(CourierAgencyViewModel courierAgencyViewModel)
+        public string InsertUpdateCourier(CourierViewModel courierViewModel)
         {
             object result = null;
             try
             {
                 //  AppUA _appUA = Session["AppUA"] as AppUA;
-                courierAgencyViewModel.commonObj = new CommonViewModel();
-                courierAgencyViewModel.commonObj.CreatedBy = "Albert Thomson";//change it change it
-                courierAgencyViewModel.commonObj.CreatedDate = DateTime.Now;
-                courierAgencyViewModel.commonObj.UpdatedBy = courierAgencyViewModel.commonObj.CreatedBy;
-                courierAgencyViewModel.commonObj.UpdatedDate = courierAgencyViewModel.commonObj.CreatedDate;
-                switch (courierAgencyViewModel.Operation)
+                courierViewModel.commonObj = new CommonViewModel();
+                courierViewModel.commonObj.CreatedBy = "Albert Thomson";//change it change it
+                courierViewModel.commonObj.CreatedDate = DateTime.Now;
+                courierViewModel.commonObj.UpdatedBy = courierViewModel.commonObj.CreatedBy;
+                courierViewModel.commonObj.UpdatedDate = courierViewModel.commonObj.CreatedDate;
+                switch (string.IsNullOrEmpty(courierViewModel.ID.ToString()))
                 {
-                    case "Insert":
-                        result = _courierBusiness.InsertCourierAgency(Mapper.Map<CourierAgencyViewModel, CourierAgency>(courierAgencyViewModel));
+                    case true:
+                        result = _courierBusiness.InsertCourier(Mapper.Map<CourierViewModel, Courier>(courierViewModel));
                         break;
-                    case "Update":
-                        result = _courierBusiness.UpdateCourierAgency(Mapper.Map<CourierAgencyViewModel, CourierAgency>(courierAgencyViewModel));
+                    case false:
+                        result = _courierBusiness.UpdateCourier(Mapper.Map<CourierViewModel, Courier>(courierViewModel));
                         break;
                 }
 
@@ -125,17 +125,17 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion InsertUpdateCourierAgency
+        #endregion InsertUpdateCourier
 
-        #region DeleteCourierAgency
+        #region DeleteCourier
         [HttpGet]
         //[AuthSecurityFilter(ProjectObject = "Department", Mode = "D")]
-        public string DeleteCourierAgency(string Code)
+        public string DeleteCourier(string ID)
         {
             try
             {
                 object result = null;
-                result = _courierBusiness.DeleteCourierAgency(Code);
+                result = _courierBusiness.DeleteCourier(Guid.Parse(ID));
                 return JsonConvert.SerializeObject(new { Result = "OK", Message = result });
 
             }
@@ -147,7 +147,7 @@ namespace SPOffice.UserInterface.Controllers
 
 
         }
-        #endregion DeleteCourierAgency
+        #endregion DeleteCourier
 
         #region ButtonStyling
         [HttpGet]

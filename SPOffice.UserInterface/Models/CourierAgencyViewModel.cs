@@ -28,18 +28,23 @@ namespace SPOffice.UserInterface.Models
     public class CourierViewModel
     {
         public Guid? ID { get; set; }
+        public Guid hdnFileID { get; set; }
+        [Required(ErrorMessage = "Please Choose Type")]
         [Display(Name = "Courier Type")]
         [MaxLength(10)]
         public string Type { get; set; }
         public List<SelectListItem> CourierTypeList { get; set; }
+        [Required(ErrorMessage = "Please enter Transaction Date")]
         [Display(Name = "Transaction Date")]
         public string TransactionDate { get; set; }
+        [Required(ErrorMessage = "Please enter Source name")]
         [Display(Name = "Source Name")]
         [MaxLength(150)]
         public string SourceName { get; set; }
         [Display(Name = "Source Address")]
         [DataType(DataType.MultilineText)]
         public string SourceAddress { get; set; }
+        [Required(ErrorMessage = "Please enter Destination name")]
         [Display(Name = "Destination Name")]
         [MaxLength(150)]
         public string DestName { get; set; }
@@ -51,6 +56,7 @@ namespace SPOffice.UserInterface.Models
         public string DistributedTo { get; set; }
         [Display(Name = "Distribution Date")]
         public string DistributionDate { get; set; }
+        [Required(ErrorMessage = "Please chosse agency")]
         [Display(Name = "Agency")]
         public string AgencyCode { get; set; }
         public CourierAgencyViewModel courierAgency { get; set; }

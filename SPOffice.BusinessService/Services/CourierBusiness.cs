@@ -91,5 +91,20 @@ namespace SPOffice.BusinessService.Services
             }
             return courier;
         }
+
+        public object InsertCourier(Courier courier)
+        {
+            return _courierRepository.InsertCourier(courier);
+        }
+
+        public object UpdateCourier(Courier courier)
+        {
+            return _courierRepository.UpdateCourier(courier);
+        }
+
+        public object DeleteCourier(Guid ID)
+        {
+            return _courierRepository.DeleteCourier(ID);
+        }
     }
 }
