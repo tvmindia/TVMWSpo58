@@ -11,5 +11,11 @@ namespace SPOffice.BusinessService.Contracts
     {
         List<Customer> GetAllCustomers();
         List<CustomerPO> GetAllCustomerPOForMobile(string duration);
+
+
+        List<CustomerPO> GetAllCustomerPurchaseOrders();
+        object InsertPurchaseOrder(CustomerPO customerPO);
+        object UpdatePurchaseOrder(CustomerPO customerPO);
+        object DeletePurchaseOrder(Guid ID);
     }
 }

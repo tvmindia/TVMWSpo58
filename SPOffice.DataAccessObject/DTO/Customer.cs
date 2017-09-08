@@ -37,17 +37,21 @@ namespace SPOffice.DataAccessObject.DTO
         public string PODate { get; set; }
         public string POReceivedDate { get; set; }
         public Guid CustomerID { get; set; }
+        public Customer customer { get; set; }
         public string POToCompCode { get; set; }
         public string POToCompAddress { get; set; }
+        public Company company { get; set; }
         public string POTitle { get; set; }
         public string POContent { get; set; }
         public string POStatus { get; set; }
+        public POStatus poStatus { get; set; }
         public string POKeywords { get; set; }
         public decimal GrossAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal TaxPercApplied { get; set; }
         public decimal TaxAmount { get; set; }
         public string TaxTypeCode { get; set; }
+        public TaxType taxType { get; set; }
         public string GeneralNotes { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
@@ -64,6 +68,11 @@ namespace SPOffice.DataAccessObject.DTO
         public string Description { get; set; }
         public int NoOfDays { get; set; }
         public Common commonObj { get; set; }
+    }
+    public class POStatus
+    {
+        public string Code { get; set; }
+        public string Description { get; set; }
     }
 
 

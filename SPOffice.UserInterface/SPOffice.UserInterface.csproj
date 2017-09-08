@@ -643,6 +643,7 @@
     <Compile Include="Controllers\AppObjectController.cs" />
     <Compile Include="Controllers\CourierAgencyController.cs" />
     <Compile Include="Controllers\CourierController.cs" />
+    <Compile Include="Controllers\CustomerOrderController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
@@ -727,6 +728,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\CustomerOrder\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>

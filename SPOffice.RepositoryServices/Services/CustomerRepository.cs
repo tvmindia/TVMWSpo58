@@ -19,6 +19,8 @@ namespace SPOffice.RepositoryServices.Services
             _databaseFactory = databaseFactory;
         }
 
+       
+
         #region GetAllCustomerMobile
         public List<CustomerPO> GetAllCustomerPOForMobile(string duration)
         {
@@ -83,6 +85,7 @@ namespace SPOffice.RepositoryServices.Services
             return customerList;
         }
 
+      
 
         #endregion GetAllCustomerMobile
 
@@ -151,6 +154,108 @@ namespace SPOffice.RepositoryServices.Services
             }
 
             return customerList;
+        }
+
+        public List<CustomerPO> GetAllCustomerPurchaseOrders()
+        {
+            List<CustomerPO> customerPOList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllCustomerPurchaseOrders]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                customerPOList = new List<CustomerPO>();
+                                while (sdr.Read())
+                                {
+                                    CustomerPO _customerObj = new CustomerPO();
+                                    {
+                                        _customerObj.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _customerObj.CustomerID);
+                                        _customerObj.customer = new Customer();
+                                        {
+                                            _customerObj.customer.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.ID);
+                                            _customerObj.customer.CompanyName= (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _customerObj.customer.CompanyName);
+                                            _customerObj.customer.BillingAddress= (sdr["CustomerBillingAddress"].ToString() != "" ? sdr["CustomerBillingAddress"].ToString() : _customerObj.customer.BillingAddress);
+                                            _customerObj.customer.ShippingAddress= (sdr["CustomerShippingAddress"].ToString() != "" ? sdr["CustomerShippingAddress"].ToString() : _customerObj.customer.ShippingAddress);
+                                        }
+                                        _customerObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.ID);
+                                        _customerObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _customerObj.PONo);
+                                        _customerObj.POReceivedDate = (sdr["POReceivedDate"].ToString() != "" ? DateTime.Parse(sdr["POReceivedDate"].ToString()).ToString(s.dateformat) : _customerObj.POReceivedDate);
+                                        _customerObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _customerObj.PODate);
+                                        _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
+                                        _customerObj.POStatus = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _customerObj.POStatus);
+                                        _customerObj.poStatus = new POStatus();
+                                        {
+                                            _customerObj.poStatus.Code= (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _customerObj.poStatus.Code);
+                                            _customerObj.poStatus.Description= (sdr["POStatusDescription"].ToString() != "" ? sdr["POStatusDescription"].ToString() : _customerObj.poStatus.Description);
+                                        }
+                                        _customerObj.POKeywords = (sdr["POKeywords"].ToString() != "" ? sdr["POKeywords"].ToString() : _customerObj.POKeywords);
+                                        _customerObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _customerObj.GeneralNotes);
+                                        _customerObj.POContent = (sdr["POContent"].ToString() != "" ? sdr["POContent"].ToString() : _customerObj.POContent);
+                                        _customerObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _customerObj.TaxTypeCode);
+                                        _customerObj.taxType = new TaxType();
+                                        {
+                                            _customerObj.taxType.Code= (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _customerObj.taxType.Code);
+                                            _customerObj.taxType.Description= (sdr["TaxTypeDescription"].ToString() != "" ? sdr["TaxTypeDescription"].ToString() : _customerObj.taxType.Description);
+                                            _customerObj.taxType.Rate= (sdr["TaxRate"].ToString() != "" ? decimal.Parse(sdr["TaxRate"].ToString()) : _customerObj.taxType.Rate);
+                                        }
+                                        _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
+                                        _customerObj.POToCompAddress = (sdr["POToCompAddress"].ToString() != "" ? sdr["POToCompAddress"].ToString() : _customerObj.POToCompAddress);
+                                        _customerObj.POToCompCode = (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : _customerObj.POToCompCode);
+                                        _customerObj.company = new Company();
+                                        {
+                                            _customerObj.company.Code= (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : _customerObj.company.Code);
+                                            _customerObj.company.BillingAddress= (sdr["POToBillingAddress"].ToString() != "" ? sdr["POToBillingAddress"].ToString() : _customerObj.company.BillingAddress);
+                                            _customerObj.company.ShippingAddress= (sdr["POToShippingAddress"].ToString() != "" ? sdr["POToShippingAddress"].ToString() : _customerObj.company.ShippingAddress);
+                                        }
+
+                                        _customerObj.CustomerName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _customerObj.CustomerName);
+                                        _customerObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _customerObj.TaxAmount);
+                                        _customerObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _customerObj.Discount);
+                                        _customerObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _customerObj.TaxPercApplied);
+                                        _customerObj.GrossAmount = (sdr["GrossAmount"].ToString() != "" ? decimal.Parse(sdr["GrossAmount"].ToString()) : _customerObj.GrossAmount);
+                                        _customerObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _customerObj.Amount);
+                                    }
+                                    customerPOList.Add(_customerObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return customerPOList;
+        }
+
+
+        public object InsertPurchaseOrder(CustomerPO customerPO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object UpdatePurchaseOrder(CustomerPO customerPO)
+        {
+            throw new NotImplementedException();
+        }
+        public object DeletePurchaseOrder(Guid ID)
+        {
+            throw new NotImplementedException();
         }
         #endregion GetAllCustomers
 
