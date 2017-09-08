@@ -145,6 +145,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar,-1).Value = quoteHeader.GeneralNotes;
                         //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quoteHeader.DetailXML;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = quoteHeader.hdnFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);

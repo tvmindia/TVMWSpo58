@@ -251,6 +251,16 @@ function AmountSummary() {
     //$('#grandtotal').val(roundoff(total + vatamount));
 }
 
+
+function BindAllQuotes() {
+    try {
+        DataTables.QuotationTable.clear().rows.add(GetAllQuotations()).draw(false);
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
 function GetTaxPercentage()
 {
    
@@ -390,7 +400,7 @@ function SaveSuccess(data, status) {
                 $("#ID").val(JsonResult.Record.ID);
                 $('#deleteId').val(JsonResult.Record.ID);
             }
-            
+            BindAllQuotes();
             EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
             break;
         case "ERROR":
