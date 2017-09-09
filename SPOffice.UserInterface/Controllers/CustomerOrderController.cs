@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using UserInterface.Models;
 
@@ -24,7 +27,6 @@ namespace SPOffice.UserInterface.Controllers
         // GET: CustomerOrder
         public ActionResult Index()
         {
-
             CustomerPOViewModel customerPOlVM = new CustomerPOViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
@@ -69,6 +71,122 @@ namespace SPOffice.UserInterface.Controllers
             return View(customerPOlVM);
         }
 
+
+        #region GetAllPurchaseOrders
+        [HttpGet]
+        public string GetAllPurchaseOrders()
+        {
+            try
+            {
+                List<CustomerPOViewModel> customerPOViewModelList = Mapper.Map<List<CustomerPO>, List<CustomerPOViewModel>>(_customerBusiness.GetAllCustomerPurchaseOrders());
+              
+                int openCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "OPN").Select(T => T.ID).Count();
+                int inProgressCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "PGS").Select(T => T.ID).Count();
+                int closedCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "CSD").Select(T => T.ID).Count();
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = customerPOViewModelList, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllPurchaseOrders
+        #region GetPurchaseOrderByID
+        [HttpGet]
+        public string GetPurchaseOrderByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                CustomerPOViewModel customerPOViewModel = Mapper.Map<CustomerPO, CustomerPOViewModel>(_customerBusiness.GetCustomerPurchaseOrderByID(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = customerPOViewModel });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetPurchaseOrderByID
+
+        #region InsertUpdatePurchaseOrder
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string InsertUpdatePurchaseOrder(CustomerPOViewModel customerPOViewModel)
+        {
+            try
+            {
+                object result = null;
+                if (ModelState.IsValid)
+                {
+                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    customerPOViewModel.commonObj = new CommonViewModel();
+                    customerPOViewModel.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
+                    customerPOViewModel.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    customerPOViewModel.commonObj.UpdatedBy = customerPOViewModel.commonObj.CreatedBy;
+                    customerPOViewModel.commonObj.UpdatedDate = customerPOViewModel.commonObj.CreatedDate;
+                   
+                    switch (string.IsNullOrEmpty(customerPOViewModel.ID.ToString()))
+                    {
+                        case true:
+                            result = _customerBusiness.InsertPurchaseOrder(Mapper.Map<CustomerPOViewModel, CustomerPO>(customerPOViewModel));
+                            break;
+                        case false:
+                            result = _customerBusiness.UpdatePurchaseOrder(Mapper.Map<CustomerPOViewModel, CustomerPO>(customerPOViewModel));
+                            break;
+                    }
+
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                }
+                else
+                {
+                    List<string> modelErrors = new List<string>();
+                    foreach (var modelState in ModelState.Values)
+                    {
+                        foreach (var modelError in modelState.Errors)
+                        {
+                            modelErrors.Add(modelError.ErrorMessage);
+                        }
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+
+
+        }
+        #endregion InsertUpdatePurchaseOrder
+
+        #region  DeletePurchaseOrder
+        [HttpGet]
+        public string DeletePurchaseOrder(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _customerBusiness.DeletePurchaseOrder(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeletePurchaseOrder
 
         #region ButtonStyling
         [HttpGet]

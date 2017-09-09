@@ -69,12 +69,17 @@ namespace SPOffice.UserInterface.Models
     public class CustomerPOViewModel
     {
         public Guid ID { get; set; }
+        [Display(Name = "Purchase Order Number")]
         public string PONo { get; set; }
+        [Display(Name = "Purchase Order Date")]
         public string PODate { get; set; }
         public string POReceivedDate { get; set; }
+        [Display(Name = "Customer")]
         public Guid CustomerID { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
+
         public CustomerViewModel customer { get; set; }
+        [Display(Name = "Order To Company")]
         public string POToCompCode { get; set; }
         public string POToCompAddress { get; set; }
         public List<SelectListItem> CompanyList { get; set; }
@@ -82,27 +87,43 @@ namespace SPOffice.UserInterface.Models
         public string POTitle { get; set; }
         public string POContent { get; set; }
         public string POStatus { get; set; }
-        public POStatusViewModel poStatus { get; set; }
+        public PurchaseOrderStatusViewModel purchaseOrderStatus { get; set; }
         public string POKeywords { get; set; }
+        [Required(ErrorMessage = "Gross Amount required")]
+        [Display(Name = "Gross Amount")]
         public decimal GrossAmount { get; set; }
+        [Required(ErrorMessage = "Cash Discount required")]
+        [Display(Name = "Cash Discount")]
         public decimal Discount { get; set; }
+        [Required(ErrorMessage = "Tax Percentage required")]
+        [Display(Name = "Tax Percentage Applied")]
         public decimal TaxPercApplied { get; set; }
         public decimal TaxAmount { get; set; }
+        [Display(Name = "Tax Type")]
         public string TaxTypeCode { get; set; }
         public TaxTypeViewModel taxType { get; set; }
         public List<SelectListItem> TaxTypeList { get; set; }
+        [Display(Name = "General Notes")]
+        [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
         public string CustomerName { get; set; }
+        [Display(Name = "Customer Address")]
         public string BillingAddress { get; set; }
+        [Display(Name = "Consignee Address")]
+        public string ShippingAddress { get; set; }
+
         public Guid hdnFileID { get; set; }
+        [Required(ErrorMessage = "Net Taxable required")]
+        [Display(Name = "Net Taxable Amount")]
         public decimal NetTaxableAmount { get; set; }
         public decimal TotalAmount { get; set; }
+        public CommonViewModel commonObj { get; set; }
     }
 
-    public class POStatusViewModel
+    public class PurchaseOrderStatusViewModel
     {
         public string Code { get; set; }
         public string Description { get; set; }

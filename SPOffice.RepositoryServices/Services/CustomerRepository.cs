@@ -195,11 +195,11 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.POReceivedDate = (sdr["POReceivedDate"].ToString() != "" ? DateTime.Parse(sdr["POReceivedDate"].ToString()).ToString(s.dateformat) : _customerObj.POReceivedDate);
                                         _customerObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _customerObj.PODate);
                                         _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
-                                        _customerObj.POStatus = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _customerObj.POStatus);
-                                        _customerObj.poStatus = new POStatus();
+                                        _customerObj.POStatus = (sdr["POStatusDescription"].ToString() != "" ? sdr["POStatusDescription"].ToString() : _customerObj.POStatus);
+                                        _customerObj.purchaseOrderStatus = new PurchaseOrderStatus();
                                         {
-                                            _customerObj.poStatus.Code= (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _customerObj.poStatus.Code);
-                                            _customerObj.poStatus.Description= (sdr["POStatusDescription"].ToString() != "" ? sdr["POStatusDescription"].ToString() : _customerObj.poStatus.Description);
+                                            _customerObj.purchaseOrderStatus.Code= (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _customerObj.purchaseOrderStatus.Code);
+                                            _customerObj.purchaseOrderStatus.Description= (sdr["POStatusDescription"].ToString() != "" ? sdr["POStatusDescription"].ToString() : _customerObj.purchaseOrderStatus.Description);
                                         }
                                         _customerObj.POKeywords = (sdr["POKeywords"].ToString() != "" ? sdr["POKeywords"].ToString() : _customerObj.POKeywords);
                                         _customerObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _customerObj.GeneralNotes);
@@ -226,7 +226,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _customerObj.Discount);
                                         _customerObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _customerObj.TaxPercApplied);
                                         _customerObj.GrossAmount = (sdr["GrossAmount"].ToString() != "" ? decimal.Parse(sdr["GrossAmount"].ToString()) : _customerObj.GrossAmount);
-                                        _customerObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _customerObj.Amount);
+                                       
                                     }
                                     customerPOList.Add(_customerObj);
                                 }
@@ -246,16 +246,204 @@ namespace SPOffice.RepositoryServices.Services
 
         public object InsertPurchaseOrder(CustomerPO customerPO)
         {
-            throw new NotImplementedException();
+            SqlParameter outputStatus, outputID;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[InsertCustomerPurchaseOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = customerPO.PONo;
+                        cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = customerPO.PODate;
+                        cmd.Parameters.Add("@POReceivedDate", SqlDbType.DateTime).Value = customerPO.POReceivedDate;
+                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = customerPO.CustomerID;
+                        cmd.Parameters.Add("@POToCompCode", SqlDbType.VarChar,10).Value = customerPO.POToCompCode;
+                        cmd.Parameters.Add("@POToCompAddress", SqlDbType.NVarChar, -1).Value = customerPO.POToCompAddress;
+                        cmd.Parameters.Add("@POTitle", SqlDbType.VarChar, 500).Value = customerPO.POTitle;
+                        cmd.Parameters.Add("@POContent", SqlDbType.NVarChar,-1).Value = customerPO.POContent;
+                       
+                        cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = customerPO.POStatus;
+                        cmd.Parameters.Add("@POKeywords", SqlDbType.VarChar, 250).Value = customerPO.POKeywords;
+                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = customerPO.GrossAmount;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = customerPO.Discount;
+
+                       
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = customerPO.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = customerPO.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = customerPO.TaxAmount;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customerPO.GeneralNotes;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = customerPO.hdnFileID;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = customerPO.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = customerPO.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.InsertFailure);
+                    case "1":
+                        //success
+                        return new
+                        {
+                            ID = outputID.Value.ToString(),
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.InsertSuccess
+                        };
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                ID = outputID.Value.ToString(),
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.InsertSuccess
+            };
         }
 
         public object UpdatePurchaseOrder(CustomerPO customerPO)
         {
-            throw new NotImplementedException();
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateCustomerPurchaseOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customerPO.ID;
+                        cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = customerPO.PONo;
+                        cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = customerPO.PODate;
+                        cmd.Parameters.Add("@POReceivedDate", SqlDbType.DateTime).Value = customerPO.POReceivedDate;
+                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = customerPO.CustomerID;
+                        cmd.Parameters.Add("@POToCompCode", SqlDbType.VarChar, 10).Value = customerPO.POToCompCode;
+                        cmd.Parameters.Add("@POToCompAddress", SqlDbType.NVarChar, -1).Value = customerPO.POToCompAddress;
+                        cmd.Parameters.Add("@POTitle", SqlDbType.VarChar, 500).Value = customerPO.POTitle;
+                        cmd.Parameters.Add("@POContent", SqlDbType.NVarChar, -1).Value = customerPO.POContent;
+
+                        cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = customerPO.POStatus;
+                        cmd.Parameters.Add("@POKeywords", SqlDbType.VarChar, 250).Value = customerPO.POKeywords;
+                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = customerPO.GrossAmount;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = customerPO.Discount;
+
+
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = customerPO.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = customerPO.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = customerPO.TaxAmount;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customerPO.GeneralNotes;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = customerPO.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = customerPO.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
         }
         public object DeletePurchaseOrder(Guid ID)
         {
-            throw new NotImplementedException();
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteCustomerPurchaseOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
         }
         #endregion GetAllCustomers
 

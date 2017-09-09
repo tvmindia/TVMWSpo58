@@ -44,7 +44,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string POTitle { get; set; }
         public string POContent { get; set; }
         public string POStatus { get; set; }
-        public POStatus poStatus { get; set; }
+        public PurchaseOrderStatus purchaseOrderStatus { get; set; }
         public string POKeywords { get; set; }
         public decimal GrossAmount { get; set; }
         public decimal Discount { get; set; }
@@ -60,7 +60,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string BillingAddress { get; set; }
         public Guid hdnFileID { get; set; }
 
-
+        public Common commonObj { get; set; }
     }
 
     public class PaymentTerms
@@ -70,7 +70,7 @@ namespace SPOffice.DataAccessObject.DTO
         public int NoOfDays { get; set; }
         public Common commonObj { get; set; }
     }
-    public class POStatus
+    public class PurchaseOrderStatus
     {
         public string Code { get; set; }
         public string Description { get; set; }

@@ -34,21 +34,46 @@ namespace SPOffice.BusinessService.Services
 
         public object InsertPurchaseOrder(CustomerPO customerPO)
         {
-            throw new NotImplementedException();
+          return  _customerRepository.InsertPurchaseOrder(customerPO);
         }
 
         public object UpdatePurchaseOrder(CustomerPO customerPO)
         {
-            throw new NotImplementedException();
+            return _customerRepository.UpdatePurchaseOrder(customerPO);
         }
 
         public object DeletePurchaseOrder(Guid ID)
         {
-            throw new NotImplementedException();
+            return _customerRepository.DeletePurchaseOrder(ID);
         }
         public List<CustomerPO> GetAllCustomerPurchaseOrders()
         {
-            throw new NotImplementedException();
+            List<CustomerPO> CustomerPOList = null;
+            try
+            {
+                CustomerPOList = _customerRepository.GetAllCustomerPurchaseOrders();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return CustomerPOList;
+        }
+
+        public CustomerPO GetCustomerPurchaseOrderByID(Guid ID)
+        {
+            List<CustomerPO> CustomerPOList = GetAllCustomerPurchaseOrders();
+            CustomerPO customerPO = null;
+            try
+            {
+               customerPO = CustomerPOList != null ? CustomerPOList.Where(Q => Q.ID == ID).SingleOrDefault() : null;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+          
+            return customerPO;
         }
     }
 }

@@ -30,50 +30,21 @@
     </div>
 
     <div class="row summaryboxes">
-        <div class="col-md-2 col-sm-6 col-xs-12">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">DRAFT <b><span id="draftCount">0</span></b></span>
+                    <span class="info-box-text">OPEN <b><span id="openCount">0</span></b></span>
 
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-2 col-sm-6 col-xs-12">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">DELIVERED <b><span id="deliveredCount">0</span></b></span>
-
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <!-- /.col -->
-        <!-- fix for small devices only -->
-        <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
-
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cart-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">CLOSED <b><span id="closedCount">0</span></b></span>
@@ -85,23 +56,38 @@
         </div>
         <!-- /.col -->
         <!-- /.col -->
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
+
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+     
+     
     </div>
     <div class="row">
         &nbsp;
     </div>
     <div class="row tableContainer">
         <div class="col-md-12">
-            <table id="QuotationTable" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" width="100%">
+            <table id="PurchaseOrderTable" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" width="100%">
                 <thead>
                     <tr class="text-center TableHead">
                         <th>ID</th>
-                        <th>Quote Date</th>
-                        <th>Quote No.</th>
-                        <th>Subject</th>
+                        <th>Order No.</th>
+                        <th>Order Date</th>
+                        <th>Customer</th>
                         <th>To Company</th>
-                        <th>Contact Details</th>
-                        <th>From Company</th>
-                        <th>Stage</th>
+                        <th>Status</th>
                         <th>...</th>
 
                     </tr>
@@ -133,7 +119,7 @@
             </div>
 
             <div class="EntryForms" style="height:550px">
-                @using (Ajax.BeginForm("InsertUpdateQuotaion", "CustomerOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "QuoteForm" }))
+                @using (Ajax.BeginForm("InsertUpdatePurchaseOrder", "CustomerOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "PurchaseOrderForm" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-yellow" aria-hidden="true"></i> Basic Details</div>
@@ -158,7 +144,7 @@
                           
 
                          
-                            <div class="form-group col-md-12"></div>
+                         
 
                         
 
@@ -216,14 +202,14 @@
 
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.customer.BillingAddress, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.BillingAddress, htmlAttributes: new { @class = "control-label" })
 
 
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.customer.BillingAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
-                                        @Html.ValidationMessageFor(model => model.customer.BillingAddress, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.BillingAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                        @Html.ValidationMessageFor(model => model.BillingAddress, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -233,14 +219,14 @@
 
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.customer.ShippingAddress, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
 
 
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.customer.ShippingAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
-                                        @Html.ValidationMessageFor(model => model.customer.ShippingAddress, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                        @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -253,20 +239,13 @@
                         <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">
                             <div class="form-group col-md-12">
                                 <div class="col-md-12 text-right">
-                                    <div class="rightAmtCaption">Quote Stage</div>
+                                    <div class="rightAmtCaption">Order Status</div>
                                 </div>
                                 <div class="col-md-12 text-right">
                                     <div class="rightAmt" id="lblQuoteStage"></div>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmtCaption">Email Sent(Y/N)</div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblEmailSent"></div>
-                                </div>
-                            </div>
+                           
 
 
                         </div>
@@ -450,12 +429,6 @@
 
     </div>
 </section>
-
-
-
-
-
-
 
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
