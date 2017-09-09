@@ -608,6 +608,7 @@
     <Content Include="Scripts\UserJS\AppSubobject.js" />
     <Content Include="Scripts\UserJS\Courier.js" />
     <Content Include="Scripts\UserJS\CourierAgency.js" />
+    <Content Include="Scripts\UserJS\CustomerPO.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
     <Content Include="Scripts\UserJS\ManageSubObjectAccess.js" />
@@ -719,6 +720,7 @@
     <Content Include="Views\Shared\Fileupload.cshtml" />
     <Content Include="Views\Shared\_QuoteMailPreview.cshtml" />
     <Content Include="Views\Courier\Index.cshtml" />
+    <Content Include="Views\CustomerOrder\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -728,7 +730,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\CustomerOrder\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>

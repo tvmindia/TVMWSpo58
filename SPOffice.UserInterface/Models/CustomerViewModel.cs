@@ -73,22 +73,38 @@ namespace SPOffice.UserInterface.Models
         public string PODate { get; set; }
         public string POReceivedDate { get; set; }
         public Guid CustomerID { get; set; }
+        public List<SelectListItem> CustomerList { get; set; }
+        public CustomerViewModel customer { get; set; }
         public string POToCompCode { get; set; }
         public string POToCompAddress { get; set; }
+        public List<SelectListItem> CompanyList { get; set; }
+        public CompanyViewModel company { get; set; }
         public string POTitle { get; set; }
         public string POContent { get; set; }
         public string POStatus { get; set; }
+        public POStatusViewModel poStatus { get; set; }
         public string POKeywords { get; set; }
         public decimal GrossAmount { get; set; }
         public decimal Discount { get; set; }
-        public decimal TaxPercApplied{ get; set; }
+        public decimal TaxPercApplied { get; set; }
         public decimal TaxAmount { get; set; }
         public string TaxTypeCode { get; set; }
+        public TaxTypeViewModel taxType { get; set; }
+        public List<SelectListItem> TaxTypeList { get; set; }
         public string GeneralNotes { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
         public string CustomerName { get; set; }
         public string BillingAddress { get; set; }
+        public Guid hdnFileID { get; set; }
+        public decimal NetTaxableAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
+
+    public class POStatusViewModel
+    {
+        public string Code { get; set; }
+        public string Description { get; set; }
     }
 }

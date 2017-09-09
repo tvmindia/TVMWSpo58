@@ -58,8 +58,9 @@ namespace SPOffice.DataAccessObject.DTO
         public string duration { get; set; }
         public string CustomerName { get; set; }
         public string BillingAddress { get; set; }
-        
-        
+        public Guid hdnFileID { get; set; }
+
+
     }
 
     public class PaymentTerms
