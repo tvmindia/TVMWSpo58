@@ -10,6 +10,7 @@ namespace SPOffice.BusinessService.Contracts
    public interface ICustomerBusiness
     {
         List<Customer> GetAllCustomers();
+        Customer GetCustomerDetailsByID(Guid ID);
         List<CustomerPO> GetAllCustomerPOForMobile(string duration);
 
 

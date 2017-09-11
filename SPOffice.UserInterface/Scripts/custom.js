@@ -64,7 +64,7 @@ $(document).ready(function () {
         todayHighlight: true
     });
    
-    $('input,textarea').keydown(function (e) {
+    $('input').keydown(function (e) {
         var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
         if (key == 13) {
             e.preventDefault();
@@ -440,8 +440,7 @@ function UploadFile(FileObject)
         }
    // });
 }
-function PaintImages(ID)
-{
+function PaintImages(ID) {
     try {
         debugger;
         var data = { "ID": ID };
@@ -453,8 +452,7 @@ function PaintImages(ID)
         if (ds.Result == "OK") {
             //ds.Records
             debugger;
-            if (ds.Records != null)
-            {
+            if (ds.Records != null) {
                 $('#ExistingPreview').empty();
                 var filesize = 0;
                 for (var i = 0; i < ds.Records.length; i++) {
@@ -462,6 +460,8 @@ function PaintImages(ID)
                     html = '<div class="file-preview-thumbnails">'
                                         + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'
                                              + ' <div class="kv-file-content">'
+                                             + '<a href="/FileUpload/DownloadFile?token=' + ds.Records[i].AttachmentURL + '" style="position: absolute;left: 7%;cursor:pointer;z-index: 900;color: #26a026;"><i class="fa fa-download" aria-hidden="true" ></i></a>'
+                                             + '<a style="position: absolute;right: 0%;cursor:pointer;z-index: 900;color: #dc3939;" ><i class="fa fa-trash-o" aria-hidden="true" onclick="DeleteFile(this);" token="' + ds.Records[i].ID + '"></i></a>'
                                                  + ' <div class="kv-preview-data file-preview-other-frame">'
                                                      + ' <div class="file-preview-other">'
                                                         + '  <span class="file-other-icon">' + validateType(ds.Records[i].FileName) + '</span>'
@@ -479,7 +479,7 @@ function PaintImages(ID)
                 }
                 $('#hdnFileSizebytes').val(filesize);
             }
-            
+
         }
         if (ds.Result == "ERROR") {
             notyAlert('error', ds.Message);

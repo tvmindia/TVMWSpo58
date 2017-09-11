@@ -68,6 +68,26 @@ namespace SPOffice.UserInterface.Controllers
             }
 
             customerPOlVM.TaxTypeList = selectListItem;
+            selectListItem = new List<SelectListItem>();
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "Closed",
+                Value = "CSD",
+                Selected = false
+            });
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "Open",
+                Value = "OPN",
+                Selected = false
+            });
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "In Progress",
+                Value = "PGS",
+                Selected = false
+            });
+            customerPOlVM.POStatusList = selectListItem;
             return View(customerPOlVM);
         }
 
@@ -188,6 +208,28 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion DeletePurchaseOrder
 
+
+        #region GetCustomerDetailsByID
+        [HttpGet]
+        public string GetCustomerDetailsByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("CustomerID required");
+                }
+                CustomerViewModel customerViewModel = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomerDetailsByID(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = customerViewModel });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetCustomerDetailsByID
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
@@ -218,7 +260,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Visible = true;
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.Title = "Save";
-                    ToolboxViewModelObj.savebtn.Event = "saveInvoices();";
+                    ToolboxViewModelObj.savebtn.Event = "Save();";
 
                     ToolboxViewModelObj.resetbtn.Visible = true;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
@@ -230,10 +272,10 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.CloseBtn.Title = "Close";
                     ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
 
-                    ToolboxViewModelObj.EmailBtn.Visible = true;
-                    ToolboxViewModelObj.EmailBtn.Text = "Mail";
-                    ToolboxViewModelObj.EmailBtn.Title = "Mail";
-                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteCustomerPO()";
 
                     break;
                 case "Add":
@@ -246,7 +288,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Visible = true;
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.Title = "Save";
-                    ToolboxViewModelObj.savebtn.Event = " saveInvoices();";
+                    ToolboxViewModelObj.savebtn.Event = "Save();";
 
                     ToolboxViewModelObj.CloseBtn.Visible = true;
                     ToolboxViewModelObj.CloseBtn.Text = "Close";

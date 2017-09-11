@@ -32,7 +32,7 @@ namespace SPOffice.DataAccessObject.DTO
 
     public class CustomerPO
     {
-        public Guid ID { get; set; }
+        public Guid? ID { get; set; }
         public string PONo { get; set; }
         public string PODate { get; set; }
         public string POReceivedDate { get; set; }
@@ -48,16 +48,19 @@ namespace SPOffice.DataAccessObject.DTO
         public string POKeywords { get; set; }
         public decimal GrossAmount { get; set; }
         public decimal Discount { get; set; }
+        public decimal NetTaxableAmount { get; set; }
         public decimal TaxPercApplied { get; set; }
         public decimal TaxAmount { get; set; }
         public string TaxTypeCode { get; set; }
         public TaxType taxType { get; set; }
         public string GeneralNotes { get; set; }
         public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
         public string CustomerName { get; set; }
         public string BillingAddress { get; set; }
+        public string ShippingAddress { get; set; }
         public Guid hdnFileID { get; set; }
 
         public Common commonObj { get; set; }

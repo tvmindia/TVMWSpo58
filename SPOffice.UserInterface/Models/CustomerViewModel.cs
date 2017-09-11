@@ -68,34 +68,45 @@ namespace SPOffice.UserInterface.Models
     }
     public class CustomerPOViewModel
     {
-        public Guid ID { get; set; }
+        public Guid? ID { get; set; }
         [Display(Name = "Purchase Order Number")]
+        [Required(ErrorMessage = "PONo required")]
         public string PONo { get; set; }
         [Display(Name = "Purchase Order Date")]
+        [Required(ErrorMessage = "PODate required")]
         public string PODate { get; set; }
         public string POReceivedDate { get; set; }
         [Display(Name = "Customer")]
+        [Required(ErrorMessage = "Customer required")]
         public Guid CustomerID { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
 
         public CustomerViewModel customer { get; set; }
         [Display(Name = "Order To Company")]
+        [Required(ErrorMessage = "Company required")]
         public string POToCompCode { get; set; }
         public string POToCompAddress { get; set; }
         public List<SelectListItem> CompanyList { get; set; }
         public CompanyViewModel company { get; set; }
+        [Display(Name = "Order Title")]
         public string POTitle { get; set; }
+        [Display(Name = "Order Content")]
+        [DataType(DataType.MultilineText)]
         public string POContent { get; set; }
+        
+        [Display(Name = "Order Status")]
+        [Required(ErrorMessage = "Status required")]
         public string POStatus { get; set; }
+        public List<SelectListItem> POStatusList { get; set; }
         public PurchaseOrderStatusViewModel purchaseOrderStatus { get; set; }
         public string POKeywords { get; set; }
         [Required(ErrorMessage = "Gross Amount required")]
         [Display(Name = "Gross Amount")]
         public decimal GrossAmount { get; set; }
-        [Required(ErrorMessage = "Cash Discount required")]
+        
         [Display(Name = "Cash Discount")]
         public decimal Discount { get; set; }
-        [Required(ErrorMessage = "Tax Percentage required")]
+        
         [Display(Name = "Tax Percentage Applied")]
         public decimal TaxPercApplied { get; set; }
         public decimal TaxAmount { get; set; }
@@ -111,12 +122,13 @@ namespace SPOffice.UserInterface.Models
         public string duration { get; set; }
         public string CustomerName { get; set; }
         [Display(Name = "Customer Address")]
+        [DataType(DataType.MultilineText)]
         public string BillingAddress { get; set; }
         [Display(Name = "Consignee Address")]
+        [DataType(DataType.MultilineText)]
         public string ShippingAddress { get; set; }
 
         public Guid hdnFileID { get; set; }
-        [Required(ErrorMessage = "Net Taxable required")]
         [Display(Name = "Net Taxable Amount")]
         public decimal NetTaxableAmount { get; set; }
         public decimal TotalAmount { get; set; }

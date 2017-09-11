@@ -61,7 +61,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.POContent = (sdr["POContent"].ToString() != "" ? sdr["POContent"].ToString() : _customerObj.POContent);
                                         _customerObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _customerObj.TaxTypeCode);
                                         _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
-                                        _customerObj.POToCompAddress= (sdr["POToCompAddress"].ToString() != "" ? sdr["POToCompAddress"].ToString() : _customerObj.POToCompAddress);
+                                        _customerObj.POToCompAddress= (sdr["CustomerBillingAddress"].ToString() != "" ? sdr["CustomerBillingAddress"].ToString() : _customerObj.POToCompAddress);
                                         _customerObj.POToCompCode = (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : _customerObj.POToCompCode);
                                         _customerObj.CustomerName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _customerObj.CustomerName);
                                         _customerObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _customerObj.TaxAmount);
@@ -185,11 +185,13 @@ namespace SPOffice.RepositoryServices.Services
                                         _customerObj.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _customerObj.CustomerID);
                                         _customerObj.customer = new Customer();
                                         {
-                                            _customerObj.customer.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.ID);
+                                            _customerObj.customer.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.customer.ID);
                                             _customerObj.customer.CompanyName= (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _customerObj.customer.CompanyName);
-                                            _customerObj.customer.BillingAddress= (sdr["CustomerBillingAddress"].ToString() != "" ? sdr["CustomerBillingAddress"].ToString() : _customerObj.customer.BillingAddress);
-                                            _customerObj.customer.ShippingAddress= (sdr["CustomerShippingAddress"].ToString() != "" ? sdr["CustomerShippingAddress"].ToString() : _customerObj.customer.ShippingAddress);
+                                            _customerObj.customer.BillingAddress= (sdr["CustBillingAddress"].ToString() != "" ? sdr["CustBillingAddress"].ToString() : _customerObj.customer.BillingAddress);
+                                            _customerObj.customer.ShippingAddress= (sdr["CustShippingAddress"].ToString() != "" ? sdr["CustShippingAddress"].ToString() : _customerObj.customer.ShippingAddress);
                                         }
+                                        _customerObj.BillingAddress = (sdr["CustomerBillingAddress"].ToString() != "" ? sdr["CustomerBillingAddress"].ToString() : _customerObj.BillingAddress);
+                                        _customerObj.ShippingAddress = (sdr["CustomerShippingAddress"].ToString() != "" ? sdr["CustomerShippingAddress"].ToString() : _customerObj.ShippingAddress);
                                         _customerObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _customerObj.ID);
                                         _customerObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _customerObj.PONo);
                                         _customerObj.POReceivedDate = (sdr["POReceivedDate"].ToString() != "" ? DateTime.Parse(sdr["POReceivedDate"].ToString()).ToString(s.dateformat) : _customerObj.POReceivedDate);
@@ -212,10 +214,11 @@ namespace SPOffice.RepositoryServices.Services
                                             _customerObj.taxType.Rate= (sdr["TaxRate"].ToString() != "" ? decimal.Parse(sdr["TaxRate"].ToString()) : _customerObj.taxType.Rate);
                                         }
                                         _customerObj.POTitle = (sdr["POTitle"].ToString() != "" ? sdr["POTitle"].ToString() : _customerObj.POTitle);
-                                        _customerObj.POToCompAddress = (sdr["POToCompAddress"].ToString() != "" ? sdr["POToCompAddress"].ToString() : _customerObj.POToCompAddress);
+                                      
                                         _customerObj.POToCompCode = (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : _customerObj.POToCompCode);
                                         _customerObj.company = new Company();
                                         {
+                                            _customerObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : _customerObj.company.Name);
                                             _customerObj.company.Code= (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : _customerObj.company.Code);
                                             _customerObj.company.BillingAddress= (sdr["POToBillingAddress"].ToString() != "" ? sdr["POToBillingAddress"].ToString() : _customerObj.company.BillingAddress);
                                             _customerObj.company.ShippingAddress= (sdr["POToShippingAddress"].ToString() != "" ? sdr["POToShippingAddress"].ToString() : _customerObj.company.ShippingAddress);
@@ -263,10 +266,11 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = customerPO.PONo;
                         cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = customerPO.PODate;
-                        cmd.Parameters.Add("@POReceivedDate", SqlDbType.DateTime).Value = customerPO.POReceivedDate;
+                        cmd.Parameters.Add("@POReceivedDate", SqlDbType.DateTime).Value = customerPO.PODate;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = customerPO.CustomerID;
                         cmd.Parameters.Add("@POToCompCode", SqlDbType.VarChar,10).Value = customerPO.POToCompCode;
-                        cmd.Parameters.Add("@POToCompAddress", SqlDbType.NVarChar, -1).Value = customerPO.POToCompAddress;
+                        cmd.Parameters.Add("@CustomerBillingAddress", SqlDbType.NVarChar, -1).Value = customerPO.BillingAddress;
+                        cmd.Parameters.Add("@CustomerShippingAddress", SqlDbType.NVarChar, -1).Value = customerPO.ShippingAddress;
                         cmd.Parameters.Add("@POTitle", SqlDbType.VarChar, 500).Value = customerPO.POTitle;
                         cmd.Parameters.Add("@POContent", SqlDbType.NVarChar,-1).Value = customerPO.POContent;
                        
@@ -342,10 +346,11 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customerPO.ID;
                         cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = customerPO.PONo;
                         cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = customerPO.PODate;
-                        cmd.Parameters.Add("@POReceivedDate", SqlDbType.DateTime).Value = customerPO.POReceivedDate;
+                        cmd.Parameters.Add("@POReceivedDate", SqlDbType.DateTime).Value = customerPO.PODate;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = customerPO.CustomerID;
                         cmd.Parameters.Add("@POToCompCode", SqlDbType.VarChar, 10).Value = customerPO.POToCompCode;
-                        cmd.Parameters.Add("@POToCompAddress", SqlDbType.NVarChar, -1).Value = customerPO.POToCompAddress;
+                        cmd.Parameters.Add("@CustomerBillingAddress", SqlDbType.NVarChar, -1).Value = customerPO.BillingAddress;
+                        cmd.Parameters.Add("@CustomerShippingAddress", SqlDbType.NVarChar, -1).Value = customerPO.ShippingAddress;
                         cmd.Parameters.Add("@POTitle", SqlDbType.VarChar, 500).Value = customerPO.POTitle;
                         cmd.Parameters.Add("@POContent", SqlDbType.NVarChar, -1).Value = customerPO.POContent;
 

@@ -474,7 +474,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.GrossAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)",@readonly = "true" } })
+                                        @Html.EditorFor(model => model.GrossAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isNumber(event)", @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.GrossAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -489,7 +489,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)", onblur = "RoundTxtBox(this)", onkeyup = "AmountSummary()" } })
+                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isNumber(event)", onblur = "RoundTxtBox(this)", onkeyup = "AmountSummary()" } })
                                         @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -505,7 +505,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.NetTaxableAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isnumber(event)", @readonly = "true" } })
+                                        @Html.EditorFor(model => model.NetTaxableAmount, new { htmlattributes = new { @class = "form-control headerbox amount", onkeypress = "return isNumber(event)", @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.NetTaxableAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -534,7 +534,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TaxPercApplied, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isnumber(event)", @readonly = "true" } })
+                                        @Html.EditorFor(model => model.TaxPercApplied, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)", @readonly = "true" } })
                                         @Html.ValidationMessageFor(model => model.TaxPercApplied, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>

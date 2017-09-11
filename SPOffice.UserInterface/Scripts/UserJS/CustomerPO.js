@@ -75,24 +75,23 @@ $(document).ready(function () {
 
 function AmountSummary() {
     var total = 0.00;
-    for (i = 0; i < EG_GridData.length; i++) {
-        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
+    var GAmount = roundoff($('#GrossAmount').val());
+    if (GAmount)
+    {
+        //$('#GrossAmount').val(roundoff(GAmount));
+        var discount = parseFloat($('#Discount').val()) || 0;
+        var nettaxableamount = GAmount - discount;
+        $('#NetTaxableAmount').val(roundoff(nettaxableamount));
+        var applicabletax = $("#TaxPercApplied").val();
+        $('#TaxAmount').val(roundoff((nettaxableamount * applicabletax) / 100));
+        var totamt = roundoff(nettaxableamount + (nettaxableamount * applicabletax) / 100);
+        $("#TotalAmount").val(totamt);
     }
-    $('#GrossAmount').val(roundoff(total));
-    var discount = parseFloat($('#Discount').val()) || 0;
-    var nettaxableamount = total - discount;
-    $('#NetTaxableAmount').val(roundoff(nettaxableamount));
-    var applicabletax = $("#TaxPercApplied").val();
-    $('#TaxAmount').val((roundoff(nettaxableamount) * applicabletax) / 100);
-    var totamt = nettaxableamount + (roundoff(nettaxableamount) * applicabletax) / 100;
-    $("#TotalAmount").val(totamt);
-
-    //var vatp = (parseFloat($('#vatpercentage').val()) || 0);
-    //if (vatp > 0) {
-    //    vatamount = (total * vatp) / 100;
-    //    $('#vatamount').val(roundoff(vatamount));
-    //}
-    //$('#grandtotal').val(roundoff(total + vatamount));
+    else
+    {
+        $('#GrossAmount').val(roundoff(total));
+    }
+  
 }
 
 
@@ -130,17 +129,44 @@ function GetTaxPercentage() {
         else {
             $("#TaxPercApplied").val(0);
         }
-
+       
     }
     catch (e) {
         notyAlert('error', e.message);
     }
+    AmountSummary();
 }
 
-function Delete(curobj) {
-    var rowData = DataTables.PurchaseOrderTable.row($(curobj).parents('tr')).data();
-    if (rowData.ID) {
-        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '");', '', "Yes, delete it!");
+
+function GetCustomerDeails(curobj)
+{
+    var customerid = $(curobj).val();
+    if(customerid)
+    {
+        var data = { "ID": customerid };
+        var ds = {};
+        ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+
+            $("#BillingAddress").val(ds.Record.BillingAddress);
+            $("#ShippingAddress").val(ds.Record.ShippingAddress);
+      
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    }
+ 
+}
+
+function DeleteCustomerPO(curobj) {
+    var rowData = $("#ID").val();
+    if (rowData) {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData + '");', '', "Yes, delete it!");
     }
 
 
@@ -156,7 +182,7 @@ function DeleteItem(ID) {
         if (ID) {
             var data = { "ID": ID };
             var ds = {};
-            ds = GetDataFromServer("Quotation/DeleteItemByID/", data);
+            ds = GetDataFromServer("CustomerOrder/DeletePurchaseOrder/", data);
             if (ds != '') {
                 ds = JSON.parse(ds);
             }
@@ -164,7 +190,8 @@ function DeleteItem(ID) {
                 switch (ds.Result) {
                     case "OK":
                         notyAlert('success', ds.Message);
-                        EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                        BindAllPurchaseOrders();
+                        closeNav();
                         break;
                     case "ERROR":
                         notyAlert('error', ds.Message);
@@ -186,21 +213,10 @@ function DeleteItem(ID) {
 
 }
 
-function saveInvoices() {
-    var validation = EG_Validate();
-    if (validation == "") {
-
-        var result = JSON.stringify(EG_GridData);
-        $("#DetailJSON").val(result);
-        $('#btnSave').trigger('click');
-    }
-    else {
-        notyAlert('error', validation);
-    }
-
-
-
-}
+function Save()
+ {
+   $('#btnSave').trigger('click');
+ }
 
 
 
@@ -216,7 +232,7 @@ function SaveSuccess(data, status) {
             ChangeButtonPatchView('CustomerOrder', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
-                $('#deleteId').val(JsonResult.Record.ID);
+             
             }
             BindAllPurchaseOrders();
             break;
@@ -264,22 +280,23 @@ function BindPurchaseOrderDetails(ID) {
             $("#ShippingAddress").val(jsresult.customer.ShippingAddress);
             $("#GrossAmount").val(jsresult.GrossAmount);
             $("#Discount").val(jsresult.Discount);
-            //$("#NetTaxableAmount").val(jsresult.quoteStage.Code);
+            $("#ddlOrderStatus").val(jsresult.purchaseOrderStatus.Code);
             $("#TaxTypeCode").val(jsresult.TaxTypeCode);
           
-            $("#GrossAmount").val(jsresult.GrossAmount);
-            $("#Discount").val(jsresult.Discount);
-            $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
+            $("#GrossAmount").val(roundoff(jsresult.GrossAmount));
+            $("#Discount").val(roundoff(jsresult.Discount));
+            $("#NetTaxableAmount").val(roundoff(jsresult.NetTaxableAmount));
             $("#TaxPercApplied").val(jsresult.TaxPercApplied);
-            $("#TaxAmount").val(jsresult.TaxAmount);
-            $("#TotalAmount").val(jsresult.TotalAmount);
+            $("#TaxAmount").val(roundoff(jsresult.TaxAmount));
+            $("#TotalAmount").val(roundoff(jsresult.TotalAmount));
            
             $("#GeneralNotes").val(jsresult.GeneralNotes);
 
             $("#lblQuoteStage").text(jsresult.purchaseOrderStatus.Description);
            
-
-           
+            $("#POTitle").val(jsresult.POTitle);
+            $("#POContent").val(jsresult.POContent);
+            $('#lblCustomerPONo').text(jsresult.PONo);
          
             clearUploadControl();
             PaintImages(ID);
@@ -291,6 +308,34 @@ function BindPurchaseOrderDetails(ID) {
     catch (e) {
         notyAlert('error', e.Message);
     }
+}
+
+function OrderStatusChange(curobj)
+{
+    var status = $(curobj).val();
+    if (status)
+    {
+
+   
+        switch(status)
+        {
+            case 'CSD':
+                $("#lblQuoteStage").text('Closed');
+                break;
+            case 'OPN':
+                $("#lblQuoteStage").text('Open');
+                break;
+            case 'PGS':
+                $("#lblQuoteStage").text('In Progress');
+                break;
+
+        }
+    }
+    else
+    {
+        $("#lblQuoteStage").text('N/A');
+    }
+       
 }
 
 function GetPurchaseOrderDetailsByID(ID) {
@@ -318,8 +363,8 @@ function AddNew() {
     ChangeButtonPatchView('CustomerOrder', 'btnPatchAdd', 'Add');
     openNav();
    
-    Reset();
-  
+    ResetForm();
+    $('#lblCustomerPONo').text("New Purchase Order");
     $("#lblQuoteStage").text('N/A');
     
     clearUploadControl();
@@ -329,10 +374,30 @@ function AddNew() {
 
 function Reset() {
 
-    $('#PurchaseOrderForm')[0].reset();
-    $('#ID').val('');
+   
+   
+    if ($("#ID").val() == "") {
+        ClearFields();
+    }
+    else {
+        BindPurchaseOrderDetails($("#ID").val());
+    }
+    ResetForm();
+}
+function ClearFields() {
+
+    ResetForm();
+    ChangeButtonPatchView("CustomerOrder", "btnPatchAdd", "Add"); //ControllerName,id of the container div,Name of the action
 }
 
+function ResetForm() {
+    $('#ID').val('');
+    $('#PurchaseOrderForm')[0].reset();
+}
+function OrderNumberOnChange(curobj)
+{
+    $('#lblCustomerPONo').text($(curobj).val());
+}
 //---------------Bind logics-------------------
 function GetAllPurchaseOrders() {
     try {
