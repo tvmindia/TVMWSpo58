@@ -104,7 +104,7 @@ function openNav(id) {
     }
     if (id != "0") {
         ClearFields();
-        
+        $('#lblCourierRefNo').text("New Courier");
     }
 
 }
@@ -113,6 +113,11 @@ function goBack() {
     ClearFields();
     closeNav();
     BindAllCouriers();
+}
+
+function TrackingRefnoOnChange(curobj)
+{
+    $('#lblCourierRefNo').text($(curobj).val());
 }
 
 function Save() {
@@ -173,7 +178,7 @@ function ClearFields() {
 
     $("#DistributionDate").val("");
     $("#ddlAgency").val("");
-    $("#TrackingRefNo").val("--System Generated Code--");
+    $("#TrackingRefNo").val("");
     $("#GeneralNotes").val("");
     $("#TrackingURL").val("");
     ResetForm();
@@ -209,7 +214,7 @@ function SaveSuccess(data, status) {
             notyAlert('success', JsonResult.Record.Message);
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
-                $("#TrackingRefNo").val(JsonResult.Record.RefNo);
+               
             }
             break;
         case "ERROR":
@@ -273,6 +278,7 @@ function FillCourierDetails(ID) {
     $("#TrackingRefNo").val(thisItem.TrackingRefNo);
     $("#GeneralNotes").val(thisItem.GeneralNotes);
     $("#TrackingURL").val(thisItem.TrackingURL);
+    $("#lblCourierRefNo").text(thisItem.TrackingRefNo);
    
     clearUploadControl();
     PaintImages(ID);
@@ -284,6 +290,7 @@ function Edit(currentObj) {
     //Tab Change on edit click
 
     openNav("0");
+    
     ResetForm();
    
     var rowData = DataTables.CourierTable.row($(currentObj).parents('tr')).data();

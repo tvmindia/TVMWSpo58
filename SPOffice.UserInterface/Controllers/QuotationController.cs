@@ -397,6 +397,28 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion SendQuoteMail
 
+
+        #region GetCustomerDetailsByID
+        [HttpGet]
+        public string GetCustomerDetailsByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("CustomerID required");
+                }
+                CustomerViewModel customerViewModel = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomerDetailsByID(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = customerViewModel });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetCustomerDetailsByID
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)

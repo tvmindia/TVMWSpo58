@@ -225,6 +225,11 @@ function CalculateGridAmount(row) {
 
 }
 
+function QuotationNoOnChange(curobj)
+{
+    $("#lblQuotationNo").text($(curobj).val());
+}
+
 function AmountSummary() {
     var total = 0.00;
     for (i = 0; i < EG_GridData.length; i++) {
@@ -500,6 +505,7 @@ function BindQuationDetails(ID)
             $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
             
             $('#SentToEmails').val(jsresult.SentToEmails);
+            $("#lblQuotationNo").text(jsresult.QuotationNo);
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
             clearUploadControl();
             PaintImages(ID);
@@ -543,6 +549,7 @@ function AddNew() {
     $("#ddlQuoteStage").val('DFT');
     $("#lblQuoteStage").text('N/A');
     $("#lblEmailSent").text('N/A');
+    $("#lblQuotationNo").text('New Quotation');
     clearUploadControl();
     EG_AddBlankRows(5)
   //  clearUploadControl();
@@ -701,5 +708,26 @@ function MailSuccess(data, status)
 function SendMailClick() {
     $('#btnFormSendMail').trigger('click');
 }
+function GetCustomerDeails(curobj) {
+    var customerid = $(curobj).val();
+    if (customerid) {
+        var data = { "ID": customerid };
+        var ds = {};
+        ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
 
+            $("#SentToAddress").val(ds.Record.BillingAddress);
+            $("#ContactPerson").val(ds.Record.ContactPerson);
+
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    }
+
+}
 

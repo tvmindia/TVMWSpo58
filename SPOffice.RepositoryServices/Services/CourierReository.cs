@@ -315,7 +315,7 @@ namespace SPOffice.RepositoryServices.Services
 
         public object InsertCourier(Courier courier)
         {
-            SqlParameter outputStatus, outputID,outrefNo;
+            SqlParameter outputStatus, outputID;
             try
             {
 
@@ -339,6 +339,8 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@DistributedTo", SqlDbType.VarChar, 100).Value = courier.DistributedTo;
                         cmd.Parameters.Add("@DistributionDate", SqlDbType.DateTime).Value = courier.DistributionDate;
                         cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar,10).Value = courier.AgencyCode;
+                        cmd.Parameters.Add("@TrackingRefNo", SqlDbType.VarChar, 50).Value = courier.TrackingRefNo;
+                        
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
                         cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = courier.hdnFileID;
@@ -348,8 +350,7 @@ namespace SPOffice.RepositoryServices.Services
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
                         outputID.Direction = ParameterDirection.Output;
-                        outrefNo = cmd.Parameters.Add("@TrackingRefNo", SqlDbType.VarChar, 50);
-                        outrefNo.Direction = ParameterDirection.Output;
+                      
                         cmd.ExecuteNonQuery();
 
 
@@ -369,8 +370,8 @@ namespace SPOffice.RepositoryServices.Services
                         {
                             ID = outputID.Value.ToString(),
                             Status = outputStatus.Value.ToString(),
-                            Message = Cobj.InsertSuccess,
-                            RefNo= outrefNo.Value.ToString()
+                            Message = Cobj.InsertSuccess
+                           
                         };
 
                     default:
@@ -387,8 +388,8 @@ namespace SPOffice.RepositoryServices.Services
             {
                 ID = outputID.Value.ToString(),
                 Status = outputStatus.Value.ToString(),
-                Message = Cobj.InsertSuccess,
-                RefNo = outrefNo.Value.ToString()
+                Message = Cobj.InsertSuccess
+              
             };
         }
 
@@ -419,6 +420,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@DistributedTo", SqlDbType.VarChar, 100).Value = courier.DistributedTo;
                         cmd.Parameters.Add("@DistributionDate", SqlDbType.DateTime).Value = courier.DistributionDate;
                         cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar, 10).Value = courier.AgencyCode;
+                        cmd.Parameters.Add("@TrackingRefNo", SqlDbType.VarChar, 50).Value = courier.TrackingRefNo;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
                         cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = courier.commonObj.UpdatedBy;
