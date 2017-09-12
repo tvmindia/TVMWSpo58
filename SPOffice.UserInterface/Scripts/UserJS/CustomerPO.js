@@ -153,7 +153,7 @@ function GetCustomerDeails(curobj)
 
             $("#BillingAddress").val(ds.Record.BillingAddress);
             $("#ShippingAddress").val(ds.Record.ShippingAddress);
-      
+           
             return ds.Record;
         }
         if (ds.Result == "ERROR") {

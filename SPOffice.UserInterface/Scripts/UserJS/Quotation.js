@@ -694,6 +694,16 @@ function MailSuccess(data, status)
         case "OK":
 
             notyAlert('success', JsonResult.Message);
+            switch(JsonResult.MailResult)
+            {
+                case 1:
+                    $("#lblEmailSent").text('YES');
+                    break;
+                case 0:
+                    $("#lblEmailSent").text('NO');
+                    break;
+            }
+           
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -721,7 +731,7 @@ function GetCustomerDeails(curobj) {
 
             $("#SentToAddress").val(ds.Record.BillingAddress);
             $("#ContactPerson").val(ds.Record.ContactPerson);
-
+            $("#SentToEmails").val(ds.Record.ContactEmail);
             return ds.Record;
         }
         if (ds.Result == "ERROR") {

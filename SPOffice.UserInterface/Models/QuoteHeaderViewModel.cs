@@ -48,7 +48,8 @@ namespace UserInterface.Models
         [Display(Name = "Customer Contact")]
         public string ContactPerson { get; set; }
         [Required(ErrorMessage = "Mailing Address required")]
-        [Display(Name = "Mailing Address")]
+        [Display(Name = "Customer Address")]
+        [DataType(DataType.MultilineText)]
         public string SentToAddress { get; set; }
         [Required(ErrorMessage = "Quote Header required")]
         [Display(Name = "Quote Header")]

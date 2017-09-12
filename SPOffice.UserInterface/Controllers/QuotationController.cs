@@ -381,7 +381,7 @@ namespace SPOffice.UserInterface.Controllers
                         quoteHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _quotationBusiness.UpdateQuoteMailStatus(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
                     }
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result,MailResult= sendsuccess });
                 }
                 else
                 {
