@@ -13,5 +13,7 @@ namespace SPOffice.RepositoryServices.Contracts
         object UpdateEnquiry(Enquiry _enquiriesObj);
         List<Enquiry>GetAllEnquiryList(Enquiry EqyObj);
         List<Enquiry> SearchEnquiriesList(Enquiry enqObj);
+        List<Enquiry> GetRecentEnquiryList();
+        EnquirySummary GetEnquirySummary();
     }
 }

@@ -62,7 +62,8 @@ namespace UserInterface.App_Start
                 config.CreateMap<TaxTypeViewModel, TaxType>().ReverseMap();
                 config.CreateMap<CourierViewModel, Courier>().ReverseMap();
                 config.CreateMap<PurchaseOrderStatusViewModel, PurchaseOrderStatus>().ReverseMap();
-                
+                config.CreateMap<EnquirySummaryViewModel, EnquirySummary>().ReverseMap();
+
             });
         }
     }

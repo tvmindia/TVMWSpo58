@@ -33,6 +33,19 @@ namespace SPOffice.DataAccessObject.DTO
         public List<Enquiry> OpenList { get; set; }
         public List<Enquiry> ConvertList { get; set; }
         public List<Enquiry> NonConvertList { get; set; }
-          
+        public string URL { get; set; }
+
+    }
+
+
+    public class EnquirySummary {
+
+        public int Total { get; set; }
+        public int Open { get; set; }
+        public int Converted { get; set; }
+        public int NotConverted { get; set; }
+        public decimal OpenPercentage { get; set; }
+        public int ConvertedPercentage { get; set; }
+        public int NotConvertedPercentage { get; set; }
     }
 }

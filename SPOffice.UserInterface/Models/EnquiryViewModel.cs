@@ -35,7 +35,18 @@ namespace SPOffice.UserInterface.Models
         public List<EnquiryViewModel> OpenList { get; set; }
         public List<EnquiryViewModel> ConvertList { get; set; }
         public List<EnquiryViewModel> NonConvertList { get; set; }
+        public string URL { get; set; }
     }
 
-    
+    public class EnquirySummaryViewModel
+    {
+
+        public int Total { get; set; }
+        public int Open { get; set; }
+        public int Converted { get; set; }
+        public int NotConverted { get; set; }
+        public decimal OpenPercentage { get; set; }
+        public int ConvertedPercentage { get; set; }
+        public int NotConvertedPercentage { get; set; }
+    }
 }

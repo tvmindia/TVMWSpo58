@@ -10,6 +10,7 @@ using UserInterface.Models;
 using AutoMapper;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.BusinessService.Contracts;
+using SPOffice.UserInterface.Models;
 
 namespace UserInterface.Controllers
 {
@@ -37,16 +38,16 @@ namespace UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Dashboard", Mode = "R")]
         public ActionResult Index()
         {
-            AppUA _appUA = Session["AppUA"] as AppUA;
-         
-            if (("," +_appUA.RolesCSV+ ",").Contains(",SAdmin,") || _appUA.RolesCSV.Contains("CEO"))
-            {
-                return RedirectToAdminDashboard();
-            }
-            else {
-                return View();
-            }
-            
+            //AppUA _appUA = Session["AppUA"] as AppUA;
+
+            //if (("," +_appUA.RolesCSV+ ",").Contains(",SAdmin,") || _appUA.RolesCSV.Contains("CEO"))
+            //{
+            //    return RedirectToAdminDashboard();
+            //}
+            //else {
+            //    return View();
+            //}
+            return View();
         }
 
         [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
@@ -62,5 +63,26 @@ namespace UserInterface.Controllers
         {
             return RedirectToAction("Admin", "DashBoard");
         }
+
+        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        public ActionResult RecentEnquiries()
+        {
+            RecentEnquiriesViewModel data=new RecentEnquiriesViewModel();
+            data.BaseUrl = "../Enquiries/Index/";
+            data.EnquiryList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_dashboardBusiness.GetRecentEnquiryList(data.BaseUrl));
+            return PartialView("_RecentEnquiries", data);
+        }
+
+
+        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        public ActionResult EnquiriesSummary()
+        {
+            EnquirySummaryViewModel data = new EnquirySummaryViewModel();
+           
+            data = Mapper.Map<EnquirySummary, EnquirySummaryViewModel>(_dashboardBusiness.GetEnquirySummary());
+            return PartialView("_EnquirySummary", data);
+        }
+
+
     }
 }

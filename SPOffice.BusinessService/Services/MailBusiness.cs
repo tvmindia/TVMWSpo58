@@ -16,13 +16,14 @@ namespace SPOffice.BusinessService.Services
         string host = System.Web.Configuration.WebConfigurationManager.AppSettings["SMTP-host"];
         string smtpUserName = System.Web.Configuration.WebConfigurationManager.AppSettings["SMTP-UserName"];
         string smtpPassword = System.Web.Configuration.WebConfigurationManager.AppSettings["SMTP-Password"];
+        string AliasName = System.Web.Configuration.WebConfigurationManager.AppSettings["SMTP-AliasName"];
         string port = System.Web.Configuration.WebConfigurationManager.AppSettings["Port"];
 
         public async Task<bool> MailSendAsync(Mail mailObj)
         {
             try
             {
-                using (var mail = new MailMessage(new MailAddress(EmailFromAddress, "Admin_@_SPOffice"), new MailAddress(mailObj.To)))
+                using (var mail = new MailMessage(new MailAddress(EmailFromAddress, AliasName), new MailAddress(mailObj.To)))
                 {
                     mail.Subject = mailObj.Subject;
                     mail.Body = mailObj.Body;

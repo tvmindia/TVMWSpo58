@@ -10,5 +10,8 @@ namespace SPOffice.BusinessService.Contracts
    public interface IDashboardBusiness
     {
         DashboardStatus GetCountOfEnquiries(string duration);
+        List<Enquiry> GetRecentEnquiryList( string BaseURL);
+        EnquirySummary GetEnquirySummary();
+
     }
 }

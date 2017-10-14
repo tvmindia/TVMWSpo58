@@ -721,6 +721,8 @@
     <Content Include="Views\Shared\_QuoteMailPreview.cshtml" />
     <Content Include="Views\Courier\Index.cshtml" />
     <Content Include="Views\CustomerOrder\Index.cshtml" />
+    <Content Include="Views\Dashboard\_RecentEnquiries.cshtml" />
+    <Content Include="Views\Dashboard\_EnquirySummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -11,13 +11,42 @@ namespace SPOffice.BusinessService.Services
 	public class DashboardBusiness:IDashboardBusiness
 	{
         IDashboardRepository _dashboardrepository;
-        public DashboardBusiness(IDashboardRepository dashboardrepository)
+        private IEnquiryRepository _enquiryRepository;
+        public DashboardBusiness(IDashboardRepository dashboardrepository, IEnquiryRepository enquiryRepository)
         {
             _dashboardrepository = dashboardrepository;
+            _enquiryRepository = enquiryRepository;
         }
         public DashboardStatus GetCountOfEnquiries(string duration)
         {
             return _dashboardrepository.GetCountOfEnquiries(duration);
+        }
+
+        public List<Enquiry> GetRecentEnquiryList( string BaseURL) {
+            List<Enquiry> result= _enquiryRepository.GetRecentEnquiryList();
+
+            if (result != null)
+            {
+                foreach (Enquiry m in result)
+                {
+                 
+                    m.URL = BaseURL + m.ID;
+                }
+            }
+
+            return result;
+        }
+
+        public EnquirySummary GetEnquirySummary() {
+            EnquirySummary result= _enquiryRepository.GetEnquirySummary();
+            if (result != null && result.Total>0)
+            {
+                result.NotConvertedPercentage = (result.NotConverted * 100 )/ result.Total ;
+                result.ConvertedPercentage = (result.Converted *100) / result.Total ;
+                result.OpenPercentage = (result.Open*100) / result.Total ;
+
+            }
+            return result;
         }
 
     }

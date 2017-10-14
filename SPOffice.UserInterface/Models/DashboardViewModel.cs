@@ -1,4 +1,5 @@
-﻿ 
+﻿
+using SPOffice.UserInterface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,19 @@ namespace UserInterface.Models
         public int NonConvertedEnquiryCount { get; set; }
     }
 
-    
-    
-     
+    public class RecentEnquiriesViewModel
+    {
+       public List<EnquiryViewModel> EnquiryList { get; set; }
+        public string BaseUrl { get; set; }
 
-    
-}
+    }
+
+
+
+
+
+
+    }
 
 
  

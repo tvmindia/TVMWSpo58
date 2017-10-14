@@ -1,0 +1,41 @@
+﻿@model SPOffice.UserInterface.Models.EnquirySummaryViewModel
+ <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <p>&nbsp;</p>
+        <p class="text-center">
+            <strong>Enquiry Summary (Last 6 Months)</strong>
+        </p>
+
+
+        <!-- /.progress-group -->
+        <div class="progress-group">
+            <span class="progress-text">Converted</span>
+            <span class="progress-number"><b>@Model.Converted</b>/@Model.Total</span>
+
+            <div class="progress sm">
+                <div class="progress-bar progress-bar-success" style="width: @Model.ConvertedPercentage%"></div>
+            </div>
+        </div>
+
+        <!-- /.progress-group -->
+        <div class="progress-group">
+            <span class="progress-text">Open</span>
+            <span class="progress-number"><b>@Model.Open</b>/@Model.Total</span>
+
+            <div class="progress sm">
+                <div class="progress-bar progress-bar-warning" style="width: @Model.OpenPercentage%"></div>
+            </div>
+        </div>
+        <!-- /.progress-group -->
+        <!-- /.progress-group -->
+        <div class="progress-group">
+            <span class="progress-text">Not Converted</span>
+            <span class="progress-number"><b>@Model.NotConverted</b>/@Model.Total</span>
+
+            <div class="progress sm">
+                <div class="progress-bar progress-bar-danger" style="width: @Model.NotConvertedPercentage%"></div>
+            </div>
+        </div>
+
+    </div>
+
