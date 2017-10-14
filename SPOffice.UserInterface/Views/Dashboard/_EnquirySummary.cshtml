@@ -5,7 +5,14 @@
         <p class="text-center">
             <strong>Enquiry Summary (Last 6 Months)</strong>
         </p>
+        <div class="progress-group">
+            <span class="progress-text">Open</span>
+            <span class="progress-number"><b>@Model.Open</b>/@Model.Total</span>
 
+            <div class="progress sm">
+                <div class="progress-bar progress-bar-warning" style="width: @Model.OpenPercentage%"></div>
+            </div>
+        </div>
 
         <!-- /.progress-group -->
         <div class="progress-group">
@@ -18,14 +25,7 @@
         </div>
 
         <!-- /.progress-group -->
-        <div class="progress-group">
-            <span class="progress-text">Open</span>
-            <span class="progress-number"><b>@Model.Open</b>/@Model.Total</span>
-
-            <div class="progress sm">
-                <div class="progress-bar progress-bar-warning" style="width: @Model.OpenPercentage%"></div>
-            </div>
-        </div>
+       
         <!-- /.progress-group -->
         <!-- /.progress-group -->
         <div class="progress-group">
