@@ -36,6 +36,7 @@ namespace SPOffice.UserInterface.Models
         public List<EnquiryViewModel> ConvertList { get; set; }
         public List<EnquiryViewModel> NonConvertList { get; set; }
         public string URL { get; set; }
+        public string EnquiryStatusCode { get; set; }
     }
 
     public class EnquirySummaryViewModel

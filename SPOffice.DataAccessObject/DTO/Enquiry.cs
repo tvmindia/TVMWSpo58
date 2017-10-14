@@ -34,6 +34,7 @@ namespace SPOffice.DataAccessObject.DTO
         public List<Enquiry> ConvertList { get; set; }
         public List<Enquiry> NonConvertList { get; set; }
         public string URL { get; set; }
+        public string EnquiryStatusCode { get; set; }
 
     }
 

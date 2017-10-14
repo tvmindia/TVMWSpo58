@@ -21,8 +21,9 @@
                                     <th>Company</th>
                                     <th>Contact</th>
                                     <th>About</th>
-                                    <th>Status</th>
+                                   
                                     <th>Date</th>
+                                    <th>Status</th>
 
                                 </tr>
                             </thead>
@@ -38,8 +39,25 @@
                                             <td>@Model.EnquiryList[i].Mobile</td>
 
                                             <td>@Model.EnquiryList[i].GeneralNotes</td>
-                                            <td>@Model.EnquiryList[i].EnquiryStatus</td>
-                                            <td><span class="label label-info">@Model.EnquiryList[i].EnquiryDate</span></td>
+                                           
+                                            <td>@Model.EnquiryList[i].EnquiryDate</td>
+                                            @if (Model.EnquiryList[i].EnquiryStatusCode == "CE")
+                                            {
+                                                <td><span class="label label-success">@Model.EnquiryList[i].EnquiryStatus</span></td>
+                                            }
+                                            else if (Model.EnquiryList[i].EnquiryStatusCode == "NCE")
+                                            {
+                                                <td><span class="label label-danger">@Model.EnquiryList[i].EnquiryStatus</span></td>
+                                            }
+                                            else if (Model.EnquiryList[i].EnquiryStatusCode == "OE")
+                                            {
+                                                <td><span class="label label-warning">@Model.EnquiryList[i].EnquiryStatus</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td><span class="label label-info">@Model.EnquiryList[i].EnquiryStatus</span></td>
+                                            }
+                                           
 
                                         </tr>
 
