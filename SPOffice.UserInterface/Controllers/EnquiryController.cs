@@ -9,6 +9,7 @@ using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
 using UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 
 namespace SPOffice.UserInterface.Controllers
 {
@@ -28,7 +29,21 @@ namespace SPOffice.UserInterface.Controllers
             return View();
         }
 
-
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string GetAllEnquiry(EnquiryViewModel data)
+        {
+            try
+            {
+                List<EnquiryViewModel> EnquiryList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetAllEnquiryList(Mapper.Map<EnquiryViewModel, Enquiry>(data)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
 
 
         #region ButtonStyling
