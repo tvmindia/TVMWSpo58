@@ -1,0 +1,167 @@
+﻿@model UserInterface.Models.TodaysFollowUpsViewModel
+
+<div class="col-md-12">
+
+    <div class="box box-info">
+        <div class="box-header with-border  ">
+            <h3 class="box-title">Followup Status (As On @Model.Day)</h3>
+            <span class="info " style="right:0px;float:right">Today's all followups &amp; Previous day's Open followups  </span>
+
+        </div>
+        <div class="with-border bg-olive-active " style="height:2px!important"></div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="col-md-3">
+                <p>&nbsp;</p><p>&nbsp;</p>
+                <div class="col-md-12">
+                    <!-- Info Boxes Style 2 -->
+                    <div class="info-box bg-red">
+                        <span class="info-box-icon special"><i class="fa fa-comment-o" aria-hidden="true"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Pending </span>
+                            <span class="info-box-number">@Model.open</span>
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: @Model.openPerc%"></div>
+                            </div>
+                             
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                    <div class="info-box bg-green">
+                        <span class="info-box-icon special"><i class="fa fa-check" aria-hidden="true"  ></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Closed </span>
+                            <span class="info-box-number">@Model.closed</span>
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: @Model.closedPerc%"></div>
+                            </div>
+                            
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    
+ 
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="table-responsive"  >
+                    <table class="table no-margin">
+                        <thead>
+                            <tr>
+
+                                <th>Followup Date</th>
+                                <th>Time</th>
+                                <th>Priority</th>
+                                <th>Company</th>
+                                <th>Subject</th>
+                                <th>Person</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="DashFollowuplist">
+                            @if (Model.FollowUpsList != null)
+                            {
+
+                                for (int i = 0; i < Model.FollowUpsList.Count; i++)
+                                {
+                                    <tr>
+                                        <th><a href="@Model.FollowUpsList[i].URL">@Model.FollowUpsList[i].FollowUpDate</a></th>
+                                        <td>@Model.FollowUpsList[i].FollowUpTime</td>
+                                        <td>@Model.FollowUpsList[i].Priority</td>
+                                        <td>@Model.FollowUpsList[i].Company</td>
+                                        <td>@Model.FollowUpsList[i].Subject</td>
+                                        <td>@Model.FollowUpsList[i].ContactName</td>
+                                        <td>@Model.FollowUpsList[i].Contact</td>
+                                        @if (Model.FollowUpsList[i].Status == "Open")
+                                        {
+                                            <td><span class="label label-danger">@Model.FollowUpsList[i].Status</span></td>
+                                        }
+                                        else if (Model.FollowUpsList[i].Status == "Closed")
+                                        {
+                                            <td><span class="label label-success">@Model.FollowUpsList[i].Status</span></td>
+                                        }
+                                         
+                                        else
+                                        {
+                                            <td><span class="label label-info">@Model.FollowUpsList[i].Status</span></td>
+                                        }
+
+
+                                    </tr>
+
+                                }
+
+
+                            }
+                            @if (Model != null)
+                            {
+                                for (int i = (Model.FollowUpsList == null ? 0 : Model.FollowUpsList.Count); i < 5; i++)
+                                {
+                                    <tr>
+                                        <th>-</th>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="label label-info">-</span></td>
+
+                                    </tr>
+
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    <tr>
+                                        <th>-</th>
+                                        <th>-</th>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="label label-info">-</span></td>
+
+                                    </tr>
+
+                                }
+
+
+                            }
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+           
+
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.box-body -->
+        <!-- /.box-footer -->
+        <div class="box-footer clearfix">
+
+            <a href="@Model.BaseUrl" class="label bg-olive-active">View All</a>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+</div>

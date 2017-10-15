@@ -18,7 +18,12 @@ namespace SPOffice.DataAccessObject.DTO
         public string ReminderType { get; set; }
         public string Status { get; set; }
         public string GeneralNotes { get; set; }
+
+        public string Company { get; set; }
+        public string Contact { get; set; }
+
         public Common commonObj { get; set; }
-        
+        public string URL { get; set; }
+
     }
 }

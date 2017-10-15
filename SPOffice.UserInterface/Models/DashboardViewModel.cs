@@ -41,7 +41,16 @@ namespace UserInterface.Models
     }
 
 
+    public class TodaysFollowUpsViewModel {
+        public List<FollowUpViewModel> FollowUpsList { get; set; }
+        public string BaseUrl { get; set; }
+        public int open { get; set; }
+        public int closed { get; set; }
+        public string Day { get; set; }
 
+        public int openPerc { get; set; }
+        public int closedPerc { get; set; }
+    }
 
 
 

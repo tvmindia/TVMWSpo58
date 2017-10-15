@@ -83,6 +83,26 @@ namespace UserInterface.Controllers
             return PartialView("_EnquirySummary", data);
         }
 
+        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        public ActionResult TodaysFollowUps()
+        {
+            TodaysFollowUpsViewModel data = new TodaysFollowUpsViewModel();
+            SPOffice.DataAccessObject.DTO.Common C = new SPOffice.DataAccessObject.DTO.Common();
+            data.BaseUrl = "../Enquiries/Index/";
+            data.Day = C.GetCurrentDateTimeFormatted();
+            data.FollowUpsList = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_dashboardBusiness.GetTodaysFollowUpDetails(C.GetCurrentDateTime(), data.BaseUrl));
+            if (data.FollowUpsList != null) {
+                data.open = data.FollowUpsList.Count(n => n.Status == "Open");
+                data.closed = data.FollowUpsList.Count(n => n.Status == "Closed");
+                if ((data.open + data.closed) > 0)
+                {
+                    data.openPerc = (data.open * 100) / (data.open + data.closed);
+                    data.closedPerc = (data.closed * 100) / (data.open + data.closed);
+                }
+               
+            }
 
+            return PartialView("_TodaysFollowups", data);
+        }
     }
 }

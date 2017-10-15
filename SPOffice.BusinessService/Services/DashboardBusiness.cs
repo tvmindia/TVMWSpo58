@@ -12,10 +12,12 @@ namespace SPOffice.BusinessService.Services
 	{
         IDashboardRepository _dashboardrepository;
         private IEnquiryRepository _enquiryRepository;
-        public DashboardBusiness(IDashboardRepository dashboardrepository, IEnquiryRepository enquiryRepository)
+        private IFollowUpRepository _followupRepository;
+        public DashboardBusiness(IDashboardRepository dashboardrepository, IEnquiryRepository enquiryRepository, IFollowUpRepository followupRepository)
         {
             _dashboardrepository = dashboardrepository;
             _enquiryRepository = enquiryRepository;
+            _followupRepository = followupRepository;
         }
         public DashboardStatus GetCountOfEnquiries(string duration)
         {
@@ -49,5 +51,20 @@ namespace SPOffice.BusinessService.Services
             return result;
         }
 
+
+      public  List<FollowUp> GetTodaysFollowUpDetails(DateTime onDate, string BaseURL) {
+
+            List<FollowUp> result = _followupRepository.GetFollowUpDetailsOnDate(onDate);
+            if (result != null)
+            {
+                foreach (FollowUp m in result)
+                {
+
+                    m.URL = BaseURL + m.EnquiryID;
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace SPOffice.BusinessService.Contracts
         DashboardStatus GetCountOfEnquiries(string duration);
         List<Enquiry> GetRecentEnquiryList( string BaseURL);
         EnquirySummary GetEnquirySummary();
+        List<FollowUp> GetTodaysFollowUpDetails(DateTime onDate, string BaseURL);
 
     }
 }

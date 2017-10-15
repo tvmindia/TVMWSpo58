@@ -19,6 +19,15 @@ namespace SPOffice.UserInterface.Models
         public string ReminderType { get; set; }
         public string Status { get; set; }
         public string GeneralNotes { get; set; }
+
+        public string Company { get; set; }
+        public string Contact{ get; set; }
+
         public CommonViewModel commonObj { get; set; }
+        public string URL { get; set; }
     }
+
+   
+
+
 }

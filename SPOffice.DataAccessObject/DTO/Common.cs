@@ -20,6 +20,13 @@ namespace SPOffice.DataAccessObject.DTO
             DateTime DateNow = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Local);
             return (TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateNow, tz));
         }
+        public String GetCurrentDateTimeFormatted()
+        {
+            Settings st = new Settings();
+            string tz = System.Web.Configuration.WebConfigurationManager.AppSettings["TimeZone"];
+            DateTime DateNow = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Local);
+            return ((TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateNow, tz)).ToString(st.dateformat));
+        }
     }
 
     public class AppUA
