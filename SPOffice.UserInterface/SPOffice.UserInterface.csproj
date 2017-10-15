@@ -652,6 +652,7 @@
     <Compile Include="Controllers\CustomerOrderController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
+    <Compile Include="Controllers\EnquiryController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
@@ -730,6 +731,7 @@
     <Content Include="Views\Dashboard\_EnquirySummary.cshtml" />
     <Content Include="Views\Dashboard\_TodaysFollowups.cshtml" />
     <Content Include="Views\Dashboard\_POandQuoteSummary.cshtml" />
+    <Content Include="Views\Enquiry\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

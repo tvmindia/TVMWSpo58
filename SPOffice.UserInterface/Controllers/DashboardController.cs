@@ -68,7 +68,7 @@ namespace UserInterface.Controllers
         public ActionResult RecentEnquiries()
         {
             RecentEnquiriesViewModel data=new RecentEnquiriesViewModel();
-            data.BaseUrl = "../Enquiries/Index/";
+            data.BaseUrl = "../Enquiry/Index/";
             data.EnquiryList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_dashboardBusiness.GetRecentEnquiryList(data.BaseUrl));
             return PartialView("_RecentEnquiries", data);
         }
@@ -88,7 +88,7 @@ namespace UserInterface.Controllers
         {
             TodaysFollowUpsViewModel data = new TodaysFollowUpsViewModel();
             SPOffice.DataAccessObject.DTO.Common C = new SPOffice.DataAccessObject.DTO.Common();
-            data.BaseUrl = "../Enquiries/Index/";
+            data.BaseUrl = "../Enquiry/Index/";
             data.Day = C.GetCurrentDateTimeFormatted();
             data.FollowUpsList = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_dashboardBusiness.GetTodaysFollowUpDetails(C.GetCurrentDateTime(), data.BaseUrl));
             if (data.FollowUpsList != null) {

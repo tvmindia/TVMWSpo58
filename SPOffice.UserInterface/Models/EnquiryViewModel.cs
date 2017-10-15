@@ -37,6 +37,7 @@ namespace SPOffice.UserInterface.Models
         public List<EnquiryViewModel> NonConvertList { get; set; }
         public string URL { get; set; }
         public string EnquiryStatusCode { get; set; }
+        public Guid hdnFileID { get; set; }
     }
 
     public class EnquirySummaryViewModel
