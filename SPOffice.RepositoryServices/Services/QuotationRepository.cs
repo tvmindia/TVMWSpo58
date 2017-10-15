@@ -552,6 +552,54 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
+
+        public QuotationSummary GetQuotationSummary()
+        {
+            QuotationSummary QS = new QuotationSummary();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetQuotationSummary]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+
+                                if (sdr.Read())
+                                {
+                                    
+                                    {
+                                        QS.Total = (sdr["Total"].ToString() != "" ? int.Parse(sdr["Total"].ToString()) : 0);
+                                        QS.Draft = (sdr["Draft"].ToString() != "" ? int.Parse(sdr["Draft"].ToString()) : 0);
+                                        QS.OnHold = (sdr["OnHold"].ToString() != "" ? int.Parse(sdr["OnHold"].ToString()) : 0);
+                                        QS.Closed = (sdr["Closed"].ToString() != "" ? int.Parse(sdr["Closed"].ToString()) : 0);
+                                        QS.InProgress = (sdr["InProgress"].ToString() != "" ? int.Parse(sdr["InProgress"].ToString()) : 0);
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return QS;
+        }
+
         //End
         //-------------------Quote Items------------------
     }

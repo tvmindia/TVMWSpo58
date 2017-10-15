@@ -140,4 +140,12 @@ namespace SPOffice.UserInterface.Models
         public string Code { get; set; }
         public string Description { get; set; }
     }
+
+    public class CustomerPOSummaryViewModel
+    {
+        public int Total { get; set; }
+        public int open { get; set; }
+        public int Closed { get; set; }
+        public int InProgress { get; set; }
+    }
 }

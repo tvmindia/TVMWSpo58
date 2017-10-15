@@ -13,6 +13,8 @@ namespace SPOffice.BusinessService.Contracts
         List<Enquiry> GetRecentEnquiryList( string BaseURL);
         EnquirySummary GetEnquirySummary();
         List<FollowUp> GetTodaysFollowUpDetails(DateTime onDate, string BaseURL);
+        CustomerPOSummary GetCustomerPOSummary();
+        QuotationSummary GetQuotationSummary();
 
     }
 }

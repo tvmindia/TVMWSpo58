@@ -104,5 +104,18 @@ namespace UserInterface.Controllers
 
             return PartialView("_TodaysFollowups", data);
         }
+
+
+        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        public ActionResult POandQuoteSummary()
+        {
+            POandQuoteSummaryViewModel data = new POandQuoteSummaryViewModel();
+
+            data.CustomerPOSummary = Mapper.Map<CustomerPOSummary, CustomerPOSummaryViewModel>(_dashboardBusiness.GetCustomerPOSummary());
+            data.QuoteSummary = Mapper.Map<QuotationSummary, QuotationSummaryViewModel>(_dashboardBusiness.GetQuotationSummary());
+
+            return PartialView("_POandQuoteSummary", data);
+        }
+
     }
 }

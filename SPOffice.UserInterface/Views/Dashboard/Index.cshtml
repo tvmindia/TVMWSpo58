@@ -18,6 +18,13 @@
 </div>
 <div class="col-md-12">
     @{
+
+        @Html.Action("POandQuoteSummary", "Dashboard");
+    }
+
+</div>
+<div class="col-md-12">
+    @{
         
         @Html.Action("RecentEnquiries", "Dashboard");
     }
@@ -31,10 +38,7 @@
         @Html.Action("TodaysFollowUps", "Dashboard");
     }
 </div>
-<div class="col-md-12">
-    
-   
-</div>
+
 <div class="col-md-12">
     &nbsp;
 </div>

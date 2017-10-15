@@ -79,5 +79,10 @@ namespace SPOffice.DataAccessObject.DTO
         public string Description { get; set; }
     }
 
-
+    public class CustomerPOSummary {
+        public int Total { get; set; }
+        public int open { get; set; }
+        public int Closed { get; set; }
+        public int InProgress { get; set; }
+    }
 }

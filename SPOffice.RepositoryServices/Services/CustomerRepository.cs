@@ -155,6 +155,7 @@ namespace SPOffice.RepositoryServices.Services
 
             return customerList;
         }
+        #endregion GetAllCustomers
 
         public List<CustomerPO> GetAllCustomerPurchaseOrders()
         {
@@ -450,7 +451,53 @@ namespace SPOffice.RepositoryServices.Services
                 Message = Cobj.DeleteSuccess
             };
         }
-        #endregion GetAllCustomers
 
+        #region GetCustomerPOSummary
+        public CustomerPOSummary GetCustomerPOSummary()
+        {
+            CustomerPOSummary CPOS = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetCustomerPOSummary]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                CPOS = new CustomerPOSummary();
+                                if (sdr.Read())
+                                {
+                                    
+                                    {
+                                        CPOS.Total = (sdr["Total"].ToString() != "" ? int.Parse(sdr["Total"].ToString()) : CPOS.Total);
+                                        CPOS.Closed = (sdr["Closed"].ToString() != "" ? int.Parse(sdr["Closed"].ToString()) : CPOS.Closed);
+                                        CPOS.open = (sdr["Open"].ToString() != "" ? int.Parse(sdr["Open"].ToString()) : CPOS.open);
+                                        CPOS.InProgress = (sdr["InProgress"].ToString() != "" ? int.Parse(sdr["InProgress"].ToString()) : CPOS.InProgress);
+                                    }
+                                     
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return CPOS;
+        }
+        #endregion GetAllCustomers
     }
 }

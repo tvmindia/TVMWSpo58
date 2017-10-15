@@ -33,4 +33,14 @@ namespace SPOffice.UserInterface.Models
         public decimal Amount { get; set; }
         public string duration { get; set; }
     }
+
+    public class QuotationSummaryViewModel
+    {
+        public int Total { get; set; }
+        public int Closed { get; set; }
+        public int Draft { get; set; }
+        public int InProgress { get; set; }
+        public int OnHold { get; set; }
+
+    }
 }

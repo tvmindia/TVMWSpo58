@@ -399,6 +399,7 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\images\add.png" />
     <Content Include="Content\images\add1.png" />
+    <Content Include="Content\images\archives.png" />
     <Content Include="Content\images\back.png" />
     <Content Include="Content\images\back1.png" />
     <Content Include="Content\images\bg.jpg" />
@@ -408,6 +409,8 @@
     <Content Include="Content\images\calendar.png" />
     <Content Include="Content\images\circle.png" />
     <Content Include="Content\images\close.png" />
+    <Content Include="Content\images\contract.png" />
+    <Content Include="Content\images\CustPOrd.png" />
     <Content Include="Content\images\delete.png" />
     <Content Include="Content\images\deposit.png" />
     <Content Include="Content\images\Email.png" />
@@ -418,9 +421,11 @@
     <Content Include="Content\images\paperclip.png" />
     <Content Include="Content\images\percentage.png" />
     <Content Include="Content\images\printer.png" />
+    <Content Include="Content\images\Quote.png" />
     <Content Include="Content\images\reset.png" />
     <Content Include="Content\images\save.png" />
     <Content Include="Content\images\save1.png" />
+    <Content Include="Content\images\SuppPord.png" />
     <Content Include="Content\images\withdraw.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\sweetalert.css" />
@@ -724,6 +729,7 @@
     <Content Include="Views\Dashboard\_RecentEnquiries.cshtml" />
     <Content Include="Views\Dashboard\_EnquirySummary.cshtml" />
     <Content Include="Views\Dashboard\_TodaysFollowups.cshtml" />
+    <Content Include="Views\Dashboard\_POandQuoteSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

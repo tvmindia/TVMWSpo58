@@ -32,4 +32,13 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal Amount { get; set; }
         public string duration { get; set; }
     }
+
+    public class QuotationSummary {
+        public int Total { get; set; }
+        public int Closed { get; set; }
+        public int Draft { get; set; }
+        public int InProgress { get; set; }
+        public int OnHold { get; set; }
+
+    }
 }

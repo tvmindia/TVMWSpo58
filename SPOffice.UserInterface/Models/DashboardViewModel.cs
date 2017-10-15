@@ -52,6 +52,11 @@ namespace UserInterface.Models
         public int closedPerc { get; set; }
     }
 
+    public class POandQuoteSummaryViewModel {
+        public CustomerPOSummaryViewModel CustomerPOSummary { get; set; }
+        public QuotationSummaryViewModel QuoteSummary { get; set; }
+
+    }
 
 
     }

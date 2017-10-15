@@ -63,6 +63,8 @@ namespace UserInterface.App_Start
                 config.CreateMap<CourierViewModel, Courier>().ReverseMap();
                 config.CreateMap<PurchaseOrderStatusViewModel, PurchaseOrderStatus>().ReverseMap();
                 config.CreateMap<EnquirySummaryViewModel, EnquirySummary>().ReverseMap();
+                config.CreateMap<CustomerPOSummaryViewModel, CustomerPOSummary>().ReverseMap();
+                config.CreateMap<QuotationSummaryViewModel, QuotationSummary>().ReverseMap();
 
             });
         }
