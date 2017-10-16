@@ -26,7 +26,10 @@ namespace SPOffice.UserInterface.Controllers
         // GET: Enquiry
         public ActionResult Index()
         {
-            return View();
+            EnquiryViewModel EVM = new EnquiryViewModel();
+            EVM.DefaultList = new List<SelectListItem>();
+            EVM.DefaultList = null;
+            return View(EVM);
         }
 
         [HttpGet]
