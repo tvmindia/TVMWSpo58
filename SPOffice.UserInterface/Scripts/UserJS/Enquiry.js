@@ -20,7 +20,7 @@ $(document).ready(function () {
 
 
 
-
+        DataTables.EnquiryItemDetailsTable = $('#EnquiryItemDetailsTable').DataTable();
         DataTables.CourierTable = $('#EnquiryTable').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',

@@ -110,5 +110,6 @@ namespace SPOffice.UserInterface.Models
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
+        public List<SelectListItem> SalesPersonList { get; set; }
     }
 }

@@ -17,9 +17,11 @@ namespace SPOffice.UserInterface.Controllers
     {
         AppConst c = new AppConst();
         IEnquiryBusiness _enquiryBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness)
+        IEmployeeBusiness _employeeBusiness;
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
+            _employeeBusiness = employeeBusiness;
         }
 
 
@@ -27,8 +29,28 @@ namespace SPOffice.UserInterface.Controllers
         public ActionResult Index()
         {
             EnquiryViewModel EVM = new EnquiryViewModel();
-            EVM.DefaultList = new List<SelectListItem>();
-            EVM.DefaultList = null;
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            EVM.salesPersonObj = new SalesPersonViewModel();
+            EVM.salesPersonObj.SalesPersonList = new List<SelectListItem>();
+
+
+            List<SalesPersonViewModel> SalesPersonList = Mapper.Map<List<SalesPerson>, List<SalesPersonViewModel>>(_employeeBusiness.GetAllSalesPersons());
+
+            foreach (SalesPersonViewModel SP in SalesPersonList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = SP.Name,
+                    Value = SP.ID.ToString(),
+                    Selected = false
+                });
+            }
+
+            EVM.salesPersonObj.SalesPersonList = selectListItem;
+
+            //EnquiryViewModel EVM = new EnquiryViewModel();
+            //EVM.DefaultList = new List<SelectListItem>();
+            //EVM.DefaultList = null;
             return View(EVM);
         }
 
