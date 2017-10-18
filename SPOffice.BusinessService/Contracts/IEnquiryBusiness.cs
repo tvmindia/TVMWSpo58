@@ -11,5 +11,6 @@ namespace SPOffice.BusinessService.Contracts
         object InsertUpdateEnquiry(Enquiry _enquiriesObj);
         List<Enquiry>GetAllEnquiryList(Enquiry EqyObj);
         Enquiry SearchEnquiriesList(Enquiry enqObj);
+
     }
 }

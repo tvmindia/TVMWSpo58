@@ -18,10 +18,16 @@ namespace SPOffice.UserInterface.Controllers
         AppConst c = new AppConst();
         IEnquiryBusiness _enquiryBusiness;
         IEmployeeBusiness _employeeBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness)
+        IIndustryBusiness _industryBusiness;
+       // IEnquirySourceBusiness _enquirySourceBusiness;
+
+
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness)//,IEnquirySourceBusiness enquirySourceBusiness
         {
             _enquiryBusiness = enquiryBusiness;
+            _industryBusiness = industryBusiness;
             _employeeBusiness = employeeBusiness;
+           // _enquirySourceBusiness = enquirySourceBusiness;
         }
 
 
@@ -48,9 +54,40 @@ namespace SPOffice.UserInterface.Controllers
 
             EVM.salesPersonObj.SalesPersonList = selectListItem;
 
-            //EnquiryViewModel EVM = new EnquiryViewModel();
-            //EVM.DefaultList = new List<SelectListItem>();
-            //EVM.DefaultList = null;
+            selectListItem = new List<SelectListItem>();
+            EVM.industryObj = new IndustryViewModel();
+            EVM.industryObj.IndustyList = new List<SelectListItem>();
+
+            List<IndustryViewModel> industryList = Mapper.Map<List<Industry>, List<IndustryViewModel>>(_industryBusiness.GetAllIndustryList());
+
+            foreach(IndustryViewModel IN in industryList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = IN.IndustryName,
+                    Value = IN.IndustryCode.ToString(),
+                    Selected = false
+                });
+            }
+            EVM.industryObj.IndustyList = selectListItem;
+
+            //selectListItem = new List<SelectListItem>();
+            //EVM.enquirySourceObj = new EnquirySourceViewModel();
+            //EVM.enquirySourceObj. = new List<SelectListItem>();
+
+            //List<IndustryViewModel> industryList = Mapper.Map<List<Industry>, List<IndustryViewModel>>(_industryBusiness.GetAllIndustryList());
+
+            //foreach (IndustryViewModel IN in industryList)
+            //{
+            //    selectListItem.Add(new SelectListItem
+            //    {
+            //        Text = IN.IndustryName,
+            //        Value = IN.IndustryCode.ToString(),
+            //        Selected = false
+            //    });
+            //}
+            //EVM.industryObj.IndustyList = selectListItem;
+
             return View(EVM);
         }
 

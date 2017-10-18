@@ -94,6 +94,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IEnquirySourceRepository.cs" />
     <Compile Include="Contracts\ICompanyRepository.cs" />
     <Compile Include="Contracts\ICourierRepository.cs" />
     <Compile Include="Contracts\ICustomerRepository.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Contracts\IEnquiryRepository.cs" />
     <Compile Include="Contracts\IFileUploadRepository.cs" />
     <Compile Include="Contracts\IFollowUpRepository.cs" />
+    <Compile Include="Contracts\IIndustryRepository.cs" />
     <Compile Include="Contracts\IProductRepository.cs" />
     <Compile Include="Contracts\IProformaRepository.cs" />
     <Compile Include="Contracts\IQuotationRepository.cs" />
@@ -119,8 +121,10 @@
     <Compile Include="Services\DynamicUIRepository.cs" />
     <Compile Include="Services\EmployeeRepository.cs" />
     <Compile Include="Services\EnquiryRepository.cs" />
+    <Compile Include="Services\EnquirySourceRepository.cs" />
     <Compile Include="Services\FileUploadRepository.cs" />
     <Compile Include="Services\FollowUpRepository.cs" />
+    <Compile Include="Services\IndustryRepository.cs" />
     <Compile Include="Services\ProductRepository.cs" />
     <Compile Include="Services\ProformaRepository.cs" />
     <Compile Include="Services\QuotationRepository.cs" />

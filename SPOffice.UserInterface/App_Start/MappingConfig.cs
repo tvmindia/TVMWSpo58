@@ -28,6 +28,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<ManageAccessViewModel, SAMTool.DataAccessObject.DTO.ManageAccess>().ReverseMap();
                 config.CreateMap<ManageSubObjectAccessViewModel, SAMTool.DataAccessObject.DTO.ManageSubObjectAccess > ().ReverseMap();
                 config.CreateMap<PrivilegesViewModel, SAMTool.DataAccessObject.DTO.Privileges>().ReverseMap();
+
                 
                 //****SAMTOOL MODELS 
 
@@ -45,6 +46,9 @@ namespace UserInterface.App_Start
                 config.CreateMap<ProformaViewModel, Proforma>().ReverseMap();
                 config.CreateMap<CustomerPOViewModel, CustomerPO>().ReverseMap();
                 config.CreateMap<SupplierViewModel, Supplier>().ReverseMap();
+                config.CreateMap<IndustryViewModel, Industry>().ReverseMap();
+                config.CreateMap<EnquirySourceViewModel, EnquirySource>().ReverseMap();
+
 
                 config.CreateMap<ProductViewModel, Product>().ReverseMap();
                 config.CreateMap<UnitViewModel, Unit>().ReverseMap();

@@ -13,7 +13,7 @@ namespace SPOffice.UserInterface.Models
     {
 
         public Guid ID { get; set; }
-        public string  EnquiryNo { get; set; }
+        public string EnquiryNo { get; set; }
 
         [Required(ErrorMessage = "Enquiry Date is missing")]
         [Display(Name = "Enquiry Date")]
@@ -49,6 +49,7 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "IndustryName is missing")]
         [Display(Name = "Industry")]
         public string IndustryName { get; set; }
+        public List<EnquiryViewModel> IndustryList{get;set;}
 
         public string IndustryCode { get; set; }
 
@@ -56,7 +57,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Progress Status")]
         public string ProgressStatus { get; set; }
 
-        [Display(Name = "Lead Owner")]
+
         public string EnquiryOwnerID { get; set; }
 
         [Display(Name = "General Notes")]
@@ -80,10 +81,16 @@ namespace SPOffice.UserInterface.Models
         public string URL { get; set; }
         public string EnquiryStatusCode { get; set; }
         public Guid hdnFileID { get; set; }
-       
+
+        [Display(Name = "Lead Owner")]
         public Guid SalesPersonID { get; set; }
         public SalesPersonViewModel salesPersonObj { get; set; }
-       
+
+       public Guid IndustryID { get; set; }
+        public IndustryViewModel industryObj { get; set; }
+
+        public Guid EnquirySourceID { get; set; }
+        public IndustryViewModel enquirySourceObj { get; set; }
 
     }
 

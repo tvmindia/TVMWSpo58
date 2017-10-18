@@ -101,7 +101,9 @@
     <Compile Include="DTO\Dashboard.cs" />
     <Compile Include="DTO\Employee.cs" />
     <Compile Include="DTO\Enquiry.cs" />
+    <Compile Include="DTO\EnquirySource.cs" />
     <Compile Include="DTO\FollowUp.cs" />
+    <Compile Include="DTO\Industry.cs" />
     <Compile Include="DTO\Mail.cs" />
     <Compile Include="DTO\Menu.cs" />
     <Compile Include="DTO\Product.cs" />

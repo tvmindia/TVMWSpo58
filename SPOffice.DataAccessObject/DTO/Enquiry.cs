@@ -22,6 +22,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string Fax { get; set; }
         public string EnquirySource { get; set; }
         public string IndustryCode { get; set; }
+        public string IndustryName { get; set; }
         public string ProgressStatus { get; set; }
         public string EnquiryOwnerID { get; set; }
         public string GeneralNotes { get; set; }
@@ -33,6 +34,7 @@ namespace SPOffice.DataAccessObject.DTO
         public List<Enquiry> OpenList { get; set; }
         public List<Enquiry> ConvertList { get; set; }
         public List<Enquiry> NonConvertList { get; set; }
+        public List<Enquiry> IndustryList { get; set; }
         public string URL { get; set; }
         public string EnquiryStatusCode { get; set; }
 

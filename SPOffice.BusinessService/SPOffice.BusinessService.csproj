@@ -102,8 +102,10 @@
     <Compile Include="Contracts\IDynamicUIBusiness.cs" />
     <Compile Include="Contracts\IEmployeeBusiness.cs" />
     <Compile Include="Contracts\IEnquiryBusiness.cs" />
+    <Compile Include="Contracts\IEnquirySourceBusiness.cs" />
     <Compile Include="Contracts\IFileUploadBusiness.cs" />
     <Compile Include="Contracts\IFollowUpBusiness.cs" />
+    <Compile Include="Contracts\IIndustryBusiness.cs" />
     <Compile Include="Contracts\IMailBusiness.cs" />
     <Compile Include="Contracts\IProductBusiness.cs" />
     <Compile Include="Contracts\IProformaBusiness.cs" />
@@ -120,8 +122,10 @@
     <Compile Include="Services\DynamicUIBusiness.cs" />
     <Compile Include="Services\EmployeeBusiness.cs" />
     <Compile Include="Services\EnquiryBusiness.cs" />
+    <Compile Include="Services\EnquirySourceBusiness.cs" />
     <Compile Include="Services\FileUploadBusiness.cs" />
     <Compile Include="Services\FollowUpBusiness.cs" />
+    <Compile Include="Services\IndustryBusiness.cs" />
     <Compile Include="Services\MailBusiness.cs" />
     <Compile Include="Services\ProductBusiness.cs" />
     <Compile Include="Services\ProformaBusiness.cs" />

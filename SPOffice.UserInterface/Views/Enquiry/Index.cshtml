@@ -336,12 +336,12 @@
                             <div class="col-md-12">
 
                                 <div class="col-md-10">
-                                    @*@Html.DropDownListFor(model => model.SalesPersonID, Model.salesPersonObj.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                    @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })*@
-                                    @Html.DropDownList("IndustryName", new List<SelectListItem>{
+                                    @Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                    @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })
+                                    @*@Html.DropDownList("IndustryName", new List<SelectListItem>{
                                     new SelectListItem { Text="IndustryName", Value="IndustryName"},
                                     new SelectListItem { Text="IndustryName", Value="IndustryName"}}, "IndustryName ", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                    @Html.ValidationMessageFor(model => model.IndustryName)
+                                    @Html.ValidationMessageFor(model => model.IndustryName)*@
 
 
                                 </div>
@@ -360,6 +360,8 @@
                             <div class="col-md-12">
 
                                 <div class="col-md-10">
+
+
                                     @Html.DropDownList("ProgressStatus", new List<SelectListItem>{
                                     new SelectListItem { Text="ProgressStatus", Value=""},
                                     new SelectListItem { Text="ProgressStatus", Value=""}}, "ProgressStatus ", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
@@ -381,6 +383,9 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-10">
+                                    @*@Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                    @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })*@
+
                                     @Html.DropDownList("EnquirySource", new List<SelectListItem>{
                                     new SelectListItem { Text="EnquirySource", Value=""},
                                     new SelectListItem { Text="EnquirySource", Value=""}}, "EnquirySource", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
@@ -404,10 +409,13 @@
                             <div class="col-md-12">
 
                                 <div class="col-md-10">
-                                    @Html.DropDownList("EnquiryStatus", new List<SelectListItem>{
+
+                                    @Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                    @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })
+                                    @*@Html.DropDownList("EnquiryStatus", new List<SelectListItem>{
                                     new SelectListItem { Text="EnquiryStatus", Value=""},
                                     new SelectListItem { Text="EnquiryStatus", Value=""}}, "EnquiryStatus", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                    @Html.ValidationMessageFor(model => model.EnquiryStatus)
+                                    @Html.ValidationMessageFor(model => model.EnquiryStatus)*@
 
 
                                 </div>
