@@ -44,6 +44,18 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = _enquiriesObj.ContactTitle;
                         cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = _enquiriesObj.Mobile;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _enquiriesObj.GeneralNotes;
+
+                        //----- new fields------ //
+                        cmd.Parameters.Add("@Address", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Address;
+                        cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = _enquiriesObj.Website;
+                        cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = _enquiriesObj.LandLine;
+                        cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = _enquiriesObj.Fax;
+                        cmd.Parameters.Add("@EnquirySource", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
+                        cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
+                        cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
+                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
+                        //-----------------------//
+
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = _enquiriesObj.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -108,6 +120,18 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = _enquiriesObj.ContactTitle;
                         cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = _enquiriesObj.Mobile;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _enquiriesObj.GeneralNotes;
+
+                        //----- new fields------ //
+                        cmd.Parameters.Add("@Address", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Address;
+                        cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = _enquiriesObj.Website;
+                        cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = _enquiriesObj.LandLine;
+                        cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = _enquiriesObj.Fax;
+                        cmd.Parameters.Add("@EnquirySource", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
+                        cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
+                        cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
+                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
+                        //-----------------------//
+
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _enquiriesObj.commonObj.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@UpdateStatus", SqlDbType.SmallInt);
