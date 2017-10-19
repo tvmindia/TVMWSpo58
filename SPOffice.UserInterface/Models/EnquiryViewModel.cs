@@ -60,7 +60,7 @@ namespace SPOffice.UserInterface.Models
         public string EnquiryOwnerID { get; set; }
 
         [Required(ErrorMessage = "General Notes is missing")]
-        [Display(Name = "General Notes")]
+        [Display(Name = "Subject")]
         [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
 
