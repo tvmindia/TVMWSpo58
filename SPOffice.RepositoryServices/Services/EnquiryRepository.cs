@@ -50,10 +50,10 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = _enquiriesObj.Website;
                         cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = _enquiriesObj.LandLine;
                         cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = _enquiriesObj.Fax;
-                        cmd.Parameters.Add("@EnquirySource", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
+                        cmd.Parameters.Add("@EnquirySourceCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
                         cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
                         cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
-                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
+                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = new Guid( _enquiriesObj.EnquiryOwnerID);
                         //-----------------------//
 
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.CreatedBy;
@@ -204,6 +204,11 @@ namespace SPOffice.RepositoryServices.Services
                                             _enquiryObj.Email = (sdr["Email"].ToString() != "" ? sdr["Email"].ToString() : _enquiryObj.Email);
                                             _enquiryObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _enquiryObj.GeneralNotes);
                                             _enquiryObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(s.dateformat) : _enquiryObj.EnquiryDate);
+                                            _enquiryObj.LandLine = (sdr["LandLine"].ToString() != "" ? sdr["LandLine"].ToString() : _enquiryObj.LandLine);
+                                           _enquiryObj.EnquirySource = (sdr["EnquirySource"].ToString() != "" ? sdr["EnquirySource"].ToString() : _enquiryObj.EnquirySource);
+                                        _enquiryObj.IndustryName = (sdr["IndustryName"].ToString() != "" ? sdr["IndustryName"].ToString() : _enquiryObj.IndustryName);
+                                        _enquiryObj.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : _enquiryObj.EnquiryStatus);
+                                        _enquiryObj.LeadOwner = (sdr["ownername"].ToString() != "" ? sdr["ownername"].ToString() : _enquiryObj.LeadOwner);
                                     }
                                     EnquiryList.Add(_enquiryObj);
                                 }

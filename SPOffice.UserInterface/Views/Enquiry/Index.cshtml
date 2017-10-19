@@ -47,8 +47,8 @@
                         <th>Landline</th>
                         <th>Source</th>
                         <th>Industry</th>
-                        <th>Status</th>
-                        <th>Owner</th>
+                        <th>Enquiry Status</th>
+                        <th>Lead Owner</th>
                         <th>...</th>
                          
                     </tr>
@@ -112,15 +112,15 @@
                     <div class="form-group col-md-6">
                         <div class="col-md-12">
 
-                            @Html.LabelFor(model => model.SalesPersonID, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.EnquiryOwnerID, htmlAttributes: new { @class = "control-label" })
 
 
                         </div>
                         <div class="col-md-12">
 
                             <div class="col-md-10">
-                                @Html.DropDownListFor(model => model.SalesPersonID, Model.salesPersonObj.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.EnquiryOwnerID, Model.salesPersonObj.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                @Html.ValidationMessageFor(model => model.EnquiryOwnerID, "", new { @class = "text-danger" })
                        
 
                             </div>
@@ -139,7 +139,7 @@
 
                             </div>
                             <div class="col-md-12">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="padding-right:0px">
                                     @Html.EditorFor(model => model.ContactTitle, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                     @Html.ValidationMessageFor(model => model.ContactTitle, "", new { @class = "text-danger" })
                                 </div>
@@ -331,8 +331,8 @@
                             <div class="col-md-12">
 
                                 <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                    @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(model => model.IndustryCode, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                    @Html.ValidationMessageFor(model => model.IndustryCode, "", new { @class = "text-danger" })
                           
                                 </div>
                                 <div class="col-md-1"></div>
@@ -495,7 +495,7 @@
 
                     <div class="">
                         <div class="col-md-offset-2 col-md-10" hidden="hidden">
-                            <input id="btnInsertUpdateCourierAgency" type="submit" value="Create" class="btn btn-default" />
+                            <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
                         </div>
                     </div>
                 }

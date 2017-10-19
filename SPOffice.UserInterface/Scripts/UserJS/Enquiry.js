@@ -40,15 +40,17 @@ $(document).ready(function () {
                { "data": "CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "Mobile", "defaultContent": "<i>-</i>" },
                   { "data": "LandLine", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryStatus", "defaultContent": "<i>-</i>" },
-               { "data": "IndustryCode", "defaultContent": "<i>-</i>" },
-                { "data": "EnquiryStatusCode", "defaultContent": "<i>-</i>" },
-                  { "data": null, "defaultContent": "<i>-</i>" },
+                  { "data": "EnquirySource", "defaultContent": "<i>-</i>" },
+               
+               { "data": "IndustryName", "defaultContent": "<i>-</i>" },
+                { "data": "EnquiryStatus", "defaultContent": "<i>-</i>" },
+                { "data": "LeadOwner", "defaultContent": "<i>-</i>" },
+                //  { "data": null, "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [1, 2, 3, 4, 5, 6,8,9] }
+               { className: "text-left", "targets": [1, 2, 3, 4, 5, 6,8,9,10] }
              ]
          });
 
@@ -71,6 +73,7 @@ $(document).ready(function () {
 function Edit(id) { }
 
 function GetAllEnquiry() {
+    debugger;
     try {
 
         var data = {};
@@ -90,4 +93,48 @@ function GetAllEnquiry() {
     catch (e) {
         notyAlert('error', e.message);
     }
+}
+
+
+function Save() {
+    debugger;
+    try {
+        $("#btnInsertUpdateEnquiry").trigger('click');
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+
+    }
+}
+
+
+function BindAllEnquiries() {
+    debugger;
+    try {
+        DataTables.EnquiryTable.clear().rows.add(GetAllEnquiry()).draw(false);
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+function SaveSuccess(data) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Result) {
+        case "OK":
+            BindAllEnquiries();
+            notyAlert('Success', JsonResult.Message);
+            if (JsonResult.Records.ID) {
+            $("#ID").val(JsonResult.Record.ID);
+               
+        }
+        break;
+    case "ERROR":
+        notyAlert('error', JsonResult.Message);
+        break;
+    default:
+        notyAlert('error', JsonResult.Message);
+        break;
+}
 }

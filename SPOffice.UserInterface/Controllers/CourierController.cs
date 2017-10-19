@@ -117,7 +117,7 @@ namespace SPOffice.UserInterface.Controllers
                         break;
                 }
 
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message="Successfull" });
             }
             catch (Exception ex)
             {

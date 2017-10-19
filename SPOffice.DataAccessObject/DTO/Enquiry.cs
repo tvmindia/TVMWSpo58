@@ -25,6 +25,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string IndustryName { get; set; }
         public string ProgressStatus { get; set; }
         public string EnquiryOwnerID { get; set; }
+        public string LeadOwner { get; set; }
         public string GeneralNotes { get; set; }
         public string EnquiryStatus { get; set; }
         public string DealConverted { get; set; }

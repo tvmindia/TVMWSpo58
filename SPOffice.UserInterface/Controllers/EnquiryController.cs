@@ -148,17 +148,19 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateEnquiry
         [HttpPost]
         public string InsertUpdateEnquiry(EnquiryViewModel _enquiriesObj)
-        {
+         {
             EnquiryViewModel result = null;
             Enquiry resultFromBusiness = null;
 
             try
             {
+                _enquiriesObj.commonObj = new CommonViewModel();
+                _enquiriesObj.commonObj.CreatedBy = "Albert Thomson";
                 _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
                 resultFromBusiness = (Enquiry)(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
                 result = Mapper.Map<Enquiry,EnquiryViewModel>(resultFromBusiness);
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = result,Message="Insertion successfull" });
 
             }
             catch (Exception ex)

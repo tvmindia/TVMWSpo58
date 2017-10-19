@@ -19,7 +19,6 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Enquiry Date")]
         public string EnquiryDate { get; set; }
 
-        [Required(ErrorMessage = "Enquiry Title is missing")]
         [Display(Name = "Title")]
         public string ContactTitle { get; set; }
 
@@ -31,7 +30,6 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = " Client Company")]
         public string CompanyName { get; set; }
 
-        [Required(ErrorMessage = "Address is missing")]
         [Display(Name = "Address")]
         [DataType(DataType.MultilineText)]
         public string Address { get; set; }
@@ -39,10 +37,11 @@ namespace SPOffice.UserInterface.Models
         public string Website { get; set; }
         public string Email { get; set; }
         public string LandLine { get; set; }
+
+        [Required(ErrorMessage = "Mobile No. is missing")]
         public string Mobile { get; set; }
         public string Fax { get; set; }
 
-        [Required(ErrorMessage = "Enquiry Source is missing")]
         [Display(Name = "Enquiry Source")]
         public string EnquirySource { get; set; }
 
@@ -53,13 +52,14 @@ namespace SPOffice.UserInterface.Models
 
         public string IndustryCode { get; set; }
 
-        [Required(ErrorMessage = "Progress Status is missing")]
         [Display(Name = "Progress Status")]
         public string ProgressStatus { get; set; }
 
-
+        [Required(ErrorMessage = "Owner Name is missing")]
+        [Display(Name = "Lead Owner")]
         public string EnquiryOwnerID { get; set; }
 
+        [Required(ErrorMessage = "General Notes is missing")]
         [Display(Name = "General Notes")]
         [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
@@ -81,8 +81,9 @@ namespace SPOffice.UserInterface.Models
         public string URL { get; set; }
         public string EnquiryStatusCode { get; set; }
         public Guid hdnFileID { get; set; }
-
-        [Display(Name = "Lead Owner")]
+        public string LeadOwner { get; set; }
+       
+       
         public Guid SalesPersonID { get; set; }
         public SalesPersonViewModel salesPersonObj { get; set; }
 
