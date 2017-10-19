@@ -121,10 +121,6 @@
                             <div class="col-md-10">
                                 @Html.DropDownListFor(model => model.SalesPersonID, Model.salesPersonObj.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
                                 @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })
-                                @*@Html.DropDownList("Lead Owner", new List<SelectListItem>{
-                                    new SelectListItem { Text="Owner", Value="Owner"},
-                                    new SelectListItem { Text="Owner1", Value="Owner1"}}, "Select Choice ", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                @Html.ValidationMessageFor(model => model.DefaultList)*@
                        
 
                             </div>
@@ -223,7 +219,6 @@
 
                     </div>
                     
-                    @*<div class="form-group col-md-6"></div>*@
                         <div class="form-group col-md-6">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label " })
@@ -253,16 +248,16 @@
                                 <div class="rightAmt" style="color:orange" id="lblEnquiryStatus">Closed</div>
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
+                        @*<div class="form-group col-md-12">
                             <div class="col-md-12 text-right">
                                 <div class="rightAmt"style="font-size:20px">Is Converted</div>
                                 <div class="rightAmt" style="color:orange" id="lblIsConverted">Yes</div>
                             </div>
-                        </div>
+                        </div>*@
                     <div class="form-group col-md-12">
                         <div class="col-md-12 text-right">
                             <div class="rightAmt">
-                                <a href="#EnquiryItemDetailsTable" style="color: dodgerblue; font-size:20px;">Follow Ups</a>
+                                <a href="#pointer" style="color: dodgerblue; font-size:20px;">Follow Ups</a>
                             </div>
 
                             </div>
@@ -338,12 +333,7 @@
                                 <div class="col-md-10">
                                     @Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
                                     @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })
-                                    @*@Html.DropDownList("IndustryName", new List<SelectListItem>{
-                                    new SelectListItem { Text="IndustryName", Value="IndustryName"},
-                                    new SelectListItem { Text="IndustryName", Value="IndustryName"}}, "IndustryName ", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                    @Html.ValidationMessageFor(model => model.IndustryName)*@
-
-
+                          
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
@@ -360,12 +350,8 @@
                             <div class="col-md-12">
 
                                 <div class="col-md-10">
-
-
-                                    @Html.DropDownList("ProgressStatus", new List<SelectListItem>{
-                                    new SelectListItem { Text="ProgressStatus", Value=""},
-                                    new SelectListItem { Text="ProgressStatus", Value=""}}, "ProgressStatus ", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                    @Html.ValidationMessageFor(model => model.ProgressStatus)
+                                    @Html.DropDownListFor(model => model.ProgressStatus, Model.progressStatusObj.ProgressStatusList, "-- Select Progress --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                    @Html.ValidationMessageFor(model => model.ProgressStatus, "", new { @class = "text-danger" })
 
 
                                 </div>
@@ -383,13 +369,8 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-10">
-                                    @*@Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                    @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })*@
-
-                                    @Html.DropDownList("EnquirySource", new List<SelectListItem>{
-                                    new SelectListItem { Text="EnquirySource", Value=""},
-                                    new SelectListItem { Text="EnquirySource", Value=""}}, "EnquirySource", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                    @Html.ValidationMessageFor(model => model.EnquirySource)
+                                    @Html.DropDownListFor(model => model.EnquirySource, Model.enquirySourceObj.EnquirySourceList, "-- Select Source --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlEnquirySource" })
+                                    @Html.ValidationMessageFor(model => model.EnquirySource, "", new { @class = "text-danger" })
 
                                 </div>
                                 <div class="col-md-1"></div>
@@ -410,14 +391,9 @@
 
                                 <div class="col-md-10">
 
-                                    @Html.DropDownListFor(model => model.IndustryName, Model.industryObj.IndustyList, "-- Select Industry Name --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                    @Html.ValidationMessageFor(model => model.IndustryName, "", new { @class = "text-danger" })
-                                    @*@Html.DropDownList("EnquiryStatus", new List<SelectListItem>{
-                                    new SelectListItem { Text="EnquiryStatus", Value=""},
-                                    new SelectListItem { Text="EnquiryStatus", Value=""}}, "EnquiryStatus", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                    @Html.ValidationMessageFor(model => model.EnquiryStatus)*@
-
-
+                                    @Html.DropDownListFor(model => model.EnquiryStatus, Model.enquiryStatusObj.EnquiryStatusList, "-- Select Status --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                    @Html.ValidationMessageFor(model => model.EnquiryStatus, "", new { @class = "text-danger" })
+                                   
                                 </div>
                                 <div class="col-md-1"></div>
                                 <div class="col-md-1"></div>
@@ -425,7 +401,7 @@
 
                         </div>
 
-                        <div class="form-group col-md-4">
+                        @*<div class="form-group col-md-4">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.DealConverted, htmlAttributes: new { @class = "control-label " })
 
@@ -442,9 +418,9 @@
                                 <div class="col-md-1"></div>
                             </div>
 
-                        </div>
+                        </div>*@
 
-                        <div class="form-group col-md-12"></div>
+                        <div id="pointer"class="form-group col-md-12"></div>
                     </div>
 
                     <div class="col-md-12  ">&nbsp;</div>

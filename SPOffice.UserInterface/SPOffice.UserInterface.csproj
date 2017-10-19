@@ -674,6 +674,7 @@
     <Compile Include="Models\DynamicUIViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\EnquirySourceViewModel.cs" />
+    <Compile Include="Models\EnquiryStatusViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\FollowUpViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
@@ -683,6 +684,7 @@
     <Compile Include="Models\PrivilegesViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\ProformaViewModel.cs" />
+    <Compile Include="Models\ProgressStatusViewModel.cs" />
     <Compile Include="Models\QuotationViewModel.cs" />
     <Compile Include="Models\QuoteHeaderViewModel.cs" />
     <Compile Include="Models\QuoteMailPreviewViewModel.cs" />

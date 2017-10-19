@@ -103,11 +103,13 @@
     <Compile Include="Contracts\IDynamicUIRepository.cs" />
     <Compile Include="Contracts\IEmployeeRepository.cs" />
     <Compile Include="Contracts\IEnquiryRepository.cs" />
+    <Compile Include="Contracts\IEnquiryStatusRepository.cs" />
     <Compile Include="Contracts\IFileUploadRepository.cs" />
     <Compile Include="Contracts\IFollowUpRepository.cs" />
     <Compile Include="Contracts\IIndustryRepository.cs" />
     <Compile Include="Contracts\IProductRepository.cs" />
     <Compile Include="Contracts\IProformaRepository.cs" />
+    <Compile Include="Contracts\IProgressStatusRepository.cs" />
     <Compile Include="Contracts\IQuotationRepository.cs" />
     <Compile Include="Contracts\IRawMaterialRepository.cs" />
     <Compile Include="Contracts\ISupplierRepository.cs" />
@@ -122,11 +124,13 @@
     <Compile Include="Services\EmployeeRepository.cs" />
     <Compile Include="Services\EnquiryRepository.cs" />
     <Compile Include="Services\EnquirySourceRepository.cs" />
+    <Compile Include="Services\EnquiryStatusRepository.cs" />
     <Compile Include="Services\FileUploadRepository.cs" />
     <Compile Include="Services\FollowUpRepository.cs" />
     <Compile Include="Services\IndustryRepository.cs" />
     <Compile Include="Services\ProductRepository.cs" />
     <Compile Include="Services\ProformaRepository.cs" />
+    <Compile Include="Services\ProgressStatusRepository.cs" />
     <Compile Include="Services\QuotationRepository.cs" />
     <Compile Include="Services\RawMaterialRepository.cs" />
     <Compile Include="Services\SupplierRepository.cs" />

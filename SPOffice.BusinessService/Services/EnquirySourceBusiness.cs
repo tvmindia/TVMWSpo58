@@ -1,4 +1,5 @@
 ﻿using SPOffice.DataAccessObject.DTO;
+using SPOffice.BusinessService.Contracts;
 using SPOffice.RepositoryServices.Contracts;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace SPOffice.BusinessService.Services
 {
-    public class EnquirySourceBusiness
+    public class EnquirySourceBusiness : IEnquirySourceBusiness
     {
         private IEnquirySourceRepository _enquirySourceRepository;
 
