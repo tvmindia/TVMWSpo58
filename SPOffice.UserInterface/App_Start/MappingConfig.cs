@@ -48,6 +48,8 @@ namespace UserInterface.App_Start
                 config.CreateMap<SupplierViewModel, Supplier>().ReverseMap();
                 config.CreateMap<IndustryViewModel, Industry>().ReverseMap();
                 config.CreateMap<EnquirySourceViewModel, EnquirySource>().ReverseMap();
+                config.CreateMap<EnquiryStatusViewModel, EnquiryStatus>().ReverseMap();
+                config.CreateMap<ProgressStatusViewModel, ProgressStatus>().ReverseMap();
 
 
                 config.CreateMap<ProductViewModel, Product>().ReverseMap();

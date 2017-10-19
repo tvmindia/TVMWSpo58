@@ -19,15 +19,19 @@ namespace SPOffice.UserInterface.Controllers
         IEnquiryBusiness _enquiryBusiness;
         IEmployeeBusiness _employeeBusiness;
         IIndustryBusiness _industryBusiness;
-       // IEnquirySourceBusiness _enquirySourceBusiness;
+        IEnquirySourceBusiness _enquirySourceBusiness;
+        IEnquiryStatusBusiness _enquiryStatusBusiness;
+        IProgressStatusBusiness _progressStatusBusiness;
 
 
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness)//,IEnquirySourceBusiness enquirySourceBusiness
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
             _employeeBusiness = employeeBusiness;
-           // _enquirySourceBusiness = enquirySourceBusiness;
+            _enquirySourceBusiness = enquirySourceBusiness;
+            _enquiryStatusBusiness = enquiryStatusBusiness;
+            _progressStatusBusiness = progressStatusBusiness;
         }
 
 
@@ -71,22 +75,56 @@ namespace SPOffice.UserInterface.Controllers
             }
             EVM.industryObj.IndustyList = selectListItem;
 
-            //selectListItem = new List<SelectListItem>();
-            //EVM.enquirySourceObj = new EnquirySourceViewModel();
-            //EVM.enquirySourceObj. = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            EVM.enquirySourceObj = new EnquirySourceViewModel();
+            EVM.enquirySourceObj.EnquirySourceList = new List<SelectListItem>();
 
-            //List<IndustryViewModel> industryList = Mapper.Map<List<Industry>, List<IndustryViewModel>>(_industryBusiness.GetAllIndustryList());
+            List<EnquirySourceViewModel> enquirySourceList = Mapper.Map<List<EnquirySource>, List<EnquirySourceViewModel>>(_enquirySourceBusiness.GetAllEnquirySourceList());
 
-            //foreach (IndustryViewModel IN in industryList)
-            //{
-            //    selectListItem.Add(new SelectListItem
-            //    {
-            //        Text = IN.IndustryName,
-            //        Value = IN.IndustryCode.ToString(),
-            //        Selected = false
-            //    });
-            //}
-            //EVM.industryObj.IndustyList = selectListItem;
+            foreach (EnquirySourceViewModel EN in enquirySourceList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = EN.Source,
+                    Value = EN.SourceCode.ToString(),
+                    Selected = false
+                });
+            }
+            EVM.enquirySourceObj.EnquirySourceList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            EVM.enquiryStatusObj = new EnquiryStatusViewModel();
+            EVM.enquiryStatusObj.EnquiryStatusList = new List<SelectListItem>();
+
+            List<EnquiryStatusViewModel> enquiryStatusList = Mapper.Map<List<EnquiryStatus>, List<EnquiryStatusViewModel>>(_enquiryStatusBusiness.GetAllEnquiryStatusList());
+
+            foreach (EnquiryStatusViewModel EN in enquiryStatusList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = EN.Status,
+                    Value = EN.StatusCode.ToString(),
+                    Selected = false
+                });
+            }
+            EVM.enquiryStatusObj.EnquiryStatusList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            EVM.progressStatusObj = new ProgressStatusViewModel();
+            EVM.progressStatusObj.ProgressStatusList = new List<SelectListItem>();
+
+            List<ProgressStatusViewModel> progressStatusList = Mapper.Map<List<ProgressStatus>, List<ProgressStatusViewModel>>(_progressStatusBusiness.GetAllProgressStatusList());
+
+            foreach (ProgressStatusViewModel PS in progressStatusList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = PS.Status,
+                    Value = PS.StatusCode.ToString(),
+                    Selected = false
+                });
+            }
+            EVM.progressStatusObj.ProgressStatusList = selectListItem;
 
             return View(EVM);
         }

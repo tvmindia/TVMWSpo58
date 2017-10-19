@@ -90,7 +90,14 @@ namespace SPOffice.UserInterface.Models
         public IndustryViewModel industryObj { get; set; }
 
         public Guid EnquirySourceID { get; set; }
-        public IndustryViewModel enquirySourceObj { get; set; }
+        public EnquirySourceViewModel enquirySourceObj { get; set; }
+
+        public Guid EnquiryStatusID { get; set; }
+        public EnquiryStatusViewModel enquiryStatusObj { get; set; }
+
+        public Guid ProgressStatusID { get; set; }
+        public ProgressStatusViewModel progressStatusObj { get; set; }
+        
 
     }
 

@@ -9,19 +9,19 @@ using System.Web;
 
 namespace SPOffice.RepositoryServices.Services
 {
-    public class EnquirySourceRepository : IEnquirySourceRepository
+    public class EnquiryStatusRepository: IEnquiryStatusRepository
     {
         private IDatabaseFactory _databaseFactory;
-        public EnquirySourceRepository(IDatabaseFactory databaseFactory)
+        public EnquiryStatusRepository(IDatabaseFactory databaseFactory)
         {
             _databaseFactory = databaseFactory;
         }
 
-        #region GetAllEnquirySourceList
+        #region GetAllEnquiryStatusList
 
-        public List<EnquirySource> GetAllEnquirySourceList()
+        public List<EnquiryStatus> GetAllEnquiryStatusList()
         {
-            List<EnquirySource> EnquirySourceList = null;
+            List<EnquiryStatus> EnquiryStatusList = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -33,23 +33,23 @@ namespace SPOffice.RepositoryServices.Services
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[Office].[GetAllEnquirySources]";
+                        cmd.CommandText = "[Office].[GetAllEnquiryStatus]";
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
                             {
-                                EnquirySourceList = new List<EnquirySource>();
+                                EnquiryStatusList = new List<EnquiryStatus>();
 
                                 while (sdr.Read())
                                 {
-                                    EnquirySource _enquiryObj = new EnquirySource();
+                                    EnquiryStatus _enquiryObj = new EnquiryStatus();
                                     {
-                                        _enquiryObj.SourceCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : _enquiryObj.SourceCode);
-                                        _enquiryObj.Source = (sdr["Source"].ToString() != "" ? sdr["Source"].ToString() : _enquiryObj.Source);
+                                        _enquiryObj.StatusCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : _enquiryObj.StatusCode);
+                                        _enquiryObj.Status = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : _enquiryObj.Status);
                                     }
-                                    EnquirySourceList.Add(_enquiryObj);
+                                    EnquiryStatusList.Add(_enquiryObj);
                                 }
                             }
                         }
@@ -61,11 +61,11 @@ namespace SPOffice.RepositoryServices.Services
             {
                 throw ex;
             }
-            return EnquirySourceList;
+            return EnquiryStatusList;
         }
 
 
 
-        #endregion GetAllEnquirySourceList
+        #endregion GetAllEnquiryStatusList
     }
 }
