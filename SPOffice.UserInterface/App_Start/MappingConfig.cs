@@ -50,6 +50,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<EnquirySourceViewModel, EnquirySource>().ReverseMap();
                 config.CreateMap<EnquiryStatusViewModel, EnquiryStatus>().ReverseMap();
                 config.CreateMap<ProgressStatusViewModel, ProgressStatus>().ReverseMap();
+                config.CreateMap<TitlesViewModel, Titles>().ReverseMap();
 
 
                 config.CreateMap<ProductViewModel, Product>().ReverseMap();

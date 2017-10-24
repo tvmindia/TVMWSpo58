@@ -20,8 +20,8 @@ $(document).ready(function () {
 
 
 
-        DataTables.EnquiryItemDetailsTable = $('#EnquiryItemDetailsTable').DataTable();
-        DataTables.CourierTable = $('#EnquiryTable').DataTable(
+        //DataTables.EnquiryItemDetailsTable = $('#EnquiryItemDetailsTable').DataTable();
+        DataTables.EnquiryTable = $('#EnquiryTable').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
              order: [],
@@ -35,22 +35,23 @@ $(document).ready(function () {
              },
              columns: [
                { "data": "ID", "defaultContent": "<i>-</i>" },
-                { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryDate", "defaultContent": "<i>-</i>" },
+               { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
+               { "data": "EnquiryDate", "defaultContent": "<i>-</i>" ,"width":"10%"},
                { "data": "CompanyName", "defaultContent": "<i>-</i>" },
+               { "data": "Subject", "defaultContent": "<i>-</i>" },
                { "data": "Mobile", "defaultContent": "<i>-</i>" },
-                  { "data": "LandLine", "defaultContent": "<i>-</i>" },
-                  { "data": "EnquirySource", "defaultContent": "<i>-</i>" },
-               
+               { "data": "LandLine", "defaultContent": "<i>-</i>" },
+               { "data": "EnquirySource", "defaultContent": "<i>-</i>" },
                { "data": "IndustryName", "defaultContent": "<i>-</i>" },
-                { "data": "EnquiryStatus", "defaultContent": "<i>-</i>" },
-                { "data": "LeadOwner", "defaultContent": "<i>-</i>" },
+               { "data": "EnquiryStatus", "defaultContent": "<i>-</i>" },
+               { "data": "LeadOwner", "defaultContent": "<i>-</i>" },
                 //  { "data": null, "defaultContent": "<i>-</i>" },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
+               { "data": null, "orderable": false, "defaultContent": '<a href="#"  class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [1, 2, 3, 4, 5, 6,8,9,10] }
+                 { className: "text-left", "targets": [1, 2, 3, 4, 5, 6, 8, 9, 10, 11] },
+                 { className: "text-center", "targets": [ 2] }
              ]
          });
 
@@ -70,7 +71,6 @@ $(document).ready(function () {
 });
 
 
-function Edit(id) { }
 
 function GetAllEnquiry() {
     debugger;
@@ -123,18 +123,123 @@ function SaveSuccess(data) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
-            BindAllEnquiries();
-            notyAlert('Success', JsonResult.Message);
-            if (JsonResult.Records.ID) {
-            $("#ID").val(JsonResult.Record.ID);
-               
+            debugger;
+            FillEnquiryDetails(JsonResult.Records.ID)
+            BindAllEnquiries()
+            notyAlert('success', JsonResult.Message);
+            break;
+        case "ERROR":
+            notyAlert('error', JsonResult.Message);
+            break;
+        default:
+            notyAlert('error', JsonResult.Message);
+            break;
+    }
+}
+
+
+
+
+///-------
+//function FollowUp() {
+//    debugger;
+//    $("#btnFollowUps").modal('show');
+
+//}
+////-------------------
+//-----------------------------------------Commented for security check
+//function GetFollowUpDetailsById() {
+//    debugger;
+//    try {
+
+//        var data = {};
+//        var ds = {};
+//        ds = GetDataFromServer("Enquiry/GetFollowUpDetailsById/", data);
+//        if (ds != '') {
+//            ds = JSON.parse(ds);
+//        }
+//        if (ds.Result == "OK") {
+//            return ds.Records;
+//        }
+//        if (ds.Result == "ERROR") {
+
+//            notyAlert('error', ds.Message);
+//        }
+//    }
+//    catch (e) {
+//        notyAlert('error', e.message);
+//    }
+//}
+
+//---------------------------------------------------------end security
+
+function Edit(currentObj) {
+
+    debugger;
+    openNav();
+    var rowData = DataTables.EnquiryTable.row($(currentObj).parents('tr')).data();
+    if ((rowData != null) && (rowData.ID != null)) {
+        FillEnquiryDetails(rowData.ID);
+       
+    }
+}
+
+
+function FillEnquiryDetails(ID) {
+    debugger;
+
+    var thisItem = GetEnquiryDetailsByID(ID); //Binding Data
+    debugger;
+
+        $("#ID").val(thisItem.ID);
+        $("#EnquiryDate").val(thisItem.EnquiryDate);
+        $("#ddlSalesPerson").val(thisItem.EnquiryOwnerID);
+        $("#ddlTitle").val(thisItem.ContactTitle);
+        $("#ContactName").val(thisItem.ContactName);
+        $("#CompanyName").val(thisItem.CompanyName);
+        $("#Subject").val(thisItem.Subject);
+        $("#GeneralNotes").val(thisItem.GeneralNotes);
+        $("#ddlIndustry").val(thisItem.IndustryCode);
+        $("#ddlProgressStatus").val(thisItem.ProgressStatus);
+        $("#ddlEnquirySource").val(thisItem.EnquirySource);
+        $("#ddlEnquiryStatus").val(thisItem.EnquiryStatus);
+        $("#Address").val(thisItem.Address);
+        $("#WebSite").val(thisItem.Website);
+        $("#Email").val(thisItem.Email);
+        $("#Mobile").val(thisItem.Mobile);
+        $("#LandLine").val(thisItem.LandLine);
+        $("#Fax").val(thisItem.Fax);
+        
+}
+
+function GetEnquiryDetailsByID(ID) {
+    try {
+        debugger;
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Enquiry/GetEnquiryDetailsByID/", data);
+        debugger;
+        if (ds != '') {
+            ds = JSON.parse(ds);
         }
-        break;
-    case "ERROR":
-        notyAlert('error', JsonResult.Message);
-        break;
-    default:
-        notyAlert('error', JsonResult.Message);
-        break;
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
 }
+
+
+function Add() {
+    $("#btnResetEnquiry").trigger('click');
+    openNav();
+    
 }
+

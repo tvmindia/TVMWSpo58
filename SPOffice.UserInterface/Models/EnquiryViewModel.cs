@@ -19,6 +19,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Enquiry Date")]
         public string EnquiryDate { get; set; }
 
+        [Required(ErrorMessage = "Title")]
         [Display(Name = "Title")]
         public string ContactTitle { get; set; }
 
@@ -35,6 +36,8 @@ namespace SPOffice.UserInterface.Models
         public string Address { get; set; }
 
         public string Website { get; set; }
+
+        [Required(ErrorMessage = "Email is missing")]
         public string Email { get; set; }
         public string LandLine { get; set; }
 
@@ -57,16 +60,21 @@ namespace SPOffice.UserInterface.Models
 
         [Required(ErrorMessage = "Owner Name is missing")]
         [Display(Name = "Lead Owner")]
-        public string EnquiryOwnerID { get; set; }
+        public Guid EnquiryOwnerID { get; set; }
 
-        [Required(ErrorMessage = "General Notes is missing")]
-        [Display(Name = "Subject")]
+        //[Required(ErrorMessage = "General Notes is missing")]
+        [Display(Name = "GeneralNotes")]
         [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
 
         [Required(ErrorMessage = "Enquiry Status is missing")]
         [Display(Name = "Enquiry Status")]
         public string EnquiryStatus { get; set; }
+
+        [Required(ErrorMessage = "Subject is missing")]
+        [Display(Name = "Subject")]
+        [DataType(DataType.MultilineText)]
+        public string Subject { get; set; }
 
         //[Required(ErrorMessage = "DealConverted is missing")]
         [Display(Name = "Deal Converted")]
@@ -82,8 +90,7 @@ namespace SPOffice.UserInterface.Models
         public string EnquiryStatusCode { get; set; }
         public Guid hdnFileID { get; set; }
         public string LeadOwner { get; set; }
-       
-       
+
         public Guid SalesPersonID { get; set; }
         public SalesPersonViewModel salesPersonObj { get; set; }
 
@@ -99,6 +106,12 @@ namespace SPOffice.UserInterface.Models
         public Guid ProgressStatusID { get; set; }
         public ProgressStatusViewModel progressStatusObj { get; set; }
         
+        public FollowUpViewModel followUpObj { get; set; }
+
+        public Guid TitleID { get; set; }
+        public TitlesViewModel titleObj { get; set; }
+
+        public List<FollowUpViewModel> FollowUpList { get; set; }
 
     }
 
@@ -112,5 +125,11 @@ namespace SPOffice.UserInterface.Models
         public decimal OpenPercentage { get; set; }
         public int ConvertedPercentage { get; set; }
         public int NotConvertedPercentage { get; set; }
+    }
+
+    public class TitlesViewModel
+    {
+        public string Title { get; set; }
+        public List<SelectListItem> TitleList { get; set; }
     }
 }

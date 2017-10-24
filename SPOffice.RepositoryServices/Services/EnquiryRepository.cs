@@ -19,6 +19,52 @@ namespace SPOffice.RepositoryServices.Services
             _databaseFactory = databaseFactory;
         }
 
+        #region GetAllTitles
+        public List<Titles> GetAllTitles()
+        {
+            List<Titles> titlesList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Accounts].[GetAllTitles]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                titlesList = new List<Titles>();
+                                while (sdr.Read())
+                                {
+                                    Titles _titlesObj = new Titles();
+                                    {
+                                        _titlesObj.Title = (sdr["Title"].ToString() != "" ? sdr["Title"].ToString() : _titlesObj.Title);
+
+                                    }
+                                    titlesList.Add(_titlesObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return titlesList;
+        }
+        #endregion GetAllTitles
+
         #region InsertEnquiry
         public Enquiry InsertEnquiry(Enquiry _enquiriesObj)
         {
@@ -53,7 +99,9 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@EnquirySourceCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
                         cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
                         cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
-                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = new Guid( _enquiriesObj.EnquiryOwnerID);
+                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = ( _enquiriesObj.EnquiryOwnerID);
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Subject;
+
                         //-----------------------//
 
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.CreatedBy;
@@ -62,8 +110,7 @@ namespace SPOffice.RepositoryServices.Services
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
                         outputEnquiryNo = cmd.Parameters.Add("@EnquiryNo", SqlDbType.VarChar,20);
-                        outputID.Direction = ParameterDirection.Output;
-                        outputEnquiryNo.Direction = ParameterDirection.Output;
+                     
                         cmd.ExecuteNonQuery();
 
 
@@ -94,7 +141,7 @@ namespace SPOffice.RepositoryServices.Services
         #endregion InsertEnquiry
 
         #region UpdateEnquiry
-        public object UpdateEnquiry(Enquiry _enquiriesObj)
+        public Enquiry UpdateEnquiry(Enquiry _enquiriesObj)
         {
             SqlParameter outputStatus = null;
             try
@@ -123,10 +170,11 @@ namespace SPOffice.RepositoryServices.Services
 
                         //----- new fields------ //
                         cmd.Parameters.Add("@Address", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Address;
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Subject;
                         cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = _enquiriesObj.Website;
                         cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = _enquiriesObj.LandLine;
                         cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = _enquiriesObj.Fax;
-                        cmd.Parameters.Add("@EnquirySource", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
+                        cmd.Parameters.Add("@EnquirySourceCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
                         cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
                         cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
                         cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
@@ -134,8 +182,10 @@ namespace SPOffice.RepositoryServices.Services
 
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _enquiriesObj.commonObj.UpdatedDate;
+                        
                         outputStatus = cmd.Parameters.Add("@UpdateStatus", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
+               
                         cmd.ExecuteNonQuery();
 
 
@@ -158,11 +208,9 @@ namespace SPOffice.RepositoryServices.Services
 
                 throw ex;
             }
-            return new
-            {
-                Status = outputStatus.Value.ToString(),
-                Message = Cobj.UpdateSuccess
-            };
+
+            return _enquiriesObj;
+            
         }
         #endregion UpdateEnquiry
 
@@ -208,7 +256,8 @@ namespace SPOffice.RepositoryServices.Services
                                            _enquiryObj.EnquirySource = (sdr["EnquirySource"].ToString() != "" ? sdr["EnquirySource"].ToString() : _enquiryObj.EnquirySource);
                                         _enquiryObj.IndustryName = (sdr["IndustryName"].ToString() != "" ? sdr["IndustryName"].ToString() : _enquiryObj.IndustryName);
                                         _enquiryObj.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : _enquiryObj.EnquiryStatus);
-                                        _enquiryObj.LeadOwner = (sdr["ownername"].ToString() != "" ? sdr["ownername"].ToString() : _enquiryObj.LeadOwner);
+                                        _enquiryObj.LeadOwner = (sdr["OwnerName"].ToString() != "" ? sdr["OwnerName"].ToString() : _enquiryObj.LeadOwner);
+                                        _enquiryObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _enquiryObj.Subject);
                                     }
                                     EnquiryList.Add(_enquiryObj);
                                 }
@@ -283,6 +332,72 @@ namespace SPOffice.RepositoryServices.Services
 
         }
         #endregion GetRecentEnquiryList
+
+
+        #region GetEnquiryDetailsById
+        public Enquiry GetEnquiryDetailsById(Guid ID)
+        {
+           Enquiry _enquiryObj = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetEnquiryDetailsById]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        _enquiryObj = new Enquiry();
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                if (sdr.Read())
+                                {
+                                    _enquiryObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _enquiryObj.ID);
+                                    _enquiryObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(s.dateformat) : _enquiryObj.EnquiryDate);
+                                    _enquiryObj.EnquiryOwnerID = (sdr["EnquiryOwnerID"].ToString() != "" ? Guid.Parse(sdr["EnquiryOwnerID"].ToString()) : _enquiryObj.EnquiryOwnerID);
+                                    _enquiryObj.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : _enquiryObj.ContactTitle);
+                                    _enquiryObj.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : _enquiryObj.ContactName);
+                                    // _enquiryObj.LeadOwner = (sdr["OwnerName"].ToString() != "" ? sdr["OwnerName"].ToString().ToString() : _enquiryObj.LeadOwner);
+                                    _enquiryObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _enquiryObj.CompanyName);
+                                    _enquiryObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _enquiryObj.Subject);
+                                    _enquiryObj.IndustryCode = (sdr["IndustryCode"].ToString() != "" ? sdr["IndustryCode"].ToString() : _enquiryObj.IndustryCode);
+                                    _enquiryObj.ProgressStatus = (sdr["ProgressStatus"].ToString() != "" ? sdr["ProgressStatus"].ToString() : _enquiryObj.ProgressStatus);
+                                    _enquiryObj.EnquirySource = (sdr["EnquirySourceCode"].ToString() != "" ? sdr["EnquirySourceCode"].ToString() : _enquiryObj.EnquirySource);
+                                    _enquiryObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _enquiryObj.GeneralNotes);
+
+                                    _enquiryObj.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : _enquiryObj.EnquiryStatus);
+                                    _enquiryObj.Address = (sdr["Address"].ToString() != "" ? sdr["Address"].ToString() : _enquiryObj.Address);
+                                    _enquiryObj.Website = (sdr["Website"].ToString() != "" ? sdr["Website"].ToString() : _enquiryObj.Website);
+                                    _enquiryObj.Email = (sdr["Email"].ToString() != "" ? sdr["Email"].ToString() : _enquiryObj.Email);
+                                    _enquiryObj.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : _enquiryObj.Mobile);
+                                    _enquiryObj.LandLine = (sdr["LandLine"].ToString() != "" ? sdr["LandLine"].ToString() : _enquiryObj.LandLine);
+                                    _enquiryObj.Fax = (sdr["Fax"].ToString() != "" ? sdr["Fax"].ToString() : _enquiryObj.Fax);
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return _enquiryObj;
+        }
+
+
+
+        #endregion GetEnquiryDetailsById
+
 
         #region GetEnquirySummary
         public EnquirySummary GetEnquirySummary()

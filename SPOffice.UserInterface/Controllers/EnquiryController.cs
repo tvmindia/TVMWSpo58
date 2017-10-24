@@ -22,9 +22,10 @@ namespace SPOffice.UserInterface.Controllers
         IEnquirySourceBusiness _enquirySourceBusiness;
         IEnquiryStatusBusiness _enquiryStatusBusiness;
         IProgressStatusBusiness _progressStatusBusiness;
+        IFollowUpBusiness _followupBusiness;
 
 
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness)
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
@@ -32,6 +33,7 @@ namespace SPOffice.UserInterface.Controllers
             _enquirySourceBusiness = enquirySourceBusiness;
             _enquiryStatusBusiness = enquiryStatusBusiness;
             _progressStatusBusiness = progressStatusBusiness;
+            _followupBusiness = followupBusiness;
         }
 
 
@@ -126,8 +128,45 @@ namespace SPOffice.UserInterface.Controllers
             }
             EVM.progressStatusObj.ProgressStatusList = selectListItem;
 
+            selectListItem = new List<SelectListItem>();
+            EVM.titleObj = new TitlesViewModel();
+            List<TitlesViewModel> titlesList = Mapper.Map<List<Titles>, List<TitlesViewModel>>(_enquiryBusiness.GetAllTitles());
+            //titlesList = titlesList == null ? null : titlesList.OrderBy(attset => attset.Title).ToList();
+            foreach (TitlesViewModel tvm in titlesList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = tvm.Title,
+                    Value = tvm.Title,
+                    Selected = false
+                });
+            }
+            EVM.titleObj.TitleList = selectListItem;
+
+            
             return View(EVM);
         }
+
+   //------------To Get FollowUp List-----//
+
+        #region GetFollowUpDetailsById
+        [HttpPost]
+        public object GetFollowUpDetailsById(FollowUpViewModel followObj)
+        {
+            try
+            {
+                List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
+
+                return JsonConvert.SerializeObject(new { Result = true, Records = followUpObj });
+            }
+            catch (Exception ex)
+            {
+
+                return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
+            }
+        }
+        #endregion GetFollowUpDetailsById
+        //------------To Get FollowUp List-----//
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -149,18 +188,26 @@ namespace SPOffice.UserInterface.Controllers
         [HttpPost]
         public string InsertUpdateEnquiry(EnquiryViewModel _enquiriesObj)
          {
-            EnquiryViewModel result = null;
-            Enquiry resultFromBusiness = null;
+            //object resultFromBusiness = null;
 
             try
             {
+                AppUA _appUA = Session["AppUA"] as AppUA;
                 _enquiriesObj.commonObj = new CommonViewModel();
-                _enquiriesObj.commonObj.CreatedBy = "Albert Thomson";
+                _enquiriesObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
-                resultFromBusiness = (Enquiry)(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
-                result = Mapper.Map<Enquiry,EnquiryViewModel>(resultFromBusiness);
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result,Message="Insertion successfull" });
+                EnquiryViewModel enquiryObj = Mapper.Map <  Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
+
+                if (_enquiriesObj.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Updation successfull" });
+                }
+
 
             }
             catch (Exception ex)
@@ -175,8 +222,18 @@ namespace SPOffice.UserInterface.Controllers
         #endregion InsertUpdateEnquiry
 
 
+        #region GetEnquiryDetailsByID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string GetEnquiryDetailsByID(Guid ID)
+        {
+            EnquiryViewModel enquiryObj = Mapper.Map <Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiryDetailsByID(ID != null && ID.ToString() != "" ? Guid.Parse(ID.ToString()) : Guid.Empty));
 
-     
+            return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj });
+
+        }
+        #endregion GetAllSupplierPaymentsByID
+
 
 
         #region ButtonStyling
@@ -191,7 +248,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "Add";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
-                    ToolboxViewModelObj.addbtn.Event = "openNav();";
+                    ToolboxViewModelObj.addbtn.Event = "Add();";
 
 
                     break;

@@ -24,7 +24,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string IndustryCode { get; set; }
         public string IndustryName { get; set; }
         public string ProgressStatus { get; set; }
-        public string EnquiryOwnerID { get; set; }
+        public Guid EnquiryOwnerID { get; set; }
         public string LeadOwner { get; set; }
         public string GeneralNotes { get; set; }
         public string EnquiryStatus { get; set; }
@@ -38,6 +38,7 @@ namespace SPOffice.DataAccessObject.DTO
         public List<Enquiry> IndustryList { get; set; }
         public string URL { get; set; }
         public string EnquiryStatusCode { get; set; }
+        public string Subject { get; set; }
 
     }
 
@@ -51,5 +52,9 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal OpenPercentage { get; set; }
         public int ConvertedPercentage { get; set; }
         public int NotConvertedPercentage { get; set; }
+    }
+    public class Titles
+    {
+        public string Title { get; set; }
     }
 }

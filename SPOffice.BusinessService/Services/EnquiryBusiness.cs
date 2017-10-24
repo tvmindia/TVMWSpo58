@@ -16,9 +16,9 @@ namespace SPOffice.BusinessService.Services
         {
             _enquiryRepository = enquiryRepository;
         }
-        public object InsertUpdateEnquiry(Enquiry _enquiriesObj)
+        public Enquiry InsertUpdateEnquiry(Enquiry _enquiriesObj)
         {
-            object result = null;
+            Enquiry result = null;
             try
             {
                 if (_enquiriesObj.ID == Guid.Empty)
@@ -72,8 +72,19 @@ namespace SPOffice.BusinessService.Services
             return eqlObj;
         }
 
-       
 
+        public List<Titles> GetAllTitles()
+        {
+            return _enquiryRepository.GetAllTitles();
+        }
+
+        public Enquiry GetEnquiryDetailsByID(Guid ID)
+        {
+            return _enquiryRepository.GetEnquiryDetailsById(ID);
+
+
+
+        }
 
     }
 }
