@@ -31,10 +31,56 @@
         </div>
     </div>
     <div class="row summaryboxes">
+        
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">OPEN <b><span id="statusOpen">0</span></b></span>
+
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">CONVERTED <b><span id="statusConverted">0</span></b></span>
+
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">NOT CONVERTED <b><span id="statusNotConverted">0</span></b></span>
+
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+        </div>
+
+            <!-- /.col -->
+            <!-- /.col -->
 
         <div class="clearfix visible-sm-block"></div>
 
-    </div>
+  
     <div class="row">
         &nbsp;
     </div>
@@ -73,7 +119,7 @@
                 <div class="row" id="OverlayHeader">
                     <br/>
                     <div class="col-md-6" style="text-align:left">
-                        <span id="lblEnquiryNo" class="SCHeader">Enquiry–10001</span>
+                        <span id="lblEnquiryNo" class="SCHeader"></span>
                     </div>
 
                     <div class="col-md-6" id="btnPatchAdd" style="min-height:25px; padding-right:25px;">
@@ -396,7 +442,7 @@
                                     </div>
                                     <div class="col-md-11">
                                         <div class="col-md-11">
-                                            @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control", @rows = "5", @id = "GeneralNotes" } })
+                                            @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control", @rows = "6", @id = "GeneralNotes" } })
                                             @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                         </div>
 
@@ -413,7 +459,7 @@
                                 <div class="form-group col-md-12">
                                     <div class="col-md-12 text-right">
                                         <div class="rightAmt" style="font-size:20px">Enquiry Status</div>
-                                        <div class="rightAmt" style="color:orange" id="lblEnquiryStatus">Open</div>
+                                        <div class="rightAmt" style="color:orange" id="lblEnquiryStatus"></div>
                                     </div>
                                 </div>
 

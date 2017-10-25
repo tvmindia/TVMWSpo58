@@ -209,7 +209,11 @@ function FillEnquiryDetails(ID) {
         $("#Mobile").val(thisItem.Mobile);
         $("#LandLine").val(thisItem.LandLine);
         $("#Fax").val(thisItem.Fax);
+        $("#lblEnquiryNo").text(thisItem.EnquiryNo);
+        $("#lblEnquiryStatus").text(thisItem.EnquiryStatus);
         
+
+      
 }
 
 function GetEnquiryDetailsByID(ID) {
@@ -238,7 +242,10 @@ function GetEnquiryDetailsByID(ID) {
 
 
 function Add() {
+    debugger;
+    $("#lblEnquiryNo").text("Add New");
     $("#btnResetEnquiry").trigger('click');
+    $("#lblEnquiryStatus").text('');
     openNav();
     
 }

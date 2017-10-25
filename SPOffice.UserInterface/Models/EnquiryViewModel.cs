@@ -62,7 +62,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Lead Owner")]
         public Guid EnquiryOwnerID { get; set; }
 
-        //[Required(ErrorMessage = "General Notes is missing")]
+        [Required(ErrorMessage = "General Notes is missing")]
         [Display(Name = "GeneralNotes")]
         [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
@@ -91,7 +91,7 @@ namespace SPOffice.UserInterface.Models
         public Guid hdnFileID { get; set; }
         public string LeadOwner { get; set; }
 
-        public Guid SalesPersonID { get; set; }
+       public Guid SalesPersonID { get; set; }
         public SalesPersonViewModel salesPersonObj { get; set; }
 
        public Guid IndustryID { get; set; }
@@ -112,6 +112,7 @@ namespace SPOffice.UserInterface.Models
         public TitlesViewModel titleObj { get; set; }
 
         public List<FollowUpViewModel> FollowUpList { get; set; }
+
 
     }
 

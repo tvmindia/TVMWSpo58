@@ -109,8 +109,9 @@ namespace SPOffice.RepositoryServices.Services
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
                         outputEnquiryNo = cmd.Parameters.Add("@EnquiryNo", SqlDbType.VarChar,20);
-                     
+                        outputEnquiryNo.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
 
 
@@ -379,6 +380,7 @@ namespace SPOffice.RepositoryServices.Services
                                     _enquiryObj.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : _enquiryObj.Mobile);
                                     _enquiryObj.LandLine = (sdr["LandLine"].ToString() != "" ? sdr["LandLine"].ToString() : _enquiryObj.LandLine);
                                     _enquiryObj.Fax = (sdr["Fax"].ToString() != "" ? sdr["Fax"].ToString() : _enquiryObj.Fax);
+                                    _enquiryObj.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : _enquiryObj.EnquiryNo);
 
                                 }
                             }
