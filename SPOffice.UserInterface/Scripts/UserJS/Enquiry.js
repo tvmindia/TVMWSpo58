@@ -56,7 +56,7 @@ $(document).ready(function () {
          });
 
         $('#EnquiryTable tbody').on('dblclick', 'td', function () {
-
+       
             Edit(this);
         });
 
@@ -75,7 +75,7 @@ $(document).ready(function () {
 function GetAllEnquiry() {
     debugger;
     try {
-
+       
         var data = {};
         var ds = {};
         ds = GetDataFromServer("Enquiry/GetAllEnquiry/", data);
@@ -83,6 +83,8 @@ function GetAllEnquiry() {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
+            BindSummarBox(ds.Open, ds.Converted, ds.NotConverted);
+           
             return ds.Records;
         }
         if (ds.Result == "ERROR") {
@@ -95,6 +97,11 @@ function GetAllEnquiry() {
     }
 }
 
+function BindSummarBox(Open, Converted, NotConverted) {
+    $("#statusOpen").text(Open);
+    $("#statusConverted").text(Converted);
+    $("#statusNotConverted").text(NotConverted);
+}
 
 function Save() {
     debugger;
@@ -140,38 +147,12 @@ function SaveSuccess(data) {
 
 
 
-///-------
-//function FollowUp() {
-//    debugger;
-//    $("#btnFollowUps").modal('show');
 
-//}
-////-------------------
-//-----------------------------------------Commented for security check
-//function GetFollowUpDetailsById() {
-//    debugger;
-//    try {
+function FollowUp() {
+    debugger;
+    $("#btnFollowUps").modal('show');
+}
 
-//        var data = {};
-//        var ds = {};
-//        ds = GetDataFromServer("Enquiry/GetFollowUpDetailsById/", data);
-//        if (ds != '') {
-//            ds = JSON.parse(ds);
-//        }
-//        if (ds.Result == "OK") {
-//            return ds.Records;
-//        }
-//        if (ds.Result == "ERROR") {
-
-//            notyAlert('error', ds.Message);
-//        }
-//    }
-//    catch (e) {
-//        notyAlert('error', e.message);
-//    }
-//}
-
-//---------------------------------------------------------end security
 
 function Edit(currentObj) {
 
@@ -210,8 +191,20 @@ function FillEnquiryDetails(ID) {
         $("#LandLine").val(thisItem.LandLine);
         $("#Fax").val(thisItem.Fax);
         $("#lblEnquiryNo").text(thisItem.EnquiryNo);
-        $("#lblEnquiryStatus").text(thisItem.EnquiryStatus);
-        
+        if (thisItem.EnquiryStatus == "OE") {
+            $("#lblEnquiryStatus").text('Open');
+        }
+        if (thisItem.EnquiryStatus == "CE") {
+            $("#lblEnquiryStatus").text('Converted');
+        }
+        if (thisItem.EnquiryStatus == "NCE") {
+            $("#lblEnquiryStatus").text('Not Converted');
+        }
+        //$("#lblEnquiryStatus").text(thisItem.EnquiryStatus);
+
+     ReloadFollowUpList(ID);
+     $("#flist").show();
+     $("#btnAddFollowUp").show();
 
       
 }
@@ -248,5 +241,17 @@ function Add() {
     $("#lblEnquiryStatus").text('');
     openNav();
     
+}
+
+function ReloadFollowUpList(ID) {
+    debugger;
+    var data = { EnquiryID: ID };
+    var ds = {};
+    ds = GetDataFromServer('Enquiry' + "/FollowUps/", data);
+    if (ds == "Nochange") {
+        return; 0
+    }
+    $("#flist").empty();
+    $("#flist").html(ds);
 }
 

@@ -147,26 +147,25 @@ namespace SPOffice.UserInterface.Controllers
             return View(EVM);
         }
 
-   //------------To Get FollowUp List-----//
-
-        #region GetFollowUpDetailsById
-        [HttpPost]
-        public object GetFollowUpDetailsById(FollowUpViewModel followObj)
-        {
-            try
-            {
-                List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
-
-                return JsonConvert.SerializeObject(new { Result = true, Records = followUpObj });
-            }
-            catch (Exception ex)
-            {
-
-                return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
-            }
-        }
-        #endregion GetFollowUpDetailsById
         //------------To Get FollowUp List-----//
+
+
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public ActionResult FollowUps(FollowUpViewModel followObj)
+        {
+
+            List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
+            FollowUpListViewModel Result = new FollowUpListViewModel();
+            Result.FollowUpList = followUpObj;
+            Result.EnqID = followObj.EnquiryID;
+           
+            //  followUpObj. = followUpObj.FollowUpsList.Count(n => n.Status == "Open");
+
+
+            return PartialView("_FollowUpList", Result);
+        }
+        //------------To Get FollowUp List-----//
+
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -175,7 +174,11 @@ namespace SPOffice.UserInterface.Controllers
             try
             {
                 List<EnquiryViewModel> EnquiryList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetAllEnquiryList(Mapper.Map<EnquiryViewModel, Enquiry>(data)));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryList });
+                int openCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "OE").Select(T => T.ID).Count();
+                int convertedCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "CE").Select(T => T.ID).Count();
+                int notconvertedCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "NCE").Select(T => T.ID).Count();
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryList,Open= openCount,Converted= convertedCount,NotConverted= notconvertedCount });
             }
             catch (Exception ex)
             {
@@ -198,7 +201,7 @@ namespace SPOffice.UserInterface.Controllers
                 _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
                 EnquiryViewModel enquiryObj = Mapper.Map <  Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
-
+               
                 if (_enquiriesObj.ID == Guid.Empty)
                 {
                     return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Insertion successfull" });

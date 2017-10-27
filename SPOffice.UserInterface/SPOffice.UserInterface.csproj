@@ -240,6 +240,7 @@
     <Content Include="Content\AdminLTE\css\skins\skin-yellow.min.css" />
     <Content Include="Content\AdminLTE\css\skins\_all-skins.css" />
     <Content Include="Content\AdminLTE\css\skins\_all-skins.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -738,6 +739,9 @@
     <Content Include="Views\Dashboard\_TodaysFollowups.cshtml" />
     <Content Include="Views\Dashboard\_POandQuoteSummary.cshtml" />
     <Content Include="Views\Enquiry\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Enquiry\_FollowUpList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

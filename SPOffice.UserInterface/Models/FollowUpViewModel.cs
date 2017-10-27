@@ -26,13 +26,16 @@ namespace SPOffice.UserInterface.Models
         public string GeneralNotes { get; set; }
 
         public string Company { get; set; }
-        public string Contact{ get; set; }
+        public string Contact { get; set; }
 
         public CommonViewModel commonObj { get; set; }
         public string URL { get; set; }
     }
 
-   
 
-
+    public class FollowUpListViewModel
+    {
+        public Guid EnqID { get; set; }
+        public List<FollowUpViewModel> FollowUpList { get; set; }
+    }
 }
