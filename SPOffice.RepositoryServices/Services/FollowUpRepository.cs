@@ -38,7 +38,7 @@ namespace SPOffice.RepositoryServices.Services
                             cmd.CommandText = "[Office].[InsertFollowUp]";
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.Add("@FollowUpDate", SqlDbType.DateTime).Value = _followupObj.FollowUpDate;
-                            cmd.Parameters.Add("@FollowUpTime", SqlDbType.DateTime).Value = _followupObj.FollowUpTime;
+                            cmd.Parameters.Add("@FollowUpTime", SqlDbType.Time).Value = _followupObj.FollowUpTime;
                             cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = _followupObj.EnquiryID;
                             cmd.Parameters.Add("@Status", SqlDbType.VarChar, 150).Value = _followupObj.Status;
                             cmd.Parameters.Add("@ReminderType", SqlDbType.VarChar, 10).Value = _followupObj.ReminderType;
@@ -88,7 +88,7 @@ namespace SPOffice.RepositoryServices.Services
         #endregion InsertFollowUp
 
         #region UpdateFollowUp
-        public object UpdateFollowUp(FollowUp _followupObj)
+        public FollowUp UpdateFollowUp(FollowUp _followupObj)
             {
                 SqlParameter outputStatus = null;
                 try
@@ -144,12 +144,13 @@ namespace SPOffice.RepositoryServices.Services
 
                     throw ex;
                 }
-                return new
-                {
-                    Status = outputStatus.Value.ToString(),
-                    Message = Cobj.UpdateSuccess
-                };
-            }
+            return _followupObj;
+                //return new
+                //{
+                //    Status = outputStatus.Value.ToString(),
+                //    Message = Cobj.UpdateSuccess
+                //};
+        }
         #endregion UpdateFollowUp
 
 

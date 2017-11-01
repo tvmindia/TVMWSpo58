@@ -112,6 +112,7 @@
     <Compile Include="Contracts\IProgressStatusRepository.cs" />
     <Compile Include="Contracts\IQuotationRepository.cs" />
     <Compile Include="Contracts\IRawMaterialRepository.cs" />
+    <Compile Include="Contracts\IReminderRepository.cs" />
     <Compile Include="Contracts\ISupplierRepository.cs" />
     <Compile Include="Contracts\ITaxTypeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Services\ProgressStatusRepository.cs" />
     <Compile Include="Services\QuotationRepository.cs" />
     <Compile Include="Services\RawMaterialRepository.cs" />
+    <Compile Include="Services\ReminderRepository.cs" />
     <Compile Include="Services\SupplierRepository.cs" />
     <Compile Include="Services\TaxTypeRepository.cs" />
   </ItemGroup>

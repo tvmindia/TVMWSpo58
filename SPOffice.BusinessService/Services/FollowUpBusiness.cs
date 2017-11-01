@@ -17,9 +17,9 @@ namespace SPOffice.BusinessService.Services
             {
             _followupRepository = followupRepository;
             }
-            public object InsertUpdateFollowUp(FollowUp _followupObj)
+            public FollowUp InsertUpdateFollowUp(FollowUp _followupObj)
             {
-                object result = null;
+            FollowUp result = null;
                 try
                 {
                     if (_followupObj.ID == Guid.Empty)

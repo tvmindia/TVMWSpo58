@@ -23,9 +23,9 @@ namespace SPOffice.UserInterface.Controllers
         IEnquiryStatusBusiness _enquiryStatusBusiness;
         IProgressStatusBusiness _progressStatusBusiness;
         IFollowUpBusiness _followupBusiness;
+        IReminderBusiness _reminderBusiness;
 
-
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness)
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
@@ -34,6 +34,8 @@ namespace SPOffice.UserInterface.Controllers
             _enquiryStatusBusiness = enquiryStatusBusiness;
             _progressStatusBusiness = progressStatusBusiness;
             _followupBusiness = followupBusiness;
+            _reminderBusiness = reminderBusiness;
+           
         }
 
 
@@ -143,7 +145,20 @@ namespace SPOffice.UserInterface.Controllers
             }
             EVM.titleObj.TitleList = selectListItem;
 
-            
+            selectListItem = new List<SelectListItem>();
+            EVM.reminderObj = new ReminderViewModel();
+            List<ReminderViewModel> reminderList = Mapper.Map<List<Reminder>, List<ReminderViewModel>>(_reminderBusiness.GetAllReminders());
+            foreach (ReminderViewModel rvm in reminderList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = rvm.ReminderDesc,
+                    Value = rvm.Code,
+                    Selected = false
+                });
+            }
+            EVM.reminderObj.ReminderList = selectListItem;
+
             return View(EVM);
         }
 
@@ -165,6 +180,43 @@ namespace SPOffice.UserInterface.Controllers
             return PartialView("_FollowUpList", Result);
         }
         //------------To Get FollowUp List-----//
+
+
+        #region InsertUpdateFollowUp
+        [HttpPost]
+        public string InsertUpdateFollowUp(EnquiryViewModel _enquiryObj)
+        {
+            //FollowUpViewModel _followupObj = new FollowUpViewModel();
+            try
+            {
+                AppUA _appUA = Session["AppUA"] as AppUA;
+                _enquiryObj.followUpObj.commonObj = new CommonViewModel();
+                _enquiryObj.followUpObj.commonObj.CreatedBy = _appUA.UserName;
+                _enquiryObj.followUpObj.commonObj.CreatedDate = DateTime.Now;
+                _enquiryObj.followUpObj.commonObj.UpdatedDate = DateTime.Now;
+                FollowUpViewModel followupObj = Mapper.Map<FollowUp, FollowUpViewModel>(_followupBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_enquiryObj.followUpObj)));
+
+                if (_enquiryObj.followUpObj.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = followupObj, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = followupObj, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+        }
+
+        #endregion InsertUpdateFollowUp
 
 
         [HttpGet]

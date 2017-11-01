@@ -691,6 +691,7 @@
     <Compile Include="Models\QuoteHeaderViewModel.cs" />
     <Compile Include="Models\QuoteMailPreviewViewModel.cs" />
     <Compile Include="Models\RawMaterialViewModel.cs" />
+    <Compile Include="Models\ReminderViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />

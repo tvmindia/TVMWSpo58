@@ -113,6 +113,7 @@
     <Compile Include="DTO\Quotation.cs" />
     <Compile Include="DTO\QuoteHeader.cs" />
     <Compile Include="DTO\RawMaterial.cs" />
+    <Compile Include="DTO\Reminder.cs" />
     <Compile Include="DTO\Supplier.cs" />
     <Compile Include="DTO\TaxType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

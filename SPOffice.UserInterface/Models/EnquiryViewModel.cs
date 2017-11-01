@@ -113,6 +113,9 @@ namespace SPOffice.UserInterface.Models
 
         public List<FollowUpViewModel> FollowUpList { get; set; }
 
+        public Guid ReminderTypeID { get; set; }
+        public ReminderViewModel reminderObj { get; set; }
+
 
     }
 

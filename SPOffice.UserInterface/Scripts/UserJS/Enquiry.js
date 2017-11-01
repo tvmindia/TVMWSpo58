@@ -17,7 +17,18 @@ $(document).ready(function () {
             FileObject.Controller = "FileUpload";
             UploadFile(FileObject);
         });
-
+      
+        $('input.timepicker').timepicker({
+            timeFormat: 'H:mm:ss',
+            interval: 10,
+            minTime: '10',
+            maxTime: '6:00pm',
+            defaultTime: '11',
+            startTime: '10:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
 
 
         //DataTables.EnquiryItemDetailsTable = $('#EnquiryItemDetailsTable').DataTable();
@@ -45,7 +56,6 @@ $(document).ready(function () {
                { "data": "IndustryName", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryStatus", "defaultContent": "<i>-</i>" },
                { "data": "LeadOwner", "defaultContent": "<i>-</i>" },
-                //  { "data": null, "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#"  class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [
@@ -56,11 +66,11 @@ $(document).ready(function () {
          });
 
         $('#EnquiryTable tbody').on('dblclick', 'td', function () {
-       
+            debugger;
             Edit(this);
         });
 
-
+        
 
     } catch (x) {
 
@@ -150,9 +160,13 @@ function SaveSuccess(data) {
 
 function FollowUp() {
     debugger;
+    $('#ModelReset').trigger('click');
     $("#btnFollowUps").modal('show');
 }
 
+function Reset() {
+    $('#ModelReset').trigger('click');
+}
 
 function Edit(currentObj) {
 
@@ -191,6 +205,7 @@ function FillEnquiryDetails(ID) {
         $("#LandLine").val(thisItem.LandLine);
         $("#Fax").val(thisItem.Fax);
         $("#lblEnquiryNo").text(thisItem.EnquiryNo);
+        $("#hdnFileID").val(thisItem.ID);
         if (thisItem.EnquiryStatus == "OE") {
             $("#lblEnquiryStatus").text('Open');
         }
@@ -200,7 +215,6 @@ function FillEnquiryDetails(ID) {
         if (thisItem.EnquiryStatus == "NCE") {
             $("#lblEnquiryStatus").text('Not Converted');
         }
-        //$("#lblEnquiryStatus").text(thisItem.EnquiryStatus);
 
      ReloadFollowUpList(ID);
      $("#flist").show();
@@ -255,3 +269,13 @@ function ReloadFollowUpList(ID) {
     $("#flist").html(ds);
 }
 
+function SaveFollowUp() {
+    debugger;
+    try {
+        $("#btnFollowUpSave").trigger('click');
+    }
+        catch(e){
+            notyAlert('error',e.Message);
+}
+   
+}
