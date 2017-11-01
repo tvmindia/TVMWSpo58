@@ -173,8 +173,6 @@ namespace SPOffice.UserInterface.Controllers
             FollowUpListViewModel Result = new FollowUpListViewModel();
             Result.FollowUpList = followUpObj;
             Result.EnqID = followObj.EnquiryID;
-           
-            //  followUpObj. = followUpObj.FollowUpsList.Count(n => n.Status == "Open");
 
 
             return PartialView("_FollowUpList", Result);
