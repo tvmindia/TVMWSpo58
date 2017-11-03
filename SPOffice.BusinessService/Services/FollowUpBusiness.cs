@@ -43,5 +43,11 @@ namespace SPOffice.BusinessService.Services
         {
             return _followupRepository.GetFollowUpDetails(EnquiryID);
         }
+
+        public FollowUp GetFollowupDetailsByFollowUpID(Guid ID)
+        {
+            return _followupRepository.GetFollowupDetailsByFollowUpID(ID);
+        }
+
     }
 }

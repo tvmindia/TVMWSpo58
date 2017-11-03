@@ -170,9 +170,13 @@ namespace SPOffice.UserInterface.Controllers
         {
 
             List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
+            int openCount = followUpObj == null ? 0 : followUpObj.Where(Q => Q.Status == "Open").Select(T => T.ID).Count();
+
             FollowUpListViewModel Result = new FollowUpListViewModel();
             Result.FollowUpList = followUpObj;
-            Result.EnqID = followObj.EnquiryID;
+            Result.FlwID = followObj.ID;
+            //Result.EnqID = followObj.EnquiryID;
+            ViewBag.Count = openCount;
 
 
             return PartialView("_FollowUpList", Result);
@@ -192,6 +196,7 @@ namespace SPOffice.UserInterface.Controllers
                 _enquiryObj.followUpObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiryObj.followUpObj.commonObj.CreatedDate = DateTime.Now;
                 _enquiryObj.followUpObj.commonObj.UpdatedDate = DateTime.Now;
+                _enquiryObj.followUpObj.commonObj.UpdatedBy = _appUA.UserName;
                 FollowUpViewModel followupObj = Mapper.Map<FollowUp, FollowUpViewModel>(_followupBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_enquiryObj.followUpObj)));
 
                 if (_enquiryObj.followUpObj.ID == Guid.Empty)
@@ -285,9 +290,35 @@ namespace SPOffice.UserInterface.Controllers
             return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj });
 
         }
-        #endregion GetAllSupplierPaymentsByID
+        #endregion GetEnquiryDetailsByID
 
 
+        #region GetFollowUpDetails
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string GetFollowUpDetails(Guid ID)
+        {
+            List<FollowUpViewModel> followupObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(ID != null && ID.ToString() != "" ? Guid.Parse(ID.ToString()) : Guid.Empty));
+
+            return JsonConvert.SerializeObject(new { Result = "OK", Records = followupObj });
+
+        }
+        #endregion GetFollowUpDetails
+
+
+
+
+        #region GetFollowUpDetailByFollowUpId
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string GetFollowUpDetailByFollowUpId(Guid ID)
+        {
+            FollowUpViewModel followupObj = Mapper.Map< FollowUp,FollowUpViewModel> (_followupBusiness.GetFollowupDetailsByFollowUpID(ID != null && ID.ToString() != "" ? Guid.Parse(ID.ToString()) : Guid.Empty));
+
+            return JsonConvert.SerializeObject(new { Result = "OK", Records = followupObj });
+
+        }
+        #endregion GetFollowUpDetailByFollowUpId
 
         #region ButtonStyling
         [HttpGet]

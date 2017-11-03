@@ -23,11 +23,14 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Reminder Type")]
         public string ReminderType { get; set; }
         public string Status { get; set; }
+        [Display(Name = "GeneralNotes")]
+        [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }
 
         public string Company { get; set; }
         public string Contact { get; set; }
 
+        public string EnquiryStatus { get; set; }
         public CommonViewModel commonObj { get; set; }
         public string URL { get; set; }
     }
@@ -35,7 +38,8 @@ namespace SPOffice.UserInterface.Models
 
     public class FollowUpListViewModel
     {
-        public Guid EnqID { get; set; }
+        public Guid FlwID { get; set; }
+       // public Guid EnqID { get; set; }
         public List<FollowUpViewModel> FollowUpList { get; set; }
     }
 }

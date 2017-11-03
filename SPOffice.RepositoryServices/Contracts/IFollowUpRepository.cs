@@ -12,5 +12,6 @@ namespace SPOffice.RepositoryServices.Contracts
         FollowUp UpdateFollowUp(FollowUp _followupObj);
         List<FollowUp> GetFollowUpDetails(Guid EnquiryID);
         List<FollowUp> GetFollowUpDetailsOnDate(DateTime onDate);
-    }
+        FollowUp GetFollowupDetailsByFollowUpID(Guid ID);
+      }
 }

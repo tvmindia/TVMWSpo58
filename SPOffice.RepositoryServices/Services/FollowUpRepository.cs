@@ -214,6 +214,64 @@ namespace SPOffice.RepositoryServices.Services
 
         #endregion GetAllFollowup
 
+        #region GetFollowupDetailsByFollowUpID
+
+        public FollowUp GetFollowupDetailsByFollowUpID(Guid ID)
+        {
+            FollowUp _followUpObj = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetFollowUpDetailsByFollowUpId]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                               
+                                if (sdr.Read())
+                                {
+                                    _followUpObj = new FollowUp();
+                                    {
+                                        _followUpObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _followUpObj.ID);
+                                        _followUpObj.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : _followUpObj.EnquiryID);
+                                        _followUpObj.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : _followUpObj.ContactName);
+                                        _followUpObj.FollowUpDate = (sdr["FollowUpDate"].ToString() != "" ? DateTime.Parse(sdr["FollowUpDate"].ToString()).ToString(s.dateformat) : _followUpObj.FollowUpDate);
+                                        _followUpObj.FollowUpTime = (sdr["FollowUpTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("hh:mm tt") : _followUpObj.FollowUpTime);
+                                        _followUpObj.Priority = (sdr["Priority"].ToString() != "" ? sdr["Priority"].ToString() : _followUpObj.Priority);
+                                        _followUpObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _followUpObj.Subject);
+                                        _followUpObj.RemindPriorTo = (sdr["RemindPriorTo"].ToString() != "" ? sdr["RemindPriorTo"].ToString() : _followUpObj.RemindPriorTo);
+                                        _followUpObj.ReminderType = (sdr["ReminderType"].ToString() != "" ? sdr["ReminderType"].ToString() : _followUpObj.ReminderType);
+                                        _followUpObj.Status = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : _followUpObj.Status);
+                                        _followUpObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _followUpObj.GeneralNotes);
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return _followUpObj;
+        }
+
+        #endregion GetFollowupDetailsByFollowUpID
+
 
 
 
