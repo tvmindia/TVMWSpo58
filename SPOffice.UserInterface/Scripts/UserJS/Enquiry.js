@@ -21,12 +21,12 @@ $(document).ready(function () {
 
    //-- Initialising TimePicker plugin in FollowUp Modal--//   
         $('input.timepicker').timepicker({
-            timeFormat: 'H:mm:ss',
+            timeFormat: 'hh:mm:p',
             interval: 10,
-            minTime: '10',
-            maxTime: '6:00pm',
+            minTime: '1',
+            maxTime: '11:50pm',
             defaultTime: '11',
-            startTime: '10:00',
+            startTime: '10:00am',
             dynamic: false,
             dropdown: true,
             scrollbar: true
@@ -34,6 +34,8 @@ $(document).ready(function () {
 
 
         $('[data-toggle="tooltip"]').tooltip();
+
+
 
 //--Binding Enquiry Data table with all enquiry details--//
         DataTables.EnquiryTable = $('#EnquiryTable').DataTable(
@@ -58,7 +60,7 @@ $(document).ready(function () {
                { "data": "LandLine", "defaultContent": "<i>-</i>" },
                { "data": "EnquirySource", "defaultContent": "<i>-</i>" },
                { "data": "IndustryName", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryStatus", "defaultContent": "<i>-</i>" },
+               { "data": "EnqStatusDescription", "defaultContent": "<i>-</i>" },
                { "data": "LeadOwner", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#"  class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
@@ -169,17 +171,19 @@ function FollowUp(flag) {
     if (flag == 1) {
         debugger;
        
-            $('#ModelReset').trigger('click');
+        $('#ModelReset').trigger('click');
+        $("#hdnFollowUpID").val(ID);
             $('#FollowUpDate').prop("disabled", false);
             $('#FollowUpTime').prop("disabled", false);
             $('#followUpObj_Subject').prop("disabled", false);
-            $('#ddlPriority').prop("disabled", false);
+           // $('#ddlPriority').prop("disabled", false);
             $('#followUpObj_ContactName').prop("disabled", false);
             $('#followUpObj_ReminderType').prop("disabled", false);
             $('#followUpObj_GeneralNotes').prop("disabled", false);
             $('#followUpObj_RemindPriorTo').prop("disabled", false);
             $('#followUpObj_Status').prop("disabled", false);
-
+            $('#followUpObj_Priority').prop("disabled", false);
+            
             $("#btnFollowUps").modal('show');
 
     
@@ -212,16 +216,18 @@ function FillFollowUpDetails(ID) {
     $('#followUpObj_ReminderType').prop("disabled", true);
     $('#followUpObj_GeneralNotes').prop("disabled", true);
     $('#followUpObj_RemindPriorTo').prop("disabled", true);
+    $('#followUpObj_Priority').prop("disabled", true);
     
     $('#FollowUpDate').val(thisItem.FollowUpDate);
     $('#FollowUpTime').val(thisItem.FollowUpTime);
     $("#followUpObj_Subject").val(thisItem.Subject);
-    $('#ddlPriority').val(thisItem.Priority);
+    //$('#ddlPriority').val(thisItem.Priority);
     $('#followUpObj_ContactName').val(thisItem.ContactName);
     $('#followUpObj_ReminderType').val(thisItem.ReminderType);
     $('#followUpObj_Status').val(thisItem.Status);
-    $('#followUpObj_RemindPriorTo').text(thisItem.RemindPriorTo);
-    $('#followUpObj_GeneralNotes').text(thisItem.GeneralNotes);
+    $('#followUpObj_RemindPriorTo').val(thisItem.RemindPriorTo);
+    $('#followUpObj_GeneralNotes').val(thisItem.GeneralNotes);
+    $('#followUpObj_Priority').val(thisItem.Priority);
 
     if (thisItem.Status == "Closed") {
         $('#followUpObj_Status').prop("disabled", true);
@@ -385,6 +391,11 @@ function FollowUpList(ID) {
 function SaveFollowUp() {
     debugger;
     try {
+        debugger
+        var time = hrsTo24hrormat();
+        //time = time + ":00.0000000";
+        $("#hdnFollowUpTime").val(time);
+       // Timing = time;
         $("#btnFollowUpSave").trigger('click');
     }
         catch(e){
@@ -418,5 +429,36 @@ function FollowUpSaveSuccess(data) {
         default:
             notyAlert('error', JsonResult.Message);
             break;
+    }
+}
+
+
+
+
+function hrsTo24hrormat() {
+    try {
+        debugger;
+        var h = 0;
+        var addTime = 12;
+        var time = $("#FollowUpTime").val();
+        var hours = parseInt(time.split(":")[0]);
+        var minutes = parseInt(time.split(":")[1]);
+        var AMPM = time.split(":")[2];
+
+        if (AMPM == "PM" && hours < 12) {
+            hours = parseInt(hours) + parseInt(addTime);
+        }
+        if (AMPM == "AM" && hours == 12) {
+            hours = parseInt(hours) - parseInt(addTime);
+        }
+        var h = hours;
+        var sHours = hours.toString();
+        var sMinutes = minutes.toString();
+        if (h < 10) sHours = sHours;
+        if (minutes < 10) sMinutes = sMinutes;
+        return sHours + ":" + sMinutes;
+    }
+    catch (e) {
+        noty({ type: 'error', text: e.message });
     }
 }

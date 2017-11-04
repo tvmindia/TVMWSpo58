@@ -275,6 +275,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _courier.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _courier.ID);
                                         _courier.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : _courier.Type);
                                         _courier.TransactionDate = (sdr["TransactionDate"].ToString() != "" ? DateTime.Parse(sdr["TransactionDate"].ToString()).ToString(s.dateformat) : _courier.TransactionDate);
+                                        _courier.Track = (sdr["Track"].ToString() != "" ? sdr["Track"].ToString() : _courier.Track);
                                         _courier.SourceName = (sdr["SourceName"].ToString() != "" ? sdr["SourceName"].ToString() : _courier.SourceName);
                                         _courier.SourceAddress = (sdr["SourceAddress"].ToString() != "" ? sdr["SourceAddress"].ToString() : _courier.SourceAddress);
                                         _courier.DestName = (sdr["DestName"].ToString() != "" ? sdr["DestName"].ToString() : _courier.DestName);

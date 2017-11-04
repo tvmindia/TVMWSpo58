@@ -25,6 +25,7 @@ namespace SPOffice.DataAccessObject.DTO
         public Guid hdnFileID { get; set; }
         public string Type { get; set; }
         public string TransactionDate { get; set; }
+        public string Track { get; set; }
         public string SourceName { get; set; }
         public string SourceAddress { get; set; }
         public string DestName { get; set; }

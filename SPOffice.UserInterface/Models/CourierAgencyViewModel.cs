@@ -37,6 +37,7 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "Please enter Transaction Date")]
         [Display(Name = "Transaction Date")]
         public string TransactionDate { get; set; }
+        public string Track { get; set; }
         [Required(ErrorMessage = "Please enter Source name")]
         [Display(Name = "Source Name")]
         [MaxLength(150)]

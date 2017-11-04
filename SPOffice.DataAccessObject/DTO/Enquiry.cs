@@ -28,6 +28,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string LeadOwner { get; set; }
         public string GeneralNotes { get; set; }
         public string EnquiryStatus { get; set; }
+        public string EnqStatusDescription { get; set; }
         public string DealConverted { get; set; }
         public string FilterWords { get; set; }
         public Common commonObj { get; set; }

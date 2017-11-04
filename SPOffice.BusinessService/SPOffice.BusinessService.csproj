@@ -108,6 +108,7 @@
     <Compile Include="Contracts\IFollowUpBusiness.cs" />
     <Compile Include="Contracts\IIndustryBusiness.cs" />
     <Compile Include="Contracts\IMailBusiness.cs" />
+    <Compile Include="Contracts\IPriorityBusiness.cs" />
     <Compile Include="Contracts\IProductBusiness.cs" />
     <Compile Include="Contracts\IProformaBusiness.cs" />
     <Compile Include="Contracts\IProgressStatusBusiness.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Services\FollowUpBusiness.cs" />
     <Compile Include="Services\IndustryBusiness.cs" />
     <Compile Include="Services\MailBusiness.cs" />
+    <Compile Include="Services\PriorityBusiness.cs" />
     <Compile Include="Services\ProductBusiness.cs" />
     <Compile Include="Services\ProformaBusiness.cs" />
     <Compile Include="Services\ProgressStatusBusiness.cs" />

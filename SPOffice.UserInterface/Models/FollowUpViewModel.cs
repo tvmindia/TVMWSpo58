@@ -11,14 +11,21 @@ namespace SPOffice.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
+        [Required(ErrorMessage = "FollowUp Date is missing")]
         [Display(Name = "FollowUp Date")]
         public string FollowUpDate { get; set; }
+        [Required(ErrorMessage = "FollowUp Time is missing")]
         [Display(Name = "FollowUp Time")]
         public string FollowUpTime { get; set; }
+        public string HdnFollowUpTime { get; set; }
         public string Priority { get; set; }
+        public string PriorityDescription { get; set; }
+        [Required(ErrorMessage = "Subject is missing")]
+        [DataType(DataType.MultilineText)]
         public string Subject { get; set; }
         [Display(Name = "Contact Name")]
         public string ContactName { get; set; }
+        [Display(Name = "Remind Prior To")]
         public string RemindPriorTo { get; set; }
         [Display(Name = "Reminder Type")]
         public string ReminderType { get; set; }
@@ -33,6 +40,8 @@ namespace SPOffice.UserInterface.Models
         public string EnquiryStatus { get; set; }
         public CommonViewModel commonObj { get; set; }
         public string URL { get; set; }
+        [Display(Name = "Min")]
+        public string Minutes { get; set; }
     }
 
 

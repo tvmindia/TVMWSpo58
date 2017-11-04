@@ -52,7 +52,9 @@ namespace UserInterface.App_Start
                 config.CreateMap<ProgressStatusViewModel, ProgressStatus>().ReverseMap();
                 config.CreateMap<TitlesViewModel, Titles>().ReverseMap();
                 config.CreateMap<ReminderViewModel, Reminder>().ReverseMap();
-            
+                config.CreateMap<PriorityViewModel, Priority>().ReverseMap();
+
+
 
                 config.CreateMap<ProductViewModel, Product>().ReverseMap();
                 config.CreateMap<UnitViewModel, Unit>().ReverseMap();

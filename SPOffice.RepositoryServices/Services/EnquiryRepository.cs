@@ -257,6 +257,7 @@ namespace SPOffice.RepositoryServices.Services
                                            _enquiryObj.EnquirySource = (sdr["EnquirySource"].ToString() != "" ? sdr["EnquirySource"].ToString() : _enquiryObj.EnquirySource);
                                         _enquiryObj.IndustryName = (sdr["IndustryName"].ToString() != "" ? sdr["IndustryName"].ToString() : _enquiryObj.IndustryName);
                                         _enquiryObj.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : _enquiryObj.EnquiryStatus);
+                                        _enquiryObj.EnqStatusDescription = (sdr["EnqStatusDescription"].ToString() != "" ? sdr["EnqStatusDescription"].ToString() : _enquiryObj.EnqStatusDescription);
                                         _enquiryObj.LeadOwner = (sdr["OwnerName"].ToString() != "" ? sdr["OwnerName"].ToString() : _enquiryObj.LeadOwner);
                                         _enquiryObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _enquiryObj.Subject);
                                     }

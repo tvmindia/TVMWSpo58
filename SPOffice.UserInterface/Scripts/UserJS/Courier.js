@@ -37,6 +37,7 @@ $(document).ready(function () {
                { "data": "ID", "defaultContent": "<i>-</i>" },
                { "data": "Type", "defaultContent": "<i>-</i>" },
                { "data": "TransactionDate", "defaultContent": "<i>-</i>" },
+               { "data": "Track", "defaultContent": "<i>-</i>" },
                { "data": "SourceName", "defaultContent": "<i>-</i>" },
                { "data": "DestName", "defaultContent": "<i>-</i>" },
                { "data": "courierAgency.Name", "defaultContent": "<i>-</i>" },
@@ -45,7 +46,7 @@ $(document).ready(function () {
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [ 1, 2, 3, 4, 5,6] }
+               { className: "text-left", "targets": [ 1, 2, 3, 4, 5,6,7] }
              ]
          });
 

@@ -107,6 +107,7 @@
     <Compile Include="Contracts\IFileUploadRepository.cs" />
     <Compile Include="Contracts\IFollowUpRepository.cs" />
     <Compile Include="Contracts\IIndustryRepository.cs" />
+    <Compile Include="Contracts\IPriorityRepository.cs" />
     <Compile Include="Contracts\IProductRepository.cs" />
     <Compile Include="Contracts\IProformaRepository.cs" />
     <Compile Include="Contracts\IProgressStatusRepository.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Services\FileUploadRepository.cs" />
     <Compile Include="Services\FollowUpRepository.cs" />
     <Compile Include="Services\IndustryRepository.cs" />
+    <Compile Include="Services\PriorityRepository.cs" />
     <Compile Include="Services\ProductRepository.cs" />
     <Compile Include="Services\ProformaRepository.cs" />
     <Compile Include="Services\ProgressStatusRepository.cs" />

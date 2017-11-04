@@ -51,7 +51,7 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "IndustryName is missing")]
         [Display(Name = "Industry")]
         public string IndustryName { get; set; }
-        public List<EnquiryViewModel> IndustryList{get;set;}
+        public List<EnquiryViewModel> IndustryList { get; set; }
 
         public string IndustryCode { get; set; }
 
@@ -70,6 +70,7 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "Enquiry Status is missing")]
         [Display(Name = "Enquiry Status")]
         public string EnquiryStatus { get; set; }
+        public string EnqStatusDescription { get; set; }
 
         [Required(ErrorMessage = "Subject is missing")]
         [Display(Name = "Subject")]
@@ -91,10 +92,10 @@ namespace SPOffice.UserInterface.Models
         public Guid hdnFileID { get; set; }
         public string LeadOwner { get; set; }
 
-       public Guid SalesPersonID { get; set; }
+        public Guid SalesPersonID { get; set; }
         public SalesPersonViewModel salesPersonObj { get; set; }
 
-       public Guid IndustryID { get; set; }
+        public Guid IndustryID { get; set; }
         public IndustryViewModel industryObj { get; set; }
 
         public Guid EnquirySourceID { get; set; }
@@ -105,7 +106,7 @@ namespace SPOffice.UserInterface.Models
 
         public Guid ProgressStatusID { get; set; }
         public ProgressStatusViewModel progressStatusObj { get; set; }
-        
+
         public FollowUpViewModel followUpObj { get; set; }
 
         public Guid TitleID { get; set; }
@@ -115,6 +116,9 @@ namespace SPOffice.UserInterface.Models
 
         public Guid ReminderTypeID { get; set; }
         public ReminderViewModel reminderObj { get; set; }
+
+        public Guid PriorityID { get; set; }
+        public PriorityViewModel priorityObj { get;set;}
 
 
     }

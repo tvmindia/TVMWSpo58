@@ -24,8 +24,9 @@ namespace SPOffice.UserInterface.Controllers
         IProgressStatusBusiness _progressStatusBusiness;
         IFollowUpBusiness _followupBusiness;
         IReminderBusiness _reminderBusiness;
+        IPriorityBusiness _priorityBusiness;
 
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness)
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
@@ -35,7 +36,9 @@ namespace SPOffice.UserInterface.Controllers
             _progressStatusBusiness = progressStatusBusiness;
             _followupBusiness = followupBusiness;
             _reminderBusiness = reminderBusiness;
-           
+            _priorityBusiness = priorityBusiness;
+
+
         }
 
 
@@ -158,6 +161,20 @@ namespace SPOffice.UserInterface.Controllers
                 });
             }
             EVM.reminderObj.ReminderList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            EVM.priorityObj = new PriorityViewModel();
+            List<PriorityViewModel> priorityList = Mapper.Map<List<Priority>, List<PriorityViewModel>>(_priorityBusiness.GetAllPriorityList());
+            foreach (PriorityViewModel pvm in priorityList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = pvm.PriorityDescription,
+                    Value = pvm.PriorityCode,
+                    Selected = false
+                });
+            }
+            EVM.priorityObj.PriorityList = selectListItem;
 
             return View(EVM);
         }
