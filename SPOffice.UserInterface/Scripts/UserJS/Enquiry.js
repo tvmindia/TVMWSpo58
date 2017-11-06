@@ -89,11 +89,11 @@ $(document).ready(function () {
 
 
 //--To Get List of Enquiries from server --// 
-function GetAllEnquiry() {
+function GetAllEnquiry(filter) {
     debugger;
     try {
        
-        var data = {};
+        var data = {"EnquiryStatus":filter};
         var ds = {};
         ds = GetDataFromServer("Enquiry/GetAllEnquiry/", data);
         if (ds != '') {
@@ -434,7 +434,7 @@ function FollowUpSaveSuccess(data) {
 
 
 
-
+//--Function to Convert AM,PM format to 24 hour time format-----//
 function hrsTo24hrormat() {
     try {
         debugger;
@@ -460,5 +460,40 @@ function hrsTo24hrormat() {
     }
     catch (e) {
         noty({ type: 'error', text: e.message });
+    }
+}
+
+
+//------------------------------------------------ Filter clicks------------------------------------------------------------//
+
+function Gridfilter(thisobj) {
+    debugger;
+    $('#filter').show();
+
+    $('#OEfilter').hide();
+    $('#CEfilter').hide();
+    $('#NCEfilter').hide();
+
+    if (thisobj == 'OE') {
+        $('#OEfilter').show();
+    }
+    else if (thisobj == 'CE') {
+        $('#CEfilter').show();
+    }
+    else if (thisobj == 'NCE') {
+        $('#NCEfilter').show();
+    }
+    var result = GetAllEnquiry(thisobj);
+    if (result != null) {
+            DataTables.EnquiryTable.clear().rows.add(result).draw(false);     
+    }
+}
+
+    //--Function To Reset Enquiry Table--//
+function FilterReset() {
+    $('#filter').hide();
+    var result = GetAllEnquiry();
+    if (result != null) {
+        DataTables.EnquiryTable.clear().rows.add(result).draw(false);
     }
 }

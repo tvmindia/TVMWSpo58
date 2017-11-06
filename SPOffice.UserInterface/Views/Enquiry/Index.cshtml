@@ -39,8 +39,8 @@
     </div>
     <div class="row summaryboxes">
         
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
+            <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer" >
+                <div class="info-box" id="OpenFilter" onclick="Gridfilter('OE')">
                     <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                     <div class="info-box-content">
@@ -51,8 +51,8 @@
                 </div>
                 <!-- /.info-box -->
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
+            <div class="col-md-3 col-sm-6 col-xs-12"style="cursor:pointer">
+                <div class="info-box" id="ConvertedFilter" onclick="Gridfilter('CE')">
                     <span class="info-box-icon bg-aqua"></span>
 
                     <div class="info-box-content">
@@ -68,8 +68,8 @@
             <!-- fix for small devices only -->
             <div class="clearfix visible-sm-block"></div>
 
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
+            <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
+                <div class="info-box" id="NotConvertedFilter" onclick="Gridfilter('NCE') ">
                     <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
 
                     <div class="info-box-content">
@@ -86,7 +86,15 @@
             <!-- /.col -->
 
         <div class="clearfix visible-sm-block"></div>
+    <div class="col-md-12">
+        <div id="filter" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
+            <b>Filter:</b>
+            <p id="OEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow">Open</p>
+            <p id="CEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua">Converted</p>
+            <p id="NCEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green">Not Converted</p>
+        </div>
 
+    </div>
   
     <div class="row">
         &nbsp;

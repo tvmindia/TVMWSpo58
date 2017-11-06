@@ -42,14 +42,14 @@
                                 <div class="product-info">
                                     <a href="#" class="product-title">
                                         Subject
-                                        <span class="label label-warning pull-right">@Model.FollowUpList[i].Status</span>
+                                        <span  class="label label-warning pull-right"   onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID >@Model.FollowUpList[i].Status</span>
                                    
                                     <span class="label label-warning pull-right">@Model.FollowUpList[i].PriorityDescription</span></a>
                                     <span class="product-description">
                                        @Model.FollowUpList[i].Subject
                                     </span>
                                 </div>
-                                    <a href="#" onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID>Edit</a>
+                                    @*<a href="#" onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID>Edit</a>*@
 
                             }
                         }

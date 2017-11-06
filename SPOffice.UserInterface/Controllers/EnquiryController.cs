@@ -43,6 +43,7 @@ namespace SPOffice.UserInterface.Controllers
 
 
         // GET: Enquiry
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
         public ActionResult Index()
         {
             EnquiryViewModel EVM = new EnquiryViewModel();
@@ -203,6 +204,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region InsertUpdateFollowUp
         [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
         public string InsertUpdateFollowUp(EnquiryViewModel _enquiryObj)
         {
             //FollowUpViewModel _followupObj = new FollowUpViewModel();
@@ -249,6 +251,8 @@ namespace SPOffice.UserInterface.Controllers
                 int openCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "OE").Select(T => T.ID).Count();
                 int convertedCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "CE").Select(T => T.ID).Count();
                 int notconvertedCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "NCE").Select(T => T.ID).Count();
+                if(data.EnquiryStatus!=null)
+                EnquiryList = EnquiryList.Where(Q => Q.EnquiryStatus == data.EnquiryStatus).ToList();
 
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryList,Open= openCount,Converted= convertedCount,NotConverted= notconvertedCount });
             }
@@ -261,6 +265,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region InsertUpdateEnquiry
         [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
         public string InsertUpdateEnquiry(EnquiryViewModel _enquiriesObj)
          {
             //object resultFromBusiness = null;
@@ -351,6 +356,11 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "Add();";
 
+
+                    ToolboxViewModelObj.resetbtn.Visible = true;
+                    ToolboxViewModelObj.resetbtn.Text = "Reset";
+                    ToolboxViewModelObj.resetbtn.Title = "Reset";
+                    ToolboxViewModelObj.resetbtn.Event = "FilterReset();";
 
                     break;
                 case "Edit":
