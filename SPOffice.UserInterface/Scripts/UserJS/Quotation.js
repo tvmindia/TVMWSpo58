@@ -562,10 +562,10 @@ function Reset() {
 }
 
 //---------------Bind logics-------------------
-function GetAllQuotations() {
+function GetAllQuotations(filter) {
     try {
 
-        var data = {};
+        var data = {"filter":filter};
         var ds = {};
         ds = GetDataFromServer("Quotation/GetAllQuotations/", data);
         if (ds != '') {
@@ -590,6 +590,10 @@ function BindSummarBox(Draft, Delivered, InProgress, Closed)
     $("#deliveredCount").text(Delivered);
     $("#inProgressCount").text(InProgress);
     $("#closedCount").text(Closed);
+    $("#draftCountDescription").text(Draft + ' Quotation(s) are Draft');
+    $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
+    $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
+    $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');
 }
 
 function GetAllQuoteItems(ID) {
@@ -741,3 +745,41 @@ function GetCustomerDeails(curobj) {
 
 }
 
+
+//------------------------------------------------ Filter clicks------------------------------------------------------------//
+
+function Gridfilter(filter) {
+    debugger;
+    $('#filter').show();
+
+    $('#Draftfilter').hide();
+    $('#Deliveredfilter').hide();
+    $('#Progressfilter').hide();
+    $('#Closedfilter').hide();
+
+    if (filter == 'DFT') {
+        $('#Draftfilter').show();
+    }
+    else if (filter == 'DVD') {
+        $('#Deliveredfilter').show();
+    }
+    else if (filter == 'NGT') {
+        $('#Progressfilter').show();
+    }
+    else if (filter == "CLT,CWN") {
+        $('#Closedfilter').show();
+    }
+    var result = GetAllQuotations(filter);
+    if (result != null) {
+        DataTables.QuotationTable.clear().rows.add(result).draw(false);
+    }
+}
+
+//--Function To Reset Quotation Table--//
+function FilterReset() {
+    $('#filter').hide();
+    var result = GetAllQuotations();
+    if (result != null) {
+        DataTables.QuotationTable.clear().rows.add(result).draw(false);
+    }
+}

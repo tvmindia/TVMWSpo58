@@ -94,7 +94,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllPurchaseOrders
         [HttpGet]
-        public string GetAllPurchaseOrders()
+        public string GetAllPurchaseOrders(string filter)
         {
             try
             {
@@ -103,6 +103,11 @@ namespace SPOffice.UserInterface.Controllers
                 int openCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "OPN").Select(T => T.ID).Count();
                 int inProgressCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "PGS").Select(T => T.ID).Count();
                 int closedCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "CSD").Select(T => T.ID).Count();
+
+                if (filter != null)
+                {
+                    customerPOViewModelList = customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == filter).ToList();
+                }
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = customerPOViewModelList, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
             catch (Exception ex)
@@ -242,6 +247,11 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Text = "Add";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "AddNew();";
+
+                    ToolboxViewModelObj.resetbtn.Visible = true;
+                    ToolboxViewModelObj.resetbtn.Text = "Reset";
+                    ToolboxViewModelObj.resetbtn.Title = "Reset";
+                    ToolboxViewModelObj.resetbtn.Event = "FilterReset();";
 
                     //ToolboxViewModelObj.backbtn.Visible = true;
                     //ToolboxViewModelObj.backbtn.Disable = true;
