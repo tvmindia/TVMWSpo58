@@ -508,6 +508,5 @@ function dashboardBind(ID) {
     debugger;
     $('#ID').val(ID);
     openNav();
-    FillEnquiryDetails(ID);
-    
+    FillEnquiryDetails(ID);   
 }
