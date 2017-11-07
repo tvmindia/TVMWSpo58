@@ -399,10 +399,9 @@ function OrderNumberOnChange(curobj)
     $('#lblCustomerPONo').text($(curobj).val());
 }
 //---------------Bind logics-------------------
-function GetAllPurchaseOrders() {
+function GetAllPurchaseOrders(filter) {
     try {
-
-        var data = {};
+        var data = { "filter": filter };
         var ds = {};
         ds = GetDataFromServer("CustomerOrder/GetAllPurchaseOrders/", data);
         if (ds != '') {
@@ -426,6 +425,9 @@ function BindSummarBox(Open, InProgress, Closed) {
     $("#openCount").text(Open);
     $("#inProgressCount").text(InProgress);
     $("#closedCount").text(Closed);
+    $("#openCountDescription").text(Open + ' Customer Purchase Order(s) are Opened');
+    $("#progressCountDescription").text(InProgress + ' In Progress Customer Purchase Order(s)');
+    $("#closedCountDescription").text(Closed + ' Closed Customer Purchase Order(s)');
 }
 
 
@@ -454,8 +456,40 @@ function GetAllUnitCodes() {
     }
 }
 
+//------------------------------------------------ Filter clicks-----------------------------------------------//
+
+function GridFilter(status) {
+    debugger;
+    $('#filter').show();
+
+    $('#OPNfilter').hide();
+    $('#CSDfilter').hide();
+    $('#PGSfilter').hide();
+
+    if (status == 'OPN') {
+        $('#OPNfilter').show();
+    }
+    else if (status == 'CSD') {
+        $('#CSDfilter').show();
+    }
+    else if (status == 'PGS') {
+        $('#PGSfilter').show();
+    }
+    var result = GetAllPurchaseOrders(status);
+    if (result != null) {
+        DataTables.PurchaseOrderTable.clear().rows.add(result).draw(false);
+    }
+}
 
 
+//--Function To Reset Purchase Order Table--//
+function FilterReset() {
+    $('#filter').hide();
+    var result = GetAllPurchaseOrders();
+    if (result != null) {
+        DataTables.PurchaseOrderTable.clear().rows.add(result).draw(false);
+    }
+}
 
 
 

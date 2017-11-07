@@ -45,6 +45,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">OPEN <b><span id="statusOpen">0</span></b></span>
+                        <span id="openCountDescription"></span>
 
                     </div>
                     <!-- /.info-box-content -->
@@ -57,6 +58,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">CONVERTED <b><span id="statusConverted">0</span></b></span>
+                        <span id="convertedCountDescription"></span>
 
                     </div>
                     <!-- /.info-box-content -->
@@ -74,6 +76,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">NOT CONVERTED <b><span id="statusNotConverted">0</span></b></span>
+                        <span id="notConvertedCountDescription"></span>
 
                     </div>
                     <!-- /.info-box-content -->
@@ -89,9 +92,9 @@
     <div class="col-md-12">
         <div id="filter" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
             <b>Filter:</b>
-            <p id="OEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow">Open</p>
-            <p id="CEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua">Converted</p>
-            <p id="NCEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green">Not Converted</p>
+            <p id="OEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Open</p>
+            <p id="CEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Converted</p>
+            <p id="NCEfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> Not Converted</p>
         </div>
 
     </div>
@@ -148,6 +151,7 @@
                 <div class="EntryForms" style="height:550px">
                     @using (Ajax.BeginForm("InsertUpdateEnquiry", "Enquiry", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "EnquiryForm" }))
                     {
+                        @Html.Hidden("BindValue", "", htmlAttributes: new { @class = "", Value = ViewBag.value });
                         @Html.AntiForgeryToken()
  
                                                

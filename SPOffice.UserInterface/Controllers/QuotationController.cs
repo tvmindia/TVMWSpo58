@@ -121,7 +121,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #region GetAllQuotations
         [HttpGet]
-        public string GetAllQuotations()
+        public string GetAllQuotations(string filter)
         {
             try
             {
@@ -130,6 +130,20 @@ namespace SPOffice.UserInterface.Controllers
                 int deliveredCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "DVD").Select(T => T.ID).Count();
                 int inProgressCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "NGT").Select(T => T.ID).Count();
                 int closedCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "CLT" || Q.Stage== "CWN").Select(T => T.ID).Count();
+
+                if (filter != null)
+                {
+                    string[] filterCodes = filter.Split(',');
+                    if(filterCodes.Length>1)
+                    {
+                        quoteHeaderViewModelList = quoteHeaderViewModelList.Where(Q => Q.Stage == filterCodes[1] || Q.Stage==filterCodes[0]).ToList();
+                    }
+                    else
+                    {
+                        quoteHeaderViewModelList = quoteHeaderViewModelList.Where(Q => Q.Stage == filter).ToList();
+                    }                
+                    
+                }
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = quoteHeaderViewModelList,Draft= draftCount,Delivered= deliveredCount,InProgress= inProgressCount,Closed=closedCount });
             }
             catch (Exception ex)
@@ -431,6 +445,11 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Text = "Add";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "AddNew();";
+
+                    ToolboxViewModelObj.resetbtn.Visible = true;
+                    ToolboxViewModelObj.resetbtn.Text = "Reset";
+                    ToolboxViewModelObj.resetbtn.Title = "Reset";
+                    ToolboxViewModelObj.resetbtn.Event = "FilterReset();";
 
                     //ToolboxViewModelObj.backbtn.Visible = true;
                     //ToolboxViewModelObj.backbtn.Disable = true;

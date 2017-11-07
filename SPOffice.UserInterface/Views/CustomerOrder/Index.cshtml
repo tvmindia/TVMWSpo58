@@ -30,24 +30,40 @@
     </div>
 
     <div class="row summaryboxes">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
+        <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="GridFilter('OPN')">
                 <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">OPEN <b><span id="openCount">0</span></b></span>
+                    <span id="openCountDescription"></span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+       
+
+        <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="GridFilter('PGS')">
+                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
+                    <span id="progressCountDescription"></span>
 
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
+        <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="GridFilter('CSD')">
                 <span class="info-box-icon bg-aqua"></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">CLOSED <b><span id="closedCount">0</span></b></span>
+                    <span id="closedCountDescription"></span>
 
                 </div>
                 <!-- /.info-box-content -->
@@ -58,21 +74,16 @@
         <!-- /.col -->
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
-
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
+     
+    </div>
+    <div class="col-md-12">
+        <div id="filter" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
+            <b>Filter:</b>
+            <p id="OPNfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Open</p>
+            <p id="CSDfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Closed</p>
+            <p id="PGSfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> In Progress</p>
         </div>
-     
-     
+
     </div>
     <div class="row">
         &nbsp;

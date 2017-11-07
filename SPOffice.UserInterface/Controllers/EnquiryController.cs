@@ -44,8 +44,9 @@ namespace SPOffice.UserInterface.Controllers
 
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.value = id;
             EnquiryViewModel EVM = new EnquiryViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EVM.salesPersonObj = new SalesPersonViewModel();
@@ -243,17 +244,20 @@ namespace SPOffice.UserInterface.Controllers
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public string GetAllEnquiry(EnquiryViewModel data)
+        public string GetAllEnquiry(string filter)
         {
             try
             {
-                List<EnquiryViewModel> EnquiryList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetAllEnquiryList(Mapper.Map<EnquiryViewModel, Enquiry>(data)));
+                EnquiryViewModel EVobj = new EnquiryViewModel(); 
+                List<EnquiryViewModel> EnquiryList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetAllEnquiryList(Mapper.Map<EnquiryViewModel, Enquiry>(EVobj))); //--Passing null Object--//
                 int openCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "OE").Select(T => T.ID).Count();
                 int convertedCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "CE").Select(T => T.ID).Count();
                 int notconvertedCount = EnquiryList == null ? 0 : EnquiryList.Where(Q => Q.EnquiryStatus == "NCE").Select(T => T.ID).Count();
-                if(data.EnquiryStatus!=null)
-                EnquiryList = EnquiryList.Where(Q => Q.EnquiryStatus == data.EnquiryStatus).ToList();
-
+                if (filter != null)
+                {
+                    EnquiryList = EnquiryList.Where(Q => Q.EnquiryStatus == filter).ToList();
+                }
+               
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryList,Open= openCount,Converted= convertedCount,NotConverted= notconvertedCount });
             }
             catch (Exception ex)

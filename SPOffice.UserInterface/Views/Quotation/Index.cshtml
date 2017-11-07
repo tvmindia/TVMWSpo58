@@ -111,25 +111,25 @@
     </div>
    
     <div class="row summaryboxes">
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <div class="info-box">
+        <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="Gridfilter('DFT')">
                 <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">DRAFT <b><span id="draftCount">0</span></b></span>
-                  
+                    <span id="draftCountDescription"></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <div class="info-box">
+        <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="Gridfilter('DVD')">
                 <span class="info-box-icon bg-aqua"></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">DELIVERED <b><span id="deliveredCount">0</span></b></span>
-                   
+                    <span id="deliveredCountDescription"></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -140,25 +140,25 @@
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
 
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <div class="info-box">
+        <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="Gridfilter('NGT')">
                 <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
-                   
+                    <span id="inprogressCountDescription"></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <div class="info-box">
+        <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="Gridfilter('CLT,CWN')">
                 <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cart-outline"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">CLOSED <b><span id="closedCount">0</span></b></span>
-
+                    <span id="closedCountDescription"></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -166,6 +166,16 @@
         </div>
         <!-- /.col -->
         <!-- /.col -->
+    </div>
+    <div class="col-md-12">
+        <div id="filter" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
+            <b>Filter:</b>
+            <p id="Draftfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Draft</p>
+            <p id="Deliveredfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Delivered</p>
+            <p id="Progressfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> In Progress</p>
+            <p id="Closedfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Closed</p>
+        </div>
+
     </div>
     <div class="row">
         &nbsp;

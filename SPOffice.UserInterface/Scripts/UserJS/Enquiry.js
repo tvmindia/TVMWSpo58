@@ -73,12 +73,13 @@ $(document).ready(function () {
 
         //--For Editing Enquiry Table on row double click--//
         $('#EnquiryTable tbody').on('dblclick', 'td', function () { 
-            debugger;
             Edit(this);
         });
 
-        
-
+        if ($('#BindValue').val() != '') {
+            debugger;
+            dashboardBind($('#BindValue').val())
+        }
     } catch (x) {
 
         notyAlert('error', x.message);
@@ -90,10 +91,10 @@ $(document).ready(function () {
 
 //--To Get List of Enquiries from server --// 
 function GetAllEnquiry(filter) {
-    debugger;
     try {
-       
-        var data = {"EnquiryStatus":filter};
+        debugger;
+      
+        var data = { 'filter': filter };
         var ds = {};
         ds = GetDataFromServer("Enquiry/GetAllEnquiry/", data);
         if (ds != '') {
@@ -120,6 +121,9 @@ function BindSummarBox(Open, Converted, NotConverted) {
     $("#statusOpen").text(Open);
     $("#statusConverted").text(Converted);
     $("#statusNotConverted").text(NotConverted);
+    $("#openCountDescription").text(Open + ' Enquiry(s) are Opened');
+    $("#convertedCountDescription").text(Converted + ' Converted Enquiry(s)');
+    $("#notConvertedCountDescription").text(NotConverted + ' Not Converted Enquiry(s)');
 }
 
 //-- Saves Enquiry details to server on InsertUpdateEnquiry button trigger--//
@@ -466,7 +470,7 @@ function hrsTo24hrormat() {
 
 //------------------------------------------------ Filter clicks------------------------------------------------------------//
 
-function Gridfilter(thisobj) {
+function Gridfilter(filter) {
     debugger;
     $('#filter').show();
 
@@ -474,16 +478,16 @@ function Gridfilter(thisobj) {
     $('#CEfilter').hide();
     $('#NCEfilter').hide();
 
-    if (thisobj == 'OE') {
+    if (filter == 'OE') {
         $('#OEfilter').show();
     }
-    else if (thisobj == 'CE') {
+    else if (filter == 'CE') {
         $('#CEfilter').show();
     }
-    else if (thisobj == 'NCE') {
+    else if (filter == 'NCE') {
         $('#NCEfilter').show();
     }
-    var result = GetAllEnquiry(thisobj);
+    var result = GetAllEnquiry(filter);
     if (result != null) {
             DataTables.EnquiryTable.clear().rows.add(result).draw(false);     
     }
@@ -496,4 +500,13 @@ function FilterReset() {
     if (result != null) {
         DataTables.EnquiryTable.clear().rows.add(result).draw(false);
     }
+}
+
+
+//Bind values to dashboard
+function dashboardBind(ID) {
+    debugger;
+    $('#ID').val(ID);
+    openNav();
+    FillEnquiryDetails(ID);   
 }
