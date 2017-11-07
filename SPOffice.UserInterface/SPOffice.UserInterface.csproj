@@ -622,6 +622,7 @@
     <Content Include="Scripts\UserJS\Privileges.js" />
     <Content Include="Scripts\UserJS\PrivilegesView.js" />
     <Content Include="Scripts\UserJS\Product.js" />
+    <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\RawMaterial.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
@@ -658,6 +659,7 @@
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\FollowupController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProformaInvoiceController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\RawMaterialController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -686,6 +688,9 @@
     <Compile Include="Models\PriorityViewModel.cs" />
     <Compile Include="Models\PrivilegesViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\ProformaHeaderViewModel.cs" />
+    <Compile Include="Models\ProformaInvoiceViewModel.cs" />
+    <Compile Include="Models\ProformaMailPreviewViewModel.cs" />
     <Compile Include="Models\ProformaViewModel.cs" />
     <Compile Include="Models\ProgressStatusViewModel.cs" />
     <Compile Include="Models\QuotationViewModel.cs" />
@@ -744,6 +749,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Enquiry\_FollowUpList.cshtml" />
+    <Content Include="Views\ProformaInvoice\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

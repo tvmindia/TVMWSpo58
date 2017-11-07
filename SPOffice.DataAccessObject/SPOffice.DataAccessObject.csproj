@@ -110,6 +110,8 @@
     <Compile Include="DTO\Priority.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\Proforma.cs" />
+    <Compile Include="DTO\ProformaHeader.cs" />
+    <Compile Include="DTO\ProformaInvoice.cs" />
     <Compile Include="DTO\ProgressStatus.cs" />
     <Compile Include="DTO\Quotation.cs" />
     <Compile Include="DTO\QuoteHeader.cs" />

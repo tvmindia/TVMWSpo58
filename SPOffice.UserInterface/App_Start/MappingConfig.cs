@@ -43,6 +43,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<DashboardStatusViewModel, DashboardStatus>().ReverseMap();
                 config.CreateMap <FollowUpViewModel, FollowUp>().ReverseMap();
                 config.CreateMap<QuotationViewModel, Quotation>().ReverseMap();
+                config.CreateMap<ProformaInvoiceViewModel, ProformaInvoice>().ReverseMap();
                 config.CreateMap<ProformaViewModel, Proforma>().ReverseMap();
                 config.CreateMap<CustomerPOViewModel, CustomerPO>().ReverseMap();
                 config.CreateMap<SupplierViewModel, Supplier>().ReverseMap();
@@ -60,7 +61,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<UnitViewModel, Unit>().ReverseMap();
                 config.CreateMap<CourierAgencyViewModel, CourierAgency>().ReverseMap();
                 config.CreateMap<RawMaterialViewModel, RawMaterial>().ReverseMap();
-                config.CreateMap<QuoteHeaderViewModel, QuoteHeader>().ReverseMap();
+                config.CreateMap<QuoteHeaderViewModel, QuoteHeader>().ReverseMap();               
                 config.CreateMap<QuoteItemViewModel, QuoteItem>().ReverseMap();
                 config.CreateMap<CompanyViewModel, Company>().ReverseMap();
                 config.CreateMap<QuoteStageViewModel, QuoteStage>().ReverseMap();
@@ -75,6 +76,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<EnquirySummaryViewModel, EnquirySummary>().ReverseMap();
                 config.CreateMap<CustomerPOSummaryViewModel, CustomerPOSummary>().ReverseMap();
                 config.CreateMap<QuotationSummaryViewModel, QuotationSummary>().ReverseMap();
+            
 
             });
         }
