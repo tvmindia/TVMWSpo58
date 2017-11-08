@@ -3,6 +3,7 @@ var emptyGUID = '00000000-0000-0000-0000-000000000000'
 //--Loading DOM--//
 $(document).ready(function () {
     try {
+        //Fileupload 
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
@@ -393,13 +394,9 @@ function FollowUpList(ID) {
 
 //--Saves Follow Up to the server by triggering hidden button--//
 function SaveFollowUp() {
-    debugger;
     try {
-        debugger
         var time = hrsTo24hrormat();
-        //time = time + ":00.0000000";
         $("#hdnFollowUpTime").val(time);
-       // Timing = time;
         $("#btnFollowUpSave").trigger('click');
     }
         catch(e){
@@ -416,6 +413,7 @@ function FollowUpSaveSuccess(data) {
         case "OK":
             debugger;
             FollowUpList($('#ID').val());
+            $('#divAddFollowUp,#flist').show();
             var Count = $('#hdnCountOpen').val()
             if (parseInt(Count) !== 0) {
                 $("#btnAddFollowup").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });

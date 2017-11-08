@@ -148,7 +148,7 @@
                     </div>
                 </div>
 
-                <div class="EntryForms" style="height:550px">
+                <div class="EntryForms" style="height:550px;position:absolute;">
                     @using (Ajax.BeginForm("InsertUpdateEnquiry", "Enquiry", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "EnquiryForm" }))
                     {
                         @Html.Hidden("BindValue", "", htmlAttributes: new { @class = "", Value = ViewBag.value });
@@ -472,7 +472,7 @@
                                 <div class="form-group col-md-12"></div>
 
                             </div>
-                            <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">
+                            <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;box-shadow:0px 1px 6px 1px grey;">
                               
                                 <div class="form-group col-md-12">
                                     <div class="col-md-12 text-right">
@@ -480,75 +480,65 @@
                                         <div class="rightAmt" style="color:orange" id="lblEnquiryStatus"></div>
                                     </div>
                                 </div>
-
-
-
-                                
-
-
                                 <div id="pointer" class="form-group col-md-12"></div>
-
-
-
                             </div>
                             @* Follow-up list area start *@
-                            <div class="col-md-4" id="divAddFollowUp" style="display:none;">
+                            @*<div class="col-md-4" id="divAddFollowUp" style="display:none;">
                                 <input  value="Add Follow Ups" class="btn btn-default" data-toggle="tooltip"  onclick="FollowUp(1)" id="btnAddFollowup" />
-                            </div>
+                            </div>*@
                                 <div class="col-md-4"  id="flist" style="display:none;">
                                     <div class="col-md-12">
+                                        
+                                    @{
 
-                                        @{
-
-                                            @Url.Action("FollowUps", "Enquiry");
-                                        }
-
+                                        @Url.Action("FollowUps", "Enquiry");
+                                    }
+                                                    
                                     </div>
+                                            </div>
+                                            @* Follow-up list area end *@
 
-                                </div>
-                            @* Follow-up list area end *@
+                                            <div class="col-md-12  ">&nbsp;</div>
+                                            <div class="col-md-12  ">&nbsp;</div>
 
-                                <div class="col-md-12  ">&nbsp;</div>
-                                <div class="col-md-12  ">&nbsp;</div>
+                                            <div class="container">
 
-                                <div class="container">
+                                            </div>
 
-                                </div>
-
-                            </div>
-
-                        @*<div class="col-md-12 headSeperator"><i class="fa fa-th ig-green" aria-hidden="true"></i> Other Details</div>*@
-
-                    
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-
-                                    <div>
-                                        @Html.Partial("Fileupload")
-                                    </div>
-
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-                                    <div class="col-md-12  ">&nbsp;</div>
-
-
-
-
-
-
-                                    <div class="">
-                                        <div class="col-md-offset-2 col-md-10" hidden="hidden">
-                                            <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
-                                            <input id="btnResetEnquiry" type="reset" />
                                         </div>
+
+                                        @*<div class="col-md-12 headSeperator"><i class="fa fa-th ig-green" aria-hidden="true"></i> Other Details</div>*@
+
+
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+
+                                        <div>
+                                            @Html.Partial("Fileupload")
+                                        </div>
+
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+                                        <div class="col-md-12  ">&nbsp;</div>
+
+
+
+
+
+
+                                        <div class="">
+                                            <div class="col-md-offset-2 col-md-10" hidden="hidden">
+                                                <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
+                                                <input id="btnResetEnquiry" type="reset" />
+                                            </div>
+                                        </div>
+                                        }
                                     </div>
-                    }
-                </div>
 
             </div>
 
@@ -594,7 +584,7 @@
 
 
             <div class="modal-body">
-                <div class="col-md-12">
+                @*<div class="col-md-12">
                     <div class="col-md-6">
 
                     </div>
@@ -602,10 +592,8 @@
                         <div class="col-md-6" style="font-weight: 600;font-size: 14px;padding-top:3%;"></div>
                         <div class="col-md-6" id="" style="font-family: 'Times New Roman';font-size: 28px;"></div>
                     </div>
-                </div>
+                </div>*@
                 <div class="container-fluid">
-                    <div class="col-md-12">
-
                         <div class="col-md-12">
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
@@ -625,7 +613,6 @@
                                 </div>
 
                             </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
 
@@ -646,24 +633,7 @@
                                 </div>
 
                             </div>
-
                             <div class="form-group col-md-12"></div>
-
-
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.followUpObj.Subject, htmlAttributes: new { @class = "control-label " })
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.followUpObj.Subject, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows ="2",@autofocus = true } })
-                                        @Html.ValidationMessageFor(model => model.followUpObj.Subject, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="col-md-1"></div> 
-                                    <div class="col-md-1"></div> 
-                                </div>
-                            </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
 
@@ -682,27 +652,6 @@
                                 </div>
 
                             </div>
-                            <div class="form-group col-md-12"></div>
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-
-                                    @Html.LabelFor(model => model.followUpObj.Priority, htmlAttributes: new { @class = "control-label" })
-
-                                </div>
-                                <div class="col-md-12">
-
-                                    <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.followUpObj.Priority, Model.priorityObj.PriorityList, "-- Select Priority --", new { @class = "form-control", @style = "padding:4px 12px;" })
-                                        @Html.ValidationMessageFor(model => model.followUpObj.Priority, "", new { @class = "text-danger" })
-
-
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
 
@@ -713,62 +662,97 @@
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, "-- Select Reminder Type --", new { @class = "form-control",@id= "followUpObj_ReminderType", @style = "padding:4px 12px;" })
+                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, "-- Select Reminder Type --", new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px;" })
                                         @Html.ValidationMessageFor(model => model.followUpObj.ReminderType, "", new { @class = "text-danger" })
-                                    </div> 
+                                    </div>
                                 </div>
 
                             </div>
                             <div class="form-group col-md-12"></div>
-
                             <div class="form-group col-md-6">
-                                <div class="col-md-12">
-
-
-                                    @Html.LabelFor(model => model.followUpObj.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-3">
-                                        @Html.EditorFor(model => model.followUpObj.RemindPriorTo, new { htmlAttributes = new { @class = "form-control HeaderBox", @autofocus = true } })
-                                        @Html.ValidationMessageFor(model => model.followUpObj.RemindPriorTo, "", new { @class = "text-danger" })
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.followUpObj.Subject, htmlAttributes: new { @class = "control-label " })
                                     </div>
-                                    <div class="col-md-1">
-                                        @Html.LabelFor(model => model.followUpObj.Minutes, htmlAttributes: new { @class = ""})
-                                    </div> 
+                                    <div class="col-md-12">
+                                        <div class="col-md-11">
+                                            @Html.EditorFor(model => model.followUpObj.Subject, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "2", @autofocus = true } })
+                                            @Html.ValidationMessageFor(model => model.followUpObj.Subject, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12">
+
+                                        @Html.LabelFor(model => model.followUpObj.Priority, htmlAttributes: new { @class = "control-label" })
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="col-md-12" style="padding-right:0px;">
+                                            @Html.DropDownListFor(model => model.followUpObj.Priority, Model.priorityObj.PriorityList, "-- Select Priority --", new { @class = "form-control", @style = "padding:4px 12px;" })
+                                            @Html.ValidationMessageFor(model => model.followUpObj.Priority, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12" style="padding:0px;">
+
+                                        @Html.LabelFor(model => model.followUpObj.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-11 input-group">
+                                            @Html.EditorFor(model => model.followUpObj.RemindPriorTo, new { htmlAttributes = new { @class = "form-control HeaderBox", @autofocus = true } })
+                                            <span class="input-group-addon">Min</span>
+                                            @Html.ValidationMessageFor(model => model.followUpObj.RemindPriorTo, "", new { @class = "text-danger" })
+                                        </div>
+                                        @*<div class="input-group">
+                                            <input type="text" class="form-control">
+                                            
+                                        </div>*@
+                                        @*<div class="col-md-4 input-group" style="padding:0px;">
+                                             @Html.LabelFor(model => model.followUpObj.Minutes, htmlAttributes: new { @class = "", @style = "vertical-align:-5px;font-weight:300" })
+                                            
+                                        </div>*@
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-12">
+
+                                        @Html.LabelFor(model => model.followUpObj.Status, htmlAttributes: new { @class = "control-label" })
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="col-md-11">
+
+                                            @{
+                                                List<SelectListItem> FollowUpStatus = new List<SelectListItem>();
+                                                FollowUpStatus.Add(new SelectListItem
+                                                { Text = "Open", Value = "Open", Selected = true });
+                                                FollowUpStatus.Add(new SelectListItem
+                                                { Text = "Closed", Value = "Closed" });
+                                            }
+                                            @Html.DropDownListFor(model => model.followUpObj.Status, FollowUpStatus, new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
+                                            @Html.ValidationMessageFor(model => model.followUpObj.Status, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+
                                 </div>
 
                             </div>
-
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-
-                                    @Html.LabelFor(model => model.followUpObj.Status, htmlAttributes: new { @class = "control-label" })
-
-                                </div>
-                                <div class="col-md-12">
-
-                                    <div class="col-md-10">
-
-                                        @{
-                                            List<SelectListItem> FollowUpStatus = new List<SelectListItem>();
-                                            FollowUpStatus.Add(new SelectListItem
-                                            { Text = "Open", Value = "Open", Selected = true });
-                                            FollowUpStatus.Add(new SelectListItem
-                                            { Text = "Closed", Value = "Closed" });
-                                        }
-                                        @Html.DropDownListFor(model => model.followUpObj.Status, FollowUpStatus, new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
-                                        @Html.ValidationMessageFor(model => model.followUpObj.Status, "", new { @class = "text-danger" })
-
-
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group col-md-12"></div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
 
@@ -778,7 +762,7 @@
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.followUpObj.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "6", @autofocus = true } })
+                                        @Html.EditorFor(model => model.followUpObj.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "9", @autofocus = true } })
                                         @Html.ValidationMessageFor(model => model.followUpObj.GeneralNotes, "", new { @class = "text-danger" })
 
                                     </div>
@@ -787,9 +771,8 @@
                                 </div>
 
                             </div>
+                            
                             </div>
-
-                        </div>
 
                         </div>
                     </div>
@@ -799,20 +782,15 @@
                             <a class="btn btn-default" onclick="Reset()"><i class="glyphicon glyphicon-refresh"></i> Reset</a>
 
                     </div>
-            <div class="form-group" style="display:none;">
-                <div class="col-md-offset-2 col-md-10">
-                    <input id="btnFollowUpSave" type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
+                    <div class="form-group" style="display:none;">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input id="btnFollowUpSave" type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
             }
                 </div>
     </div>
 </div>
-
-
-
-
-
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")

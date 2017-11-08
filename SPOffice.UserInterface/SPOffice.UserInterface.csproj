@@ -213,6 +213,7 @@
     <Content Include="Content\AdminLTE\css\alt\AdminLTE-select2.min.css" />
     <Content Include="Content\AdminLTE\css\alt\AdminLTE-without-plugins.css" />
     <Content Include="Content\AdminLTE\css\alt\AdminLTE-without-plugins.min.css" />
+    <Content Include="Content\AdminLTE\css\ionicons.min.css" />
     <Content Include="Content\AdminLTE\css\jquery-jvectormap-1.2.2.css" />
     <Content Include="Content\AdminLTE\css\skins\skin-black-light.css" />
     <Content Include="Content\AdminLTE\css\skins\skin-black-light.min.css" />
@@ -240,6 +241,7 @@
     <Content Include="Content\AdminLTE\css\skins\skin-yellow.min.css" />
     <Content Include="Content\AdminLTE\css\skins\_all-skins.css" />
     <Content Include="Content\AdminLTE\css\skins\_all-skins.min.css" />
+    <Content Include="Content\AdminLTE\fonts\ionicons.svg" />
     <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -466,6 +468,7 @@
     <Content Include="Content\UserCSS\Login.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\ionicons.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -491,6 +494,12 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\Uploads\PartyEcTestMay30.docx" />
+    <Content Include="fonts\ionicons.eot" />
+    <Content Include="fonts\ionicons.ttf" />
+    <Content Include="fonts\ionicons.woff" />
+    <Content Include="Content\AdminLTE\fonts\ionicons.eot" />
+    <Content Include="Content\AdminLTE\fonts\ionicons.ttf" />
+    <Content Include="Content\AdminLTE\fonts\ionicons.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
