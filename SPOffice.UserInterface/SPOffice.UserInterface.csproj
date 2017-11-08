@@ -624,6 +624,7 @@
     <Content Include="Scripts\UserJS\Courier.js" />
     <Content Include="Scripts\UserJS\CourierAgency.js" />
     <Content Include="Scripts\UserJS\CustomerPO.js" />
+    <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />

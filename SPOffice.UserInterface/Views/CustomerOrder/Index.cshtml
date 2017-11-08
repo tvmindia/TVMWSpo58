@@ -31,8 +31,9 @@
 
     <div class="row summaryboxes">
         <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
+            @Html.Hidden("filter", "", htmlAttributes: new { @class = "", Value = ViewBag.filter })
             <div class="info-box" onclick="GridFilter('OPN')">
-                <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+                <span class="info-box-icon bg-yellow"><i class="ion ion"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">OPEN <b><span id="openCount">0</span></b></span>
@@ -46,7 +47,7 @@
 
         <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
             <div class="info-box" onclick="GridFilter('PGS')">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                <span class="info-box-icon bg-green"><i class="ion ion"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
@@ -77,7 +78,7 @@
      
     </div>
     <div class="col-md-12">
-        <div id="filter" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
+        <div id="hdnfilterDescriptionDiv" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
             <b>Filter:</b>
             <p id="OPNfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Open</p>
             <p id="CSDfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Closed</p>
@@ -491,7 +492,7 @@
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/CustomerPO")
-}
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/CustomerPO")  
+   }
 
 

@@ -32,8 +32,9 @@ namespace SPOffice.UserInterface.Controllers
             _productBusiness = productBusiness;
         }
         // GET: Quotation
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.filter = id;
             QuoteHeaderViewModel quoteHeaderVM = new QuoteHeaderViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
@@ -128,8 +129,10 @@ namespace SPOffice.UserInterface.Controllers
                 List<QuoteHeaderViewModel> quoteHeaderViewModelList = Mapper.Map<List<QuoteHeader>, List<QuoteHeaderViewModel>>(_quotationBusiness.GetAllQuotations());
                 int draftCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q=>Q.Stage== "DFT").Select(T => T.ID).Count();
                 int deliveredCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "DVD").Select(T => T.ID).Count();
-                int inProgressCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "NGT").Select(T => T.ID).Count();
+                int inProgressCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "NGT"||Q.Stage=="CFD").Select(T => T.ID).Count();
                 int closedCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "CLT" || Q.Stage== "CWN").Select(T => T.ID).Count();
+                int onholdCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "OHD").Select(T => T.ID).Count();
+
 
                 if (filter != null)
                 {
@@ -144,7 +147,7 @@ namespace SPOffice.UserInterface.Controllers
                     }                
                     
                 }
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = quoteHeaderViewModelList,Draft= draftCount,Delivered= deliveredCount,InProgress= inProgressCount,Closed=closedCount });
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = quoteHeaderViewModelList,Draft= draftCount,Delivered= deliveredCount,InProgress= inProgressCount,Closed=closedCount,OnHold=onholdCount });
             }
             catch (Exception ex)
             {
