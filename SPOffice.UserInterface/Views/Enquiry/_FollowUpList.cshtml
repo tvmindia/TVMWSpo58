@@ -18,20 +18,42 @@
                 {
                     for (int i = 0; i < Model.FollowUpList.Count; i++)
                     {
-                        <li class="" style="">
+                        
+
+                        <li class="@(Model.FollowUpList[i].Status=="Closed"?"fadecontent":"")" style="background:white;">
                             <!-- drag handle -->
-                            <span class="label label-warning pull-right">@Model.FollowUpList[i].PriorityDescription</span>
-                            <span class="label label-primary pull-left" style="color:green">@Model.FollowUpList[i].Status</span>
+                            @if (Model.FollowUpList[i].PriorityDescription == "Medium")
+                            {
+                                <span class="label label-warning pull-right spanlabel">@Model.FollowUpList[i].PriorityDescription</span>
+                            }
+                            @if (Model.FollowUpList[i].PriorityDescription == "High")
+                            {
+                                <span class="label label-danger pull-right spanlabel">@Model.FollowUpList[i].PriorityDescription</span>
+                            }
+                            @if (Model.FollowUpList[i].PriorityDescription == "Low")
+                            {
+                                <span class="label label-info pull-right spanlabel">@Model.FollowUpList[i].PriorityDescription</span>
+                            }
+                            
+                            @if (Model.FollowUpList[i].Status == "Closed")
+                            {
+                                <span class="label label-default pull-left" style="position:relative;left: -2%;top: 2px;height: 16px;">@Model.FollowUpList[i].Status</span>
+                            }
+                            @if (Model.FollowUpList[i].Status == "Open")
+                            {
+                                <span class="label label-primary pull-left" style="position:relative;left: -2%;top: 2px;height: 16px;">@Model.FollowUpList[i].Status</span>
+                            }
+                            
                             <!-- checkbox -->
                             @*<input type="checkbox" value="">*@
                             <!-- todo text -->
                             <!-- Emphasis label -->
-                            <small class="label label-danger"><i class="fa fa-calendar-o"></i> @Model.FollowUpList[i].FollowUpDate <i class="fa fa-clock-o"></i> @Model.FollowUpList[i].FollowUpTime</small>
+                            <small class="label label-danger datecontainer"><i class="fa fa-calendar-o"></i> @Model.FollowUpList[i].FollowUpDate <i class="fa fa-clock-o"></i> @Model.FollowUpList[i].FollowUpTime</small>
                             <!-- General tools such as edit or delete-->
                             @if (Model.FollowUpList[i].Subject != null)
                             {
                                 <br />
-                                <span class="text" style="width:90%;border-bottom:1px solid #a8a7a7"> @Model.FollowUpList[i].Subject </span>
+                                <span class="text" style="width:90%;border-bottom:1px solid #a8a7a7;margin-top:5px;"> @Model.FollowUpList[i].Subject </span>
                             }
                             @if (Model.FollowUpList[i].GeneralNotes != null)
                             {
@@ -44,8 +66,8 @@
                                 @*<i class="fa fa-trash-o"></i>*@
                             </div>
                         </li>
+                        }
                     }
-                }
                 @if (Model.FollowUpList.Count == 0)
                 {
                     <li class="" style="">
@@ -58,4 +80,18 @@
         
     </div>
 </div>
+<style>
+    .fadecontent{
+        background:#f4f4f4!important;
+    }
+    .fadecontent span.pull-right{
+        background-color:gray!important;
+    }
+    .fadecontent small.datecontainer{
+        background-color:gray!important;
+    }
+    .spanlabel{
+        position:relative;left: -2%;top: 2px;height: 16px;
+    }
+</style>
 
