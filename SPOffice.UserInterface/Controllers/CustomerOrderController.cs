@@ -25,8 +25,9 @@ namespace SPOffice.UserInterface.Controllers
             _taxTypeBusiness = taxTypeBusiness;
         }
         // GET: CustomerOrder
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.filter = id;
             CustomerPOViewModel customerPOlVM = new CustomerPOViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
