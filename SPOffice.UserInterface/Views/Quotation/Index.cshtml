@@ -143,7 +143,7 @@
         <div class="clearfix visible-sm-block"></div>
 
         <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
-            <div class="info-box" onclick="Gridfilter('NGT')">
+            <div class="info-box" onclick="Gridfilter('NGT,CFD')">
                 <span class="info-box-icon bg-green"><i class="ion ion"></i></span>
 
                 <div class="info-box-content">
@@ -188,7 +188,7 @@
             <p id="Deliveredfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Delivered</p>
             <p id="Progressfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> In Progress</p>
             <p id="Closedfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Closed</p>
-            <p id="OnHoldfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> OnHold</p>
+            <p id="OnHoldfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> OnHold</p>
             
          </div>
 
@@ -473,10 +473,10 @@
                                         <th>SlNo.</th>
                                         <th>Product Code</th>
                                         <th>Description</th>
-                                        <th>Unit</th>
-                                        <th>Qty</th>
+                                        @*<th>Unit</th>
+                                        <th>Qty</th>*@
                                         <th>Rate</th>
-                                        <th>Amount</th>
+                                        @*<th>Amount</th>*@
                                         <th>...</th>
                                         <th>ProductID</th>
 
@@ -489,7 +489,7 @@
 
                     <div class="col-md-12  ">&nbsp;</div>
                     <div class="col-md-12  ">&nbsp;</div>
-                    <div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Commercial Details</div>
+                    @*<div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Commercial Details</div>
                     <div class="col-md-12">
                         <div class="col-md-12">
                         
@@ -606,9 +606,9 @@
 
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12  ">&nbsp;</div>
-                    <div class="col-md-12  ">&nbsp;</div>
+                    </div>*@
+                    @*<div class="col-md-12  ">&nbsp;</div>
+                    <div class="col-md-12  ">&nbsp;</div>*@
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-green" aria-hidden="true"></i> Other Details</div>
 
                     <div class="col-md-12  ">
@@ -648,7 +648,7 @@
                     <div class="col-md-12  ">&nbsp;</div>
                     <div class="col-md-12  ">&nbsp;</div>
                     <div>
-                        @Html.Partial("Fileupload");
+                        @Html.Partial("Fileupload")
                     </div>
 
                     <div class="col-md-12  ">&nbsp;</div>

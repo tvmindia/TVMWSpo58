@@ -492,7 +492,7 @@ function GridFilter(status) {
 
 //--Function To Reset Purchase Order Table--//
 function FilterReset() {
-    $('#filter').hide();
+    $('#hdnfilterDescriptionDiv').hide();
     var result = GetAllPurchaseOrders();
     if (result != null) {
         DataTables.PurchaseOrderTable.clear().rows.add(result).draw(false);

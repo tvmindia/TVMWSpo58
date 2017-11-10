@@ -2,6 +2,13 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 var _Products = [];
 var _Units = [];
+var footer="Terms and conditions :"+"that's not a reason to use Multiply,"+
+    "that's a reason to understand integer overflow, using the correct type for the operation,"+
+    "and typecasting/promotion. The correct thing to do if you find someone resorting to calling"+
+    "Multiply in such a case is to sit them down and have a discussion about numeric representations"+
+    "and choosing (casting to) the right type. Strictly speaking, the way this question is worded,"+
+    "this isn't really an answer either -- at least to me since 100 * 200 is much more readable,"+
+    "though I'd write it 100m * 200m to be consistent with the types.";
 $(document).ready(function () {
     try {
     
@@ -127,7 +134,7 @@ var EG_GridData;//DATA SOURCE OBJ ARRAY
 var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
 var EG_SlColumn = 'SlNo';
 var EG_GridInputPerRow = 4;
-var EG_MandatoryFields = 'ProductCode,ProductDescription,UnitCode,Quantity,Rate';
+var EG_MandatoryFields = 'ProductCode,ProductDescription,Rate';
 
 
 function EG_TableDefn() {
@@ -146,18 +153,19 @@ function EG_TableDefn() {
 
 
 function EG_Columns() {
+    debugger;
       var obj = [
                 { "data": "ID", "defaultContent": "<i></i>" },
                 { "data": "SlNo", "defaultContent": "<i></i>" },
                 { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Products', 'FillDescription')); } },
                 { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
-                 { "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
-                { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+               //{ "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
+               //{ "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                
                 { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-                { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+               //{ "data": "Amount",   "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
-                { "data": "ProductID", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductID', '')); }, "defaultContent": "<i></i>" }
+                { "data": "ProductID",   "defaultContent": "<i></i>" }
                 ]
 
       return obj;
@@ -165,17 +173,17 @@ function EG_Columns() {
 }
 
 function EG_Columns_Settings() {
-
+ 
     var obj = [
-        { "targets": [0,9], "visible": false, "searchable": false },
+            { "targets": [0,6], "visible": false, "searchable": false },
             { "width": "5%", "targets": 1 },
-        { "width": "15%", "targets": 2 },
-         { "width": "20%", "targets": 3 },
-           { "width": "8%", "targets": 4 },
-        { "width": "8%", "targets": 5 },
-         { "width": "8%", "targets": 6 },
-          { "width": "10%", "targets": 7 },
-           { "width": "12%", "targets": 8 },
+            { "width": "15%", "targets": 2 },
+            { "width": "20%", "targets": 3 },
+            //{ "width": "8%", "targets": 4 },
+           // { "width": "8%", "targets": 5 },
+            { "width": "8%", "targets": 4 },
+            //{ "width": "10%", "targets": 7 },
+            {className:"text-center", "width": "3%", "targets": 5 },
             //{ "width": "10%", "targets": 11 },
         //{ className: "text-right", "targets": [8] },
         //{ className: "text-left disabled", "targets": [5] },
@@ -191,7 +199,7 @@ function EG_Columns_Settings() {
 }
 
 function FillDescription(row) {
-    
+
     for (i = 0; i < _Products.length; i++) {
         if (_Products[i].Code == EG_GridData[row - 1]['ProductCode']) {
             EG_GridData[row - 1]['ProductDescription'] = _Products[i].Description;
@@ -563,6 +571,7 @@ function Reset() {
    
     $('#QuoteForm')[0].reset();
     $('#ID').val('');
+    $("#QuoteBodyFoot").val(footer);
 }
 
 //---------------Bind logics-------------------
@@ -799,7 +808,7 @@ function Gridfilter(filter) {
 
 //--Function To Reset Quotation Table--//
 function FilterReset() {
-    $('#filter').hide();
+    $('#hdnfilterDescriptionDiv').hide();
     var result = GetAllQuotations();
     if (result != null) {
         DataTables.QuotationTable.clear().rows.add(result).draw(false);

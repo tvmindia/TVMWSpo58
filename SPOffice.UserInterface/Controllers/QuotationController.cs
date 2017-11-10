@@ -353,14 +353,15 @@ namespace SPOffice.UserInterface.Controllers
                 quoteMailPreviewViewModel.quoteHeaderViewModel = Mapper.Map<QuoteHeader, QuoteHeaderViewModel>(_quotationBusiness.GetMailPreview(Guid.Parse(ID)));
                 if (quoteMailPreviewViewModel.quoteHeaderViewModel!=null)
                 {
-                    
-                    quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity),2); return QI; }).ToList() : null;
-                    if(quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList!=null)
-                    {
-                        quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount = (decimal)quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Sum(q => q.Amount);
-                        quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount - quoteMailPreviewViewModel.quoteHeaderViewModel.Discount;
-                        quoteMailPreviewViewModel.quoteHeaderViewModel.TotalAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount + quoteMailPreviewViewModel.quoteHeaderViewModel.TaxAmount;
-                    }
+                   quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
+
+                    // quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity),2); return QI; }).ToList() : null;
+                    //if(quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList!=null)
+                    //{
+                    //    quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount = (decimal)quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Sum(q => q.Amount);
+                    //    quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount - quoteMailPreviewViewModel.quoteHeaderViewModel.Discount;
+                    //    quoteMailPreviewViewModel.quoteHeaderViewModel.TotalAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount + quoteMailPreviewViewModel.quoteHeaderViewModel.TaxAmount;
+                    //}
                    
                 }
              

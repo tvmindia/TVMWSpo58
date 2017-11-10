@@ -138,10 +138,10 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@QuoteBodyHead", SqlDbType.NVarChar,-1).Value = quoteHeader.QuoteBodyHead;
                         cmd.Parameters.Add("@QuoteBodyFoot", SqlDbType.NVarChar,-1).Value = quoteHeader.QuoteBodyFoot;
 
-                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = quoteHeader.Discount;
-                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar,10).Value = quoteHeader.TaxTypeCode;
-                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = quoteHeader.TaxPercApplied;
-                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = quoteHeader.TaxAmount;
+                       // cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = quoteHeader.Discount;
+                       // cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar,10).Value = quoteHeader.TaxTypeCode;
+                       // cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = quoteHeader.TaxPercApplied;
+                       // cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = quoteHeader.TaxAmount;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar,-1).Value = quoteHeader.GeneralNotes;
                         //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quoteHeader.DetailXML;
