@@ -112,8 +112,10 @@
    
     <div class="row summaryboxes">
         <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
+
+            @Html.Hidden("filter", "", htmlAttributes: new { @class = "", Value = ViewBag.filter })
             <div class="info-box" onclick="Gridfilter('DFT')">
-                <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+                <span class="info-box-icon bg-yellow"><i class="ion ion"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">DRAFT <b><span id="draftCount">0</span></b></span>
@@ -141,8 +143,8 @@
         <div class="clearfix visible-sm-block"></div>
 
         <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
-            <div class="info-box" onclick="Gridfilter('NGT')">
-                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+            <div class="info-box" onclick="Gridfilter('NGT,CFD')">
+                <span class="info-box-icon bg-green"><i class="ion ion"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">IN PROGRESS <b><span id="inProgressCount">0</span></b></span>
@@ -154,7 +156,7 @@
         </div>
         <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
             <div class="info-box" onclick="Gridfilter('CLT,CWN')">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-cart-outline"></i></span>
+                <span class="info-box-icon bg-aqua"><i class="ion ion"></i></span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">CLOSED <b><span id="closedCount">0</span></b></span>
@@ -166,15 +168,29 @@
         </div>
         <!-- /.col -->
         <!-- /.col -->
+        <div class="col-md-2 col-sm-6 col-xs-12" style="cursor:pointer">
+            <div class="info-box" onclick="Gridfilter('OHD')">
+                <span class="info-box-icon bg-green"><i class="ion ion"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">ON HOLD <b><span id="onHoldCount">0</span></b></span>
+                    <span id="onHoldCountDescription"></span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
     </div>
     <div class="col-md-12">
-        <div id="filter" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
+        <div id="hdnfilterDescriptionDiv" hidden="hidden" style="position:absolute;padding-top:20px;font-size:medium">
             <b>Filter:</b>
             <p id="Draftfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Draft</p>
             <p id="Deliveredfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Delivered</p>
             <p id="Progressfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> In Progress</p>
             <p id="Closedfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> Closed</p>
-        </div>
+            <p id="OnHoldfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> OnHold</p>
+            
+         </div>
 
     </div>
     <div class="row">
@@ -457,10 +473,10 @@
                                         <th>SlNo.</th>
                                         <th>Product Code</th>
                                         <th>Description</th>
-                                        <th>Unit</th>
-                                        <th>Qty</th>
+                                        @*<th>Unit</th>
+                                        <th>Qty</th>*@
                                         <th>Rate</th>
-                                        <th>Amount</th>
+                                        @*<th>Amount</th>*@
                                         <th>...</th>
                                         <th>ProductID</th>
 
@@ -473,7 +489,7 @@
 
                     <div class="col-md-12  ">&nbsp;</div>
                     <div class="col-md-12  ">&nbsp;</div>
-                    <div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Commercial Details</div>
+                    @*<div class="col-md-12 headSeperator"><i class="fa fa-th ig-aqua" aria-hidden="true"></i> Commercial Details</div>
                     <div class="col-md-12">
                         <div class="col-md-12">
                         
@@ -590,9 +606,9 @@
 
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12  ">&nbsp;</div>
-                    <div class="col-md-12  ">&nbsp;</div>
+                    </div>*@
+                    @*<div class="col-md-12  ">&nbsp;</div>
+                    <div class="col-md-12  ">&nbsp;</div>*@
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-green" aria-hidden="true"></i> Other Details</div>
 
                     <div class="col-md-12  ">
@@ -632,7 +648,7 @@
                     <div class="col-md-12  ">&nbsp;</div>
                     <div class="col-md-12  ">&nbsp;</div>
                     <div>
-                        @Html.Partial("Fileupload");
+                        @Html.Partial("Fileupload")
                     </div>
 
                     <div class="col-md-12  ">&nbsp;</div>

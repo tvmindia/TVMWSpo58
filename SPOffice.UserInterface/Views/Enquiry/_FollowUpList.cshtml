@@ -1,69 +1,97 @@
 ﻿@model SPOffice.UserInterface.Models.FollowUpListViewModel
 
-<div class="col-md-12">
-  
-
-
+<div class="col-md-12" style="text-align:initial;">
     <div class="box box-primary">
-        <div class="box-header with-border">
-
-            <div class="box-body">
-               <input type ="hidden" id="hdnCountOpen" value=@ViewBag.Count />
-                <ul class="products-list product-list-in-box">
-
-
-                    <li class="item">
-                        @if (Model.FollowUpList != null)
-                        {
-
-                            for (int i = 0; i < Model.FollowUpList.Count; i++)
-                            {
-                                <div class="col-md-8 ">
-                                    <div class="col-md-6 text-left ">
-                                        <b>Date</b>
-                                    </div>
-                                    <div class="col-md-6 text-left">
-                                        @Model.FollowUpList[i].FollowUpDate
-                                        Date
-                                    </div>
-                                </div>
-
-                                <div class="col-md-8">
-                                    <div class="col-md-6 text-left">
-                                        <b>Time</b>
-                                    </div>
-                                    <div class="col-md-6 text-left">
-                                        @Model.FollowUpList[i].FollowUpTime
-                                    </div>
-                                </div>
-                                <div class="product-img">
-                                    <img src="dist/img/default-50x50.gif" alt="Product Image">
-                                </div>
-                                <div class="product-info">
-                                    <a href="#" class="product-title">
-                                        Subject
-                                        <span  class="label label-warning pull-right"   onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID >@Model.FollowUpList[i].Status</span>
-                                   
-                                    <span class="label label-warning pull-right">@Model.FollowUpList[i].PriorityDescription</span></a>
-                                    <span class="product-description">
-                                       @Model.FollowUpList[i].Subject
-                                    </span>
-                                </div>
-                                    @*<a href="#" onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID>Edit</a>*@
-
-                            }
-                        }
-                    </li>
-
-                    <!-- /.item -->
-                </ul>
+        <div class="box-header ui-sortable-handle">
+            <i class="ion ion-clipboard" style="vertical-align:-11px;"></i>
+            <h3 class="box-title" style="vertical-align:-11px;">Followup List</h3>
+            <div class="pull-right no-border" id="divAddFollowUp" style="display:none;">
+                <input type="hidden" id="hdnCountOpen" value=@ViewBag.Count />
+                <button type="button" data-toggle="tooltip" onclick="FollowUp(1)" id="btnAddFollowup" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add followup</button>
             </div>
-
-
         </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+            <ul class="todo-list ui-sortable" style="max-height:350px;overflow:auto;">
+                @if (Model.FollowUpList != null)
+                {
+                    for (int i = 0; i < Model.FollowUpList.Count; i++)
+                    {
+                        
+
+                        <li class="@(Model.FollowUpList[i].Status=="Closed"?"fadecontent":"")" style="background:white;">
+                            <!-- drag handle -->
+                            @if (Model.FollowUpList[i].PriorityDescription == "Medium")
+                            {
+                                <span class="label label-warning pull-right spanlabel">@Model.FollowUpList[i].PriorityDescription</span>
+                            }
+                            @if (Model.FollowUpList[i].PriorityDescription == "High")
+                            {
+                                <span class="label label-danger pull-right spanlabel">@Model.FollowUpList[i].PriorityDescription</span>
+                            }
+                            @if (Model.FollowUpList[i].PriorityDescription == "Low")
+                            {
+                                <span class="label label-info pull-right spanlabel">@Model.FollowUpList[i].PriorityDescription</span>
+                            }
+                            
+                            @if (Model.FollowUpList[i].Status == "Closed")
+                            {
+                                <span class="label label-default pull-left" style="position:relative;left: -2%;top: 2px;height: 16px;">@Model.FollowUpList[i].Status</span>
+                            }
+                            @if (Model.FollowUpList[i].Status == "Open")
+                            {
+                                <span class="label label-primary pull-left" style="position:relative;left: -2%;top: 2px;height: 16px;">@Model.FollowUpList[i].Status</span>
+                            }
+                            
+                            <!-- checkbox -->
+                            @*<input type="checkbox" value="">*@
+                            <!-- todo text -->
+                            <!-- Emphasis label -->
+                            <small class="label label-danger datecontainer"><i class="fa fa-calendar-o"></i> @Model.FollowUpList[i].FollowUpDate <i class="fa fa-clock-o"></i> @Model.FollowUpList[i].FollowUpTime</small>
+                            <!-- General tools such as edit or delete-->
+                            @if (Model.FollowUpList[i].Subject != null)
+                            {
+                                <br />
+                                <span class="text" style="width:90%;border-bottom:1px solid #a8a7a7;margin-top:5px;"> @Model.FollowUpList[i].Subject </span>
+                            }
+                            @if (Model.FollowUpList[i].GeneralNotes != null)
+                            {
+                                <br />
+                                <span class="text" style="width:90%;font-weight:100"><i class="fa fa-sticky-note-o" ></i> @Model.FollowUpList[i].GeneralNotes </span>
+                            }
+                            
+                            <div class="tools">
+                                <i class="fa fa-edit" onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID></i>
+                                @*<i class="fa fa-trash-o"></i>*@
+                            </div>
+                        </li>
+                        }
+                    }
+                @if (Model.FollowUpList.Count == 0)
+                {
+                    <li class="" style="">
+                        <span class="text" style="width:90%;font-weight:100"><i class=""></i> No followup records found </span>
+                    </li>
+                        }
+           </ul>
+        </div>
+        <!-- /.box-body -->
+        
     </div>
+</div>
+<style>
+    .fadecontent{
+        background:#f4f4f4!important;
+    }
+    .fadecontent span.pull-right{
+        background-color:gray!important;
+    }
+    .fadecontent small.datecontainer{
+        background-color:gray!important;
+    }
+    .spanlabel{
+        position:relative;left: -2%;top: 2px;height: 16px;
+    }
+</style>
 
-
-
-
-        </div>

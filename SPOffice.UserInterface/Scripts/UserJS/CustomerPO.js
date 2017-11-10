@@ -56,14 +56,16 @@ $(document).ready(function () {
             $(this).select();
         });
 
+        //--checking hidden field filter value--//
+        if ($('#filter').val() != '') {
+            dashboardBind($('#filter').val())
+        }
 
         
-
-        
-
     }
     catch (x) {
-        notyAlert('error', x.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 
 
@@ -100,7 +102,8 @@ function BindAllPurchaseOrders() {
         DataTables.PurchaseOrderTable.clear().rows.add(GetAllPurchaseOrders()).draw(false);
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 
@@ -132,7 +135,8 @@ function GetTaxPercentage() {
        
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
     AmountSummary();
 }
@@ -206,7 +210,8 @@ function DeleteItem(ID) {
     }
     catch (e) {
 
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 
 
@@ -356,7 +361,8 @@ function GetPurchaseOrderDetailsByID(ID) {
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 function AddNew() {
@@ -416,7 +422,8 @@ function GetAllPurchaseOrders(filter) {
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 
@@ -452,7 +459,8 @@ function GetAllUnitCodes() {
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 
@@ -460,7 +468,7 @@ function GetAllUnitCodes() {
 
 function GridFilter(status) {
     debugger;
-    $('#filter').show();
+    $('#hdnfilterDescriptionDiv').show();
 
     $('#OPNfilter').hide();
     $('#CSDfilter').hide();
@@ -484,14 +492,32 @@ function GridFilter(status) {
 
 //--Function To Reset Purchase Order Table--//
 function FilterReset() {
-    $('#filter').hide();
+    $('#hdnfilterDescriptionDiv').hide();
     var result = GetAllPurchaseOrders();
     if (result != null) {
         DataTables.PurchaseOrderTable.clear().rows.add(result).draw(false);
     }
 }
 
-
+//--Function To Filter CustomerPO Table by call from dashboard ----//
+function dashboardBind(filterValue) {
+    debugger;
+    if (filterValue == 'CustomerPurchaseOrder') {
+        GetAllPurchaseOrders()
+    }
+    else {
+        if (filterValue == 'Open') {
+            status = 'OPN';
+        }
+        else if (filterValue == 'InProgress') {
+            status = 'PGS';
+        }
+        else if (filterValue == 'Closed') {
+            status = 'CSD';
+        }
+        GridFilter(status)
+    }
+}
 
 
 

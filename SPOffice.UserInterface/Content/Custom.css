@@ -732,7 +732,8 @@ color: #e32;
 .OverlayHeader {
      border-bottom:1px solid #e2dfdf;
      padding-bottom:10px;
-       background-color: rgba(249, 250, 252,.4);
+     background-color: rgba(249, 250, 252,.4);
+     
 }
 
 .headSeperator i {
@@ -758,7 +759,11 @@ color: #e32;
     top: 10px;
     margin-left: 16%;
     width:64%!important;
+    box-shadow:none!important;
     }
+  .fix-search div{
+      box-shadow:none!important;
+  }
     .fix-search div.form-group{
         width:36%!important;
         color:#706161;
@@ -772,6 +777,7 @@ color: #e32;
     margin-left: 10%;
     width:55%!important;
     display: flex;
+
     }
   .fix-search div.form-group{
     font-size: 11px!important;

@@ -2,6 +2,13 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 var _Products = [];
 var _Units = [];
+var footer="Terms and conditions :"+"that's not a reason to use Multiply,"+
+    "that's a reason to understand integer overflow, using the correct type for the operation,"+
+    "and typecasting/promotion. The correct thing to do if you find someone resorting to calling"+
+    "Multiply in such a case is to sit them down and have a discussion about numeric representations"+
+    "and choosing (casting to) the right type. Strictly speaking, the way this question is worded,"+
+    "this isn't really an answer either -- at least to me since 100 * 200 is much more readable,"+
+    "though I'd write it 100m * 200m to be consistent with the types.";
 $(document).ready(function () {
     try {
     
@@ -70,7 +77,11 @@ $(document).ready(function () {
           columns: EG_Columns(),
           columnDefs: EG_Columns_Settings()
       });
-        debugger;
+
+        //--checking hidden field filter value--//
+        if ($('#filter').val() != '') {
+            dashboardBind($('#filter').val())
+        }
         GetAllProductCodes();
         GetAllUnitCodes();
         EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
@@ -103,7 +114,7 @@ $(document).ready(function () {
         //    if ($('#ddlTaxType').val() != "")
         //        $('#ddlTaxType').val('')
         //});
-
+       
     }
     catch (x) {
         notyAlert('error', x.message);
@@ -123,7 +134,7 @@ var EG_GridData;//DATA SOURCE OBJ ARRAY
 var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
 var EG_SlColumn = 'SlNo';
 var EG_GridInputPerRow = 4;
-var EG_MandatoryFields = 'ProductCode,ProductDescription,UnitCode,Quantity,Rate';
+var EG_MandatoryFields = 'ProductCode,ProductDescription,Rate';
 
 
 function EG_TableDefn() {
@@ -142,18 +153,19 @@ function EG_TableDefn() {
 
 
 function EG_Columns() {
+    debugger;
       var obj = [
                 { "data": "ID", "defaultContent": "<i></i>" },
                 { "data": "SlNo", "defaultContent": "<i></i>" },
                 { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Products', 'FillDescription')); } },
                 { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
-                 { "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
-                { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+               //{ "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
+               //{ "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                
                 { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-                { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+               //{ "data": "Amount",   "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
-                { "data": "ProductID", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductID', '')); }, "defaultContent": "<i></i>" }
+                { "data": "ProductID",   "defaultContent": "<i></i>" }
                 ]
 
       return obj;
@@ -161,17 +173,17 @@ function EG_Columns() {
 }
 
 function EG_Columns_Settings() {
-
+ 
     var obj = [
-        { "targets": [0,9], "visible": false, "searchable": false },
+            { "targets": [0,6], "visible": false, "searchable": false },
             { "width": "5%", "targets": 1 },
-        { "width": "15%", "targets": 2 },
-         { "width": "20%", "targets": 3 },
-           { "width": "8%", "targets": 4 },
-        { "width": "8%", "targets": 5 },
-         { "width": "8%", "targets": 6 },
-          { "width": "10%", "targets": 7 },
-           { "width": "12%", "targets": 8 },
+            { "width": "15%", "targets": 2 },
+            { "width": "20%", "targets": 3 },
+            //{ "width": "8%", "targets": 4 },
+           // { "width": "8%", "targets": 5 },
+            { "width": "8%", "targets": 4 },
+            //{ "width": "10%", "targets": 7 },
+            {className:"text-center", "width": "3%", "targets": 5 },
             //{ "width": "10%", "targets": 11 },
         //{ className: "text-right", "targets": [8] },
         //{ className: "text-left disabled", "targets": [5] },
@@ -187,7 +199,7 @@ function EG_Columns_Settings() {
 }
 
 function FillDescription(row) {
-    
+
     for (i = 0; i < _Products.length; i++) {
         if (_Products[i].Code == EG_GridData[row - 1]['ProductCode']) {
             EG_GridData[row - 1]['ProductDescription'] = _Products[i].Description;
@@ -423,7 +435,7 @@ function SaveSuccess(data, status) {
 
 
 function Edit(Obj) {
-    debugger;
+   
     $('#QuoteForm')[0].reset();
     var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
@@ -506,7 +518,6 @@ function BindQuationDetails(ID)
             
             $('#SentToEmails').val(jsresult.SentToEmails);
             $("#lblQuotationNo").text(jsresult.QuotationNo);
-            debugger;
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
             clearUploadControl();
             PaintImages(ID);
@@ -560,6 +571,7 @@ function Reset() {
    
     $('#QuoteForm')[0].reset();
     $('#ID').val('');
+    $("#QuoteBodyFoot").val(footer);
 }
 
 //---------------Bind logics-------------------
@@ -573,7 +585,7 @@ function GetAllQuotations(filter) {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-            BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed);
+            BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed,ds.OnHold);
             return ds.Records;
         }
         if (ds.Result == "ERROR") {
@@ -581,25 +593,34 @@ function GetAllQuotations(filter) {
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+        //notyAlert('error', e.message);
     }
 }
 
-function BindSummarBox(Draft, Delivered, InProgress, Closed)
+//--function to place Counts on Tiles--//
+function BindSummarBox(Draft, Delivered, InProgress, Closed, OnHold)
 {
     $("#draftCount").text(Draft);
     $("#deliveredCount").text(Delivered);
     $("#inProgressCount").text(InProgress);
     $("#closedCount").text(Closed);
+    $("#onHoldCount").text(OnHold);
+    //--To place discription--//
     $("#draftCountDescription").text(Draft + ' Quotation(s) are Draft');
     $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
     $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
     $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');
+    $("#onHoldCountDescription").text(OnHold + ' On Hold Quotation(s)');
+
 }
 
 function GetAllQuoteItems(ID) {
     try {
         debugger;
+
         var data = { "ID": ID };
         var ds = {};
         ds = GetDataFromServer("Quotation/GetQuateItemsByQuateHeadID/", data);
@@ -614,7 +635,9 @@ function GetAllQuoteItems(ID) {
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+     
     }
 }
 
@@ -637,7 +660,8 @@ function GetAllProductCodes()
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 
@@ -659,7 +683,8 @@ function GetAllUnitCodes() {
         }
     }
     catch (e) {
-        notyAlert('error', e.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 
@@ -751,12 +776,14 @@ function GetCustomerDeails(curobj) {
 
 function Gridfilter(filter) {
     debugger;
-    $('#filter').show();
+    $('#hdnfilterDescriptionDiv').show();
 
     $('#Draftfilter').hide();
     $('#Deliveredfilter').hide();
     $('#Progressfilter').hide();
     $('#Closedfilter').hide();
+    $('#OnHoldfilter').hide();
+
 
     if (filter == 'DFT') {
         $('#Draftfilter').show();
@@ -764,11 +791,14 @@ function Gridfilter(filter) {
     else if (filter == 'DVD') {
         $('#Deliveredfilter').show();
     }
-    else if (filter == 'NGT') {
+    else if (filter == 'NGT,CFD') {
         $('#Progressfilter').show();
     }
     else if (filter == "CLT,CWN") {
         $('#Closedfilter').show();
+    }
+    else if (filter == "OHD") {
+        $('#OnHoldfilter').show();
     }
     var result = GetAllQuotations(filter);
     if (result != null) {
@@ -778,9 +808,33 @@ function Gridfilter(filter) {
 
 //--Function To Reset Quotation Table--//
 function FilterReset() {
-    $('#filter').hide();
+    $('#hdnfilterDescriptionDiv').hide();
     var result = GetAllQuotations();
     if (result != null) {
         DataTables.QuotationTable.clear().rows.add(result).draw(false);
     }
+}
+
+//--function To Filter Quatation Table by call from dashboard ----//
+function dashboardBind(filterValue) {
+    if (filterValue == 'Quotation') {
+        GetAllQuotations()
+
+    }
+    else {
+    if (filterValue == 'Draft') {
+        filter = 'DFT';
+    }
+    else if (filterValue == 'InProgress') {
+        filter = 'NGT,CFD';
+    }
+    else if (filterValue == 'Closed') {
+        filter = 'CLT,CWN';
+    }
+    else if (filterValue == 'OnHold') {
+        filter = 'OHD';
+    }
+        Gridfilter(filter)
+
+    }  
 }
