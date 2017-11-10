@@ -76,7 +76,12 @@ namespace UserInterface.App_Start
                 config.CreateMap<EnquirySummaryViewModel, EnquirySummary>().ReverseMap();
                 config.CreateMap<CustomerPOSummaryViewModel, CustomerPOSummary>().ReverseMap();
                 config.CreateMap<QuotationSummaryViewModel, QuotationSummary>().ReverseMap();
-            
+
+                config.CreateMap<ProformaHeaderViewModel, ProformaHeader>().ReverseMap();
+                config.CreateMap<ProformaItemViewModel, ProformaItem>().ReverseMap();
+                config.CreateMap<ProformaStageViewModel, ProformaStage>().ReverseMap();
+                config.CreateMap<ProformaInvoiceSummaryViewModel, ProformaInvoiceSummary>().ReverseMap();
+
 
             });
         }

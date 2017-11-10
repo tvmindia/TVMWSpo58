@@ -70,7 +70,7 @@ $(document).ready(function () {
           columns: EG_Columns(),
           columnDefs: EG_Columns_Settings()
       });
-
+        debugger;
         GetAllProductCodes();
         GetAllUnitCodes();
         EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
@@ -423,7 +423,7 @@ function SaveSuccess(data, status) {
 
 
 function Edit(Obj) {
-   
+    debugger;
     $('#QuoteForm')[0].reset();
     var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
@@ -506,6 +506,7 @@ function BindQuationDetails(ID)
             
             $('#SentToEmails').val(jsresult.SentToEmails);
             $("#lblQuotationNo").text(jsresult.QuotationNo);
+            debugger;
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
             clearUploadControl();
             PaintImages(ID);
@@ -598,7 +599,7 @@ function BindSummarBox(Draft, Delivered, InProgress, Closed)
 
 function GetAllQuoteItems(ID) {
     try {
-
+        debugger;
         var data = { "ID": ID };
         var ds = {};
         ds = GetDataFromServer("Quotation/GetQuateItemsByQuateHeadID/", data);

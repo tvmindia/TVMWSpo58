@@ -9,22 +9,15 @@ namespace SPOffice.BusinessService.Contracts
 {
    public interface IProformaInvoiceBusiness
     {
-        //List<ProformaInvoice> GetQuotationDetails(string duration);
-
-
-        List<ProformaInvoice> GetAllProformaInvoices();
-        //object InsertQuotation(ProformaHeader proformaHeader);
-        //object UpdateQuotation(ProformaHeader proformaHeader);
-
-
-        //List<ProformaStage> GetAllQuoteStages();
-        //ProformaHeader GetQuationDetailsByID(Guid ID);
-
-        //List<ProformaItem> GetAllQuoteItems(Guid? ID);
-        //object DeleteQuoteItem(Guid? ID);
+        List<ProformaInvoice> GetQuotationDetails(string duration);
+        List<ProformaHeader> GetAllProformaInvoices();
+        object InsertProformaInvoices(ProformaHeader proformaHeader);
+        object UpdateProformaInvoices(ProformaHeader proformaHeader);
+        List<ProformaItem> GetAllQuoteItems(Guid? ID);
+        ProformaHeader GetQuationDetailsByID(Guid ID);
+        object DeleteQuoteItem(Guid? ID);
         //ProformaHeader GetMailPreview(Guid ID);
-        //object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
-        //Task<bool> QuoteEmailPush(ProformaHeader proformaHeader);
+
 
     }
 }

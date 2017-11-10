@@ -16,14 +16,16 @@ namespace SPOffice.RepositoryServices.Contracts
         /// For web
         /// </summary>
         /// <returns></returns>
-        List<ProformaInvoice> GetAllProformaInvoices();
-        //object InsertQuotation(ProformaHeader proformaHeader);
-        //object UpdateQuotation(ProformaHeader proformaHeader);
+        ///   
+        /// 
+         List<ProformaInvoice> GetQuotationDetails(string duration);
 
-
-        //List<ProformaStage> GetAllQuoteStages();
-        //List<ProformaItem> GetAllQuoteItems(Guid? ID);
-        //object DeleteQuoteItem(Guid? ID);
+        List<ProformaHeader> GetAllProformaInvoices();
+        object InsertProformaInvoices(ProformaHeader proformaHeader);
+        object UpdateProformaInvoices(ProformaHeader proformaHeader);
+        List<ProformaItem> GetAllQuoteItems(Guid? ID);
+        object DeleteQuoteItem(Guid? ID);
+        //List<ProformaStage> GetAllQuoteStages();      
         //object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
         //ProformaInvoiceSummary GetQuotationSummary();
 

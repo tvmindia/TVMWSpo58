@@ -121,5 +121,42 @@ namespace SPOffice.BusinessService.Services
             }
 
         }
+
+        public string GetXMLfromObj(List<ProformaItem> myObj, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int mandIndx = getMAndatoryIndex(myObj[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in myObj)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
+
     }
 }
