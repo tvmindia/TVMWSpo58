@@ -16,7 +16,9 @@ namespace SPOffice.BusinessService.Contracts
         List<ProformaItem> GetAllQuoteItems(Guid? ID);
         ProformaHeader GetQuationDetailsByID(Guid ID);
         object DeleteQuoteItem(Guid? ID);
-        //ProformaHeader GetMailPreview(Guid ID);
+        ProformaHeader GetMailPreview(Guid ID);
+        object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
+        Task<bool> QuoteEmailPush(ProformaHeader proformaHeader);
 
 
     }

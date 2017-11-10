@@ -750,6 +750,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Enquiry\_FollowUpList.cshtml" />
     <Content Include="Views\ProformaInvoice\Index.cshtml" />
+    <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

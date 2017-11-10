@@ -100,28 +100,73 @@ namespace SPOffice.BusinessService.Services
             return _proformaInvoiceRepository.DeleteQuoteItem(ID);
         }
 
-        //public ProformaHeader GetMailPreview(Guid ID)
-        //{
-        //    ProformaHeader proformaHeader = null;
-        //    try
-        //    {
-        //        proformaHeader = GetQuationDetailsByID(ID);
-        //        if (proformaHeader != null)
-        //        {
-        //            if ((proformaHeader.ID != Guid.Empty) && (proformaHeader.ID != null))
-        //            {
-        //                proformaHeader.quoteItemList = GetAllQuoteItems(ID);
-        //            }
-        //        }
+        public ProformaHeader GetMailPreview(Guid ID)
+        {
+            ProformaHeader proformaHeader = null;
+            try
+            {
+                proformaHeader = GetQuationDetailsByID(ID);
+                if (proformaHeader != null)
+                {
+                    if ((proformaHeader.ID != Guid.Empty) && (proformaHeader.ID != null))
+                    {
+                        proformaHeader.quoteItemList = GetAllQuoteItems(ID);
+                    }
+                }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return proformaHeader;
-        //}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return proformaHeader;
+        }
 
+
+        public async Task<bool> QuoteEmailPush(ProformaHeader proformaHeader)
+        {
+            bool sendsuccess = false;
+            ProformaHeader pH = null;
+            try
+            {
+                pH = GetQuationDetailsByID((Guid)proformaHeader.ID);
+
+                if (!string.IsNullOrEmpty(proformaHeader.SentToEmails))
+                {
+                    string[] EmailList = proformaHeader.SentToEmails.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = proformaHeader.MailBody;
+                        _mail.Subject = pH.QuoteSubject;
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
+        }
+
+        public object UpdateQuoteMailStatus(ProformaHeader proformaHeader)
+        {
+            Object result = null;
+            try
+            {
+
+                result = _proformaInvoiceRepository.UpdateQuoteMailStatus(proformaHeader);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
 
 
     }

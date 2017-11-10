@@ -5,21 +5,21 @@ var _Units = [];
 $(document).ready(function () {
     try {
         debugger;
-        //$('#btnUpload').click(function () {
-        //    //Pass the controller name
-        //    var FileObject = new Object;
-        //    if ($('#hdnFileDupID').val() != emptyGUID) {
-        //        FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
-        //    }
-        //    else {
-        //        FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
-        //    }
+        $('#btnUpload').click(function () {
+            //Pass the controller name
+            var FileObject = new Object;
+            if ($('#hdnFileDupID').val() != emptyGUID) {
+                FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
+            }
+            else {
+                FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
+            }
            
 
-        //    FileObject.ParentType = "Quotation";
-        //    FileObject.Controller = "FileUpload";
-        //    UploadFile(FileObject);
-        //});
+            FileObject.ParentType = "ProformaInvoice";
+            FileObject.Controller = "FileUpload";
+            UploadFile(FileObject);
+        });
         DataTables.ProformaInvoiceTable = $('#ProformaInvoiceTable').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -55,6 +55,7 @@ $(document).ready(function () {
         $('#ProformaInvoiceTable tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
+        //This will select the content of the textbox programatically
         $('input[type="text"].Roundoff').on('focus', function () {
             $(this).select();
         });
@@ -82,7 +83,8 @@ $(document).ready(function () {
 
     }
     catch (x) {
-        notyAlert('error', x.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(x.message);
     }
     
 });
@@ -99,7 +101,7 @@ function GetAllProformaInvoices(filter) {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-            // BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed);
+            
             return ds.Records;
         }
         if (ds.Result == "ERROR") {
@@ -384,14 +386,12 @@ function AddNew() {
     ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Add');
     openNav();
     EG_ClearTable();
-    Reset();
-    //$("#ddlQuoteStage").val('DFT');
-    //$("#lblQuoteStage").text('N/A');
-    //$("#lblEmailSent").text('N/A');
-    //$("#lblQuotationNo").text('New Quotation');
+    Reset();   
+    $("#lblEmailSent").text('N/A');
+    $("#lblInvoiceNo").text('New ProformaInvoice');
     clearUploadControl();
     EG_AddBlankRows(5)
-  //  clearUploadControl();
+    clearUploadControl();
 }
 
 function Reset() {
@@ -406,7 +406,7 @@ function Edit(Obj) {
     var rowData = DataTables.ProformaInvoiceTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
     $('#deleteId').val(rowData.ID);
-    //$('#QuoteMAilHeaderID').val(rowData.ID);
+    $('#QuoteMAilHeaderID').val(rowData.ID);
 
     BindProformaInvoiceDetails(rowData.ID);
     GetTaxPercentage();
@@ -442,13 +442,13 @@ function BindProformaInvoiceDetails(ID) {
             $("#BodyFoot").val(jsresult.BodyFoot);       
 
             //$("#lblQuoteStage").text(jsresult.quoteStage.Description);
-            //$("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
+             $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
            // $('#SentToEmails').val(jsresult.SentToEmails);
             $("#lblInvoiceNo").text(jsresult.InvoiceNo);
             debugger;
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID),1);
-            //clearUploadControl();
-            //PaintImages(ID);
+            clearUploadControl();
+            PaintImages(ID);
 
 
         }
@@ -649,6 +649,40 @@ function GetCustomerDeails(curobj) {
             return 0;
         }
     }
+
+}
+
+function PreviewMail() {
+    try {
+        debugger;
+
+        var QHID = $("#ID").val();
+        if (QHID) {
+            //Bind mail html into model
+            GetMailPreview(QHID);
+
+            $("#MailPreviewModel").modal('show');
+        }
+
+
+    }
+    catch (e) {
+        notyAlert('error', e.Message);
+    }
+
+}
+function GetMailPreview(ID) {
+    debugger;
+    var data = { "ID": ID };
+    var ds = {};
+    ds = GetDataFromServer("ProformaInvoice/GetMailPreview/", data);
+    if (ds == "Nochange") {
+        return; 0
+    }
+    debugger;
+    $("#mailmodelcontent").empty();
+    $("#mailmodelcontent").html(ds);
+    $("#MailBody").val(ds);
 
 }
 

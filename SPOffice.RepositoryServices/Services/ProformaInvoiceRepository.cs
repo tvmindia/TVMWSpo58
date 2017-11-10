@@ -129,7 +129,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = proformaHeader.TaxAmount;
                         //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = proformaHeader.DetailXML;
-                        //cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = proformaHeader.hdnFileID;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = proformaHeader.hdnFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = proformaHeader.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = proformaHeader.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -415,6 +415,69 @@ namespace SPOffice.RepositoryServices.Services
 
 
         #endregion DeleteProformaItem
+
+
+
+        public object UpdateQuoteMailStatus(ProformaHeader proformaHeader)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateProformaMailStatus]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = proformaHeader.ID;
+                        cmd.Parameters.Add("@SentToEmails", SqlDbType.NVarChar, -1).Value = proformaHeader.SentToEmails;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = proformaHeader.EmailSentYN;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = proformaHeader.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = proformaHeader.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+               // Message = Cobj.UpdateSuccess
+            };
+        }
+
+
+
 
     }
 }

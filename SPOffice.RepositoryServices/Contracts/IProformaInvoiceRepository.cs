@@ -25,9 +25,6 @@ namespace SPOffice.RepositoryServices.Contracts
         object UpdateProformaInvoices(ProformaHeader proformaHeader);
         List<ProformaItem> GetAllQuoteItems(Guid? ID);
         object DeleteQuoteItem(Guid? ID);
-        //List<ProformaStage> GetAllQuoteStages();      
-        //object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
-        //ProformaInvoiceSummary GetQuotationSummary();
-
+        object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
     }
 }

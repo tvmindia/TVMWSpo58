@@ -286,41 +286,80 @@ namespace SPOffice.UserInterface.Controllers
         #endregion DeleteItemByID
 
 
-        //#region GetMailPreview
-        //[HttpGet]
-        //public ActionResult GetMailPreview(string ID)
-        //{
-        //    ProformaMailPreviewViewModel proformaMailPreviewViewModel = null;
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(ID))
-        //        {
-        //            throw new Exception("ID is missing");
-        //        }
-        //        proformaMailPreviewViewModel = new ProformaMailPreviewViewModel();
-        //        proformaMailPreviewViewModel.proformaHeaderViewModel = Mapper.Map<ProformaHeader, ProformaHeaderViewModel>(_proformaInvoiceBusiness.GetMailPreview(Guid.Parse(ID)));
-        //        if (proformaMailPreviewViewModel.proformaHeaderViewModel != null)
-        //        {
+        #region GetMailPreview
+        [HttpGet]
+        public ActionResult GetMailPreview(string ID)
+        {
+            ProformaMailPreviewViewModel proformaMailPreviewViewModel = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID is missing");
+                }
+                proformaMailPreviewViewModel = new ProformaMailPreviewViewModel();
+                proformaMailPreviewViewModel.proformaHeaderViewModel = Mapper.Map<ProformaHeader, ProformaHeaderViewModel>(_proformaInvoiceBusiness.GetMailPreview(Guid.Parse(ID)));
+                if (proformaMailPreviewViewModel.proformaHeaderViewModel != null)
+                {
 
-        //            proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
-        //            if (proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null)
-        //            {
-        //                proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount = (decimal)proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Sum(q => q.Amount);
-        //                proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount - proformaMailPreviewViewModel.proformaHeaderViewModel.Discount;
-        //                proformaMailPreviewViewModel.proformaHeaderViewModel.TotalAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount + proformaMailPreviewViewModel.proformaHeaderViewModel.TaxAmount;
-        //            }
+                    proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
+                    if (proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null)
+                    {
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount = (decimal)proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Sum(q => q.Amount);
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount - proformaMailPreviewViewModel.proformaHeaderViewModel.Discount;
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.TotalAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount + proformaMailPreviewViewModel.proformaHeaderViewModel.TaxAmount;
+                    }
 
-        //        }
+                }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return PartialView("_QuoteMailPreview", proformaMailPreviewViewModel);
-        //}
-        //#endregion GetMailPreview
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return PartialView("_ProfomaMailPreview", proformaMailPreviewViewModel);
+        }
+        #endregion GetMailPreview
 
+        #region SendProformaMail
+
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SendQuoteMail(ProformaHeaderViewModel proformaHeaderVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(proformaHeaderVM.ID.ToString()))
+                {                   
+                    proformaHeaderVM.commonObj = new CommonViewModel();
+                    proformaHeaderVM.commonObj.CreatedBy = proformaHeaderVM.commonObj.CreatedBy;
+                    proformaHeaderVM.commonObj.CreatedDate = DateTime.Now; ;//_appUA.DateTime;
+                    proformaHeaderVM.commonObj.UpdatedBy = proformaHeaderVM.commonObj.CreatedBy;
+                    proformaHeaderVM.commonObj.UpdatedDate = proformaHeaderVM.commonObj.CreatedDate;
+
+                    bool sendsuccess = await _proformaInvoiceBusiness.QuoteEmailPush(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        proformaHeaderVM.EmailSentYN = sendsuccess.ToString();
+                        result = _proformaInvoiceBusiness.UpdateQuoteMailStatus(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion SendProformaMail
 
         #region ButtonStyling
         [HttpGet]
