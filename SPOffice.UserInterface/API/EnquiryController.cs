@@ -37,8 +37,12 @@ namespace SPOffice.UserInterface.API
             object result = null;
 
             try
-            {              
-                _enquiriesObj.commonObj.CreatedDate = DateTime.Now;       
+            {
+               
+                _enquiriesObj.commonObj = new CommonViewModel();
+                _enquiriesObj.commonObj.CreatedBy = c.AppUser;
+                _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
+                _enquiriesObj.commonObj.UpdatedBy = c.AppUser;
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
                 result = _enquiriesBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj));
                 return JsonConvert.SerializeObject(new { Result = true, Records = result });

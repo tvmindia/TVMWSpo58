@@ -177,7 +177,7 @@ function FollowUp(flag) {
         debugger;
        
         $('#ModelReset').trigger('click');
-       // $("#hdnFollowUpID").val(ID);
+        $("#hdnFollowUpID").val(ID);
             $('#FollowUpDate').prop("disabled", false);
             $('#FollowUpTime').prop("disabled", false);
             $('#followUpObj_Subject').prop("disabled", false);
