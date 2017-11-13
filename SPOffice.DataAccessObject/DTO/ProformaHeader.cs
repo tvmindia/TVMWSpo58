@@ -23,8 +23,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string SentToEmails { get; set; }
         public string ContactPerson { get; set; }
         public string SentToAddress { get; set; }
-        public string QuoteBodyHead { get; set; }
-        public string QuoteBodyFoot { get; set; }
+        public string BodyHead { get; set; }
+        public string BodyFoot { get; set; }
         public decimal Discount { get; set; }
         public string TaxTypeCode { get; set; }
         public decimal TaxPercApplied { get; set; }
@@ -37,11 +37,12 @@ namespace SPOffice.DataAccessObject.DTO
         public string DetailXML { get; set; }
         public string MailBody { get; set; }
         public Guid hdnFileID { get; set; }
-       
+
         public string InvoiceNo { get; set; }
-        public string InvoiceDate { get; set; }  
-        public string Subject { get; set; }     
+        public string InvoiceDate { get; set; }      
+        public string Subject { get; set; }       
         public decimal Total { get; set; }
+        public string OriginCompCode { get; set; }
     }
 
     public class ProformaItem

@@ -1,7 +1,7 @@
 ﻿@model SPOffice.UserInterface.Models.ProformaHeaderViewModel
 @using UserInterface.App_Start
 @{
-    ViewBag.Title = "ProformaInvoice";
+    ViewBag.Title = "Proforma Invoice";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 @section styles {
@@ -147,7 +147,7 @@
 
             <div class="row" id="OverlayHeader">
                 <div class="col-md-6" style="text-align:left">
-                    <span id="lblQuotationNo" class="SCHeader"></span>
+                    <span id="lblInvoiceNo" class="SCHeader"></span>
                 </div>
                 <div class="col-md-6" id="btnPatchAdd" style="min-height:25px; padding-right:25px;">
 
@@ -159,7 +159,7 @@
             </div>
 
             <div class="EntryForms" style="height:550px">
-                @using (Ajax.BeginForm("InsertUpdateProformaInvoice", "ProformaInvoice", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "ProformaForm" }))
+                @using (Ajax.BeginForm("InsertUpdateProformaInvoices", "ProformaInvoice", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "ProformaForm" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-yellow" aria-hidden="true"></i> Basic Details</div>
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.InvoiceNo, new { htmlAttributes = new { @class = "form-control HeaderBox", @id = "txtInvoiceNo", @autofocus = true } })
+                                        @Html.EditorFor(model => model.InvoiceNo, new { htmlAttributes = new { @class = "form-control HeaderBox", @id = "txtInvoiceNo", @autofocus = true, onkeyup = "InvoiceNoOnChange(this);" } })
                                         @Html.ValidationMessageFor(model => model.InvoiceNo, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -216,22 +216,24 @@
 
                             </div>
 
-                         @*  <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label " })
+                          <div class="form-group col-md-6">
+        <div class="col-md-12">
+            @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label " })
 
 
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.CustomerID, Model.CustomerList, "-- Select Customer --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlCustomer", onchange = "GetCustomerDeails(this);" })
-                                        @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-10">
 
-                            </div>*@
+              
+                @Html.DropDownListFor(model => model.CustomerID,Model.CustomerList, "-- Select Customer --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlCust", onchange = "GetCustomerDetails(this);" })
+                @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1"></div>
+        </div>
+
+    </div>
 
                             <div class="form-group col-md-12"></div>
 
@@ -269,14 +271,28 @@
 
                             </div>
 
-                            <div class="form-group col-md-12"></div>
-
-                           
+                            <div class="form-group col-md-12"></div>                          
 
                           
 
                             <div class="form-group col-md-12"></div>
-                            
+                            <div class="form-group col-md-6">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.OriginCompCode, htmlAttributes: new { @class = "control-label " })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+
+                                        @Html.DropDownListFor(model => model.OriginCompCode, Model.CompanyList, "-- Select Company --", new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "ddlCompany" })
+                                        @Html.ValidationMessageFor(model => model.OriginCompCode, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
 
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
@@ -312,14 +328,14 @@
 
                         </div>
                         <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmtCaption">Quote Stage</div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblQuoteStage"></div>
-                                </div>
-                            </div>
+                           @*<div class="form-group col-md-12">
+        <div class="col-md-12 text-right">
+            <div class="rightAmtCaption">Quote Stage</div>
+        </div>
+        <div class="col-md-12 text-right">
+            <div class="rightAmt" id="lblQuoteStage"></div>
+        </div>
+    </div>*@ 
                             <div class="form-group col-md-12">
                                 <div class="col-md-12 text-right">
                                     <div class="rightAmtCaption">Email Sent(Y/N)</div>
@@ -414,21 +430,21 @@
                                 </div>
 
                             </div>
-                            @*<div class="form-group col-md-4">
+                            <div class="form-group col-md-4">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-
-                                        @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;", onchange = "GetTaxPercentage();" })
+                                        
+                                        @Html.DropDownListFor(model => model.TaxTypeCode,Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;", onchange = "GetTaxPercentage();" })
                                         @Html.ValidationMessageFor(model => model.TaxTypeCode, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
-                            </div>*@
+                            </div>
                             <div class="form-group col-md-4">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.TaxPercApplied, htmlAttributes: new { @class = "control-label" })
@@ -448,14 +464,14 @@
 
                             <div class="form-group col-md-4">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.TotalTaxAmount, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.TaxAmount, htmlAttributes: new { @class = "control-label" })
 
 
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TotalTaxAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @readonly = "true" } })
-                                        @Html.ValidationMessageFor(model => model.TotalTaxAmount, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.TaxAmount, new { htmlAttributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", @readonly = "true" } })
+                                        @Html.ValidationMessageFor(model => model.TaxAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>

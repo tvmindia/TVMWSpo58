@@ -17,19 +17,19 @@ namespace SPOffice.UserInterface.Controllers
     {
         AppConst c = new AppConst();
         IProformaInvoiceBusiness _proformaInvoiceBusiness;
-        //ICustomerBusiness _customerBusiness;
-        //ICompanyBusiness _companyBusiness;
-        //IEmployeeBusiness _employeeBusiness;
-        //ITaxTypeBusiness _taxTypeBusiness;
-        //IProductBusiness _productBusiness;
-        public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness)
+        ICustomerBusiness _customerBusiness;
+        ICompanyBusiness _companyBusiness;
+        IEmployeeBusiness _employeeBusiness;
+        ITaxTypeBusiness _taxTypeBusiness;
+        IProductBusiness _productBusiness;
+        public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness, ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness, IEmployeeBusiness employeeBusiness, ITaxTypeBusiness taxTypeBusiness, IProductBusiness productBusiness)
         {
             _proformaInvoiceBusiness = proformaInvoiceBusiness;
-            //_customerBusiness = customerBusiness;
-            //_companyBusiness = companyBusiness;
-            //_employeeBusiness = employeeBusiness;
-            //_taxTypeBusiness = taxTypeBusiness;
-            //_productBusiness = productBusiness;
+            _customerBusiness = customerBusiness;
+            _companyBusiness = companyBusiness;
+            _employeeBusiness = employeeBusiness;
+            _taxTypeBusiness = taxTypeBusiness;
+            _productBusiness = productBusiness;
         }
 
 
@@ -39,7 +39,7 @@ namespace SPOffice.UserInterface.Controllers
         {
             try
             {
-                List<ProformaInvoiceViewModel> proformaHeaderViewModelList = Mapper.Map<List<ProformaInvoice>, List<ProformaInvoiceViewModel>>(_proformaInvoiceBusiness.GetAllProformaInvoices());
+                List<ProformaHeaderViewModel> proformaHeaderViewModelList = Mapper.Map<List<ProformaHeader>, List<ProformaHeaderViewModel>>(_proformaInvoiceBusiness.GetAllProformaInvoices());
                 
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = proformaHeaderViewModelList });
             }
@@ -53,8 +53,313 @@ namespace SPOffice.UserInterface.Controllers
         // GET: ProformaInvoice
         public ActionResult Index()
         {
-            return View();
+            ProformaHeaderViewModel proformaHeaderVM = new ProformaHeaderViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
+            foreach (CustomerViewModel Cust in CustList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Cust.CompanyName,
+                    Value = Cust.ID.ToString(),
+                    Selected = false
+                });
+            }
+            proformaHeaderVM.CustomerList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            List<TaxTypeViewModel> TaxTypeList = Mapper.Map<List<TaxType>, List<TaxTypeViewModel>>(_taxTypeBusiness.GetAllTaxTypes());
+            foreach (TaxTypeViewModel TT in TaxTypeList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = TT.Description,
+                    Value = TT.Code.ToString(),
+                    Selected = false
+                });
+            }
+
+            proformaHeaderVM.TaxTypeList = selectListItem;
+
+            proformaHeaderVM.CompanyList = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            List<CompanyViewModel> CompaniesList = Mapper.Map<List<Company>, List<CompanyViewModel>>(_companyBusiness.GetAllCompanies());
+            foreach (CompanyViewModel Cmp in CompaniesList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Cmp.Name,
+                    Value = Cmp.Code,
+                    Selected = false
+                });
+            }
+            proformaHeaderVM.CompanyList = selectListItem;
+
+
+
+            return View(proformaHeaderVM);
         }
+
+        #region InsertUpdateProformaInvoice
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string InsertUpdateProformaInvoices(ProformaHeaderViewModel proformaHeaderVM)
+        {
+            try
+            {
+                object result = null;
+                if (ModelState.IsValid)
+                {
+
+                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    proformaHeaderVM.commonObj = new CommonViewModel();
+                    proformaHeaderVM.commonObj.CreatedBy = proformaHeaderVM.commonObj.CreatedBy;// "Albert Thomson";//_appUA.UserName;
+                    proformaHeaderVM.commonObj.CreatedDate = DateTime.Now; ;//_appUA.DateTime;
+                    proformaHeaderVM.commonObj.UpdatedBy = proformaHeaderVM.commonObj.CreatedBy;
+                    proformaHeaderVM.commonObj.UpdatedDate = proformaHeaderVM.commonObj.CreatedDate;
+                    //Deserialize items
+                    object ResultFromJS = JsonConvert.DeserializeObject(proformaHeaderVM.DetailJSON);
+                    string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                    proformaHeaderVM.quoteItemList = JsonConvert.DeserializeObject<List<ProformaItemViewModel>>(ReadableFormat);
+                    switch (string.IsNullOrEmpty(proformaHeaderVM.ID.ToString()))
+                    {
+                        case true:
+                            result = _proformaInvoiceBusiness.InsertProformaInvoices(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                            break;
+                        case false:
+                            result = _proformaInvoiceBusiness.UpdateProformaInvoices(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                            break;
+                    }
+
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result
+});
+                }
+                else
+                {
+                    List<string> modelErrors = new List<string>();
+                    foreach (var modelState in ModelState.Values)
+                    {
+                        foreach (var modelError in modelState.Errors)
+                        {
+                            modelErrors.Add(modelError.ErrorMessage);
+                        }
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                }
+            }
+            catch(Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+          }
+        #endregion InsertUpdateProformaInvoices
+
+
+       
+
+
+        #region GetAllProductCodes
+        [HttpGet]
+        public string GetAllProductCodes()
+        {
+            try
+            {
+                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+                if (productViewModelList != null)
+                {
+                    productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code, Description = P.Description, Rate = P.Rate }).OrderBy(x => x.Code).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllProductCodes
+
+        #region GetAllUnitCodes
+        [HttpGet]
+        public string GetAllUnitCodes()
+        {
+            try
+            {
+                List<UnitViewModel> unitViewModelList = Mapper.Map<List<Unit>, List<UnitViewModel>>(_productBusiness.GetAllUnits());
+                if (unitViewModelList != null)
+                {
+                    unitViewModelList = unitViewModelList.Select(P => new UnitViewModel { Code = P.Code, Description = P.Description }).OrderBy(x => x.Code).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = unitViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllUnitCodes
+        #region GetTaxRate
+
+        [HttpGet]
+        public string GetTaxRate(string Code)
+        {
+            try
+            {
+                TaxTypeViewModel taxTypesObj = Mapper.Map<TaxType, TaxTypeViewModel>(_taxTypeBusiness.GetTaxTypeDetailsByCode(Code));
+                decimal Rate = taxTypesObj.Rate;
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = Rate });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetTaxRate
+
+        #region GetQuateItemsByQuateHeadID
+        [HttpGet]
+        public string GetQuateItemsByQuateHeadID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                List<ProformaItemViewModel> proformaItemViewModelList = Mapper.Map<List<ProformaItem>, List<ProformaItemViewModel>>(_proformaInvoiceBusiness.GetAllQuoteItems(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = proformaItemViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetQuateItemsByQuateHeadID
+
+
+        #region GetProformaInvoiceDetailsByID
+        [HttpGet]
+        public string GetProformaInvoiceDetailsByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                ProformaHeaderViewModel proformaHeaderViewModel = Mapper.Map<ProformaHeader, ProformaHeaderViewModel>(_proformaInvoiceBusiness.GetQuationDetailsByID(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = proformaHeaderViewModel });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetProformaInvoiceDetailsByID
+
+
+        #region  DeleteItemByID
+        [HttpGet]
+        public string DeleteItemByID(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _proformaInvoiceBusiness.DeleteQuoteItem(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeleteItemByID
+
+
+        #region GetMailPreview
+        [HttpGet]
+        public ActionResult GetMailPreview(string ID)
+        {
+            ProformaMailPreviewViewModel proformaMailPreviewViewModel = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID is missing");
+                }
+                proformaMailPreviewViewModel = new ProformaMailPreviewViewModel();
+                proformaMailPreviewViewModel.proformaHeaderViewModel = Mapper.Map<ProformaHeader, ProformaHeaderViewModel>(_proformaInvoiceBusiness.GetMailPreview(Guid.Parse(ID)));
+                if (proformaMailPreviewViewModel.proformaHeaderViewModel != null)
+                {
+
+                    proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
+                    if (proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null)
+                    {
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount = (decimal)proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Sum(q => q.Amount);
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount - proformaMailPreviewViewModel.proformaHeaderViewModel.Discount;
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.TotalAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount + proformaMailPreviewViewModel.proformaHeaderViewModel.TaxAmount;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return PartialView("_ProfomaMailPreview", proformaMailPreviewViewModel);
+        }
+        #endregion GetMailPreview
+
+        #region SendProformaMail
+
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SendQuoteMail(ProformaHeaderViewModel proformaHeaderVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(proformaHeaderVM.ID.ToString()))
+                {                   
+                    proformaHeaderVM.commonObj = new CommonViewModel();
+                    proformaHeaderVM.commonObj.CreatedBy = proformaHeaderVM.commonObj.CreatedBy;
+                    proformaHeaderVM.commonObj.CreatedDate = DateTime.Now; ;//_appUA.DateTime;
+                    proformaHeaderVM.commonObj.UpdatedBy = proformaHeaderVM.commonObj.CreatedBy;
+                    proformaHeaderVM.commonObj.UpdatedDate = proformaHeaderVM.commonObj.CreatedDate;
+
+                    bool sendsuccess = await _proformaInvoiceBusiness.QuoteEmailPush(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        proformaHeaderVM.EmailSentYN = sendsuccess.ToString();
+                        result = _proformaInvoiceBusiness.UpdateQuoteMailStatus(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion SendProformaMail
 
         #region ButtonStyling
         [HttpGet]

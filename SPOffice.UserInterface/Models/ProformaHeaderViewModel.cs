@@ -62,10 +62,7 @@ namespace SPOffice.UserInterface.Models
         public List<SelectListItem> TaxTypeList { get; set; }
         [Required(ErrorMessage = "Tax Percentage required")]
         [Display(Name = "Tax Percentage Applied")]
-        public decimal TaxPercApplied { get; set; }
-        [Required(ErrorMessage = "Tax Amount required")]
-        [Display(Name = "Tax Amount Applied")]
-        public decimal TotalTaxAmount { get; set; }
+        public decimal TaxPercApplied { get; set; }      
         //[Display(Name = "General Notes")]
         //[DataType(DataType.MultilineText)]
         //public string GeneralNotes { get; set; }
@@ -73,9 +70,11 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "Gross Amount required")]
         [Display(Name = "Gross Amount")]
         public decimal GrossAmount { get; set; }
+
         [Required(ErrorMessage = "Total Amount required")]
         [Display(Name = "Total Amount")]
         public decimal TotalAmount { get; set; }
+
         [Required(ErrorMessage = "Net Taxable required")]
         [Display(Name = "Net Taxable Amount")]
         public decimal NetTaxableAmount { get; set; }
@@ -83,7 +82,20 @@ namespace SPOffice.UserInterface.Models
         public string DetailJSON { get; set; }
         public string MailBody { get; set; }
         public CommonViewModel commonObj { get; set; }
+        public CustomerViewModel cc { get; set; }
         public List<ProformaItemViewModel> quoteItemList { get; set; }
+        [Required(ErrorMessage = "Tax Amount required")]
+        [Display(Name = "Tax Amount Applied")]
+       public decimal TotalTaxAmount { get; set; }
+        public decimal Total { get; set; }
+        public decimal TaxAmount { get; set; }
+
+        [Required(ErrorMessage = "Company Name required")]
+        [Display(Name = "Company Name")]
+        public string OriginCompCode { get; set; }
+        public List<SelectListItem> CompanyList { get; set; }
+        public CompanyViewModel company { get; set; }
+
     }
 
     public class ProformaItemViewModel

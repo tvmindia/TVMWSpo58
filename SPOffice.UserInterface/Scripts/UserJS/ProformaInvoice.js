@@ -5,21 +5,21 @@ var _Units = [];
 $(document).ready(function () {
     try {
         debugger;
-        //$('#btnUpload').click(function () {
-        //    //Pass the controller name
-        //    var FileObject = new Object;
-        //    if ($('#hdnFileDupID').val() != emptyGUID) {
-        //        FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
-        //    }
-        //    else {
-        //        FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
-        //    }
+        $('#btnUpload').click(function () {
+            //Pass the controller name
+            var FileObject = new Object;
+            if ($('#hdnFileDupID').val() != emptyGUID) {
+                FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
+            }
+            else {
+                FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
+            }
            
 
-        //    FileObject.ParentType = "Quotation";
-        //    FileObject.Controller = "FileUpload";
-        //    UploadFile(FileObject);
-        //});
+            FileObject.ParentType = "ProformaInvoice";
+            FileObject.Controller = "FileUpload";
+            UploadFile(FileObject);
+        });
         DataTables.ProformaInvoiceTable = $('#ProformaInvoiceTable').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -35,20 +35,19 @@ $(document).ready(function () {
              columns: [
                { "data": "ID" },
                { "data": "InvoiceDate", "defaultContent": "<i>-</i>" },
-               { "data": "InvoiceNo", "defaultContent": "<i>-</i>" },
-               { "data": "Subject", "defaultContent": "<i>-</i>" },
-               //{ "data": "CustomerID", "defaultContent": "<i>-</i>" },
+               { "data": "InvoiceNo", "defaultContent": "<i>-</i>" },     
                { "data": "customer.CustomerName", "defaultContent": "<i>-</i>" },
+               { "data": "Subject", "defaultContent": "<i>-</i>" },
                { "data": "ValidTillDate", "defaultContent": "<i>-</i>" },
-               { "data": "Total","defaultContent": "<i>-</i>" },
+               { "data": "Total", "defaultContent": "<i>-</i>" },
                { "data": "Discount", "defaultContent": "<i>-</i>" },
                { "data": "TaxAmount", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                  { className: "text-right", "targets": [6,7,8] },
-                   { className: "text-left", "targets": [2,3] },
-             { className: "text-center", "targets": [1,4,5] }
+                   { className: "text-right", "targets": [6,7,8] },
+                   { className: "text-left", "targets": [2,4] },
+                   { className: "text-center", "targets": [1,3,5] }
 
              ]
          });
@@ -56,11 +55,13 @@ $(document).ready(function () {
         $('#ProformaInvoiceTable tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
+        //This will select the content of the textbox programatically
         $('input[type="text"].Roundoff').on('focus', function () {
             $(this).select();
         });
 
 
+       
         DataTables.ItemDetailTable = $('#ItemDetailsTable').DataTable(
       {
           dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -69,32 +70,38 @@ $(document).ready(function () {
           paging: false,
           data: null,
           autoWidth: false,
-          //columns: EG_Columns(),
-          //columnDefs: EG_Columns_Settings()
+          columns: EG_Columns(),
+          columnDefs: EG_Columns_Settings()
       });
 
-       
+        GetAllProductCodes();
+        GetAllUnitCodes();
+        EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
+        EG_ComboSource('Products', _Products, 'Code', 'Description');
+     
+        EG_GridDataTable = DataTables.ItemDetailTable;
 
     }
     catch (x) {
-        notyAlert('error', x.message);
+        //this will show the error msg in the browser console(F12) 
+        console.log(x.message);
     }
-
-   
+    
 });
 
+
 //---------------Bind logics-------------------
-function GetAllProformaInvoices() {
+function GetAllProformaInvoices(filter) {
     try {
         debugger;
-        var data = {};
+        var data = { "filter": filter };
         var ds = {};
         ds = GetDataFromServer("ProformaInvoice/GetAllProformaInvoices/", data);
         if (ds != '') {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-            // BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed);
+            
             return ds.Records;
         }
         if (ds.Result == "ERROR") {
@@ -118,6 +125,7 @@ var EG_MandatoryFields = 'ProductCode,ProductDescription,UnitCode,Quantity,Rate'
 function EG_TableDefn() {
     var tempObj = new Object();
     tempObj.ID = "";
+    tempObj.InvoiceID = " ";
     tempObj.SlNo = 0;
     tempObj.ProductCode = "";
     tempObj.ProductDescription = "";
@@ -133,6 +141,7 @@ function EG_TableDefn() {
 function EG_Columns() {
       var obj = [
                 { "data": "ID", "defaultContent": "<i></i>" },
+              
                 { "data": "SlNo", "defaultContent": "<i></i>" },
                 { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Products', 'FillDescription')); } },
                 { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
@@ -214,10 +223,10 @@ function CalculateGridAmount(row) {
 
 }
 
-//function QuotationNoOnChange(curobj)
-//{
-//    $("#lblQuotationNo").text($(curobj).val());
-//}
+function InvoiceNoOnChange(curobj)
+{
+    $("#lblInvoiceNo").text($(curobj).val());
+}
 
 function AmountSummary() {
     var total = 0.00;
@@ -239,19 +248,102 @@ function AmountSummary() {
     
 }
 
+function GetTaxPercentage() {
 
-//function BindAllQuotes() {
-//    try {
-//        DataTables.QuotationTable.clear().rows.add(GetAllQuotations()).draw(false);
-//    }
-//    catch (e) {
-//        notyAlert('error', e.message);
-//    }
-//}
+    try {
+        var curObj = $("#TaxTypeCode").val();
+        if (curObj) {
+            $("#TaxPercApplied").val(0);
+            var data = { "Code": curObj };
+            var ds = {};
+            ds = GetDataFromServer("ProformaInvoice/GetTaxRate/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+
+                $("#TaxPercApplied").val(ds.Records);
+                AmountSummary();
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                return 0;
+            }
+        }
+        else {
+            $("#TaxPercApplied").val(0);
+        }
+
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+function BindAllQuotes() {
+   try {
+        DataTables.ProformaInvoiceTable.clear().rows.add(GetAllProformaInvoices()).draw(false);
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+
+function Delete(curobj) {
+    var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
+    if (rowData.ID) {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '");', '', "Yes, delete it!");
+    }
+
+
+}
+
+function CheckAmount() {
+
+    if ($("#txtDiscount").val() == "")
+        $("#txtDiscount").val(roundoff(0));
+}
+
+function DeleteItem(ID) {
+
+    try {
+
+        //Event Request Case
+        if (ID) {
+            var data = { "ID": ID };
+            var ds = {};
+            ds = GetDataFromServer("ProformaInvoice/DeleteItemByID/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                switch (ds.Result) {
+                    case "OK":
+                        notyAlert('success', ds.Message);
+                        EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                        break;
+                    case "ERROR":
+                        notyAlert('error', ds.Message);
+                        break;
+                    default:
+                        break;
+                }
+                return ds.Record;
+            }
+
+        }
+    }
+    catch (e) {
+
+        notyAlert('error', e.message);
+    }
 
 
 
+}
 function saveInvoices() {
+    debugger;
     var validation = EG_Validate();
     if (validation == "") {
 
@@ -294,14 +386,12 @@ function AddNew() {
     ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Add');
     openNav();
     EG_ClearTable();
-    Reset();
-    //$("#ddlQuoteStage").val('DFT');
-    //$("#lblQuoteStage").text('N/A');
-    //$("#lblEmailSent").text('N/A');
-    //$("#lblQuotationNo").text('New Quotation');
+    Reset();   
+    $("#lblEmailSent").text('N/A');
+    $("#lblInvoiceNo").text('New ProformaInvoice');
     clearUploadControl();
     EG_AddBlankRows(5)
-  //  clearUploadControl();
+    clearUploadControl();
 }
 
 function Reset() {
@@ -310,26 +400,329 @@ function Reset() {
     $('#ID').val('');
 }
 
+function Edit(Obj) {
+    debugger;
+   $('#ProformaForm')[0].reset();
+    var rowData = DataTables.ProformaInvoiceTable.row($(Obj).parents('tr')).data();
+    $('#ID').val(rowData.ID);
+    $('#deleteId').val(rowData.ID);
+    $('#QuoteMAilHeaderID').val(rowData.ID);
 
-//function GetCustomerDeails(curobj) {
-//    var customerid = $(curobj).val();
-//    if (customerid) {
-//        var data = { "ID": customerid };
-//        var ds = {};
-//        ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
-//        if (ds != '') {
-//            ds = JSON.parse(ds);
-//        }
-//        if (ds.Result == "OK") {
+    BindProformaInvoiceDetails(rowData.ID);
+    GetTaxPercentage();
+    ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Edit');
+    openNav();
+}
 
-//            $("#SentToAddress").val(ds.Record.BillingAddress);
-//            $("#ContactPerson").val(ds.Record.ContactPerson);
-//            $("#SentToEmails").val(ds.Record.ContactEmail);
-//            return ds.Record;
-//        }
-//        if (ds.Result == "ERROR") {
-//            return 0;
-//        }
-//    }
 
-//}
+
+function BindProformaInvoiceDetails(ID) {
+    try {
+        debugger;
+        var jsresult = GetProformaInvoiceDetailsByID(ID)
+        if (jsresult) {
+            //bind
+            $("#txtInvoiceNo").val(jsresult.InvoiceNo);
+            $("#txtInvoiceDate").val(jsresult.InvoiceDate);
+            $("#ValidTillDate").val(jsresult.ValidTillDate);
+            $("#ddlCust").val(jsresult.CustomerID);
+            $("#SentToAddress").val(jsresult.SentToAddress);
+            $("#ContactPerson").val(jsresult.ContactPerson);            
+            $("#Subject").val(jsresult.Subject);
+            $("#BodyHead").val(jsresult.BodyHead);
+            $("#ddlCompany").val(jsresult.company.Code);
+            
+            $("#GrossAmount").val(jsresult.GrossAmount);
+            $("#Discount").val(jsresult.Discount);
+            $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
+            $("#TaxTypeCode").val(jsresult.TaxTypeCode);
+            $("#TaxPercApplied").val(jsresult.TaxPercApplied);
+            $("#TaxAmount").val(jsresult.TaxAmount);
+            $("#TotalAmount").val(jsresult.TotalAmount);
+            $("#BodyFoot").val(jsresult.BodyFoot);       
+
+            //$("#lblQuoteStage").text(jsresult.quoteStage.Description);
+             $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
+           // $('#SentToEmails').val(jsresult.SentToEmails);
+            $("#lblInvoiceNo").text(jsresult.InvoiceNo);
+            debugger;
+            EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID),1);
+            clearUploadControl();
+            PaintImages(ID);
+
+
+        }
+
+    }
+    catch (e) {
+        notyAlert('error', e.Message);
+    }
+}
+
+function GetProformaInvoiceDetailsByID(ID) {
+    try {
+        debugger;
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("ProformaInvoice/GetProformaInvoiceDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+//To bind values to detail table
+function GetAllQuoteItems(ID) {
+    debugger;
+    try {
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("ProformaInvoice/GetQuateItemsByQuateHeadID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+//To fill customer in dropdownlist
+function GetCustomerDetails(curobj) {
+    var customerid = $(curobj).val();
+    if (customerid) {
+        var data = { "ID": customerid };
+        var ds = {};
+        ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+
+            $("#SentToAddress").val(ds.Record.BillingAddress);
+            $("#ContactPerson").val(ds.Record.ContactPerson);
+            $("#SentToEmails").val(ds.Record.ContactEmail);
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    }
+
+}
+
+//To get all products in detail table
+function GetAllProductCodes() {
+    try {
+
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("ProformaInvoice/GetAllProductCodes/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            _Products = ds.Records;
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+//To get UnitCodes in detail table
+function GetAllUnitCodes() {
+    try {
+
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("ProformaInvoice/GetAllUnitCodes/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            _Units = ds.Records;
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+
+
+
+function ValidateEmail() {
+    var ste = $('#SentToEmails').val();
+    if (ste) {
+        var atpos = ste.indexOf("@");
+        var dotpos = ste.lastIndexOf(".");
+        if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= ste.length) {
+            notyAlert('error', 'Invalid Email');
+            return false;
+        }
+            //not valid
+
+        else {
+            $("#MailPreviewModel").modal('hide');
+            showLoader();
+            return true;
+        }
+
+    }
+
+    else
+        notyAlert('error', 'Enter email address');
+    return false;
+}
+
+function MailSuccess(data, status) {
+    hideLoader();
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Result) {
+        case "OK":
+
+            notyAlert('success', JsonResult.Message);
+            switch (JsonResult.MailResult) {
+                case 1:
+                    $("#lblEmailSent").text('YES');
+                    break;
+                case 0:
+                    $("#lblEmailSent").text('NO');
+                    break;
+            }
+
+            break;
+        case "ERROR":
+            notyAlert('error', JsonResult.Message);
+            break;
+        default:
+            notyAlert('error', JsonResult.Message);
+            break;
+    }
+}
+
+
+function SendMailClick() {
+    $('#btnFormSendMail').trigger('click');
+}
+function GetCustomerDeails(curobj) {
+    var customerid = $(curobj).val();
+    if (customerid) {
+        var data = { "ID": customerid };
+        var ds = {};
+        ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+
+            $("#SentToAddress").val(ds.Record.BillingAddress);
+            $("#ContactPerson").val(ds.Record.ContactPerson);
+            $("#SentToEmails").val(ds.Record.ContactEmail);
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    }
+
+}
+
+function PreviewMail() {
+    try {
+        debugger;
+
+        var QHID = $("#ID").val();
+        if (QHID) {
+            //Bind mail html into model
+            GetMailPreview(QHID);
+
+            $("#MailPreviewModel").modal('show');
+        }
+
+
+    }
+    catch (e) {
+        notyAlert('error', e.Message);
+    }
+
+}
+function GetMailPreview(ID) {
+    debugger;
+    var data = { "ID": ID };
+    var ds = {};
+    ds = GetDataFromServer("ProformaInvoice/GetMailPreview/", data);
+    if (ds == "Nochange") {
+        return; 0
+    }
+    debugger;
+    $("#mailmodelcontent").empty();
+    $("#mailmodelcontent").html(ds);
+    $("#MailBody").val(ds);
+
+}
+
+
+
+
+//------------------------------------------------ Filter clicks------------------------------------------------------------//
+
+function Gridfilter(filter) {
+    debugger;
+    $('#filter').show();
+
+    $('#Draftfilter').hide();
+    $('#Deliveredfilter').hide();
+    $('#Progressfilter').hide();
+    $('#Closedfilter').hide();
+
+    if (filter == 'DFT') {
+        $('#Draftfilter').show();
+    }
+    else if (filter == 'DVD') {
+        $('#Deliveredfilter').show();
+    }
+    else if (filter == 'NGT') {
+        $('#Progressfilter').show();
+    }
+    else if (filter == "CLT,CWN") {
+        $('#Closedfilter').show();
+    }
+    var result = GetAllProformaInvoices(filter);
+    if (result != null) {
+        DataTables.ProformaInvoiceTable.clear().rows.add(result).draw(false);
+    }
+}
+
+//--Function To Reset ProformaInvoice Table--//
+function FilterReset() {
+    $('#filter').hide();
+    var result = GetAllProformaInvoices();
+    if (result != null) {
+        DataTables.ProformaInvoiceTable.clear().rows.add(result).draw(false);
+    }
+}
