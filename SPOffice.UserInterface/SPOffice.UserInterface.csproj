@@ -635,6 +635,7 @@
     <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\RawMaterial.js" />
+    <Content Include="Scripts\UserJS\Requisition.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
     <Content Include="Scripts\UserJS\User.js" />
     <Content Include="Web.config" />
@@ -672,6 +673,7 @@
     <Compile Include="Controllers\ProformaInvoiceController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\RawMaterialController.cs" />
+    <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -708,6 +710,7 @@
     <Compile Include="Models\QuoteMailPreviewViewModel.cs" />
     <Compile Include="Models\RawMaterialViewModel.cs" />
     <Compile Include="Models\ReminderViewModel.cs" />
+    <Compile Include="Models\RequisitionViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
@@ -761,6 +764,7 @@
     <Content Include="Views\Enquiry\_FollowUpList.cshtml" />
     <Content Include="Views\ProformaInvoice\Index.cshtml" />
     <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
+    <Content Include="Views\Requisition\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -770,8 +774,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\FileUpload\" />
-    <Folder Include="Views\Followup\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

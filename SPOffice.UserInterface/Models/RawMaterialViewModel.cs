@@ -13,6 +13,8 @@ namespace SPOffice.UserInterface.Models
         [Display(Name ="Code")]
         [Required(ErrorMessage = "Code is missing")]
         public string MaterialCode { get; set; }
+        public decimal ApproximateRate { get; set; }
+        public string Type { get; set; }
         public string Description { get; set; }
         public CommonViewModel commonObj { get; set; }
     }
