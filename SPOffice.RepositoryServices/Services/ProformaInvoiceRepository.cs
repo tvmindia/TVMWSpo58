@@ -480,9 +480,9 @@ namespace SPOffice.RepositoryServices.Services
 
         //Delete ProformaInvoice
 
-        public bool DeleteProformaInvoice(Guid? ID)
+        public object DeleteProformaInvoice(Guid? ID)
         {
-            bool result = false;
+           // bool result = false;
             try
             {
                 SqlParameter outputStatus = null;
@@ -514,7 +514,10 @@ namespace SPOffice.RepositoryServices.Services
                         //Const Cobj = new Const();
                         throw new Exception(Cobj.DeleteFailure);
                     case "1":
-                        return true;
+                        return new{
+                            status = outputStatus.Value.ToString(),
+                            Message = Cobj.DeleteSuccess
+                        };
                        
 
                     default:
@@ -527,8 +530,12 @@ namespace SPOffice.RepositoryServices.Services
                 throw ex;
             }
 
-            return result;
+            return new
+            {
+
+            };
+
         }
-               
+
     }
 }

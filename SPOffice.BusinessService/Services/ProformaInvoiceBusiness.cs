@@ -171,10 +171,16 @@ namespace SPOffice.BusinessService.Services
 
 
 
-        public bool DeleteProformaInvoice(Guid? ID)
+        //public bool DeleteProformaInvoice(Guid? ID)
+        //{
+        //    return _proformaInvoiceRepository.DeleteProformaInvoice(ID);
+        //}
+
+
+
+        public object DeleteProformaInvoice(Guid? ID)
         {
             return _proformaInvoiceRepository.DeleteProformaInvoice(ID);
         }
-
     }
 }

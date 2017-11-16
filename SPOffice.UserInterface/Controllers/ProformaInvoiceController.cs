@@ -374,7 +374,7 @@ namespace SPOffice.UserInterface.Controllers
                     throw new Exception("ID Missing");
                 }
                 result = _proformaInvoiceBusiness.DeleteProformaInvoice(Guid.Parse(ID));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Record =result, DeleteInvoice = c.DeleteSuccess});
             }
             catch (Exception ex)
             {

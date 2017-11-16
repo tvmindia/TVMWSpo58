@@ -426,10 +426,8 @@ function SaveSuccess(data, status) {
 
 function DeleteSuccess(data, status) {
 var JsonResult = JSON.parse(data)
-switch (JsonResult.Result) {
+switch (JsonResult.DeleteInvoice) {
          case "OK":
-AddNew();
-List();
 notyAlert('success', JsonResult.Message);
 break;
          case "Error":
