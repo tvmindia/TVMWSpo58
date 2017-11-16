@@ -370,13 +370,36 @@ function Add() {
     debugger;
     $("#lblEnquiryNo").text("Add New");
     $("#btnResetEnquiry").trigger('click');
-    $("#lblEnquiryStatus").text('');
+    $("#lblEnquiryStatus").text('Open');   
     $("#btnAddFollowup").show();
     $("#flist").empty();
     $("#ID").val(emptyGUID);
-    
+    Resetform();
     openNav();
+}
+
+function Resetform() {
+    var validator = $("#EnquiryForm").validate();
+    $('#EnquiryForm').find('.field-validation-error span').each(function () {
+        validator.settings.success($(this));
+    });
+    $('#EnquiryForm')[0].reset();
+}
+
+//---drop down change enquiry status changes
+function ChangeEnquiryStatus()
+{
+    debugger;
     
+     if($("#ddlEnquiryStatus").val() == "OE") {
+        $("#lblEnquiryStatus").text('Open');
+    }
+    if ($("#ddlEnquiryStatus").val() == "CE") {
+        $("#lblEnquiryStatus").text('Converted');
+    }
+    if ($("#ddlEnquiryStatus").val()== "NCE") {
+        $("#lblEnquiryStatus").text('Not Converted');
+    }
 }
 
 //--To Get FollowUp list from server corresponding to an EnquiryID--//

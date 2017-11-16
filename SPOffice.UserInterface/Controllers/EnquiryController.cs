@@ -109,12 +109,24 @@ namespace SPOffice.UserInterface.Controllers
 
             foreach (EnquiryStatusViewModel EN in enquiryStatusList)
             {
-                selectListItem.Add(new SelectListItem
+                if (EN.Status == "Open")
                 {
-                    Text = EN.Status,
-                    Value = EN.StatusCode.ToString(),
-                    Selected = false
-                });
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = EN.Status,
+                        Value = EN.StatusCode.ToString(),
+                        Selected = true
+                    });
+                }
+                else
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = EN.Status,
+                        Value = EN.StatusCode.ToString(),
+                        Selected = false
+                    });
+                }
             }
             EVM.enquiryStatusObj.EnquiryStatusList = selectListItem;
 

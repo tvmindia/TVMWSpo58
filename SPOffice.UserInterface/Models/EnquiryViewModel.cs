@@ -38,10 +38,13 @@ namespace SPOffice.UserInterface.Models
         public string Website { get; set; }
 
         [Required(ErrorMessage = "Email is missing")]
+        [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
+        [MaxLength(150)]
         public string Email { get; set; }
         public string LandLine { get; set; }
 
         [Required(ErrorMessage = "Mobile No. is missing")]
+        [RegularExpression("[- +()0-9]+", ErrorMessage = "Invalid Mobile Number.")]
         public string Mobile { get; set; }
         public string Fax { get; set; }
 
@@ -58,7 +61,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Progress Status")]
         public string ProgressStatus { get; set; }
 
-        [Required(ErrorMessage = "Owner Name is missing")]
+        //[Required(ErrorMessage = "Owner Name is missing")]
         [Display(Name = "Lead Owner")]
         public Guid EnquiryOwnerID { get; set; }
 
