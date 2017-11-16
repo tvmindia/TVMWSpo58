@@ -11,13 +11,28 @@ namespace SPOffice.BusinessService.Services
     public class RequisitionBusiness:IRequisitionBusiness
     {
         IRequisitionRepository _requisitionRepository;
-        public RequisitionBusiness(IRequisitionRepository requisitionRepository)
+        ICommonBusiness _commonBusiness;
+        public RequisitionBusiness(IRequisitionRepository requisitionRepository, ICommonBusiness commonBusiness)
         {
             _requisitionRepository = requisitionRepository;
+            _commonBusiness = commonBusiness;
         }
        public List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID)
         {
             return _requisitionRepository.GetUserRequisitionList(LoginName,AppID);
+        }
+        public object InsertRequisition(Requisition RequisitionObj)
+        {
+            RequisitionObj.DetailXML = _commonBusiness.GetXMLfromRequisitionDetailList(RequisitionObj.RequisitionDetailList, "MaterialID");
+            return _requisitionRepository.InsertRequisition(RequisitionObj);
+        }
+        public object UpdateRequisition(Requisition RequisitionObj)
+        {
+            return _requisitionRepository.UpdateRequisition(RequisitionObj);
+        }
+        public List<Requisition> GetRequisitionDetails(Guid ID)
+        {
+            return _requisitionRepository.GetRequisitionDetails(ID);
         }
     }
 }

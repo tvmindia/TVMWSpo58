@@ -12,8 +12,6 @@ namespace SPOffice.BusinessService.Contracts
         string ConvertCurrency(decimal value, int DecimalPoints = 0, bool Symbol = true);
         string GetXMLfromObject(List<QuoteItem> myObj, string mandatoryProperties);
         string GetXMLfromObj(List<ProformaItem> myOb, string mandatoryProperties);
-
-
-
+        string GetXMLfromRequisitionDetailList(List<RequisitionDetail> myObj, string mandatoryProperties);
     }
 }
