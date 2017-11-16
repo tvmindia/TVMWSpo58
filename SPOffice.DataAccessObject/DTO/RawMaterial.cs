@@ -9,6 +9,8 @@ namespace SPOffice.DataAccessObject.DTO
     {
         public Guid? ID { get; set; }
         public string  MaterialCode { get; set; }
+        public decimal ApproximateRate { get; set; }
+        public string Type { get; set; }
         public string Description { get; set; }
         public Common commonObj { get; set; }
     }

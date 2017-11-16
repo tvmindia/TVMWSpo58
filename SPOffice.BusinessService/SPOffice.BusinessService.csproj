@@ -116,6 +116,7 @@
     <Compile Include="Contracts\IQuotationBusiness.cs" />
     <Compile Include="Contracts\IRawMaterialBusiness.cs" />
     <Compile Include="Contracts\IReminderBusiness.cs" />
+    <Compile Include="Contracts\IRequisitionBusiness.cs" />
     <Compile Include="Contracts\ISupplierBusiness.cs" />
     <Compile Include="Contracts\ITaxTypeBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Services\QuotationBusiness.cs" />
     <Compile Include="Services\RawMaterialBusiness.cs" />
     <Compile Include="Services\ReminderBusiness.cs" />
+    <Compile Include="Services\RequisitionBusiness.cs" />
     <Compile Include="Services\SupplierBusiness.cs" />
     <Compile Include="Services\TaxTypeBusiness.cs" />
   </ItemGroup>

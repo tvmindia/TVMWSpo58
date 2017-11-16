@@ -280,6 +280,7 @@ namespace SPOffice.UserInterface.Controllers
                 _enquiriesObj.commonObj = new CommonViewModel();
                 _enquiriesObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
+                _enquiriesObj.commonObj.UpdatedBy = _appUA.UserName;
                 _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
                 EnquiryViewModel enquiryObj = Mapper.Map <  Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
                

@@ -188,9 +188,10 @@ function FollowUp(flag) {
             $('#followUpObj_RemindPriorTo').prop("disabled", false);
             $('#followUpObj_Status').prop("disabled", false);
             $('#followUpObj_Priority').prop("disabled", false);
-            
+            $("#followUpResetbtn").removeAttr("disabled");
+            $("#followUpResetbtn").removeAttr("style");
             $("#btnFollowUps").modal('show');
-
+         
     
 
     }
@@ -200,7 +201,7 @@ function FollowUp(flag) {
         debugger;
         $("#btnFollowUps").modal('show');
         $("#hdnFollowUpID").val(ID);
-        
+        $("#followUpResetbtn").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });
         FillFollowUpDetails(ID);
     }
    

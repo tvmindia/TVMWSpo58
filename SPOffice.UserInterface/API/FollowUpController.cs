@@ -37,7 +37,10 @@ namespace SPOffice.UserInterface.API
             object result = null;
             try
             {
+                _followupObj.commonObj = new CommonViewModel();
+                _followupObj.commonObj.CreatedBy = c.AppUser;
                 _followupObj.commonObj.CreatedDate = DateTime.Now;
+                _followupObj.commonObj.UpdatedBy = c.AppUser;
                 _followupObj.commonObj.UpdatedDate = DateTime.Now;
 
                 result = _followupBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_followupObj));
