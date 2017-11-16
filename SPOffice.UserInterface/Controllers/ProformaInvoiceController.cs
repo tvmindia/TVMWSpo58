@@ -121,7 +121,7 @@ namespace SPOffice.UserInterface.Controllers
                     object ResultFromJS = JsonConvert.DeserializeObject(proformaHeaderVM.DetailJSON);
                     string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                     proformaHeaderVM.quoteItemList = JsonConvert.DeserializeObject<List<ProformaItemViewModel>>(ReadableFormat);
-                    switch (string.IsNullOrEmpty(proformaHeaderVM.ID.ToString()))
+                    switch (Guid.Empty==Guid.Parse(proformaHeaderVM.ID.ToString()))
                     {
                         case true:
                             result = _proformaInvoiceBusiness.InsertProformaInvoices(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
@@ -131,11 +131,11 @@ namespace SPOffice.UserInterface.Controllers
                             break;
                     }
 
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result
-});
-                }
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                    }
+
                 else
-                {
+                    {
                     List<string> modelErrors = new List<string>();
                     foreach (var modelState in ModelState.Values)
                     {
@@ -145,7 +145,7 @@ namespace SPOffice.UserInterface.Controllers
                         }
                     }
                     return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
-                }
+                    }
             }
             catch(Exception ex)
             {
@@ -361,6 +361,29 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion SendProformaMail
 
+
+        #region DeleteProformaInvoice()
+        [HttpGet]
+        public string DeleteProformaInvoice(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _proformaInvoiceBusiness.DeleteProformaInvoice(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record =result, DeleteInvoice = c.DeleteSuccess});
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeleteProformaInvoice
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
@@ -398,6 +421,13 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.resetbtn.Title = "Reset";
                     ToolboxViewModelObj.resetbtn.Event = "Reset();";
 
+
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteClick();";
+
+
                     ToolboxViewModelObj.CloseBtn.Visible = true;
                     ToolboxViewModelObj.CloseBtn.Text = "Close";
                     ToolboxViewModelObj.CloseBtn.Title = "Close";
@@ -406,8 +436,9 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.EmailBtn.Visible = true;
                     ToolboxViewModelObj.EmailBtn.Text = "Mail";
                     ToolboxViewModelObj.EmailBtn.Title = "Mail";
-                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail();";
 
+                   
                     break;
                 case "Add":
 

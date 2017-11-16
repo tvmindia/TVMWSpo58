@@ -38,7 +38,12 @@ namespace SPOffice.RepositoryServices.Services
                             cmd.CommandText = "[Office].[InsertFollowUp]";
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.Add("@FollowUpDate", SqlDbType.DateTime).Value = _followupObj.FollowUpDate;
-                            cmd.Parameters.Add("@FollowUpTime", SqlDbType.Time).Value = _followupObj.HdnFollowUpTime;
+                            if (_followupObj.HdnFollowUpTime == "" || _followupObj.HdnFollowUpTime == null)
+                            {
+                                _followupObj.HdnFollowUpTime = "10:00:00";
+                            }
+
+                            cmd.Parameters.Add("@FollowUpTime", SqlDbType.Time).Value =_followupObj.HdnFollowUpTime;
                             cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = _followupObj.EnquiryID;
                             cmd.Parameters.Add("@Status", SqlDbType.VarChar, 150).Value = _followupObj.Status;
                             cmd.Parameters.Add("@ReminderType", SqlDbType.VarChar, 10).Value = _followupObj.ReminderType;
