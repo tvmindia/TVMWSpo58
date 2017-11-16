@@ -42,7 +42,7 @@ namespace UserInterface.Models
 
         [Display(Name = "Select Roles")]
         public List<RolesViewModel> RoleList { get; set; }
-
+        public RolesViewModel RoleObj { get; set; }
         public CommonViewModel commonDetails { get; set; }
 
     }

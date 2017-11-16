@@ -9,23 +9,30 @@ using System.Web;
 namespace SPOffice.BusinessService.Services
 {
     
-        public class CustomerBusiness : ICustomerBusiness
-        {
-            private ICustomerRepository _customerRepository;
+     public class CustomerBusiness : ICustomerBusiness
+     {
+        private ICustomerRepository _customerRepository;
+        IFileUploadRepository _fileRepository;
 
-            public CustomerBusiness(ICustomerRepository customerRepository)
-            {
-                _customerRepository = customerRepository;
-            }
-
-     
+        public CustomerBusiness(ICustomerRepository customerRepository, IFileUploadRepository fileRepository)
+               {
+                   _customerRepository = customerRepository;
+                   _fileRepository = fileRepository;
+               }
 
         public List<CustomerPO> GetAllCustomerPOForMobile(string duration)
         {
             return _customerRepository.GetAllCustomerPOForMobile(duration);
         }
 
-        
+        public CustomerPO GetCustomerPODetailsByID(Guid ID)
+        {
+            CustomerPO cusPoObj = new CustomerPO();
+            cusPoObj = _customerRepository.GetCustomerPODetailsByID(ID);
+
+            cusPoObj.AttachmentLists = _fileRepository.GetAttachments(ID);
+            return cusPoObj;
+        }
 
         public List<Customer> GetAllCustomers()
         {
@@ -77,6 +84,7 @@ namespace SPOffice.BusinessService.Services
             return customerPO;
         }
 
+      
         public Customer GetCustomerDetailsByID(Guid ID)
         {
             List<Customer> CustomerList = GetAllCustomers();

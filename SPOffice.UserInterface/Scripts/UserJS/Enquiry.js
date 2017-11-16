@@ -279,7 +279,8 @@ function Reset() {
 //--To Edit Enquiry Table with row details with particular enquiry ID--//
 function Edit(currentObj) {
 
-    debugger;
+    debugger;  
+    Resetform();
     openNav();
     var rowData = DataTables.EnquiryTable.row($(currentObj).parents('tr')).data();
     if ((rowData != null) && (rowData.ID != null)) {
@@ -367,18 +368,18 @@ function GetEnquiryDetailsByID(ID) {
 
 //--To Add new Enquiry,clears the form--//
 function Add() {
-    debugger;
+    Resetform();
     $("#lblEnquiryNo").text("Add New");
     $("#btnResetEnquiry").trigger('click');
     $("#lblEnquiryStatus").text('Open');   
     $("#btnAddFollowup").show();
     $("#flist").empty();
     $("#ID").val(emptyGUID);
-    Resetform();
     openNav();
 }
 
 function Resetform() {
+    debugger;
     var validator = $("#EnquiryForm").validate();
     $('#EnquiryForm').find('.field-validation-error span').each(function () {
         validator.settings.success($(this));
