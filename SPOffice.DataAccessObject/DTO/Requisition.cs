@@ -19,23 +19,25 @@ namespace SPOffice.DataAccessObject.DTO
         public DateTime FinalApprovalDate { get; set; }
         //External references
         public RequisitionDetail RequisitionDetailObj { get; set; }
+        public List<RequisitionDetail> RequisitionDetailList { get; set; }
         public Company CompanyObj { get; set; }
         public Common CommonObj { get; set; }
         //Properties for client side functionalities
         public string ReqDateFormatted { get; set; }
         public string ManagerApprovalDateFormatted { get; set; }
         public string FinalApprovalDateFormatted { get; set; }
+        public string DetailXML { get; set; }
     }
     public class RequisitionDetail
     {
         public Guid ID { get; set; }
         public Guid ReqID { get; set; }
-        public string ItemCode { get; set; }
+        public Guid MaterialID { get; set; }
         public string Description { get; set; }
         public string ExtendedDescription { get; set; }
-        public int CurrStock { get; set; }
+        public string CurrStock { get; set; }
         public decimal AppxRate { get; set; }
-        public int RequestedQty { get; set; }
+        public string RequestedQty { get; set; }
         //External references
         public RawMaterial RawMaterialObj { get; set; }
     }
