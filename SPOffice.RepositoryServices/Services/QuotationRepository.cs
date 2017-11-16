@@ -164,7 +164,7 @@ namespace SPOffice.RepositoryServices.Services
                         //success
                         return new
                         {
-                            ID = outputID.Value.ToString(),
+                           // ID = outputID.Value.ToString(),
                             Status = outputStatus.Value.ToString(),
                             Message = Cobj.InsertSuccess
                         };

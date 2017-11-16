@@ -41,7 +41,7 @@
         
             <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer" >
                 <div class="info-box" id="OpenFilter" onclick="Gridfilter('OE')">
-                    <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+                    <span class="info-box-icon bg-yellow"><i class="ion"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">OPEN <b><span id="statusOpen">0</span></b></span>
@@ -72,7 +72,7 @@
 
             <div class="col-md-3 col-sm-6 col-xs-12" style="cursor:pointer">
                 <div class="info-box" id="NotConvertedFilter" onclick="Gridfilter('NCE') ">
-                    <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                    <span class="info-box-icon bg-green"><i class="ion"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">NOT CONVERTED <b><span id="statusNotConverted">0</span></b></span>
@@ -187,7 +187,7 @@
 
                                         <div class="col-md-10">
                                             @Html.DropDownListFor(model => model.EnquiryOwnerID, Model.salesPersonObj.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                            @Html.ValidationMessageFor(model => model.EnquiryOwnerID, "", new { @class = "text-danger" })
+                                          @*@Html.ValidationMessageFor(model => model.EnquiryOwnerID, "", new { @class = "text-danger" })*@  
 
 
                                         </div>
@@ -337,7 +337,7 @@
 
                                         <div class="col-md-10">
 
-                                            @Html.DropDownListFor(model => model.EnquiryStatus, Model.enquiryStatusObj.EnquiryStatusList, "-- Select Status --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlEnquiryStatus" })
+                                            @Html.DropDownListFor(model => model.EnquiryStatus, Model.enquiryStatusObj.EnquiryStatusList, new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlEnquiryStatus", @onchange = "ChangeEnquiryStatus();" })
                                             @Html.ValidationMessageFor(model => model.EnquiryStatus, "", new { @class = "text-danger" })
 
                                         </div>

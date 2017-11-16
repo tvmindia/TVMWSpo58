@@ -96,6 +96,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _rawMaterial.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _rawMaterial.ID);
                                         _rawMaterial.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _rawMaterial.MaterialCode);
                                         _rawMaterial.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _rawMaterial.Description);
+                                        _rawMaterial.ApproximateRate=(sdr["ApproximateRate"].ToString()!=""? decimal.Parse(sdr["ApproximateRate"].ToString()) :_rawMaterial.ApproximateRate);
+                                        _rawMaterial.Type = (sdr["Type"].ToString());
                                         _rawMaterial.commonObj = new Common();
                                         {
                                             _rawMaterial.commonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : _rawMaterial.commonObj.CreatedBy);

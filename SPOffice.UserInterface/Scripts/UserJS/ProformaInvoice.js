@@ -169,7 +169,8 @@ function EG_Columns_Settings() {
         { "width": "8%", "targets": 5 },
          { "width": "8%", "targets": 6 },
           { "width": "10%", "targets": 7 },
-           { "width": "12%", "targets": 8 },
+           { "width": "6%", "targets": 8 },
+           { className: "text-center", "targets": [8] },
             //{ "width": "10%", "targets": 11 },
         //{ className: "text-right", "targets": [8] },
         //{ className: "text-left disabled", "targets": [5] },
@@ -299,6 +300,46 @@ function Delete(curobj) {
 
 }
 
+//Delete ProformaInvoice
+function DeleteClick()
+{
+    debugger;
+    notyConfirm('Are you sure to delete?', 'DeleteProformaInvoice()');
+}
+
+
+function DeleteProformaInvoice()
+{
+    try {
+        debugger;
+        var id = $('#ID').val();
+        if (id != '' && id != null) {
+            var data = { "ID": id };
+            var ds = {};
+            ds = GetDataFromServer("ProformaInvoice/DeleteProformaInvoice/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                notyAlert('success', ds.Record.Message);
+                debugger;
+                BindAllQuotes();
+                closeNav();
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.Message);
+                return 0;
+            }
+            return 1;
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+        return 0;
+    }
+}
+
+
 function CheckAmount() {
 
     if ($("#txtDiscount").val() == "")
@@ -320,7 +361,7 @@ function DeleteItem(ID) {
             if (ds.Result == "OK") {
                 switch (ds.Result) {
                     case "OK":
-                        notyAlert('success', ds.Message);
+                        notyAlert('success', ds.Message);                       
                         EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
                         break;
                     case "ERROR":
@@ -359,34 +400,54 @@ function saveInvoices() {
 
 
 function SaveSuccess(data, status) {
-   
+    debugger;
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
-        case "OK":
-           
-            notyAlert('success', JsonResult.Message);
+        case "OK": 
+            notyAlert('success', JsonResult.Record.Message);
             ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
-                $('#deleteId').val(JsonResult.Record.ID);
+               // $('#deleteId').val(JsonResult.Record.ID);
             }
             BindAllQuotes();
             EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
             break;
         case "ERROR":
-            notyAlert('error', JsonResult.Message);
+            notyAlert('error', JsonResult.Record.Message);
             break;
         default:
-            notyAlert('error', JsonResult.Message);
+            notyAlert('error', JsonResult.Record.Message);
             break;
     }
 }
+
+
+
+function DeleteSuccess(data, status) {
+var JsonResult = JSON.parse(data)
+switch (JsonResult.DeleteInvoice) {
+         case "OK":
+notyAlert('success', JsonResult.Message);
+break;
+         case "Error":
+            notyAlert('error', JsonResult.Message);
+            break;
+         case "ERROR":
+            notyAlert('error', JsonResult.Message);//            break;
+       default:
+            break;
+    }
+}
+
 
 function AddNew() {
     ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Add');
     openNav();
     EG_ClearTable();
-    Reset();   
+    // Reset();  
+    $('#ID').val(emptyGUID);
+    $('#ProformaForm')[0].reset();
     $("#lblEmailSent").text('N/A');
     $("#lblInvoiceNo").text('New ProformaInvoice');
     clearUploadControl();
@@ -395,8 +456,10 @@ function AddNew() {
 }
 
 function Reset() {
-   
-    $('#ProformaForm')[0].reset();
+    debugger;
+    $('#ProformaForm')[0].reset();  
+    BindProformaInvoiceDetails($('#ID').val());
+    GetTaxPercentage();
     $('#ID').val('');
 }
 
@@ -405,7 +468,7 @@ function Edit(Obj) {
    $('#ProformaForm')[0].reset();
     var rowData = DataTables.ProformaInvoiceTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
-    $('#deleteId').val(rowData.ID);
+    //$('#deleteId').val(rowData.ID);
     $('#QuoteMAilHeaderID').val(rowData.ID);
 
     BindProformaInvoiceDetails(rowData.ID);
@@ -600,6 +663,7 @@ function ValidateEmail() {
 }
 
 function MailSuccess(data, status) {
+    debugger;
     hideLoader();
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
@@ -608,7 +672,7 @@ function MailSuccess(data, status) {
             notyAlert('success', JsonResult.Message);
             switch (JsonResult.MailResult) {
                 case 1:
-                    $("#lblEmailSent").text('YES');
+                    $("#lblEmailSent").text('YES');                   
                     break;
                 case 0:
                     $("#lblEmailSent").text('NO');
@@ -689,40 +753,3 @@ function GetMailPreview(ID) {
 
 
 
-//------------------------------------------------ Filter clicks------------------------------------------------------------//
-
-function Gridfilter(filter) {
-    debugger;
-    $('#filter').show();
-
-    $('#Draftfilter').hide();
-    $('#Deliveredfilter').hide();
-    $('#Progressfilter').hide();
-    $('#Closedfilter').hide();
-
-    if (filter == 'DFT') {
-        $('#Draftfilter').show();
-    }
-    else if (filter == 'DVD') {
-        $('#Deliveredfilter').show();
-    }
-    else if (filter == 'NGT') {
-        $('#Progressfilter').show();
-    }
-    else if (filter == "CLT,CWN") {
-        $('#Closedfilter').show();
-    }
-    var result = GetAllProformaInvoices(filter);
-    if (result != null) {
-        DataTables.ProformaInvoiceTable.clear().rows.add(result).draw(false);
-    }
-}
-
-//--Function To Reset ProformaInvoice Table--//
-function FilterReset() {
-    $('#filter').hide();
-    var result = GetAllProformaInvoices();
-    if (result != null) {
-        DataTables.ProformaInvoiceTable.clear().rows.add(result).draw(false);
-    }
-}

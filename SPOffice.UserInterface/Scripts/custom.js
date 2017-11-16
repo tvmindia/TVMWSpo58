@@ -440,6 +440,39 @@ function UploadFile(FileObject)
         }
    // });
 }
+function DeleteFile(this_Obj) {
+    debugger;
+    try {
+
+        notyConfirm('Are you sure to delete?', 'DeleteNow("' + this_Obj.attributes.token.value + '")', '', "Yes, delete it!");
+
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function DeleteNow(this_Obj) {
+    try {
+        var data = { "id": this_Obj };
+        var ds = {};
+        ds = GetDataFromServer("FileUpload/DeleteFile/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            notyAlert('success', ds.Message);
+            PaintImages($('#ID').val());
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
 function PaintImages(ID) {
     try {
         debugger;
@@ -478,6 +511,10 @@ function PaintImages(ID) {
                     filesize = filesize + parseInt(ds.Records[i].FileSize);
                 }
                 $('#hdnFileSizebytes').val(filesize);
+            }
+            if (ds.Records === null) {
+                $('#ExistingPreview').empty();
+                $('#hdnFileSizebytes').val(0);
             }
 
         }

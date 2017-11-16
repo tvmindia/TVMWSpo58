@@ -111,7 +111,7 @@ namespace SPOffice.RepositoryServices.Services
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[InsertProformaInvoice]";
-                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandType = CommandType.StoredProcedure;                       
                         cmd.Parameters.Add("@InvoiceNo", SqlDbType.VarChar, 20).Value = proformaHeader.InvoiceNo;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = proformaHeader.CustomerID;
                         cmd.Parameters.Add("@InvoiceDate", SqlDbType.DateTime).Value = proformaHeader.InvoiceDate;
@@ -122,12 +122,12 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@SentToAddress", SqlDbType.NVarChar, -1).Value = proformaHeader.SentToAddress;
                         cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = proformaHeader.BodyHead;
                         cmd.Parameters.Add("@BodyFooter", SqlDbType.NVarChar, -1).Value = proformaHeader.BodyFoot;
-
+                       // cmd.Parameters.Add("@SentToEmails", SqlDbType.NVarChar,-1).Value = proformaHeader.SentToEmails;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = proformaHeader.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = proformaHeader.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = proformaHeader.TaxPercApplied;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = proformaHeader.TaxAmount;
-                        //   cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quoteHeader.EmailSentYN;
+                       // cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = proformaHeader.EmailSentYN;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = proformaHeader.DetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = proformaHeader.hdnFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = proformaHeader.commonObj.CreatedBy;
@@ -167,7 +167,7 @@ namespace SPOffice.RepositoryServices.Services
             {
                 ID = outputID.Value.ToString(),
                 Status = outputStatus.Value.ToString(),
-                // Message = Cobj.InsertSuccess
+                //Message = Cobj.InsertSuccess
             };
         }
 
@@ -199,6 +199,8 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@SentToAddress", SqlDbType.NVarChar, -1).Value = proformaHeader.SentToAddress;
                         cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = proformaHeader.BodyHead;
                         cmd.Parameters.Add("@BodyFooter", SqlDbType.NVarChar, -1).Value = proformaHeader.BodyFoot;
+                       // cmd.Parameters.Add("@SentToEmails", SqlDbType.NVarChar, -1).Value = proformaHeader.SentToEmails;
+                        //cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = proformaHeader.EmailSentYN;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = proformaHeader.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = proformaHeader.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = proformaHeader.TaxPercApplied;
@@ -476,8 +478,64 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
+        //Delete ProformaInvoice
+
+        public object DeleteProformaInvoice(Guid? ID)
+        {
+           // bool result = false;
+            try
+            {
+                SqlParameter outputStatus = null;
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteProformaInvoice]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                       
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;                        
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+
+                        cmd.ExecuteNonQuery();
 
 
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        //Const Cobj = new Const();
+                        throw new Exception(Cobj.DeleteFailure);
+                    case "1":
+                        return new{
+                            status = outputStatus.Value.ToString(),
+                            Message = Cobj.DeleteSuccess
+                        };
+                       
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return new
+            {
+
+            };
+
+        }
 
     }
 }

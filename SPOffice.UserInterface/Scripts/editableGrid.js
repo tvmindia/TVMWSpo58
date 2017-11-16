@@ -390,6 +390,7 @@ function EG_KeyDown() {
 
 
 function EG_Validate(MinOneReq) {
+    debugger;
     if (EG_MandatoryFields != undefined && EG_MandatoryFields != '') {
         var fields = EG_MandatoryFields.split(',');
         var missing = 'A few mandatory fields are missing in row(s)'

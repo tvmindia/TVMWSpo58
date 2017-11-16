@@ -99,7 +99,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@EnquirySourceCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.EnquirySource;
                         cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
                         cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
-                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = ( _enquiriesObj.EnquiryOwnerID);
+                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
                         cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Subject;
 
                         //-----------------------//
