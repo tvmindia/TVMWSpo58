@@ -143,6 +143,7 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "App User"; }
         }
+     
         #endregion
 
     }

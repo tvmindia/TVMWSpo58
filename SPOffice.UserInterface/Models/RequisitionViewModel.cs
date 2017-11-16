@@ -26,6 +26,7 @@ namespace SPOffice.UserInterface.Models
         public string ReqDateFormatted { get; set; }
         public string ManagerApprovalDateFormatted { get; set; }
         public string FinalApprovalDateFormatted { get; set; }
+
     }
     public class RequisitionDetailViewModel
     {
