@@ -24,6 +24,8 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "Invoice Date required")]
         [Display(Name = "Invoice Date")]
         public string InvoiceDate { get; set; }
+
+        [Required(ErrorMessage = "Valid Till Date required")]
         [Display(Name = "Valid Till Date")]
         public string ValidTillDate { get; set; }             
        
@@ -46,7 +48,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Body Header")]
         [DataType(DataType.MultilineText)]
         public string BodyHead { get; set; }
-        [Required(ErrorMessage = "Body Footer required")]
+       // [Required(ErrorMessage = "Body Footer required")]
         [Display(Name = "Body Footer")]
         [DataType(DataType.MultilineText)]
         public string BodyFoot { get; set; }

@@ -26,5 +26,6 @@ namespace SPOffice.RepositoryServices.Contracts
         List<ProformaItem> GetAllQuoteItems(Guid? ID);
         object DeleteQuoteItem(Guid? ID);
         object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
+        bool DeleteProformaInvoice(Guid? ID);
     }
 }

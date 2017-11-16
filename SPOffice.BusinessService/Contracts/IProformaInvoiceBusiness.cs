@@ -19,6 +19,7 @@ namespace SPOffice.BusinessService.Contracts
         ProformaHeader GetMailPreview(Guid ID);
         object UpdateQuoteMailStatus(ProformaHeader proformaHeader);
         Task<bool> QuoteEmailPush(ProformaHeader proformaHeader);
+        bool DeleteProformaInvoice(Guid? ID);
 
 
     }
