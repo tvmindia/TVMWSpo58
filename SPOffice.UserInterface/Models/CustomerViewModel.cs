@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPOffice.DataAccessObject.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -127,12 +128,13 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Consignee Address")]
         [DataType(DataType.MultilineText)]
         public string ShippingAddress { get; set; }
-
+        public List<FileUpload> AttachmentLists { get; set; }
         public Guid hdnFileID { get; set; }
         [Display(Name = "Net Taxable Amount")]
         public decimal NetTaxableAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public CommonViewModel commonObj { get; set; }
+       
     }
 
     public class PurchaseOrderStatusViewModel

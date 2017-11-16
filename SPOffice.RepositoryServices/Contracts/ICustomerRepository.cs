@@ -11,8 +11,7 @@ namespace SPOffice.RepositoryServices.Contracts
     {
         List<CustomerPO> GetAllCustomerPOForMobile(string duration);
         List<Customer> GetAllCustomers();
-
-
+        CustomerPO GetCustomerPODetailsByID(Guid ID);
         List<CustomerPO> GetAllCustomerPurchaseOrders();
         object InsertPurchaseOrder(CustomerPO customerPO);
         object UpdatePurchaseOrder(CustomerPO customerPO);

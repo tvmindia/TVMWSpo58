@@ -650,6 +650,7 @@
     <Compile Include="API\LoginController.cs" />
     <Compile Include="API\ProformaController.cs" />
     <Compile Include="API\QuotationController.cs" />
+    <Compile Include="API\RequisitionController.cs" />
     <Compile Include="API\SupplierController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
