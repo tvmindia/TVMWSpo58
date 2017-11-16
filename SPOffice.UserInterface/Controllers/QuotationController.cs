@@ -187,10 +187,10 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUA"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
-                    quoteHeaderVM.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
-                    quoteHeaderVM.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate =_appUA.DateTime;
                     quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
                     quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
                     //Deserialize items
