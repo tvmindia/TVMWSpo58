@@ -446,7 +446,6 @@ function Resetform() {
 
 function Edit(Obj) {
     debugger;
-    Resetform();
     $('#QuoteForm')[0].reset();
     var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
@@ -570,7 +569,7 @@ function AddNew() {
     Resetform();
     openNav();
     EG_ClearTable();
-    Reset();  
+    //Reset();  
     $("#ddlQuoteStage").val('DFT');
     $("#lblQuoteStage").text('Draft');
    $("#lblEmailSent").text('No');
@@ -580,11 +579,9 @@ function AddNew() {
   //  clearUploadControl();
 }
 
-function Reset() {
-    debugger;
-    $('#QuoteForm')[0].reset();    
-    $('#ID').val('');
-    $("#QuoteBodyFoot").val(footer);
+function Reset() {      
+    BindQuationDetails($('#ID').val());    
+    $("#QuoteBodyFoot").val(footer);    
 }
 
 //---------------Bind logics-------------------
