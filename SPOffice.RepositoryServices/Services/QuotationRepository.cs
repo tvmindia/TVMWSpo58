@@ -164,7 +164,7 @@ namespace SPOffice.RepositoryServices.Services
                         //success
                         return new
                         {
-                           // ID = outputID.Value.ToString(),
+                            ID = outputID.Value.ToString(),
                             Status = outputStatus.Value.ToString(),
                             Message = Cobj.InsertSuccess
                         };
@@ -263,7 +263,70 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
-       
+
+
+        //Delete Quotation
+
+        public object DeleteQuotation(Guid? ID)
+        {           
+            try
+            {
+                SqlParameter outputStatus = null;
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteQuotations]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        //Const Cobj = new Const();
+                        throw new Exception(Cobj.DeleteFailure);
+                    case "1":
+                        return new
+                        {
+                            status = outputStatus.Value.ToString(),
+                            Message = Cobj.DeleteSuccess
+                        };
+
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return new
+            {
+
+            };
+
+        }
+
+
+
+
 
         #region GetQuotationDetails
         public List<Quotation> GetQuotationDetails(string duration)

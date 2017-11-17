@@ -230,7 +230,7 @@
                 <div class="col-md-6" style="text-align:left">
                     <span id="lblQuotationNo" class="SCHeader"></span>
                 </div>
-                <div class="col-md-6" id="btnPatchAdd" style="min-height:25px; padding-right:25px;">
+                <div class="col-md-6" id="btnPatchAdd" style="min-height:25px; padding-right:25px;z-index: 1;">
 
                     @{
                         var data1 = new { ActionType = "Add" };
@@ -395,7 +395,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.Stage, Model.QuoteStageList, "-- Select Stage --", new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "ddlQuoteStage" })
+                                        @Html.DropDownListFor(model => model.Stage, Model.QuoteStageList, new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "ddlQuoteStage", @onchange ="ChangeQuoteStatus();" })
                                         @Html.ValidationMessageFor(model => model.Stage, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>

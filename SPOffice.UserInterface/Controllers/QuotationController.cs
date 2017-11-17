@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace SPOffice.UserInterface.Controllers
             _productBusiness = productBusiness;
         }
         // GET: Quotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
@@ -85,22 +87,22 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = new List<SelectListItem>();
             List<QuoteStageViewModel> QuoteStageList = Mapper.Map<List<QuoteStage>, List<QuoteStageViewModel>>(_quotationBusiness.GetAllQuoteStages());
             foreach (QuoteStageViewModel QS in QuoteStageList)
-            {
-                selectListItem.Add(new SelectListItem
-                {
-                    Text = QS.Description,
-                    Value = QS.Code.ToString(),
-                    Selected = false
-                });
-             
+            {                              
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = QS.Description,
+                        Value = QS.Code.ToString(),
+                        Selected = false
+                    });                              
+                
             }
             //default draft selection in drop down
             var _selected = selectListItem.Where(x => x.Value == "DFT").FirstOrDefault();
             if(_selected!=null)
-            {
+            {                
                 _selected.Selected = true;
             }
-             
+
 
             quoteHeaderVM.QuoteStageList = selectListItem;
 
@@ -122,6 +124,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #region GetAllQuotations
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllQuotations(string filter)
         {
             try
@@ -156,8 +159,10 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllQuotations
+
         #region GetQuationDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuationDetailsByID(string ID)
         {
             try
@@ -180,6 +185,7 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateQuotaion
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "W")]
         public string InsertUpdateQuotaion(QuoteHeaderViewModel quoteHeaderVM)
         {
             try
@@ -187,10 +193,10 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUA"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
-                    quoteHeaderVM.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
-                    quoteHeaderVM.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate =_appUA.DateTime;
                     quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
                     quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
                     //Deserialize items
@@ -237,6 +243,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetQuationDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuateItemsByQuateHeadID(string ID)
         {
             try
@@ -258,6 +265,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeleteItemByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string DeleteItemByID(string ID)
         {
             object result = null;
@@ -280,6 +288,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllProductCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllProductCodes()
         {
             try
@@ -301,6 +310,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllUnitCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllUnitCodes()
         {
             try
@@ -319,9 +329,11 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllUnitCodes
+
         #region GetTaxRate
        
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetTaxRate(string Code)
         {
             try
@@ -340,6 +352,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetMailPreview
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult GetMailPreview(string ID)
         {
             QuoteMailPreviewViewModel quoteMailPreviewViewModel = null;
@@ -378,6 +391,7 @@ namespace SPOffice.UserInterface.Controllers
 
         [HttpPost,ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public async Task<string> SendQuoteMail(QuoteHeaderViewModel quoteHeaderVM)
         {
             try
@@ -418,6 +432,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetCustomerDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetCustomerDetailsByID(string ID)
         {
             try
@@ -436,6 +451,33 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetCustomerDetailsByID
+
+
+        #region DeleteQuotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public string DeleteQuotation(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _quotationBusiness.DeleteQuotation(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+
+        #endregion DeleteQuotation
+
+
+
 
         #region ButtonStyling
         [HttpGet]
@@ -473,6 +515,12 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.Title = "Save";
                     ToolboxViewModelObj.savebtn.Event = "saveInvoices();";
+
+
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteClick();";
 
                     ToolboxViewModelObj.resetbtn.Visible = true;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
