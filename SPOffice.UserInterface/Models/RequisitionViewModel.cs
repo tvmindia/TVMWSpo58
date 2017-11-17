@@ -10,10 +10,14 @@ namespace SPOffice.UserInterface.Models
     public class RequisitionViewModel
     {
         public Guid ID { get; set; }
+        [Display(Name = "Requisition No.")]
         public string ReqNo { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; }        
         public DateTime ReqDate { get; set; }
+        [Display(Name = "Requested Company")]
+        [Required(ErrorMessage = "Company is missing")]
         public string ReqForCompany { get; set; }
+        [Display(Name = "Requisition Status")]
         public string ReqStatus { get; set; }
         public bool ManagerApproved { get; set; }
         public DateTime ManagerApprovalDate { get; set; }
@@ -25,6 +29,8 @@ namespace SPOffice.UserInterface.Models
         public CompanyViewModel CompanyObj { get; set; }
         public CommonViewModel CommonObj { get; set; }
         //Properties for client side functionalities
+        [Display(Name = "Requisition Date")]
+        [Required(ErrorMessage = "Date is missing")]
         public string ReqDateFormatted { get; set; }
         public string ManagerApprovalDateFormatted { get; set; }
         public string FinalApprovalDateFormatted { get; set; }
@@ -40,7 +46,7 @@ namespace SPOffice.UserInterface.Models
         [DataType(DataType.MultilineText)]
         public string ExtendedDescription { get; set; }
         public string CurrStock { get; set; }
-        public decimal AppxRate { get; set; }
+        public decimal? AppxRate { get; set; }
         public string RequestedQty { get; set; }
         //External references
         public string RequisitionDetailObject { get; set; }

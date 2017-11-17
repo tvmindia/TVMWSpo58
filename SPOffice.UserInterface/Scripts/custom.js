@@ -242,7 +242,8 @@ function isNumber(e) {
 }
 
 
-function notyConfirm(msg, functionIfSuccess,msg2,btnText,value) {
+function notyConfirm(msg, functionIfSuccess, msg2, btnText, value) {
+    debugger;
     var m = 'You will not be able to recover this action!'
     if (msg2 != undefined) {
         m = msg2 + '  ' + m;

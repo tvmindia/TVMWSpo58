@@ -9,8 +9,10 @@ namespace SPOffice.BusinessService.Contracts
     public interface IRequisitionBusiness
     {
         List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID);
+        List<RequisitionDetail> GetRequisitionDetailList(Guid ID);
         object InsertRequisition(Requisition RequisitionObj);
         object UpdateRequisition(Requisition RequisitionObj);
-        List<Requisition> GetRequisitionDetails(Guid ID);
+        Requisition GetRequisitionDetails(Guid ID);
+        object DeleteRequisitionDetailByID(Guid ID);
     }
 }

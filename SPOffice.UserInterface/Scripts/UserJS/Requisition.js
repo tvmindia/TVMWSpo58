@@ -10,6 +10,7 @@
 //Global Declarations
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000';
+var Rowindex = -1;
 //This will fire on page loads
 $(document).ready(function () {
     try {
@@ -28,8 +29,8 @@ $(document).ready(function () {
             { "data": "ID", "defaultContent": "<i>-</i>" },
             { "data": "ReqNo", "defaultContent": "<i>-</i>" },
             { "data": "Title", "defaultContent": "<i>-</i>" },
-            { "data": "ReqDate", "defaultContent": "<i>-</i>" },
-            { "data": "CompanyObj.ReqForCompany", "defaultContent": "<i>-</i>" },
+            { "data": "ReqDateFormatted", "defaultContent": "<i>-</i>" },
+            { "data": "CompanyObj.Name", "defaultContent": "<i>-</i>" },
             { "data":"ReqStatus","defaultContent":"<i>-</i>"},
             {
                 "data": "ManagerApproved", render: function (data, type, row)
@@ -37,10 +38,18 @@ $(document).ready(function () {
                     debugger;
                     if (data)
                     {
-                        return '<a class="circlebtn circlebtn-info" title="Approved"><i class="halflings-icon white ok"></i></a>';
+                        return "Approved ✔ <br/> 📅 " + row.ManagerApprovalDateFormatted;
                     }
                     else {
-                        return '<a class="circlebtn circlebtn-info" title="Approved"><i class="fa fa-close"></i></a>';
+                        if (row.FinalApproval)
+                        {
+                            return '-'
+                        }
+                        else
+                        {
+                            return 'Pending';
+                        }
+                        
                     }
                    
                 }, "defaultContent": "<i>-</i>"
@@ -48,10 +57,10 @@ $(document).ready(function () {
             {
                 "data": "FinalApproval", render: function (data, type, row) {
                     if (data) {
-                        return '<a class="circlebtn circlebtn-info" style="background-color:green;" title="Approved"><i class="halflings-icon white ok"></i></a>';
+                        return "Approved ✔ <br/>📅 " + row.FinalApprovalDateFormatted;
                     }
                     else {
-                        return '<a class="circlebtn circlebtn-info" style="background-color:green;" title="Approved"><i class="halflings-icon white ok"></i></a>';
+                        return 'Pending';
                     }
 
                 }, "defaultContent": "<i>-</i>"
@@ -60,8 +69,7 @@ $(document).ready(function () {
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
             { className: "text-left", "targets": [1, 2, 3, 4, 6] },
-            { className: "text-center", "targets": [] },
-            { className: "text-right", "targets": [5] }
+            { className: "text-center", "targets": [5] }
 
             ]
         });           
@@ -94,10 +102,16 @@ $(document).ready(function () {
 
             ]
         });
+        $('#tblRequisitionList tbody').on('dblclick', 'td', function () {
+            Edit(this);
+        });
         //Remove border color red while added data into the fields
         $('.Ivalidate').keypress(function (event) {
             if ($(this).val() !== "")
                 $(this).css("border-color", "");
+        });
+        $('#ReqStatus').on('change',function(){
+            $('#lblReqStatus').text($(this).val());
         });
     }
     catch (e) {
@@ -105,8 +119,110 @@ $(document).ready(function () {
         console.log(e.message);
     }
 });
+function ClearFormFields()
+{
+    $('#btnReset').trigger('click');
+    $('#ID').val(emptyGUID);
+    $('#RequisitionDetailObj_RequisitionDetailObject').val('');
+    $('#lblApprovalStatus').text('Pending');
+    $('#lblReqStatus').text('Open');
+    DataTables.RequisitionDetailList.clear().draw();
+}
 function AddNew() {
+    ClearFormFields();
+    $('.Ivalidate').css("border-color", "");
+    Rowindex = -1;
     openNav();
+}
+function Edit(this_Obj)
+{
+    ClearFormFields();
+    $('.Ivalidate').css("border-color", "");
+    Rowindex = -1;
+    var rowData = DataTables.RequisitionList.row($(this_Obj).parents('tr')).data();
+    $('#ID').val(rowData.ID);
+    BindRequisitionDetail();
+    openNav();
+}
+function EditIemsFromGrid(this_Obj)
+{
+    debugger;
+    Rowindex = DataTables.RequisitionDetailList.row($(this_Obj).parents('tr')).index();
+    var rowData = DataTables.RequisitionDetailList.row($(this_Obj).parents('tr')).data();
+    $("#RequisitionDetailObj_MaterialID ").val(rowData.MaterialID!==emptyGUID?rowData.MaterialID:"");
+    $('#RequisitionDetailObj_AppxRate').val(rowData.AppxRate);
+    $('#RequisitionDetailObj_Description').val(rowData.Description);
+    if (rowData.MaterialID !== emptyGUID)
+    {
+        $('#RequisitionDetailObj_Description').prop("disabled", true);
+    }
+    $('#RequisitionDetailObj_ExtendedDescription').val(rowData.ExtendedDescription);
+    $('#RequisitionDetailObj_CurrStock').val(rowData.CurrStock);
+    $('#RequisitionDetailObj_RequestedQty').val(rowData.RequestedQty);
+    $('#anchorDeleteItem').attr('onclick', 'DeleteItem("' + rowData.ID+ '")')
+    $('.ItemAdd').hide();
+    $('.ItemEdit').show();
+}
+function DeleteItem(ID)
+{
+    debugger;
+    if(ID===emptyGUID)
+    {
+        var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
+        Itemtabledata.splice(Rowindex, 1);
+        DataTables.RequisitionDetailList.clear().rows.add(Itemtabledata).draw(false);
+        ClearItemFields();
+    }
+    else
+    {
+        notyConfirm('Are you sure to delete?', 'DeleteRequisitionDetail("' + ID + '")');
+        
+    }
+}
+function DeleteRequisitionDetail(ID)
+{
+    debugger;
+    $('.cancel').trigger('click');
+    //var id = $('#ID').val();
+    if (ID != '' && ID != null) {
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Requisition/DeleteRequisitionDetailByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            // notyAlert('success', ds.Record.Message);
+            var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
+            Itemtabledata.splice(Rowindex, 1);
+            DataTables.RequisitionDetailList.clear().rows.add(Itemtabledata).draw(false);
+            ClearItemFields();
+        }
+        if (ds.Result == "ERROR") {
+           // notyAlert('error', ds.Message);
+            return 0;
+        }
+        return 1;
+    }
+}
+function BindRequisitionDetail()
+{
+    debugger;
+    try{
+        var RequisitionViewModel = GetRequisitionDetailByID()
+        $('#ReqNo').val(RequisitionViewModel.ReqNo);
+        $('#Title').val(RequisitionViewModel.Title);
+        $('#ReqDateFormatted').val(RequisitionViewModel.ReqDateFormatted);
+        $('#ReqStatus').val(RequisitionViewModel.ReqStatus);
+        $('#ReqForCompany').val(RequisitionViewModel.ReqForCompany);
+        $('#lblReqStatus').text(RequisitionViewModel.ReqStatus);
+        $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Manager ✔ " : "Pending"))
+        DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
 }
 function GetItemDetails()
 {
@@ -124,7 +240,7 @@ function GetItemDetails()
 
                 $("#RequisitionDetailObj_AppxRate").val(ds.Records.ApproximateRate);
                 $('#RequisitionDetailObj_Description').val(ds.Records.Description)
-                
+                $('#RequisitionDetailObj_Description').prop("disabled", true);
                 //AmountSummary();
                 return ds.Records;
             }
@@ -161,7 +277,7 @@ function GetUserRequisitionList()
         console.log(e.message);
     }
 }
-function GetRequisitionDetail(ID) {
+function GetRequisitionDetailList(ID) {
     debugger;
     try {
         var data = {"ID":ID};
@@ -182,15 +298,36 @@ function GetRequisitionDetail(ID) {
         console.log(e.message);
     }
 }
-function AddItemsToTable()
+function GetRequisitionDetailByID()
 {
     debugger;
+    try{
+        var data = { "ID": $('#ID').val() };
+        var ds = {};
+        ds = GetDataFromServer("Requisition/GetRequisitionDetailByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
+}
+function AddItemsToTable()
+{
     try {
         var ReqQty =$('#RequisitionDetailObj_RequestedQty');
         var Desc = $('#RequisitionDetailObj_Description');
-        var ExtDesc=$('#RequisitionDetailObj_ExtendedDescription');
+        //var ExtDesc=$('#RequisitionDetailObj_ExtendedDescription');
             var container = [
-                { id: ExtDesc[0].id, name: ExtDesc[0].name, Value: ExtDesc[0].value },
+                //{ id: ExtDesc[0].id, name: ExtDesc[0].name, Value: ExtDesc[0].value },
                 { id: Desc[0].id, name: Desc[0].name, Value: Desc[0].value },
                 { id:ReqQty[0].id,name:ReqQty[0].name,Value:ReqQty[0].value}
             ];
@@ -201,17 +338,17 @@ function AddItemsToTable()
                 if (container[i].Value == "") {
                     j = 1;
                     var txtB = document.getElementById(container[i].id);
-                    txtB.style.backgroundImage = "url('../img/invalid.png')";
+                    //txtB.style.backgroundImage = "url('../img/invalid.png')";
                     txtB.style.borderColor = "#d87b7b";
-                    txtB.style.backgroundPosition = "95% center";
-                    txtB.style.backgroundRepeat = "no-repeat";
+                    //txtB.style.backgroundPosition = "95% center";
+                    //txtB.style.backgroundRepeat = "no-repeat";
 
                 }
             }
             if (j === 0)
             {
                 if (DataTables.RequisitionDetailList.rows().data().length === 0) {
-                    DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetail(0)).draw(false);
+                    DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(0)).draw(false);
                     var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
                     Itemtabledata[0].RawMaterialObj.MaterialCode = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID option:selected").text() : "";
                     Itemtabledata[0].RawMaterialObj.MaterialID = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID").val() : emptyGUID;
@@ -224,20 +361,21 @@ function AddItemsToTable()
                     DataTables.RequisitionDetailList.clear().rows.add(Itemtabledata).draw(false);
                 }
                 else {
-                    var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
+                    //var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
                     var Item = new Object();
-                    Item = Itemtabledata[0];
-                    Item.ReqID = emptyGUID;
+                    var RawMaterialObj = new Object;
                     Item.ID = emptyGUID;
-                    Item.RawMaterialObj.MaterialCode = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID option:selected").text() : "";
-                    Item.RawMaterialObj.MaterialID = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID").val() : emptyGUID;
+                    Item.ReqID = emptyGUID;                    
+                    RawMaterialObj.MaterialCode = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID option:selected").text() : "";
+                    RawMaterialObj.MaterialID = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID").val() : emptyGUID;
+                    Item.RawMaterialObj = RawMaterialObj;                    
                     Item.MaterialID = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID").val() : emptyGUID;
                     Item.AppxRate = $('#RequisitionDetailObj_AppxRate').val();
                     Item.Description = $('#RequisitionDetailObj_Description').val();
                     Item.ExtendedDescription = $('#RequisitionDetailObj_ExtendedDescription').val();
                     Item.CurrStock = $('#RequisitionDetailObj_CurrStock').val();
                     Item.RequestedQty = $('#RequisitionDetailObj_RequestedQty').val();
-                    DataTables.RequisitionDetailList.row.add(Item).draw(false);
+                    DataTables.RequisitionDetailList.row.add(Item).draw(true);
                 }
                 ClearItemFields();
             }        
@@ -247,6 +385,20 @@ function AddItemsToTable()
         console.log(e.message);
     }
 }
+function UpdateItemsToTable()
+{
+    var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
+    Itemtabledata[Rowindex].RawMaterialObj.MaterialCode = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID option:selected").text() : Itemtabledata[Rowindex].RawMaterialObj.MaterialCode;
+    Itemtabledata[Rowindex].RawMaterialObj.MaterialID = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID").val() : Itemtabledata[Rowindex].RawMaterialObj.MaterialID;
+    Itemtabledata[Rowindex].MaterialID = $("#RequisitionDetailObj_MaterialID").val() != "" ? $("#RequisitionDetailObj_MaterialID").val() : Itemtabledata[Rowindex].RawMaterialObj.MaterialID;
+    Itemtabledata[Rowindex].AppxRate = $('#RequisitionDetailObj_AppxRate').val();
+    Itemtabledata[Rowindex].Description = $('#RequisitionDetailObj_Description').val();
+    Itemtabledata[Rowindex].ExtendedDescription = $('#RequisitionDetailObj_ExtendedDescription').val();
+    Itemtabledata[Rowindex].CurrStock = $('#RequisitionDetailObj_CurrStock').val();
+    Itemtabledata[Rowindex].RequestedQty = $('#RequisitionDetailObj_RequestedQty').val();
+    DataTables.RequisitionDetailList.clear().rows.add(Itemtabledata).draw(false);
+    ClearItemFields();
+}
 function ClearItemFields()
 {
     $("#RequisitionDetailObj_MaterialID ").val('');
@@ -255,11 +407,33 @@ function ClearItemFields()
     $('#RequisitionDetailObj_ExtendedDescription').val('');
     $('#RequisitionDetailObj_CurrStock').val('');
     $('#RequisitionDetailObj_RequestedQty').val('');
+    Rowindex = -1;
+    $('.ItemAdd').show();
+    $('.ItemEdit').hide();
+    $('#RequisitionDetailObj_Description').prop("disabled", false);
 }
 function SaveRequisition()
 {
-    debugger;
     var Itemtabledata = DataTables.RequisitionDetailList.rows().data().toArray();
     $('#RequisitionDetailObj_RequisitionDetailObject').val(JSON.stringify(Itemtabledata));
     $('#btnSave').trigger('click');
+}
+function SaveSuccessRequisition(data, status) {
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Result) {
+        case "OK":
+            notyAlert('success', JsonResult.Record.Message);
+            DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
+            if (JsonResult.Record.ID) {
+                $("#ID").val(JsonResult.Record.ID);
+                $("#ReqNo").val(JsonResult.Record.ReqNo);
+            }
+            break;
+        case "ERROR":
+            notyAlert('error', JsonResult.Record.Message);
+            break;
+        default:
+            notyAlert('error', JsonResult.Record.Message);
+            break;
+    }
 }

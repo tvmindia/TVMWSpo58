@@ -21,6 +21,10 @@ namespace SPOffice.BusinessService.Services
         {
             return _requisitionRepository.GetUserRequisitionList(LoginName,AppID);
         }
+        public List<RequisitionDetail> GetRequisitionDetailList(Guid ID)
+        {
+            return _requisitionRepository.GetRequisitionDetailList(ID);
+        }
         public object InsertRequisition(Requisition RequisitionObj)
         {
             RequisitionObj.DetailXML = _commonBusiness.GetXMLfromRequisitionDetailList(RequisitionObj.RequisitionDetailList, "MaterialID");
@@ -28,11 +32,16 @@ namespace SPOffice.BusinessService.Services
         }
         public object UpdateRequisition(Requisition RequisitionObj)
         {
+            RequisitionObj.DetailXML = _commonBusiness.GetXMLfromRequisitionDetailList(RequisitionObj.RequisitionDetailList, "MaterialID");
             return _requisitionRepository.UpdateRequisition(RequisitionObj);
         }
-        public List<Requisition> GetRequisitionDetails(Guid ID)
+        public Requisition GetRequisitionDetails(Guid ID)
         {
             return _requisitionRepository.GetRequisitionDetails(ID);
+        }
+        public object DeleteRequisitionDetailByID(Guid ID)
+        {
+            return _requisitionRepository.DeleteRequisitionDetailByID(ID);
         }
     }
 }

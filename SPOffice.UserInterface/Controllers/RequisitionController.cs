@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace SPOffice.UserInterface.Controllers
             _rawMaterialBusiness = rawMaterialBusiness;
         }
         // GET: Requisition
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public ActionResult Index()
         {
             RequisitionViewModel RVM = new RequisitionViewModel();
@@ -63,20 +65,13 @@ namespace SPOffice.UserInterface.Controllers
             return View(RVM);
         }
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public string GetUserRequisitionList()
         {
             try
             {
                 AppUA _appUA = Session["AppUA"] as AppUA;
                 List<RequisitionViewModel> RequisitionList = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(_appUA.UserName,_appUA.AppID));
-
-                //int openCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "OPN").Select(T => T.ID).Count();
-                //int closedCount = customerPOViewModelList == null ? 0 : customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == "CSD").Select(T => T.ID).Count();
-
-                //if (filter != null)
-                //{
-                //    customerPOViewModelList = customerPOViewModelList.Where(Q => Q.purchaseOrderStatus.Code == filter).ToList();
-                //}
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = RequisitionList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
             catch (Exception ex)
@@ -86,20 +81,27 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public string GetRequisitionDetail(string ID)
         {
             try
             {
-                //if(ID=="0")
                 List<RequisitionDetailViewModel> RequisitionDetailList = new List<RequisitionDetailViewModel>();
                 RequisitionDetailViewModel RequisitionDetailObj = new RequisitionDetailViewModel();
-                RequisitionDetailObj.ID = Guid.Empty;
-                RequisitionDetailObj.MaterialID = Guid.Empty;
-                RequisitionDetailObj.ReqID = Guid.Empty;
-                RequisitionDetailObj.RawMaterialObj = new RawMaterialViewModel();
-                RequisitionDetailObj.RawMaterialObj.Description = "";
-                RequisitionDetailObj.RawMaterialObj.ID = Guid.Empty;
-                RequisitionDetailList.Add(RequisitionDetailObj);
+                if (ID=="0")
+                {
+                    RequisitionDetailObj.ID = Guid.Empty;
+                    RequisitionDetailObj.MaterialID = Guid.Empty;
+                    RequisitionDetailObj.ReqID = Guid.Empty;
+                    RequisitionDetailObj.RawMaterialObj = new RawMaterialViewModel();
+                    RequisitionDetailObj.RawMaterialObj.Description = "";
+                    RequisitionDetailObj.RawMaterialObj.ID = Guid.Empty;
+                    RequisitionDetailList.Add(RequisitionDetailObj);
+                }
+                else
+                {
+                    RequisitionDetailList= Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_requisitionBusiness.GetRequisitionDetailList(Guid.Parse(ID)));
+                }                
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = RequisitionDetailList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
             catch (Exception ex)
@@ -109,6 +111,7 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public string GetItemDetail(string MaterialID)
         {
             try
@@ -123,8 +126,23 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #region InsertUpdateProformaInvoice
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
+        public string GetRequisitionDetailByID(string ID)
+        {
+            try
+            {
+                RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = requisitionViewModelObj });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
         [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         [ValidateAntiForgeryToken]
         public string InsertUpdateRequisition(RequisitionViewModel RequisitionObj)
         {
@@ -183,10 +201,31 @@ namespace SPOffice.UserInterface.Controllers
                 AppConstMessage cm = c.GetMessage(ex.Message);
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
+        }        
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
+        public string DeleteRequisitionDetailByID(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _requisitionBusiness.DeleteRequisitionDetailByID(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
         }
-        #endregion InsertUpdateProformaInvoices
+        
         #region ButtonStyling
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
