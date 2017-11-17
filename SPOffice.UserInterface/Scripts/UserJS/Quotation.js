@@ -782,7 +782,7 @@ function GetCustomerDeails(curobj) {
 
 
 //Delete Quotation
-function Delete() {
+function DeleteClick() {
     debugger;
     notyConfirm('Are you sure to delete?', 'DeleteQuotation()');
 }
