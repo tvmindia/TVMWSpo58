@@ -85,22 +85,22 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = new List<SelectListItem>();
             List<QuoteStageViewModel> QuoteStageList = Mapper.Map<List<QuoteStage>, List<QuoteStageViewModel>>(_quotationBusiness.GetAllQuoteStages());
             foreach (QuoteStageViewModel QS in QuoteStageList)
-            {
-                selectListItem.Add(new SelectListItem
-                {
-                    Text = QS.Description,
-                    Value = QS.Code.ToString(),
-                    Selected = false
-                });
-             
+            {                              
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = QS.Description,
+                        Value = QS.Code.ToString(),
+                        Selected = false
+                    });                              
+                
             }
             //default draft selection in drop down
             var _selected = selectListItem.Where(x => x.Value == "DFT").FirstOrDefault();
             if(_selected!=null)
-            {
+            {                
                 _selected.Selected = true;
             }
-             
+
 
             quoteHeaderVM.QuoteStageList = selectListItem;
 
@@ -437,6 +437,33 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetCustomerDetailsByID
 
+
+        #region DeleteQuotation
+
+        public string DeleteQuotation(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _quotationBusiness.DeleteQuotation(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+
+        #endregion DeleteQuotation
+
+
+
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
@@ -473,6 +500,12 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.Title = "Save";
                     ToolboxViewModelObj.savebtn.Event = "saveInvoices();";
+
+
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "Delete();";
 
                     ToolboxViewModelObj.resetbtn.Visible = true;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";

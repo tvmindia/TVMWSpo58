@@ -177,5 +177,11 @@ namespace SPOffice.BusinessService.Services
             }
             return result;
         }
+
+
+        public object DeleteQuotation(Guid? ID)
+        {
+            return _quotationRepository.DeleteQuotation(ID);
+        }
     }
 }
