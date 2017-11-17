@@ -505,7 +505,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.deletebtn.Visible = true;
                     ToolboxViewModelObj.deletebtn.Text = "Delete";
                     ToolboxViewModelObj.deletebtn.Title = "Delete";
-                    ToolboxViewModelObj.deletebtn.Event = "Delete();";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteClick();";
 
                     ToolboxViewModelObj.resetbtn.Visible = true;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
