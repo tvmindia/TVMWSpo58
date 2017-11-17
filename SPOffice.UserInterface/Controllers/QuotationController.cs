@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace SPOffice.UserInterface.Controllers
             _productBusiness = productBusiness;
         }
         // GET: Quotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
@@ -122,6 +124,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #region GetAllQuotations
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllQuotations(string filter)
         {
             try
@@ -156,8 +159,10 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllQuotations
+
         #region GetQuationDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuationDetailsByID(string ID)
         {
             try
@@ -180,6 +185,7 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateQuotaion
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "W")]
         public string InsertUpdateQuotaion(QuoteHeaderViewModel quoteHeaderVM)
         {
             try
@@ -237,6 +243,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetQuationDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuateItemsByQuateHeadID(string ID)
         {
             try
@@ -258,6 +265,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeleteItemByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string DeleteItemByID(string ID)
         {
             object result = null;
@@ -280,6 +288,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllProductCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllProductCodes()
         {
             try
@@ -301,6 +310,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllUnitCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllUnitCodes()
         {
             try
@@ -319,9 +329,11 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllUnitCodes
+
         #region GetTaxRate
        
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetTaxRate(string Code)
         {
             try
@@ -340,6 +352,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetMailPreview
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult GetMailPreview(string ID)
         {
             QuoteMailPreviewViewModel quoteMailPreviewViewModel = null;
@@ -378,6 +391,7 @@ namespace SPOffice.UserInterface.Controllers
 
         [HttpPost,ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public async Task<string> SendQuoteMail(QuoteHeaderViewModel quoteHeaderVM)
         {
             try
@@ -418,6 +432,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetCustomerDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetCustomerDetailsByID(string ID)
         {
             try
@@ -439,7 +454,7 @@ namespace SPOffice.UserInterface.Controllers
 
 
         #region DeleteQuotation
-
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string DeleteQuotation(string ID)
         {
             object result = null;

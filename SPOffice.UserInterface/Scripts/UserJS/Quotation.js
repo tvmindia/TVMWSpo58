@@ -371,6 +371,7 @@ function DeleteItem(ID) {
 
 function saveInvoices() {
     debugger;
+    $("#DetailJSON").val('');//
     var validation = EG_Validate();
     if (validation == "") {
 
@@ -567,8 +568,10 @@ function GetQuationDetailsByID(ID) {
 function AddNew() {
     ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
     Resetform();
-    openNav();
-    EG_ClearTable();
+    openNav();   
+    EG_ClearTable();   
+    $('#ID').val('');
+    $("#DetailJSON").val('');
     //Reset();  
     $("#ddlQuoteStage").val('DFT');
     $("#lblQuoteStage").text('Draft');
