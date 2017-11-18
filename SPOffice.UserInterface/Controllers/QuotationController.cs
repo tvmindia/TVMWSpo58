@@ -265,7 +265,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeleteItemByID
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "D")]
         public string DeleteItemByID(string ID)
         {
             object result = null;
@@ -276,7 +276,7 @@ namespace SPOffice.UserInterface.Controllers
                     throw new Exception("ID Missing");
                 }
                 result=_quotationBusiness.DeleteQuoteItem(Guid.Parse(ID));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result,Message = c.DeleteSuccess });
             }
             catch (Exception ex)
             {
@@ -298,7 +298,7 @@ namespace SPOffice.UserInterface.Controllers
                 {
                  productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code,Description=P.Description,Rate=P.Rate }).OrderBy(x => x.Code).ToList();
                 }
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList,Message =c.DeleteSuccess });
             }
             catch (Exception ex)
             {
@@ -399,10 +399,10 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (!string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
                 {
-                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUA"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
-                    quoteHeaderVM.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
-                    quoteHeaderVM.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate = _appUA.DateTime;
                     quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
                     quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
                     
@@ -413,7 +413,7 @@ namespace SPOffice.UserInterface.Controllers
                         quoteHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _quotationBusiness.UpdateQuoteMailStatus(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
                     }
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result,MailResult= sendsuccess });
+                    return JsonConvert.SerializeObject(new { Result = "OK",MailResult= sendsuccess ,Message = c.MailSuccess});
                 }
                 else
                 {
@@ -454,7 +454,7 @@ namespace SPOffice.UserInterface.Controllers
 
 
         #region DeleteQuotation
-        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "D")]
         public string DeleteQuotation(string ID)
         {
             object result = null;
@@ -465,7 +465,7 @@ namespace SPOffice.UserInterface.Controllers
                     throw new Exception("ID Missing");
                 }
                 result = _quotationBusiness.DeleteQuotation(Guid.Parse(ID));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, DeleteQuote = c.DeleteSuccess });
             }
             catch (Exception ex)
             {
@@ -525,17 +525,17 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.resetbtn.Visible = true;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
                     ToolboxViewModelObj.resetbtn.Title = "Reset";
-                    ToolboxViewModelObj.resetbtn.Event = "Reset();";
-
-                    ToolboxViewModelObj.CloseBtn.Visible = true;
-                    ToolboxViewModelObj.CloseBtn.Text = "Close";
-                    ToolboxViewModelObj.CloseBtn.Title = "Close";
-                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+                    ToolboxViewModelObj.resetbtn.Event = "Reset();";                   
 
                     ToolboxViewModelObj.EmailBtn.Visible = true;
                     ToolboxViewModelObj.EmailBtn.Text = "Mail";
                     ToolboxViewModelObj.EmailBtn.Title = "Mail";
                     ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+
+                    ToolboxViewModelObj.CloseBtn.Visible = true;
+                    ToolboxViewModelObj.CloseBtn.Text = "Close";
+                    ToolboxViewModelObj.CloseBtn.Title = "Close";
+                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
 
                     break;
                 case "Add":

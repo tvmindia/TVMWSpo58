@@ -346,7 +346,7 @@ function DeleteItem(ID) {
             if (ds.Result == "OK") {
                 switch (ds.Result) {
                             case "OK":
-                                notyAlert('success', ds.Message);
+                                notyAlert('success', ds.Record.Message);
                                 EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
                             break;
                             case "ERROR":
@@ -388,24 +388,6 @@ function saveInvoices() {
 }
 
 
-//function DeleteSuccess(data, status) {
-//    var JsonResult = JSON.parse(data)
-//    switch (JsonResult.Result) {
-//        case "OK":
-//            AddNew();
-//            List();
-//            notyAlert('success', JsonResult.Message);
-//            break;
-//        case "Error":
-//            notyAlert('error', JsonResult.Message);
-//            break;
-//        case "ERROR":
-//            notyAlert('error', JsonResult.Message);
-//            break;
-//        default:
-//            break;
-//    }
-//}
 
 function SaveSuccess(data, status) {
    
@@ -413,7 +395,7 @@ function SaveSuccess(data, status) {
     switch (JsonResult.Result) {
         case "OK":
            
-            notyAlert('success', JsonResult.Message);
+            notyAlert('success', JsonResult.Record.Message);
             ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
@@ -423,10 +405,10 @@ function SaveSuccess(data, status) {
             EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
             break;
         case "ERROR":
-            notyAlert('error', JsonResult.Message);
+            notyAlert('error', JsonResult.Record.Message);
             break;
         default:
-            notyAlert('error', JsonResult.Message);
+            notyAlert('error', JsonResult.Record.Message);
             break;
     }
 }

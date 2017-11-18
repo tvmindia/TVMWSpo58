@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllProformaInvoice
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public string GetAllProformaInvoices()
         {
             try
@@ -51,6 +53,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetAllProformaInvoice
         // GET: ProformaInvoice
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public ActionResult Index()
         {
             ProformaHeaderViewModel proformaHeaderVM = new ProformaHeaderViewModel();
@@ -103,6 +106,7 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateProformaInvoice
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "W")]
         public string InsertUpdateProformaInvoices(ProformaHeaderViewModel proformaHeaderVM)
         {
             try
@@ -111,10 +115,10 @@ namespace SPOffice.UserInterface.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUA"] as AppUA;
                     proformaHeaderVM.commonObj = new CommonViewModel();
-                    proformaHeaderVM.commonObj.CreatedBy = proformaHeaderVM.commonObj.CreatedBy;// "Albert Thomson";//_appUA.UserName;
-                    proformaHeaderVM.commonObj.CreatedDate = DateTime.Now; ;//_appUA.DateTime;
+                    proformaHeaderVM.commonObj.CreatedBy = _appUA.UserName;
+                    proformaHeaderVM.commonObj.CreatedDate =_appUA.DateTime;
                     proformaHeaderVM.commonObj.UpdatedBy = proformaHeaderVM.commonObj.CreatedBy;
                     proformaHeaderVM.commonObj.UpdatedDate = proformaHeaderVM.commonObj.CreatedDate;
                     //Deserialize items
@@ -161,6 +165,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllProductCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public string GetAllProductCodes()
         {
             try
@@ -182,6 +187,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllUnitCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public string GetAllUnitCodes()
         {
             try
@@ -203,6 +209,7 @@ namespace SPOffice.UserInterface.Controllers
         #region GetTaxRate
 
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public string GetTaxRate(string Code)
         {
             try
@@ -221,6 +228,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetQuateItemsByQuateHeadID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public string GetQuateItemsByQuateHeadID(string ID)
         {
             try
@@ -243,6 +251,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetProformaInvoiceDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public string GetProformaInvoiceDetailsByID(string ID)
         {
             try
@@ -265,6 +274,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeleteItemByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "D")]
         public string DeleteItemByID(string ID)
         {
             object result = null;
@@ -275,7 +285,7 @@ namespace SPOffice.UserInterface.Controllers
                     throw new Exception("ID Missing");
                 }
                 result = _proformaInvoiceBusiness.DeleteQuoteItem(Guid.Parse(ID));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message = c.DeleteSuccess });
             }
             catch (Exception ex)
             {
@@ -288,6 +298,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetMailPreview
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public ActionResult GetMailPreview(string ID)
         {
             ProformaMailPreviewViewModel proformaMailPreviewViewModel = null;
@@ -325,6 +336,7 @@ namespace SPOffice.UserInterface.Controllers
 
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public async Task<string> SendQuoteMail(ProformaHeaderViewModel proformaHeaderVM)
         {
             try
@@ -345,7 +357,7 @@ namespace SPOffice.UserInterface.Controllers
                         proformaHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _proformaInvoiceBusiness.UpdateQuoteMailStatus(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
                     }
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess });
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess,Message = c.MailSuccess });
                 }
                 else
                 {
@@ -364,6 +376,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region DeleteProformaInvoice()
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "D")]
         public string DeleteProformaInvoice(string ID)
         {
             object result = null;
