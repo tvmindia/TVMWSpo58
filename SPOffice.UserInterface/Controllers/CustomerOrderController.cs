@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace SPOffice.UserInterface.Controllers
             _taxTypeBusiness = taxTypeBusiness;
         }
         // GET: CustomerOrder
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
@@ -95,6 +97,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllPurchaseOrders
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public string GetAllPurchaseOrders(string filter)
         {
             try
@@ -120,6 +123,7 @@ namespace SPOffice.UserInterface.Controllers
         #endregion GetAllPurchaseOrders
         #region GetPurchaseOrderByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public string GetPurchaseOrderByID(string ID)
         {
             try
@@ -141,6 +145,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region InsertUpdatePurchaseOrder
         [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
         [ValidateAntiForgeryToken]
         public string InsertUpdatePurchaseOrder(CustomerPOViewModel customerPOViewModel)
         {
@@ -149,10 +154,10 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUA"] as AppUA;
                     customerPOViewModel.commonObj = new CommonViewModel();
-                    customerPOViewModel.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
-                    customerPOViewModel.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    customerPOViewModel.commonObj.CreatedBy =_appUA.UserName;
+                    customerPOViewModel.commonObj.CreatedDate =_appUA.DateTime;
                     customerPOViewModel.commonObj.UpdatedBy = customerPOViewModel.commonObj.CreatedBy;
                     customerPOViewModel.commonObj.UpdatedDate = customerPOViewModel.commonObj.CreatedDate;
                    
@@ -194,6 +199,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeletePurchaseOrder
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "D")]
         public string DeletePurchaseOrder(string ID)
         {
             object result = null;
@@ -217,6 +223,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetCustomerDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public string GetCustomerDetailsByID(string ID)
         {
             try
