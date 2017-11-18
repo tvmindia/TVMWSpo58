@@ -38,7 +38,7 @@ $(document).ready(function () {
                     debugger;
                     if (data)
                     {
-                        return "Approved ✔ <br/> 📅 " + row.ManagerApprovalDateFormatted;
+                        return "Approved ✔ <br/> 📅 " + (row.ManagerApprovalDateFormatted!==null?row.ManagerApprovalDateFormatted:"-");
                     }
                     else {
                         if (row.FinalApproval)
@@ -57,7 +57,7 @@ $(document).ready(function () {
             {
                 "data": "FinalApproval", render: function (data, type, row) {
                     if (data) {
-                        return "Approved ✔ <br/>📅 " + row.FinalApprovalDateFormatted;
+                        return "Approved ✔ <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
                     }
                     else {
                         return 'Pending';
@@ -126,6 +126,7 @@ function ClearFormFields()
     $('#RequisitionDetailObj_RequisitionDetailObject').val('');
     $('#lblApprovalStatus').text('Pending');
     $('#lblReqStatus').text('Open');
+    $("#lblReqNo").text('Requisition No');
     DataTables.RequisitionDetailList.clear().draw();
 }
 function AddNew() {
@@ -217,6 +218,7 @@ function BindRequisitionDetail()
         $('#ReqForCompany').val(RequisitionViewModel.ReqForCompany);
         $('#lblReqStatus').text(RequisitionViewModel.ReqStatus);
         $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Manager ✔ " : "Pending"))
+        $("#lblReqNo").text(RequisitionViewModel.ReqNo);
         DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
     }
     catch(e)
@@ -427,6 +429,7 @@ function SaveSuccessRequisition(data, status) {
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
                 $("#ReqNo").val(JsonResult.Record.ReqNo);
+                $("#lblReqNo").text(JsonResult.Record.ReqNo);
             }
             break;
         case "ERROR":
