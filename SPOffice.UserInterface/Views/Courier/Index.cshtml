@@ -60,17 +60,12 @@
 
 
     <div id="myNav" class="overlay">
-
-
-
         <div class="overlay-content">
-
             <div class="row" id="OverlayHeader">
                 <div class="col-md-6" style="text-align:left">
                     <span id="lblCourierRefNo" class="SCHeader"></span>
                 </div>
                 <div class="col-md-6" id="btnPatchAdd" style="min-height:25px; padding-right:25px;">
-
                     @{
                         var data1 = new { ActionType = "Add" };
                         @Html.Action("ChangeButtonStyle", "Courier", data1);
@@ -82,8 +77,6 @@
                 @using (Ajax.BeginForm("InsertUpdateCourier", "Courier", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "CourierForm" }))
                 {
                     @Html.AntiForgeryToken()
-
-
                     <div class="col-md-12">
                         <div class="col-md-8">
                             <div class="form-group col-md-6">
@@ -103,7 +96,6 @@
                                 </div>
 
                             </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.TrackingRefNo, htmlAttributes: new { @class = "control-label" })
@@ -120,11 +112,11 @@
                                 </div>
 
                             </div>
+                            
+                            <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.TrackingURL, htmlAttributes: new { @class = "control-label" })
-
-
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
@@ -137,7 +129,6 @@
                                 </div>
 
                             </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label" })
@@ -155,8 +146,8 @@
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
+                            
                             <div class="form-group col-md-12"></div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.SourceName, htmlAttributes: new { @class = "control-label" })
@@ -174,7 +165,6 @@
                                 </div>
 
                             </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.SourceAddress, htmlAttributes: new { @class = "control-label" })
@@ -192,9 +182,8 @@
                                 </div>
 
                             </div>
-
+                            
                             <div class="form-group col-md-12"></div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.DestName, htmlAttributes: new { @class = "control-label" })
@@ -211,7 +200,6 @@
                                 </div>
 
                             </div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.DestAddress, htmlAttributes: new { @class = "control-label" })
@@ -230,10 +218,7 @@
 
                             </div>
 
-
-
-
-
+                            <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.DistributedTo, htmlAttributes: new { @class = "control-label" })
@@ -251,8 +236,6 @@
                                 </div>
 
                             </div>
-
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.DistributionDate, htmlAttributes: new { @class = "control-label" })
@@ -269,6 +252,7 @@
 
                             </div>
 
+                            <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.AgencyCode, htmlAttributes: new { @class = "control-label" })
@@ -300,9 +284,6 @@
                                 </div>
 
                             </div>
-
-
-
                         </div>
 
                         <div class="col-md-12  ">&nbsp;</div>
@@ -318,7 +299,6 @@
                         <div class="col-md-12  ">&nbsp;</div>
                         <div class="col-md-12  ">&nbsp;</div>
                         <div class="col-md-12  ">&nbsp;</div>
-
                     </div>
 
 

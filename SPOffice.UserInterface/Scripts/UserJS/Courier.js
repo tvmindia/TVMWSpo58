@@ -211,12 +211,13 @@ function SaveSuccess(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
-            BindAllCouriers();
             notyAlert('success', JsonResult.Record.Message);
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
-               
+                FillCourierDetails(JsonResult.Record.ID);
             }
+            ChangeButtonPatchView("Courier", "btnPatchAdd", "Edit");
+            BindAllCouriers(); 
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -289,11 +290,8 @@ function FillCourierDetails(ID) {
 //---------------------------------------Edit Bank--------------------------------------------------//
 function Edit(currentObj) {
     //Tab Change on edit click
-
     openNav("0");
-    
     ResetForm();
-   
     var rowData = DataTables.CourierTable.row($(currentObj).parents('tr')).data();
     if ((rowData != null) && (rowData.ID != null)) {
         FillCourierDetails(rowData.ID);
