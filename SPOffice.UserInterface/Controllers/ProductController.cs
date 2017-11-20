@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace SPOffice.UserInterface.Controllers
             _productBusiness = productBusiness;
         }
         // GET: Product
+        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
         public ActionResult Index()
         {
            
@@ -46,7 +48,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #region GetAllProducts
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
         public string GetAllProducts()
         {
             try
@@ -64,7 +66,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetProductDetails
         [HttpGet]
-      //  [AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
         public string GetProductDetails(string ID)
         {
             try
@@ -84,7 +86,7 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateProduct
         [HttpPost]
         [ValidateAntiForgeryToken]
-      //  [AuthSecurityFilter(ProjectObject = "Department", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "Product", Mode = "W")]
         public string InsertUpdateProduct(ProductViewModel productViewModel)
         {
             object result = null;
@@ -118,7 +120,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region DeleteProduct
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "Product", Mode = "D")]
         public string DeleteProduct(string ID)
         {
 
@@ -143,7 +145,6 @@ namespace SPOffice.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-     //   [AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
