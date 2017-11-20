@@ -117,6 +117,7 @@
     <Compile Include="DTO\QuoteHeader.cs" />
     <Compile Include="DTO\RawMaterial.cs" />
     <Compile Include="DTO\Reminder.cs" />
+    <Compile Include="DTO\Reports.cs" />
     <Compile Include="DTO\Requisition.cs" />
     <Compile Include="DTO\Supplier.cs" />
     <Compile Include="DTO\TaxType.cs" />
