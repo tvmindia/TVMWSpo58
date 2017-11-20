@@ -84,6 +84,10 @@ namespace UserInterface.App_Start
                 config.CreateMap<RequisitionViewModel, Requisition>().ReverseMap();
                 config.CreateMap<RequisitionDetailViewModel, RequisitionDetail>().ReverseMap();
 
+                //--For Report purpose
+                config.CreateMap<ReportViewModel, Reports>().ReverseMap();
+
+
             });
         }
     }
