@@ -226,8 +226,8 @@ namespace SPOffice.UserInterface.Controllers
                 AppUA _appUA = Session["AppUA"] as AppUA;
                 _enquiryObj.followUpObj.commonObj = new CommonViewModel();
                 _enquiryObj.followUpObj.commonObj.CreatedBy = _appUA.UserName;
-                _enquiryObj.followUpObj.commonObj.CreatedDate = DateTime.Now;
-                _enquiryObj.followUpObj.commonObj.UpdatedDate = DateTime.Now;
+                _enquiryObj.followUpObj.commonObj.CreatedDate = _appUA.DateTime;
+                _enquiryObj.followUpObj.commonObj.UpdatedDate = _appUA.DateTime;
                 _enquiryObj.followUpObj.commonObj.UpdatedBy = _appUA.UserName;
                 FollowUpViewModel followupObj = Mapper.Map<FollowUp, FollowUpViewModel>(_followupBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_enquiryObj.followUpObj)));
 
@@ -291,9 +291,9 @@ namespace SPOffice.UserInterface.Controllers
                 AppUA _appUA = Session["AppUA"] as AppUA;
                 _enquiriesObj.commonObj = new CommonViewModel();
                 _enquiriesObj.commonObj.CreatedBy = _appUA.UserName;
-                _enquiriesObj.commonObj.CreatedDate = DateTime.Now;
+                _enquiriesObj.commonObj.CreatedDate = _appUA.DateTime;
                 _enquiriesObj.commonObj.UpdatedBy = _appUA.UserName;
-                _enquiriesObj.commonObj.UpdatedDate = DateTime.Now;
+                _enquiriesObj.commonObj.UpdatedDate = _appUA.DateTime;
                 EnquiryViewModel enquiryObj = Mapper.Map <  Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
                
                 if (_enquiriesObj.ID == Guid.Empty)
