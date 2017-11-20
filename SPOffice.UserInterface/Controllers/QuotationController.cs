@@ -239,9 +239,9 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion InsertUpdateQuotaion
 
-     
 
-        #region GetQuationDetailsByID
+
+        #region GetQuateItemsByQuateHeadID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuateItemsByQuateHeadID(string ID)
@@ -261,7 +261,7 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion GetQuationDetailsByID
+        #endregion GetQuateItemsByQuateHeadID
 
         #region  DeleteItemByID
         [HttpGet]
