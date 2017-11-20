@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace SPOffice.UserInterface.Controllers
             _courierBusiness = courierBusiness;
         }
         // GET: Courier
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public ActionResult Index()
         {
             CourierViewModel CourierVM = new CourierViewModel();
@@ -57,7 +59,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllCourierAgencies
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public string GetAllCouriers()
         {
             try
@@ -75,7 +77,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetCourierDetails
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public string GetCourierDetails(string ID)
         {
             try
@@ -95,16 +97,16 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateCourier
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "W")]
         public string InsertUpdateCourier(CourierViewModel courierViewModel)
         {
             object result = null;
             try
             {
-                //  AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUA"] as AppUA;
                 courierViewModel.commonObj = new CommonViewModel();
-                courierViewModel.commonObj.CreatedBy = "Albert Thomson";//change it change it
-                courierViewModel.commonObj.CreatedDate = DateTime.Now;
+                courierViewModel.commonObj.CreatedBy = _appUA.UserName;
+                courierViewModel.commonObj.CreatedDate =_appUA.DateTime;
                 courierViewModel.commonObj.UpdatedBy = courierViewModel.commonObj.CreatedBy;
                 courierViewModel.commonObj.UpdatedDate = courierViewModel.commonObj.CreatedDate;
                 switch (string.IsNullOrEmpty(courierViewModel.ID.ToString()))
@@ -129,7 +131,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region DeleteCourier
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "D")]
         public string DeleteCourier(string ID)
         {
             try
@@ -151,7 +153,6 @@ namespace SPOffice.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
