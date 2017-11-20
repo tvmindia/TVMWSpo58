@@ -366,6 +366,8 @@ namespace SPOffice.UserInterface.Controllers
                 quoteMailPreviewViewModel.quoteHeaderViewModel = Mapper.Map<QuoteHeader, QuoteHeaderViewModel>(_quotationBusiness.GetMailPreview(Guid.Parse(ID)));
                 if (quoteMailPreviewViewModel.quoteHeaderViewModel!=null)
                 {
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead.Replace(Environment.NewLine,"<br/>");
+
                    quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
 
                     // quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity),2); return QI; }).ToList() : null;
