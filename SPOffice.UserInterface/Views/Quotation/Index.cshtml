@@ -418,19 +418,20 @@
                                 </div>
 
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12"></div>
+
+                            <div class="form-group col-md-12">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.QuoteBodyHead, htmlAttributes: new { @class = "control-label" })
 
 
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control" } })
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.QuoteBodyHead, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
+                                     
                                 </div>
 
                             </div>
@@ -619,7 +620,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.QuoteBodyFoot, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(model => model.QuoteBodyFoot, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.QuoteBodyFoot, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -633,7 +634,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>

@@ -367,8 +367,9 @@ namespace SPOffice.UserInterface.Controllers
                 if (quoteMailPreviewViewModel.quoteHeaderViewModel!=null)
                 {
                     quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead.Replace(Environment.NewLine,"<br/>");
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot.Replace(Environment.NewLine,"<br/>");
 
-                   quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
 
                     // quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity),2); return QI; }).ToList() : null;
                     //if(quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList!=null)
