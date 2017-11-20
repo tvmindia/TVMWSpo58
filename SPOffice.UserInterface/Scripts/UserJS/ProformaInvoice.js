@@ -443,6 +443,7 @@ break;
 
 function AddNew() {
     ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Add');
+    Resetform();
     openNav();
     EG_ClearTable();
     // Reset();  
@@ -457,10 +458,17 @@ function AddNew() {
 
 function Reset() {
     debugger;
-    $('#ProformaForm')[0].reset();  
     BindProformaInvoiceDetails($('#ID').val());
-    GetTaxPercentage();
-    $('#ID').val('');
+    //GetTaxPercentage();
+}
+
+//To Reset ProformaInvoice Form
+function Resetform() {
+    var validator = $("#ProformaForm").validate();
+    $('#ProformaForm').find('.field-validation-error span').each(function () {
+        validator.settings.success($(this));
+    });
+    $('#ProformaForm')[0].reset();
 }
 
 function Edit(Obj) {
@@ -678,7 +686,7 @@ function MailSuccess(data, status) {
                     $("#lblEmailSent").text('NO');
                     break;
             }
-
+            Reset();
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
