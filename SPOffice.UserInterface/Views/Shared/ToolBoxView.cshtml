@@ -128,29 +128,7 @@
         }
 
     }
-
-    @if (Model.CloseBtn.Visible)
-    {
-        if (Model.CloseBtn.Disable)
-        {
-
-            <a class="thr_disbtn" title="@Model.CloseBtn.Title-@Model.CloseBtn.DisableReason">
-                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
-                <span class="btnText">@Model.CloseBtn.Text</span>
-            </a>
-        }
-        else
-        {
-
-            <a title="@Model.CloseBtn.Title" class="thr_btn" onclick=@Model.CloseBtn.Event>
-                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
-                <span class="btnText">@Model.CloseBtn.Text</span>
-            </a>
-        }
-
-    }
-
-    @if (Model.DepositBtn.Visible)
+ @if (Model.DepositBtn.Visible)
     {
         if (Model.DepositBtn.Disable)
         {
@@ -233,4 +211,32 @@
         }
 
     }
+
+
+
+    @if (Model.CloseBtn.Visible)
+    {
+        if (Model.CloseBtn.Disable)
+        {
+
+            <a class="thr_disbtn" title="@Model.CloseBtn.Title-@Model.CloseBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
+                <span class="btnText">@Model.CloseBtn.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a title="@Model.CloseBtn.Title" class="thr_btn" onclick=@Model.CloseBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
+                <span class="btnText">@Model.CloseBtn.Text</span>
+            </a>
+        }
+
+    }
+
+
+
+
+
 </div>
