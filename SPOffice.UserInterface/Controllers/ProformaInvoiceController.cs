@@ -312,8 +312,10 @@ namespace SPOffice.UserInterface.Controllers
                 proformaMailPreviewViewModel.proformaHeaderViewModel = Mapper.Map<ProformaHeader, ProformaHeaderViewModel>(_proformaInvoiceBusiness.GetMailPreview(Guid.Parse(ID)));
                 if (proformaMailPreviewViewModel.proformaHeaderViewModel != null)
                 {
-                    proformaMailPreviewViewModel.proformaHeaderViewModel.BodyHead = proformaMailPreviewViewModel.proformaHeaderViewModel.BodyHead.Replace(Environment.NewLine, "<br/>");
-                    proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot = proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot.Replace(Environment.NewLine, "<br/>");
+                    if (proformaMailPreviewViewModel.proformaHeaderViewModel.BodyHead != null)
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.BodyHead = proformaMailPreviewViewModel.proformaHeaderViewModel.BodyHead.Replace(Environment.NewLine, "<br/>");
+                    if (proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot != null)
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot = proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot.Replace(Environment.NewLine, "<br/>");
 
                     proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
                     if (proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null)
