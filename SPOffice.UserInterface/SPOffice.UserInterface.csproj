@@ -626,6 +626,7 @@
     <Content Include="Scripts\UserJS\CustomerPO.js" />
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
+    <Content Include="Scripts\UserJS\EnquiryReport.js" />
     <Content Include="Scripts\UserJS\Units.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
@@ -777,6 +778,8 @@
     <Content Include="Views\Requisition\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Units\Index.cshtml" />
+    <Content Include="Views\Report\GetEnquiryDetails.cshtml" />
+    <Content Include="Views\Report\EnquiryReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
