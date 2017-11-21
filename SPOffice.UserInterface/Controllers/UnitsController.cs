@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
+using SPOffice.UserInterface.Models;
 using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
@@ -12,49 +13,32 @@ using UserInterface.Models;
 
 namespace SPOffice.UserInterface.Controllers
 {
-    public class ProductController : Controller
+    public class UnitsController : Controller
     {
+
+
         AppConst c = new AppConst();
-        IProductBusiness _productBusiness;
-        public ProductController(IProductBusiness productBusiness)
+        IUnitsBusiness _unitsBusiness;
+        public UnitsController(IUnitsBusiness unitsBusiness)
         {
-            _productBusiness = productBusiness;
+            _unitsBusiness = unitsBusiness;
         }
-        // GET: Product
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
+        // GET: Units
+        [AuthSecurityFilter(ProjectObject = "Units", Mode = "R")]
         public ActionResult Index()
         {
-           
-            ProductViewModel productViewModel = new ProductViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            productViewModel.unitViewModelList = Mapper.Map<List<Unit>, List<UnitViewModel>>(_productBusiness.GetAllUnits());
-            if (productViewModel.unitViewModelList != null)
-            {
-              
-                foreach (UnitViewModel uvm in productViewModel.unitViewModelList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = uvm.Description,
-                        Value = uvm.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            }
-
-            productViewModel.unitList = selectListItem;
-            return View(productViewModel);
-           
+            return View();
         }
-        #region GetAllProducts
+
+        #region GetAllUnits
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
-        public string GetAllProducts()
+        [AuthSecurityFilter(ProjectObject = "Units", Mode = "R")]
+        public string GetAllUnits()
         {
             try
             {
-                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
+                List<UnitsViewModel> unitsList = Mapper.Map<List<Units>, List<UnitsViewModel>>(_unitsBusiness.GetAllUnits());
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = unitsList });
             }
             catch (Exception ex)
             {
@@ -62,18 +46,18 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion  GetAllProducts
+        #endregion  GetAllUnits
 
-        #region GetProductDetails
+        #region GetUnitsDetails
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
-        public string GetProductDetails(string ID)
+        [AuthSecurityFilter(ProjectObject = "Units", Mode = "R")]
+        public string GetUnitsDetails(string code)
         {
             try
             {
 
-                ProductViewModel ProductObj = Mapper.Map<Product, ProductViewModel>(_productBusiness.GetProductDetails(Guid.Parse(ID)));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = ProductObj });
+                UnitsViewModel unitsViewModelObj = Mapper.Map<Units, UnitsViewModel>(_unitsBusiness.GetUnitsDetails(code));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = unitsViewModelObj });
             }
             catch (Exception ex)
             {
@@ -81,30 +65,30 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion  GetProductDetails
+        #endregion  GetUnitsDetails
 
-        #region InsertUpdateProduct
+        #region InsertUpdateUnits
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "W")]
-        public string InsertUpdateProduct(ProductViewModel productViewModel)
+        [AuthSecurityFilter(ProjectObject = "Units", Mode = "W")]
+        public string InsertUpdateUnits(UnitsViewModel unitsViewModel)
         {
             object result = null;
             try
             {
                 AppUA _appUA = Session["AppUA"] as AppUA;
-                productViewModel.commonObj = new CommonViewModel();
-                productViewModel.commonObj.CreatedBy = _appUA.UserName;
-                productViewModel.commonObj.CreatedDate = _appUA.DateTime;
-                productViewModel.commonObj.UpdatedBy = productViewModel.commonObj.CreatedBy;
-                productViewModel.commonObj.UpdatedDate = productViewModel.commonObj.CreatedDate;
-                switch (string.IsNullOrEmpty(productViewModel.ID.ToString()))
+                unitsViewModel.commonObj = new CommonViewModel();
+                unitsViewModel.commonObj.CreatedBy = _appUA.UserName;
+                unitsViewModel.commonObj.CreatedDate = _appUA.DateTime;
+                unitsViewModel.commonObj.UpdatedBy = unitsViewModel.commonObj.CreatedBy;
+                unitsViewModel.commonObj.UpdatedDate = unitsViewModel.commonObj.CreatedDate;
+                switch (string.IsNullOrEmpty(unitsViewModel.hdnCode))
                 {
                     case true:
-                        result = _productBusiness.InsertProduct(Mapper.Map<ProductViewModel, Product>(productViewModel));
+                        result = _unitsBusiness.InsertUnits(Mapper.Map<UnitsViewModel, Units>(unitsViewModel));
                         break;
                     case false:
-                        result = _productBusiness.UpdateProduct(Mapper.Map<ProductViewModel, Product>(productViewModel));
+                        result = _unitsBusiness.UpdateUnits(Mapper.Map<UnitsViewModel, Units>(unitsViewModel));
                         break;
                 }
 
@@ -116,19 +100,19 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion InsertUpdateProduct
+        #endregion InsertUpdateUnits
 
-        #region DeleteProduct
+        #region DeleteUnits
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "D")]
-        public string DeleteProduct(string ID)
+        [AuthSecurityFilter(ProjectObject = "Units", Mode = "D")]
+        public string DeleteUnits(string code)
         {
 
             try
             {
                 object result = null;
 
-                result = _productBusiness.DeleteProduct(Guid.Parse(ID));
+                result = _unitsBusiness.DeleteUnits(code);
                 return JsonConvert.SerializeObject(new { Result = "OK", Message = result });
 
             }
@@ -141,7 +125,7 @@ namespace SPOffice.UserInterface.Controllers
 
         }
 
-        #endregion DeleteProduct
+        #endregion DeleteUnits
 
         #region ButtonStyling
         [HttpGet]
@@ -213,16 +197,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "openNav();";
 
-                    break;
-                case "AddSub":
-
-                    break;
-                case "tab1":
-
-                    break;
-                case "tab2":
-
-                    break;
+                    break; 
                 default:
                     return Content("Nochange");
             }

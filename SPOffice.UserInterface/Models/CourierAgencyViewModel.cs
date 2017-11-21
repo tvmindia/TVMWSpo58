@@ -19,6 +19,8 @@ namespace SPOffice.UserInterface.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         [Required(ErrorMessage = "Email is missing")]
+        [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
+        [MaxLength(150)]
         public string Email { get; set; }
         [Required(ErrorMessage = "Address is missing")]
         public string Address { get; set; }
