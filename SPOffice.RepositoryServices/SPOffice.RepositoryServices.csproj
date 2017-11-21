@@ -119,6 +119,7 @@
     <Compile Include="Contracts\IRequisitionRepository.cs" />
     <Compile Include="Contracts\ISupplierRepository.cs" />
     <Compile Include="Contracts\ITaxTypeRepository.cs" />
+    <Compile Include="Contracts\IUnitsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CompanyRepository.cs" />
     <Compile Include="Services\CourierReository.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Services\RequisitionRepository.cs" />
     <Compile Include="Services\SupplierRepository.cs" />
     <Compile Include="Services\TaxTypeRepository.cs" />
+    <Compile Include="Services\UnitsRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
