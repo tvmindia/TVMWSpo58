@@ -26,8 +26,8 @@ namespace SPOffice.UserInterface.API
         public object GetUserRequisitionList(UserViewModel UserObj)
         {
             try
-            {  
-                List<RequisitionViewModel> RequisitionObj = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(UserObj.UserName, (Guid)UserObj.RoleObj.AppID));
+            {
+                List<RequisitionViewModel> RequisitionObj = null;//Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(UserObj.UserName, (Guid)UserObj.RoleObj.AppID));
 
                 return JsonConvert.SerializeObject(new { Result = true, Records = RequisitionObj });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }

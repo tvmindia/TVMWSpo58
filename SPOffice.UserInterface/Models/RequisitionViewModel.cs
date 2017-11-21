@@ -17,6 +17,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Requested Company")]
         [Required(ErrorMessage = "Company is missing")]
         public string ReqForCompany { get; set; }
+        public string hdnReqForCompany { get; set; }
         [Display(Name = "Requisition Status")]
         public string ReqStatus { get; set; }
         public bool ManagerApproved { get; set; }
@@ -35,6 +36,7 @@ namespace SPOffice.UserInterface.Models
         public string ManagerApprovalDateFormatted { get; set; }
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
+        public bool IsApprover { get; set; }
     }
     public class RequisitionDetailViewModel
     {
@@ -52,5 +54,15 @@ namespace SPOffice.UserInterface.Models
         public string RequisitionDetailObject { get; set; }
         public RawMaterialViewModel RawMaterialObj { get; set; }
     }
+    public class RequisitionOverViewCountViewModel
+    {
+        public int? OpenCount { get; set; }
+        public int? AllCount { get; set; }
+        public int? PendingManagerCount { get; set; }
+        public int? PendingFinalCount { get; set; }
+        public bool IsAdminOrCeo { get; set; }
+    }
+
+
 
 }

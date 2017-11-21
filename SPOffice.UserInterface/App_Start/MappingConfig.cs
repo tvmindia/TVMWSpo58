@@ -83,7 +83,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<ProformaInvoiceSummaryViewModel, ProformaInvoiceSummary>().ReverseMap();
                 config.CreateMap<RequisitionViewModel, Requisition>().ReverseMap();
                 config.CreateMap<RequisitionDetailViewModel, RequisitionDetail>().ReverseMap();
-
+                config.CreateMap<RequisitionOverViewCountViewModel, RequisitionOverViewCount>().ReverseMap();
             });
         }
     }

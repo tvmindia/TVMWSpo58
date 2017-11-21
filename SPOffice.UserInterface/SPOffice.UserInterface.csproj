@@ -402,10 +402,10 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\images\add.png" />
     <Content Include="Content\images\add1.png" />
+    <Content Include="Content\images\Approve.PNG" />
     <Content Include="Content\images\archives.png" />
     <Content Include="Content\images\back.png" />
     <Content Include="Content\images\back1.png" />
-    <Content Include="Content\images\bg.jpg" />
     <Content Include="Content\images\bg.png" />
     <Content Include="Content\images\bg123.png" />
     <Content Include="Content\images\bgTest1.JPG" />
@@ -721,6 +721,7 @@
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityFilter\AuthSecurityFilter.cs" />
+    <Compile Include="SecurityFilter\ToolBarAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
