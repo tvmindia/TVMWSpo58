@@ -34,6 +34,7 @@ namespace SPOffice.UserInterface.Controllers
 
 
         // GET: Followup
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "W")]
         public ActionResult Index()
         {
             return View();
@@ -43,14 +44,17 @@ namespace SPOffice.UserInterface.Controllers
 
         #region InsertUpdateFollowUp
         [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "W")]
         public string InsertUpdateFollowUp(FollowUpViewModel _followupObj)
         {
             FollowUpViewModel result = null;
             FollowUp resultfromBusiness = null;
             try
             {
-                _followupObj.commonObj.CreatedDate = DateTime.Now;
-                _followupObj.commonObj.UpdatedDate = DateTime.Now;
+                AppUA _appUA = Session["AppUA"] as AppUA;
+
+                _followupObj.commonObj.CreatedDate =_appUA.DateTime;
+                _followupObj.commonObj.UpdatedDate = _appUA.DateTime;
 
                 resultfromBusiness =(FollowUp) _followUpBusiness.InsertUpdateFollowUp(Mapper.Map<FollowUpViewModel, FollowUp>(_followupObj));
                 result = Mapper.Map<FollowUp, FollowUpViewModel>(resultfromBusiness);

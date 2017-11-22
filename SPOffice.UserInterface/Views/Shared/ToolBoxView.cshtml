@@ -234,6 +234,27 @@
         }
 
     }
+    <!-- Access check then visible button-->
+    @if ((Model.ApproveBtn.Visible)&&(Model.ApproveBtn.HasAccess))
+    {
+        if (Model.ApproveBtn.Disable)
+        {
+
+            <a class="thr_disbtn" title="@Model.ApproveBtn.Title-@Model.ApproveBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/Approve.PNG")">
+                <span class="btnText">@Model.ApproveBtn.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a title="@Model.ApproveBtn.Title" class="thr_btn" onclick=@Model.ApproveBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/Approve.PNG")">
+                <span class="btnText">@Model.ApproveBtn.Text</span>
+            </a>
+        }
+
+    }
 
 
 

@@ -29,7 +29,61 @@
         </div>
     </div>
 
+    <div class="row summaryboxes" id="divSearchTiles">
 
+    </div>
+
+    <!-- /.col -->
+    <!-- /.col -->
+    <div class="row" style="border-top:4px solid #ffffff">
+        <div class="col-md-12" style="margin-top:10px;padding-left:0px;">
+            <div class="col-md-3" style="padding-left:0px;">
+                @Html.Label("From Date", htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.TextBox("fromdate", "", new { @class = "form-control datepicker advance-filter", @id="txtFromDate" })
+
+
+                </div>
+            </div>
+            <div class="col-md-3" style="padding-left:0px;">
+                @Html.Label("To Date", htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.TextBox("todate", "", new { @class = "form-control datepicker advance-filter", @id="txtToDate" })
+                </div>
+            </div>
+            <div class="col-md-3" style="padding-left:0px;">
+                @Html.Label("Req status", htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @{
+                        List<SelectListItem> RequisitionStatusfilter = new List<SelectListItem>();
+                        RequisitionStatusfilter.Add(new SelectListItem
+                        { Text = "--Select status--", Value = "", Selected = true });
+                        RequisitionStatusfilter.Add(new SelectListItem
+                        { Text = "Open", Value = "Open"});
+                        RequisitionStatusfilter.Add(new SelectListItem
+                        { Text = "Closed", Value = "Closed" });
+                    }
+                    @Html.DropDownListFor(model => model.ReqStatus, RequisitionStatusfilter, new { @class = "form-control advance-filter", @id="ddlReqStatus", style = "padding:4px 12px;" })
+
+
+                </div>
+            </div>
+            <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
+               @Html.Label("Search", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12" style="padding-right:0px;">
+                @Html.TextBox("Search", "", new { @class = "form-control advance-filter",@id="txtReqSearch" })
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix visible-sm-block"></div>
+    <div class="col-md-12">
+        <div id="FilterHeadSeperater" style="position:relative;padding-top:20px;font-size:medium;display:none;">          
+            
+            
+        </div>
+
+    </div>
     <div class="row">
         &nbsp;
     </div>
@@ -39,13 +93,13 @@
                 <thead>
                     <tr class="text-center TableHead">
                         <th>ID</th>
-                        <th>Requisition No</th>
+                        <th>Req No</th>
                         <th>Title</th>
-                        <th>Requisition Date</th>
-                        <th>Requested Company</th>
-                        <th>Requisition Status</th>
-                        <th>Manager</th>
-                        <th>Final</th>
+                        <th>Req Date</th>
+                        <th>Requested For Company</th>
+                        <th>Req Status</th>
+                        <th>Manager Approval</th>
+                        <th>Final Approval</th>
                         <th>...</th>
 
                     </tr>
@@ -75,7 +129,7 @@
             </div>
 
             <div class="EntryForms" style="height:550px">
-                @using (Ajax.BeginForm("InsertUpdateRequisition", "Requisition", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessRequisition", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "ProformaForm" }))
+                @using (Ajax.BeginForm("InsertUpdateRequisition", "Requisition", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessRequisition", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "RequisitionForm" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-yellow" aria-hidden="true"></i> Basic Details</div>
@@ -165,6 +219,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
+                                        @Html.HiddenFor(model => model.hdnReqForCompany, htmlAttributes: new { @class = "", @value = "",@id="hdnReqForCompany" })
                                         @Html.DropDownListFor(model => model.ReqForCompany, Model.CompanyObj.CompanyList, "-- Select Company --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
                                         @Html.ValidationMessageFor(model => model.ReqForCompany, "", new { @class = "text-danger" })
                                     </div>
@@ -228,9 +283,9 @@
                             </div>
                             <div>
                                 <a href="#" onclick="AddItemsToTable()" class="ItemAdd"><i class="glyphicon glyphicon-plus" style="font-size: 22px;position: relative;left: -6%;bottom:-5px;color:grey;"></i></a>
-                                <a href="#" onclick="UpdateItemsToTable()" class="ItemEdit" style="display:none;"><i class="glyphicon glyphicon-upload ItemEdit" style="font-size: 22px;position: relative;left: -3%;bottom:-5px;color:grey;"></i></a>
+                                <a href="#" onclick="UpdateItemsToTable()" class="ItemEdit" style="display:none;"><i class="glyphicon glyphicon-save ItemEdit" style="font-size: 22px;position: relative;left: -3%;bottom:-5px;color:grey;"></i></a>
                                 <a href="#" id="anchorDeleteItem" class="ItemEdit" style="display:none;"><i class="glyphicon glyphicon-trash ItemEdit" style="font-size: 22px;position: relative;left: -3%;bottom:-5px;color:grey;"></i></a>
-                                <a href="#" onclick="ClearItemFields()" class="ItemEdit" style="display:none;"><i class="glyphicon glyphicon-refresh ItemEdit" style="font-size: 22px;position: relative;left: -3%;bottom:-5px;color:grey;"></i></a>
+                                <a href="#" onclick="ClearItemFields()" class="ItemEdit" style="display:none;"><i class="glyphicon glyphicon-remove ItemEdit" style="font-size: 22px;position: relative;left: -3%;bottom:-5px;color:grey;"></i></a>
                             </div>
                         </div>
                         <div class="form-group col-md-12"></div>
