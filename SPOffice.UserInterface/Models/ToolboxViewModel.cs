@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace UserInterface.Models
@@ -20,7 +21,13 @@ namespace UserInterface.Models
         public ToolBoxStructure WithdrawBtn;
         public ToolBoxStructure ClearBtn;
         public ToolBoxStructure EmailBtn;
-    }
+        public ToolBoxStructure ApproveBtn;
+        public ToolboxViewModel()
+        {
+            ApproveBtn.SecurityObject = "ApproveBtn";
+            ApproveBtn.HasAccess = false;
+        }
+        }
 
     public struct ToolBoxStructure
     {
@@ -30,6 +37,13 @@ namespace UserInterface.Models
         public string DisableReason { get; set; }
         public bool Visible { get; set; }
         public bool Disable { get; set; }
+        public bool HasAccess { get; set; }
+        public string SecurityObject { get; set; }
+
+        public static explicit operator ToolBoxStructure(PropertyInfo v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class ToolBox

@@ -17,14 +17,17 @@ namespace SPOffice.UserInterface.Controllers
     public class ReportController : Controller
     {
         IReportBusiness _reportBusiness;
+        ICourierBusiness _courierBusiness;
         IEnquiryStatusBusiness _enquiryStatusBusiness;
-
-        public ReportController(IReportBusiness reportBusiness, IEnquiryStatusBusiness enquiryStatusBusiness)
+        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness)
         {
             _reportBusiness = reportBusiness;
             _enquiryStatusBusiness = enquiryStatusBusiness;
+            _courierBusiness = courierBusiness;
 
         }
+
+
         // GET: Report
         //public ActionResult Index()
         //{
@@ -53,11 +56,11 @@ namespace SPOffice.UserInterface.Controllers
             DateTime dt = _appUA.DateTime;
             ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
             ViewBag.todate = dt.ToString("dd-MMM-yyyy");
-             EnquiryReportViewModel ERVM = new EnquiryReportViewModel();
+            EnquiryReportViewModel ERVM = new EnquiryReportViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
 
 
-            List<EnquiryStatusViewModel>enquiryStatusList = Mapper.Map<List<EnquiryStatus>, List<EnquiryStatusViewModel>>(_enquiryStatusBusiness.GetAllEnquiryStatusList()).ToList();
+            List<EnquiryStatusViewModel> enquiryStatusList = Mapper.Map<List<EnquiryStatus>, List<EnquiryStatusViewModel>>(_enquiryStatusBusiness.GetAllEnquiryStatusList()).ToList();
             if (enquiryStatusList != null)
             {
                 selectListItem.Add(new SelectListItem
@@ -85,24 +88,24 @@ namespace SPOffice.UserInterface.Controllers
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "EnquiryReport", Mode = "R")]
-        public string GetEnquiryDetails(string FromDate, string ToDate,string EnquiryStatus, string search)
+        public string GetEnquiryDetails(string FromDate, string ToDate, string EnquiryStatus, string search)
         {
-            
-                try
-                {
-                    DateTime? FDate = string.IsNullOrEmpty(FromDate) ? (DateTime?)null : DateTime.Parse(FromDate);
-                    DateTime? TDate = string.IsNullOrEmpty(ToDate) ? (DateTime?)null : DateTime.Parse(ToDate);
-                    List<EnquiryReportViewModel> EnquiryReport = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryDetails(FDate, TDate, EnquiryStatus, search));
+
+            try
+            {
+                DateTime? FDate = string.IsNullOrEmpty(FromDate) ? (DateTime?)null : DateTime.Parse(FromDate);
+                DateTime? TDate = string.IsNullOrEmpty(ToDate) ? (DateTime?)null : DateTime.Parse(ToDate);
+                List<EnquiryReportViewModel> EnquiryReport = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryDetails(FDate, TDate, EnquiryStatus, search));
 
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryReport });
 
-                }
-                catch (Exception ex)
-                {
-                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
-                }
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
+            }
 
-          
+
         }
 
         /// <summary>
@@ -191,7 +194,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.PrintBtn.Title = "Export";
                     ToolboxViewModelObj.PrintBtn.Event = "PrintReport();";
 
-                   // ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+                    // ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
                     break;
 
                 case "ListWithReset":
@@ -224,5 +227,81 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         #endregion
+        //CourierReport
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CourierReport", Mode = "R")]
+        public ActionResult CourierReport()
+        {
+
+            AppUA _appUA = Session["AppUA"] as AppUA;
+            DateTime dt = _appUA.DateTime;
+            ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
+            ViewBag.todate = dt.ToString("dd-MMM-yyyy");
+            CourierReportViewModel courierReportViewModel = new CourierReportViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<CourierAgencyViewModel> AgencyList = Mapper.Map<List<CourierAgency>, List<CourierAgencyViewModel>>(_courierBusiness.GetAllCourierAgency());
+            if (AgencyList != null)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = "All",
+                    Value = "ALL",
+                    Selected = false
+                });
+
+
+                foreach (CourierAgencyViewModel cvm in AgencyList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = cvm.Name,
+                        Value = cvm.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            }
+
+            courierReportViewModel.AgencyList = selectListItem;
+            selectListItem = new List<SelectListItem>();
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "Inbound",
+                Value = "Inbound",
+                Selected = false
+            });
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "Outbound",
+                Value = "Outbound",
+                Selected = false
+            });
+
+            courierReportViewModel.CourierTypeList = selectListItem;
+
+            return View(courierReportViewModel);
+        }
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CourierReport", Mode = "R")]
+        public string GetCourierDetails(string FromDate, string ToDate, string AgencyCode, string search, string Type)
+        {
+            //if (!string.IsNullOrEmpty(AgencyCode))
+            //{
+            try
+            {
+                DateTime? FDate = string.IsNullOrEmpty(FromDate) ? (DateTime?)null : DateTime.Parse(FromDate);
+                DateTime? TDate = string.IsNullOrEmpty(ToDate) ? (DateTime?)null : DateTime.Parse(ToDate);
+                List<CourierReportViewModel> CourierdetailObj = Mapper.Map<List<CourierReport>, List<CourierReportViewModel>>(_reportBusiness.GetCourierDetails(FDate, TDate, AgencyCode, search, Type));
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = CourierdetailObj });
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
+            }
+
+        }        
+      
     }
 }

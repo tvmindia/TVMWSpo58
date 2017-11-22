@@ -209,5 +209,62 @@ namespace SPOffice.RepositoryServices.Services
             return quotationList;
         }
 
+        public List<CourierReport> GetCourierDetails(DateTime? FromDate, DateTime? ToDate, string AgencyCode, string search, string Type)
+        {
+            List<CourierReport> CourierDetailList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = FromDate;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ToDate;
+                        cmd.Parameters.Add("@AgencyCode", SqlDbType.NVarChar, 50).Value = AgencyCode;
+                        cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = search != "" ? search : null;
+                        cmd.Parameters.Add("@Type", SqlDbType.NVarChar,50).Value = Type;
+                        cmd.CommandText = "[Office].[RPT_GetCourierDetail]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                 CourierDetailList = new List<CourierReport>();
+                                while (sdr.Read())
+                                {
+                                    CourierReport courierDetail = new CourierReport();
+                                    {
+                                        courierDetail.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : courierDetail.Type);
+                                        courierDetail.TransactionDate = (sdr["TransactionDate"].ToString() != "" ? sdr["TransactionDate"].ToString() : courierDetail.TransactionDate);
+                                        courierDetail.Track = (sdr["Track"].ToString() != "" ? sdr["Track"].ToString() : courierDetail.Track);
+                                        courierDetail.TrackingURL = (sdr["TrackingURL"].ToString() != "" ? sdr["TrackingURL"].ToString() : courierDetail.TrackingURL);
+                                        courierDetail.SourceName = (sdr["SourceName"].ToString() != "" ? sdr["SourceName"].ToString() : courierDetail.SourceName);
+                                        courierDetail.DestName = (sdr["DestName"].ToString() != "" ? sdr["DestName"].ToString() : courierDetail.DestName);
+                                        courierDetail.AgencyCode= (sdr["AgencyCode"].ToString() != "" ? sdr["AgencyCode"].ToString() : courierDetail.AgencyCode);
+                                        courierDetail.courierAgency = new CourierAgency();
+                                        {
+                                            courierDetail.courierAgency.Code = courierDetail.AgencyCode;
+                                            courierDetail.courierAgency.Name = (sdr["AgencyName"].ToString() != "" ? sdr["AgencyName"].ToString() : courierDetail.courierAgency.Name);
+                                        }
+                                        courierDetail.TrackingRefNo = (sdr["TrackingRefNo"].ToString() != "" ? sdr["TrackingRefNo"].ToString() : courierDetail.TrackingRefNo);
+                                    }
+                                    CourierDetailList.Add(courierDetail);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }           
+            return CourierDetailList;
+        }
     }
 }

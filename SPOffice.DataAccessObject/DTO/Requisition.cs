@@ -27,6 +27,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string ManagerApprovalDateFormatted { get; set; }
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
+        public bool IsApprover { get; set; }
     }
     public class RequisitionDetail
     {
@@ -40,5 +41,19 @@ namespace SPOffice.DataAccessObject.DTO
         public string RequestedQty { get; set; }
         //External references
         public RawMaterial RawMaterialObj { get; set; }
+    }
+    public class RequisitionOverViewCount
+    {
+        public int? OpenCount { get; set; }
+        public int? AllCount { get; set; }
+        public int? PendingManagerCount { get; set; }
+        public int? PendingFinalCount { get; set; }
+    }
+    public class ReqAdvanceSearch
+    {
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string ReqStatus { get; set; }
+        public string ReqSearch { get; set; }
     }
 }

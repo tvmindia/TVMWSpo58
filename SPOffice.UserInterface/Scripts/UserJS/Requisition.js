@@ -11,15 +11,19 @@
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000';
 var Rowindex = -1;
+var IsManagerApproved = -1;
+var IsAdminOrCeo = false;
+var IsManager = false;
+var RequisitionStatus = "";
 //This will fire on page loads
 $(document).ready(function () {
     try {
         DataTables.RequisitionList = $('#tblRequisitionList').DataTable({
             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
             order: [],
-            searching: true,
+            searching: false,
             paging: true,
-            data: GetUserRequisitionList(),
+            data: GetUserRequisitionList(0),
             pageLength: 10,
             language: {
                 search: "_INPUT_",
@@ -113,21 +117,161 @@ $(document).ready(function () {
         $('#ReqStatus').on('change',function(){
             $('#lblReqStatus').text($(this).val());
         });
+        $('.advance-filter').on('change', function () {
+            FilterContent();
+        });
+        //$('.FilterTileAction').on('click',function () {
+        //    debugger;
+        //    Gridfilter(this.name);
+        //});
+        PaintSearchTiles();
     }
     catch (e) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
     }
 });
+function FilterContent()
+{
+    debugger;
+    var FromDate = $('#txtFromDate');
+    var ToDate = $('#txtToDate');
+    var ReqStatus = $('#ddlReqStatus');
+    var ReqSearch = $('#txtReqSearch');
+    var ReqAdvanceSearch = new Object();
+    ReqAdvanceSearch.FromDate = FromDate[0].value !== "" ? FromDate[0].value : null;
+    ReqAdvanceSearch.ToDate = ToDate[0].value !== "" ? ToDate[0].value : null;
+    ReqAdvanceSearch.ReqStatus = ReqStatus[0].value !== "" ? ReqStatus[0].value : (RequisitionStatus !== "" ? RequisitionStatus : null);
+    RequisitionStatus = "";
+    ReqAdvanceSearch.ReqSearch = ReqSearch[0].value !== "" ? ReqSearch[0].value : null;    
+    DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList(ReqAdvanceSearch)).draw(false);
+}
+function PaintSearchTiles()
+{
+    try{
+        var RequisitionOverViewCount = GetRequisitionOverViewCount()
+        if (RequisitionOverViewCount.IsAdminOrCeo)
+        {
+            IsAdminOrCeo = true;
+        }
+        else
+        {
+            IsManager = true;
+        }
+        
+        $('#divSearchTiles').empty();
+        $('#FilterHeadSeperater').empty();
+        $('#FilterHeadSeperater').append('<b>Filter:</b> ');
+        if (RequisitionOverViewCount.OpenCount !== -1) {
+            var html = '<div class="col-md-2 col-sm-4 col-xs-12 " id="OPEN" onclick="Gridfilter(this);" style="cursor:pointer">'
+                + ' <div class="info-box">'
+                     + '<span class="info-box-icon bg-green"></span>'
+                     + '<div class="info-box-content">'
+                         + '<span class="info-box-text">OPEN <b><span>' + RequisitionOverViewCount.OpenCount + '</span></b></span>'
+                         + '<span>' + RequisitionOverViewCount.OpenCount + ' Open requisitions are available</span>'
+
+                     + '</div>'
+                 + '</div>'
+             + '</div>'
+            $('#divSearchTiles').append(html);
+            $('#FilterHeadSeperater').append('<p id="OPENfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> Open</p>');
+        }
+        if (RequisitionOverViewCount.AllCount !== -1) {
+            var html = '<div class="col-md-2 col-sm-4 col-xs-12" id="ALL" onclick="Gridfilter(this);" style="cursor:pointer">'
+                + ' <div class="info-box">'
+                     + '<span class="info-box-icon bg-aqua"></span>'
+                     + '<div class="info-box-content">'
+                         + '<span class="info-box-text">ALL <b><span>' + RequisitionOverViewCount.AllCount + '</span></b></span>'
+                         + '<span >' + RequisitionOverViewCount.AllCount + ' requisitions are available</span>'
+
+                     + '</div>'
+                 + '</div>'
+             + '</div>'
+            $('#divSearchTiles').append(html);
+            $('#FilterHeadSeperater').append('<p id="ALLfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-aqua"> All</p>');
+        }
+        if (RequisitionOverViewCount.PendingManagerCount !== -1) {
+            var html = '<div class="col-md-3 col-sm-6 col-xs-12 " id="PFMA" onclick="Gridfilter(this);" style="cursor:pointer">'
+                + ' <div class="info-box">'
+                     + '<span class="info-box-icon bg-yellow"></span>'
+                     + '<div class="info-box-content">'
+                         + '<span class="info-box-text"><span style="color:red;">⏱</span>  manager approval <b><span>' + RequisitionOverViewCount.PendingManagerCount + '</span></b></span>'
+                         + '<span>' + RequisitionOverViewCount.PendingManagerCount + ' requisitions are pending for manager approval</span>'
+
+                     + '</div>'
+                 + '</div>'
+             + '</div>'
+            $('#divSearchTiles').append(html);
+            $('#FilterHeadSeperater').append('<p id="PFMAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> <span style="color:red;">⏱</span>  Manager approval</p>');
+        }
+        if (RequisitionOverViewCount.PendingFinalCount !== -1) {
+            var html = '<div class="col-md-3 col-sm-6 col-xs-12 " id="PFFA" onclick="Gridfilter(this);" style="cursor:pointer">'
+                + ' <div class="info-box">'
+                     + '<span class="info-box-icon bg-red"></span>'
+                     + '<div class="info-box-content">'
+                         + '<span class="info-box-text"><span style="color:red;">⏱</span> final approval <b><span>' + RequisitionOverViewCount.PendingFinalCount + '</span></b></span>'
+                         + '<span>' + RequisitionOverViewCount.PendingFinalCount + ' requisitions are pending for final approval</span>'
+
+                     + '</div>'
+                 + '</div>'
+             + '</div>'
+            $('#divSearchTiles').append(html);
+            $('#FilterHeadSeperater').append('<p id="PFFAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> <span style="color:red;">⏱</span>  final approval</p>');
+        }
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }    
+}
+function Gridfilter(filter) {
+    debugger;
+    $('#FilterHeadSeperater').show();
+    $('#OPENfilter').hide();
+    $('#ALLfilter').hide();
+    $('#PFMAfilter').hide();
+    $('#PFFAfilter').hide();
+    $('#txtFromDate').val('');
+    $('#txtToDate').val('');
+    $('#ddlReqStatus').val('');
+    $('#txtReqSearch').val('');
+    if (filter.id === 'OPEN') {
+        $('#OPENfilter').show();
+        RequisitionStatus = "Open";
+    }
+    else if (filter.id === 'ALL') {
+        $('#ALLfilter').show();
+    }
+    else if (filter.id === 'PFMA') {
+        $('#PFMAfilter').show();
+    }
+    else if (filter.id === 'PFFA')
+    {
+        $('#PFFAfilter').show();
+    }
+    FilterContent();
+}
 function ClearFormFields()
 {
     $('#btnReset').trigger('click');
     $('#ID').val(emptyGUID);
     $('#RequisitionDetailObj_RequisitionDetailObject').val('');
-    $('#lblApprovalStatus').text('Pending');
+    $('#lblApprovalStatus').text('');
     $('#lblReqStatus').text('Open');
     $("#lblReqNo").text('Requisition No');
+
+    $('#Title').prop('readonly', false);
+    $('#ReqDateFormatted').prop('readonly', false);
+    $('#ReqForCompany').prop('disabled', false);
+    $("#RequisitionDetailObj_MaterialID").prop('disabled', false);
+    $('#RequisitionDetailObj_AppxRate').prop('readonly', false);
+    $('#RequisitionDetailObj_Description').prop('readonly', false);
+    $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', false);
+    $('#RequisitionDetailObj_CurrStock').prop('readonly', false);
+    $('#RequisitionDetailObj_RequestedQty').prop('readonly', false);
+    IsManagerApproved = -1;
     DataTables.RequisitionDetailList.clear().draw();
+    ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
 }
 function AddNew() {
     ClearFormFields();
@@ -162,7 +306,7 @@ function EditIemsFromGrid(this_Obj)
     $('#RequisitionDetailObj_RequestedQty').val(rowData.RequestedQty);
     $('#anchorDeleteItem').attr('onclick', 'DeleteItem("' + rowData.ID+ '")')
     $('.ItemAdd').hide();
-    $('.ItemEdit').show();
+    $('.ItemEdit').show();    
 }
 function DeleteItem(ID)
 {
@@ -217,12 +361,62 @@ function BindRequisitionDetail()
         $('#ReqStatus').val(RequisitionViewModel.ReqStatus);
         $('#ReqForCompany').val(RequisitionViewModel.ReqForCompany);
         $('#lblReqStatus').text(RequisitionViewModel.ReqStatus);
-        $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Manager ✔ " : "Pending"))
+        $('#hdnReqForCompany').val(RequisitionViewModel.ReqForCompany);
+        $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Final ⏱ " : "Manager ⏱"))
         $("#lblReqNo").text(RequisitionViewModel.ReqNo);
+        
+        if (RequisitionViewModel.FinalApproval || RequisitionViewModel.ManagerApproved)
+        {
+            DisableApproved();
+        }
+        if (RequisitionViewModel.ManagerApproved) {
+            IsManagerApproved = 1;
+        } else {
+            IsManagerApproved = 0;
+        }
         DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
+        
+        if (((!RequisitionViewModel.IsApprover) || (RequisitionViewModel.FinalApproval))&&(!IsAdminOrCeo)) {
+            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
+        }
+        else {
+            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
+        }
     }
     catch(e)
     {
+        console.log(e.message);
+    }
+}
+function DisableApproved(){
+    $('#Title').prop('readonly', true);
+    $('#ReqDateFormatted').prop('readonly', true);
+    $('#ReqForCompany').prop('disabled', true);            
+    $("#RequisitionDetailObj_MaterialID").prop('disabled', true);
+    $('#RequisitionDetailObj_AppxRate').prop('readonly', true);
+    $('#RequisitionDetailObj_Description').prop('readonly', true);
+    $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', true);
+    $('#RequisitionDetailObj_CurrStock').prop('readonly', true);
+    $('#RequisitionDetailObj_RequestedQty').prop('readonly', true);
+}
+function GetRequisitionOverViewCount()
+{
+    try {
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("Requisition/GetRequisitionOverViewCount/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+
+        }
+    }
+    catch (e) {
         console.log(e.message);
     }
 }
@@ -256,11 +450,18 @@ function GetItemDetails()
         console.log(e.message);
     }
 }
-function GetUserRequisitionList()
+function GetUserRequisitionList(AdvanceSearchObject)
 {
     debugger;
-    try{
-        var data = {};
+    try {
+        if (AdvanceSearchObject === 0)
+        {
+            var data = {};
+        }
+        else
+        {
+            var data = { "AdvanceSearchObject": JSON.stringify(AdvanceSearchObject) };
+        }        
         var ds = {};
         ds = GetDataFromServer("Requisition/GetUserRequisitionList/", data);
         if (ds != '') {
@@ -302,7 +503,6 @@ function GetRequisitionDetailList(ID) {
 }
 function GetRequisitionDetailByID()
 {
-    debugger;
     try{
         var data = { "ID": $('#ID').val() };
         var ds = {};
@@ -426,11 +626,27 @@ function SaveSuccessRequisition(data, status) {
         case "OK":
             notyAlert('success', JsonResult.Record.Message);
             DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
+            PaintSearchTiles();
+            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
                 $("#ReqNo").val(JsonResult.Record.ReqNo);
                 $("#lblReqNo").text(JsonResult.Record.ReqNo);
+                if (JsonResult.Record.ApprovedBy==="Final")
+                {
+                    $('#lblApprovalStatus').text('Final ✔');
+                    DisableApproved();
+                }
+                else if (JsonResult.Record.ApprovedBy === "Manager") {
+                    $('#lblApprovalStatus').text('Final ⏱');
+                    DisableApproved();
+                }
+                else {
+                    $('#lblApprovalStatus').text('Manager ⏱');
+                    ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
+                }
             }
+            
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Record.Message);
@@ -438,5 +654,63 @@ function SaveSuccessRequisition(data, status) {
         default:
             notyAlert('error', JsonResult.Record.Message);
             break;
+    }
+}
+function ApproveRequsistion()
+{
+    try {
+        debugger;
+        if (IsAdminOrCeo)
+        {
+            if (IsManagerApproved === 1) {
+                ApproveRequsistionByID();}
+            if (IsManagerApproved === 0) {
+                var msg = "This will override manager action,";
+                notyConfirm('This will override manager action,', 'ApproveRequsistionByID()', 'Do you want to continue?', 'Continue');
+            }
+        }
+        if(IsManager)
+        {
+            if (IsManagerApproved === -1)
+            ApproveRequsistionByID();
+        }
+               
+        
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
+}
+function ApproveRequsistionByID()
+{
+    try {
+        var data = { "ID": $('#ID').val() };
+        var ds = {};
+        ds = GetDataFromServer("Requisition/ApproveRequisition/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            notyAlert('success', ds.Message);
+            DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
+            PaintSearchTiles();
+            if(ds.Record.ManagerApproved)
+            {
+                $('#lblApprovalStatus').text('Final ⏱');
+                IsManagerApproved = 1;
+                DisableApproved();
+            }
+            if (ds.Record.FinalApproval) {
+                $('#lblApprovalStatus').text('Final ✔');
+                DisableApproved();
+            }
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        console.log(e.message);
     }
 }

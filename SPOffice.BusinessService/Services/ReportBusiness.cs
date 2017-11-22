@@ -62,5 +62,27 @@ namespace SPOffice.BusinessService.Services
             return quotationList;
 
         }
+
+
+        //CourierReport
+        public List<CourierReport> GetCourierDetails(DateTime? FromDate, DateTime? ToDate, string AgencyCode, string search, string Type)
+        {
+            //CourierReport CourierdetailObj = new CourierReport();
+            List<CourierReport> courierDetailList = null;
+            try
+            {
+                courierDetailList = _reportRepository.GetCourierDetails(FromDate, ToDate, AgencyCode, search, Type);
+               // CourierdetailObj.courierDetailList = courierDetailList;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return courierDetailList;
+        }
+
+
+
     }
     }

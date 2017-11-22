@@ -8,11 +8,13 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface IRequisitionRepository
     {
-        List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID);
+        List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj);
         List<RequisitionDetail> GetRequisitionDetailList(Guid ID);
-        object InsertRequisition(Requisition RequisitionObj);
+        object InsertRequisition(Requisition RequisitionObj, bool isAdminOrCeo);
         object UpdateRequisition(Requisition RequisitionObj);
-        Requisition GetRequisitionDetails(Guid ID);
+        Requisition GetRequisitionDetails(Guid ID, string LoginName);
         object DeleteRequisitionDetailByID(Guid ID);
+        RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo);
+        Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo);
     }
 }
