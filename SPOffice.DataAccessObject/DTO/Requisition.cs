@@ -56,5 +56,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string ToDate { get; set; }
         public string ReqStatus { get; set; }
         public string ReqSearch { get; set; }
+        public bool ManagerApproved { get; set; }
+        public bool FinalApproved { get; set; }
     }
 }

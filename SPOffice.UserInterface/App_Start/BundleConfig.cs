@@ -16,7 +16,7 @@ namespace UserInterface.App_Start
             bundles.Add(new StyleBundle("~/Content/DataTables/css/datatableSelect").Include("~/Content/DataTables/css/select.dataTables.min.css"));
             bundles.Add(new StyleBundle("~/Content/DataTables/css/datatableButtons").Include("~/Content/DataTables/css/buttons.dataTables.min.css"));
             bundles.Add(new StyleBundle("~/Content/DataTables/css/datatableFixedColumns").Include("~/Content/DataTables/css/fixedColumns.dataTables.min.css"));
-
+            bundles.Add(new StyleBundle("~/Content/css/select2").Include("~/Content/css/select2.min.css"));
 
 
             //-------------------
@@ -39,6 +39,7 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/userpluginjs").Include("~/Scripts/jquery.noty.packaged.min.js", "~/Scripts/custom.js", "~/Scripts/Chart.js", "~/Scripts/sweetalert.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/bootstrapdatepicker").Include("~/Scripts/bootstrap-datepicker.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/editableGrid").Include("~/Scripts/editableGrid.js"));
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include("~/Scripts/select2.min.js"));
             //----------------------
             bundles.Add(new ScriptBundle("~/bundles/ManageAccess").Include("~/Scripts/UserJS/ManageAccess.js"));
             bundles.Add(new ScriptBundle("~/bundles/ManageSubObjectAccess").Include("~/Scripts/UserJS/ManageSubObjectAccess.js"));
@@ -62,7 +63,7 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/Enquiry").Include("~/Scripts/UserJS/Enquiry.js"));
             bundles.Add(new ScriptBundle("~/bundles/ProformaInvoice").Include("~/Scripts/UserJS/ProformaInvoice.js"));
             bundles.Add(new ScriptBundle("~/bundles/Dashboard").Include("~/Scripts/UserJS/Dashboard.js"));
-
+            bundles.Add(new ScriptBundle("~/bundles/Requisition").Include("~/Scripts/UserJS/Requisition.js"));
             //----Report
             bundles.Add(new ScriptBundle("~/bundles/EnquiryReport").Include("~/Scripts/UserJS/EnquiryReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/CourierReport").Include("~/Scripts/UserJS/CourierReport.js"));
