@@ -303,6 +303,44 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
+
+
+        //To get the Pending Requisition Count for CEO and Managers  who has got approval permissions
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
+        public string RequisitionCount()
+        {
+            try
+            {
+                bool isAdminOrCeo = false;
+                bool isApproverManager = false;
+                AppUA _appUA = Session["AppUA"] as AppUA;
+
+
+                Permission _permission = Session["UserRights"] as Permission;
+                if (_permission.SubPermissionList != null)
+                {
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    {
+                        isAdminOrCeo = true;
+                    }
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "M_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "M_Approval").AccessCode.Contains("R"))
+                    {
+                        isApproverManager = true;
+                    }
+                }
+                RequisitionOverViewCountViewModel requisitionOverviewCountObj = Mapper.Map<RequisitionOverViewCount, RequisitionOverViewCountViewModel>(_requisitionBusiness.GetRequisitionOverViewCount(_appUA.UserName, isAdminOrCeo));
+                requisitionOverviewCountObj.IsAdminOrCeo = isAdminOrCeo;
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = requisitionOverviewCountObj, isApproverManager = isApproverManager, isAdminOrCeo = isAdminOrCeo });
+
+            }
+
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
