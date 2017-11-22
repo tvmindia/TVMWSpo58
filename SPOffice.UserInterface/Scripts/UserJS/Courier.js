@@ -46,7 +46,7 @@ $(document).ready(function () {
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [ 1, 2, 3, 4, 5,6,7] }
+               { className: "text-left", "targets": [1, 2, 3, 4, 5,6,7] }
              ]
          });
 
@@ -55,7 +55,9 @@ $(document).ready(function () {
             Edit(this);
         });
 
-
+        if ($('#BindValue').val() != '') {
+            CourierBind($('#BindValue').val())
+        }
 
     } catch (x) {
 
@@ -296,4 +298,11 @@ function Edit(currentObj) {
     if ((rowData != null) && (rowData.ID != null)) {
         FillCourierDetails(rowData.ID);
     }
+}
+
+//Call when Auto bind from Report 
+function CourierBind(ID) {
+    $('#ID').val(ID);
+    openNav();
+    FillCourierDetails(ID);
 }

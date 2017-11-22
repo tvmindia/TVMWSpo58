@@ -630,6 +630,7 @@
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\SupplierOrder.js" />
     <Content Include="Scripts\UserJS\Units.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
@@ -686,6 +687,7 @@
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
+    <Compile Include="Controllers\SupplierOrderController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -787,6 +789,7 @@
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\Report\CourierReport.cshtml" />
+    <Content Include="Views\SupplierOrder\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

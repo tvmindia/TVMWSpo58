@@ -296,6 +296,13 @@ namespace SPOffice.UserInterface.Controllers
 
             courierReportViewModel.AgencyList = selectListItem;
             selectListItem = new List<SelectListItem>();
+
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "All",
+                Value = "ALL",
+                Selected = false
+            });
             selectListItem.Add(new SelectListItem
             {
                 Text = "Inbound",

@@ -22,13 +22,11 @@ namespace UserInterface.Controllers
 
         AppConst c = new AppConst();
         IDashboardBusiness _dashboardBusiness;
-      
         ICommonBusiness _commonBusiness;
 
         public DashboardController(IDashboardBusiness dashboardBusiness , ICommonBusiness commonBusiness)
         {
             _dashboardBusiness = dashboardBusiness;
-          
             _commonBusiness = commonBusiness;
 
         }
@@ -120,22 +118,7 @@ namespace UserInterface.Controllers
 
 
        
-        public string RequisitionCount()
-        {
-            try
-            {
-                string result;
-                AppUA _appUA = Session["AppUA"] as AppUA;
-                result = _dashboardBusiness.RequisitionCount(_appUA.UserName);
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
-
-            }
-            catch (Exception ex)
-            {
-                AppConstMessage cm = c.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
-            }
-        }
-
+       
+        
     }
 }

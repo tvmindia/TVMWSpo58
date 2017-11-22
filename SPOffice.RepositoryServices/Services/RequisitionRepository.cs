@@ -397,7 +397,7 @@ namespace SPOffice.RepositoryServices.Services
                                     _requisitionOverviewCountObj.AllCount = (sdr["AllCount"].ToString() != "" ? int.Parse(sdr["AllCount"].ToString()) : -1);
                                     _requisitionOverviewCountObj.PendingManagerCount = (sdr["PendingManagerCount"].ToString() != "" ? int.Parse(sdr["PendingManagerCount"].ToString()) : -1);
                                     _requisitionOverviewCountObj.PendingFinalCount = (sdr["PendingFinalCount"].ToString() != "" ? int.Parse(sdr["PendingFinalCount"].ToString()) : -1);
-                                    }
+                                }
                             }
                         }
                     }
@@ -463,36 +463,7 @@ namespace SPOffice.RepositoryServices.Services
             return RequisitionObj;
         }
 
-        public string RequisitionCount(string LoginName)
-        {
-                Requisition _RequisitionObj = new Requisition();
-                try
-                {
-                    using (SqlConnection con = _databaseFactory.GetDBConnection())
-                    {
-                        using (SqlCommand cmd = new SqlCommand())
-                        {
-                            if (con.State == ConnectionState.Closed)
-                            {
-                                con.Open();
-                            }
-                            cmd.Connection = con;
-                            cmd.Parameters.Add("@LoginName", SqlDbType.NVarChar, 50).Value = LoginName;
-                            cmd.CommandText = "[Office].[GetPendingRequisitionCount]";
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            _RequisitionObj.PendingRequisitionCount = cmd.ExecuteScalar().ToString();
-
-                        }
-                    }
-                }
-
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
-                return _RequisitionObj.PendingRequisitionCount;
-            }
+        
     }
 
     }
