@@ -249,6 +249,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
@@ -617,6 +618,7 @@
     <Content Include="Scripts\jszip.min.js" />
     <Content Include="Scripts\lightbox.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\UserJS\Application.js" />
     <Content Include="Scripts\UserJS\AppObject.js" />

@@ -15,9 +15,12 @@ var IsManagerApproved = -1;
 var IsAdminOrCeo = false;
 var IsManager = false;
 var RequisitionStatus = "";
+var ManagerApproved = false;
+var FinalApproved = false;
 //This will fire on page loads
 $(document).ready(function () {
     try {
+        //$("#RequisitionDetailObj_MaterialID").select2({});
         DataTables.RequisitionList = $('#tblRequisitionList').DataTable({
             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
             order: [],
@@ -120,10 +123,6 @@ $(document).ready(function () {
         $('.advance-filter').on('change', function () {
             FilterContent();
         });
-        //$('.FilterTileAction').on('click',function () {
-        //    debugger;
-        //    Gridfilter(this.name);
-        //});
         PaintSearchTiles();
     }
     catch (e) {
@@ -143,8 +142,12 @@ function FilterContent()
     ReqAdvanceSearch.ToDate = ToDate[0].value !== "" ? ToDate[0].value : null;
     ReqAdvanceSearch.ReqStatus = ReqStatus[0].value !== "" ? ReqStatus[0].value : (RequisitionStatus !== "" ? RequisitionStatus : null);
     RequisitionStatus = "";
-    ReqAdvanceSearch.ReqSearch = ReqSearch[0].value !== "" ? ReqSearch[0].value : null;    
+    ReqAdvanceSearch.ReqSearch = ReqSearch[0].value !== "" ? ReqSearch[0].value : null;
+    ReqAdvanceSearch.ManagerApproved = ManagerApproved;
+    ReqAdvanceSearch.FinalApproved = FinalApproved;    
     DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList(ReqAdvanceSearch)).draw(false);
+    ManagerApproved = false;
+    FinalApproved = false;
 }
 function PaintSearchTiles()
 {
@@ -243,10 +246,12 @@ function Gridfilter(filter) {
         $('#ALLfilter').show();
     }
     else if (filter.id === 'PFMA') {
+        ManagerApproved = true;
         $('#PFMAfilter').show();
     }
     else if (filter.id === 'PFFA')
     {
+        FinalApproved = true;
         $('#PFFAfilter').show();
     }
     FilterContent();
