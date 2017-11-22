@@ -11,6 +11,6 @@ namespace SPOffice.RepositoryServices.Contracts
     public interface IReportRepository
     {
         List<Reports> GetAllSysReports(AppUA appUA);
-
+        List<CourierReport> GetCourierDetails(DateTime? FromDate, DateTime? ToDate, string AgencyCode, string search, string Type);
     }
 }

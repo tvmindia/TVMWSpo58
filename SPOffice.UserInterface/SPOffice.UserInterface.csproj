@@ -623,6 +623,7 @@
     <Content Include="Scripts\UserJS\AppSubobject.js" />
     <Content Include="Scripts\UserJS\Courier.js" />
     <Content Include="Scripts\UserJS\CourierAgency.js" />
+    <Content Include="Scripts\UserJS\CourierReport.js" />
     <Content Include="Scripts\UserJS\CustomerPO.js" />
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
@@ -773,6 +774,7 @@
     <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
     <Content Include="Views\Requisition\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\CourierReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
