@@ -227,7 +227,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ToDate;
                         cmd.Parameters.Add("@AgencyCode", SqlDbType.NVarChar, 50).Value = AgencyCode;
                         cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = search != "" ? search : null;
-                        cmd.Parameters.Add("@Type", SqlDbType.NVarChar,50).Value = Type;
+                        cmd.Parameters.Add("@Type", SqlDbType.NVarChar,50).Value = Type;                       
                         cmd.CommandText = "[Office].[RPT_GetCourierDetail]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
@@ -239,8 +239,9 @@ namespace SPOffice.RepositoryServices.Services
                                 {
                                     CourierReport courierDetail = new CourierReport();
                                     {
+                                        courierDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : courierDetail.ID);
                                         courierDetail.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : courierDetail.Type);
-                                        courierDetail.TransactionDate = (sdr["TransactionDate"].ToString() != "" ? sdr["TransactionDate"].ToString() : courierDetail.TransactionDate);
+                                        courierDetail.TransactionDate = (sdr["TransactionDate"].ToString() != "" ? DateTime.Parse(sdr["TransactionDate"].ToString()).ToString(settings.dateformat) : courierDetail.TransactionDate);
                                         courierDetail.Track = (sdr["Track"].ToString() != "" ? sdr["Track"].ToString() : courierDetail.Track);
                                         courierDetail.TrackingURL = (sdr["TrackingURL"].ToString() != "" ? sdr["TrackingURL"].ToString() : courierDetail.TrackingURL);
                                         courierDetail.SourceName = (sdr["SourceName"].ToString() != "" ? sdr["SourceName"].ToString() : courierDetail.SourceName);
@@ -251,6 +252,7 @@ namespace SPOffice.RepositoryServices.Services
                                             courierDetail.courierAgency.Code = courierDetail.AgencyCode;
                                             courierDetail.courierAgency.Name = (sdr["AgencyName"].ToString() != "" ? sdr["AgencyName"].ToString() : courierDetail.courierAgency.Name);
                                         }
+                                        courierDetail.DistributionDate = (sdr["DistributionDate"].ToString() != "" ? DateTime.Parse(sdr["DistributionDate"].ToString()).ToString(settings.dateformat) : courierDetail.DistributionDate); 
                                         courierDetail.TrackingRefNo = (sdr["TrackingRefNo"].ToString() != "" ? sdr["TrackingRefNo"].ToString() : courierDetail.TrackingRefNo);
                                     }
                                     CourierDetailList.Add(courierDetail);

@@ -65,7 +65,7 @@ namespace SPOffice.UserInterface.Models
         public string DestAddress { get; set; }     
         public string DistributedTo { get; set; }       
         public string DistributionDate { get; set; }      
-       
+        [Display(Name = "Agency")]
         public string AgencyCode { get; set; }
         public CourierAgencyViewModel courierAgency { get; set; }
         public List<SelectListItem> AgencyList { get; set; }           
