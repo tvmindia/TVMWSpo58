@@ -630,6 +630,7 @@
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\SupplierOrder.js" />
     <Content Include="Scripts\UserJS\Units.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
