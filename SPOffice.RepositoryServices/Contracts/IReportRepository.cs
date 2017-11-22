@@ -13,6 +13,6 @@ namespace SPOffice.RepositoryServices.Contracts
         List<Reports> GetAllSysReports(AppUA appUA);
         List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search);
         List<CourierReport> GetCourierDetails(DateTime? FromDate, DateTime? ToDate, string AgencyCode, string search, string Type);
-        List<QuotationReport> GetQuotationDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search);
+        List<QuotationReport> GetQuotationDetails(ReportAdvanceSearch ReptAdvancedSearchObj);
     }
 }

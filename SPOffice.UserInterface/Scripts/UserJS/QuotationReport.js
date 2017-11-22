@@ -4,8 +4,8 @@
 //Author: Jais
 //CreatedDate: 21-Nov-2017 Tuesday
 //LastModified: 21-nov-2017 Tuesday
-//FileName: EnquiryReport.js
-//Description: Client side coding for EnquiryReport
+//FileName: QuotationReport.js
+//Description: Client side coding for QuotationReport
 //******************************************************************************
 //******************************************************************************
 //Global Declarations
@@ -26,13 +26,16 @@ $(document).ready(function () {
                  extend: 'excel',
                  exportOptions:
                               {
-                                  columns: [1, 2, 3, 6, 9, 11, 13, 14, 16]
+                                  columns: [1, 2, 3,4,5, 6, 7]
                               }
              }],
              order: [],
+             fixedHeader: {
+                 header: true
+             },
              searching: false,
              paging: true,
-             data: GetQuotationReportDetails(),
+             data: null,
              pageLength: 50,
              //language: {
              //    search: "_INPUT_",
@@ -51,15 +54,19 @@ $(document).ready(function () {
              ],
 
              columnDefs: [{ "searchable": false, "targets": [0], "visible": false, },
-                  { className: "text-left", "targets": [1, 2, 3, 4, 6] },
-                  { className: "text-right", "targets": [7] },
-                  { className: "text-center", "targets": [0, 5] }],
+                  { className: "text-left", "targets": [ 2, 3, 4, 5,6,7] },
+                  { className: "text-right", "targets": [] },
+                  { className: "text-center", "targets": [0,1] }],
 
          });
+        $('.advance-filter').on('change', function () {
+            FilterContent();
+        });
         //---hiding inbuilt export buttonand placing start date and end date
-        //$(".buttons-excel").hide();
+        $(".buttons-excel").hide();
         startdate = $("#todate").val();
         enddate = $("#fromdate").val();
+        FilterContent();
 
     } catch (x) {
         //this will show the error msg in the browser console(F12) 
@@ -68,18 +75,35 @@ $(document).ready(function () {
     }
 });
 
-//--function to get Enquiry list from server corresponding to from date ,to date,status and search--//
-function GetQuotationReportDetails() {
+//--Advanced search--//
+function FilterContent() {
+    debugger;
+    var FromDate = $('#fromdate');
+    var ToDate = $('#todate');
+    var FromCompany = $('#ddlFromCompany');
+    var QuoteStage = $('#ddlQuoteStage');
+    var Search = $('#Search');
+    var ReptAdvanceSearch = new Object();
+    ReptAdvanceSearch.FromDate = FromDate[0].value !== "" ? FromDate[0].value : null;
+    ReptAdvanceSearch.ToDate = ToDate[0].value !== "" ? ToDate[0].value : null;
+    ReptAdvanceSearch.FromCompany = FromCompany[0].value !== "" ? FromCompany[0].value : (FromCompany !== "" ? FromCompany : null);
+    ReptAdvanceSearch.QuoteStage = QuoteStage[0].value !== "" ? QuoteStage[0].value : (QuoteStage !== "" ? QuoteStage : null);
+    ReptAdvanceSearch.Search = Search[0].value !== "" ? Search[0].value : null;
+    DataTables.QuotationReportTable.clear().rows.add(GetQuotationReportDetails(ReptAdvanceSearch)).draw(false);
+}
+
+//--function to get Quotation details from server corresponding to from date ,to date,from company and search--//
+function GetQuotationReportDetails(AdvanceSearchObject) {
     try {
         debugger;
-
-        var fromdate = $("#fromdate").val();
-        var todate = $("#todate").val();
-        //var statusList = $("#statusList").val();
-        //var search = $("#Search").val();
-        //if (IsVaildDateFormat(fromdate) && IsVaildDateFormat(todate) && statusList) {
-        var data = { "FromDate": fromdate, "ToDate": todate};//, "EnquiryStatus": statusList, "search": search };
-            //var data={};
+            if (AdvanceSearchObject === 0)
+            {                
+                var data = {};
+            }
+            else
+            {
+                var data = { "AdvanceSearchObject": JSON.stringify(AdvanceSearchObject) };
+            } 
             var ds = {};
             ds = GetDataFromServer("Report/GetQuotationDetails/", data);
             if (ds != '') {
@@ -92,35 +116,12 @@ function GetQuotationReportDetails() {
             if (ds.Result == "ERROR") {
                 notyAlert('error', ds.Message);
             }
-        //}
     }
     catch (e) {
         notyAlert('error', e.message);
     }
 }
 
-//--Function on date change--//
-function OnChangeCall() {
-    RefreshQuotationReportTable();
-
-}
-
-//--function to refresh EnquiryReport Table---//
-function RefreshQuotationReportTable() {
-    try {
-        var fromdate = $("#fromdate").val();
-        var todate = $("#todate").val();
-        //var statusList = $("#statusList").val();
-
-        if (DataTables.QuotationReportTable != undefined && IsVaildDateFormat(fromdate) && IsVaildDateFormat(todate)) {
-            DataTables.QuotationReportTable.clear().rows.add(GetQuotationReportDetails()).draw(true);
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-    }
-}
 
 //--Function for print button to print--//
 function PrintReport() {
@@ -144,7 +145,8 @@ function Reset() {
     debugger;
     $("#todate").val(startdate);
     $("#fromdate").val(enddate);
-    //$("#statusList").val('ALL').trigger('change');
-   // $("#Search").val('').trigger('change');
-    RefreshQuotationReportTable()
+    $("#ddlFromCompany").val('ALL');
+    $("#ddlQuoteStage").val('ALL');
+    $('#Search').val('');
+    FilterContent();
 }

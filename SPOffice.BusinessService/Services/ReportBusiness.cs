@@ -48,12 +48,12 @@ namespace SPOffice.BusinessService.Services
 
         }
 
-        public List<QuotationReport> GetQuotationDetails(DateTime? FromDate, DateTime? ToDate, string EnquiryStatus, string search)
+        public List<QuotationReport> GetQuotationDetails(ReportAdvanceSearch ReptAdvancedSearchObj)
         {
             List<QuotationReport> quotationList = null;
             try
             {
-                quotationList = _reportRepository.GetQuotationDetails(FromDate, ToDate, EnquiryStatus, search);
+                quotationList = _reportRepository.GetQuotationDetails(ReptAdvancedSearchObj);
             }
             catch (Exception ex)
             {

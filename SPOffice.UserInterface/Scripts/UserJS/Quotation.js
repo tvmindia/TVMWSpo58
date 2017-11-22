@@ -115,6 +115,10 @@ $(document).ready(function () {
         //    if ($('#ddlTaxType').val() != "")
         //        $('#ddlTaxType').val('')
         //});
+        if ($('#BindValue').val() != '') {
+            debugger;
+            quotationBind($('#BindValue').val())
+        }
        
     }
     catch (x) {
@@ -561,7 +565,8 @@ function AddNew() {
     $("#lblQuotationNo").text('New Quotation');
     clearUploadControl();
     EG_AddBlankRows(5)
-  //  clearUploadControl();
+    //  clearUploadControl();
+    $("#QuoteBodyFoot").val(footer);
 }
 
 function Reset() {      
@@ -906,4 +911,13 @@ function dashboardBind(filterValue) {
         Gridfilter(filter)
 
     }  
+}
+
+
+//setting value to hidden field in quotation
+function quotationBind(ID) {
+    debugger;
+    $('#ID').val(ID);
+    openNav();
+    BindQuationDetails(ID);
 }
