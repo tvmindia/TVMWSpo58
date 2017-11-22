@@ -432,9 +432,9 @@ namespace SPOffice.RepositoryServices.Services
                 switch (outputStatus.Value.ToString())
                 {
                     case "0":
-                        throw new Exception(Cobj.UpdateFailure);                  
+                        throw new Exception(Cobj.UpdateFailure);
                     case "1":
-                        if(IsAdminORCeo)
+                        if (IsAdminORCeo)
                         {
                             RequisitionObj.FinalApproval = true;
                         }
@@ -450,6 +450,10 @@ namespace SPOffice.RepositoryServices.Services
             }
             catch (Exception ex)
             {
+                throw ex;
+            }
+            return RequisitionObj;
+        }
 
         public string RequisitionCount(string LoginName)
         {
