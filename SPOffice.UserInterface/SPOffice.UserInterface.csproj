@@ -402,10 +402,10 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\images\add.png" />
     <Content Include="Content\images\add1.png" />
+    <Content Include="Content\images\Approve.PNG" />
     <Content Include="Content\images\archives.png" />
     <Content Include="Content\images\back.png" />
     <Content Include="Content\images\back1.png" />
-    <Content Include="Content\images\bg.jpg" />
     <Content Include="Content\images\bg.png" />
     <Content Include="Content\images\bg123.png" />
     <Content Include="Content\images\bgTest1.JPG" />
@@ -623,9 +623,12 @@
     <Content Include="Scripts\UserJS\AppSubobject.js" />
     <Content Include="Scripts\UserJS\Courier.js" />
     <Content Include="Scripts\UserJS\CourierAgency.js" />
+    <Content Include="Scripts\UserJS\CourierReport.js" />
     <Content Include="Scripts\UserJS\CustomerPO.js" />
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
+    <Content Include="Scripts\UserJS\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\Units.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
     <Content Include="Scripts\UserJS\ManageSubObjectAccess.js" />
@@ -634,6 +637,7 @@
     <Content Include="Scripts\UserJS\Product.js" />
     <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
+    <Content Include="Scripts\UserJS\QuotationReport.js" />
     <Content Include="Scripts\UserJS\RawMaterial.js" />
     <Content Include="Scripts\UserJS\Requisition.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
@@ -676,9 +680,11 @@
     <Compile Include="Controllers\ProformaInvoiceController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\RawMaterialController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
+    <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -716,11 +722,14 @@
     <Compile Include="Models\RequisitionViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
+    <Compile Include="Models\UnitsViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityFilter\AuthSecurityFilter.cs" />
+    <Compile Include="SecurityFilter\ToolBarAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -770,6 +779,12 @@
     <Content Include="Views\ProformaInvoice\Index.cshtml" />
     <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
     <Content Include="Views\Requisition\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Units\Index.cshtml" />
+    <Content Include="Views\Report\GetEnquiryDetails.cshtml" />
+    <Content Include="Views\Report\EnquiryReport.cshtml" />
+    <Content Include="Views\Report\QuotationReport.cshtml" />
+    <Content Include="Views\Report\CourierReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

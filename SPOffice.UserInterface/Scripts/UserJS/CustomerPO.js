@@ -218,6 +218,16 @@ function DeleteItem(ID) {
 
 }
 
+
+function Resetform() {
+    var validator = $("#PurchaseOrderForm").validate();
+    $('#PurchaseOrderForm').find('.field-validation-error span').each(function () {
+        validator.settings.success($(this));
+    });
+    $('#PurchaseOrderForm')[0].reset();
+}
+
+
 function Save()
  {
    $('#btnSave').trigger('click');
@@ -367,9 +377,8 @@ function GetPurchaseOrderDetailsByID(ID) {
 }
 function AddNew() {
     ChangeButtonPatchView('CustomerOrder', 'btnPatchAdd', 'Add');
+    Resetform();
     openNav();
-   
-    ResetForm();
     $('#lblCustomerPONo').text("New Purchase Order");
     $("#lblQuoteStage").text('N/A');
     
@@ -379,17 +388,11 @@ function AddNew() {
 }
 
 function Reset() {
-
+    BindPurchaseOrderDetails($("#ID").val());
    
-   
-    if ($("#ID").val() == "") {
-        ClearFields();
-    }
-    else {
-        BindPurchaseOrderDetails($("#ID").val());
-    }
-    ResetForm();
+    
 }
+
 function ClearFields() {
 
     ResetForm();

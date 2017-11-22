@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace SPOffice.UserInterface.Controllers
             _rawMaterialBusiness = rawMaterialBusiness;
         }
         // GET: RawMaterial
+        [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -28,7 +30,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllRawMaterials
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "R")]
         public string GetAllRawMaterials()
         {
             try
@@ -46,7 +48,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetRawMaterialDetails
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "R")]
         public string GetRawMaterialDetails(string ID)
         {
             try
@@ -66,7 +68,7 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateRawMaterial
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //  [AuthSecurityFilter(ProjectObject = "Department", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "W")]
         public string InsertUpdateRawMaterial(RawMaterialViewModel rawMaterialViewModel)
         {
             object result = null;
@@ -100,7 +102,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region DeleteRawMaterial
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "D")]
         public string DeleteRawMaterial(string ID)
         {
 
@@ -125,7 +127,6 @@ namespace SPOffice.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //   [AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();

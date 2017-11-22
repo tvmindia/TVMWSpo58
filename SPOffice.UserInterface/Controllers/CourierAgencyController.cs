@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         // GET: Courier
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public ActionResult Index()
         {
             
@@ -30,7 +32,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllCourierAgencies
         [HttpGet]
-      //  [AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public string GetAllCourierAgencies()
         {
             try
@@ -48,7 +50,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetCourierAgencyDetails
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public string GetCourierAgencyDetails(string Code)
         {
             try
@@ -68,16 +70,16 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateCourierAgency
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
         public string InsertUpdateCourierAgency(CourierAgencyViewModel courierAgencyViewModel)
         {
             object result = null;
             try
             {
-                //  AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUA"] as AppUA;
                 courierAgencyViewModel.commonObj = new CommonViewModel();
-                courierAgencyViewModel.commonObj.CreatedBy = "Albert Thomson";//change it change it
-                courierAgencyViewModel.commonObj.CreatedDate = DateTime.Now;
+                courierAgencyViewModel.commonObj.CreatedBy = _appUA.UserName;
+                courierAgencyViewModel.commonObj.CreatedDate = _appUA.DateTime;
                 courierAgencyViewModel.commonObj.UpdatedBy = courierAgencyViewModel.commonObj.CreatedBy;
                 courierAgencyViewModel.commonObj.UpdatedDate = courierAgencyViewModel.commonObj.CreatedDate;
                 switch (courierAgencyViewModel.Operation)
@@ -102,7 +104,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region DeleteCourierAgency
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "Courier", Mode = "D")]
         public string DeleteCourierAgency(string Code)
         {
          try

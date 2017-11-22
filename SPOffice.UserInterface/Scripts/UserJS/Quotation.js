@@ -346,7 +346,7 @@ function DeleteItem(ID) {
             if (ds.Result == "OK") {
                 switch (ds.Result) {
                             case "OK":
-                                notyAlert('success', ds.Message);
+                                notyAlert('success', ds.Record.Message);
                                 EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
                             break;
                             case "ERROR":
@@ -370,6 +370,8 @@ function DeleteItem(ID) {
 }
 
 function saveInvoices() {
+    debugger;
+    $("#DetailJSON").val('');//
     var validation = EG_Validate();
     if (validation == "") {
 
@@ -387,32 +389,13 @@ function saveInvoices() {
 
 
 
-//function DeleteSuccess(data, status) {
-//    var JsonResult = JSON.parse(data)
-//    switch (JsonResult.Result) {
-//        case "OK":
-//            AddNew();
-//            List();
-//            notyAlert('success', JsonResult.Message);
-//            break;
-//        case "Error":
-//            notyAlert('error', JsonResult.Message);
-//            break;
-//        case "ERROR":
-//            notyAlert('error', JsonResult.Message);
-//            break;
-//        default:
-//            break;
-//    }
-//}
-
 function SaveSuccess(data, status) {
    
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
            
-            notyAlert('success', JsonResult.Message);
+            notyAlert('success', JsonResult.Record.Message);
             ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
@@ -422,14 +405,23 @@ function SaveSuccess(data, status) {
             EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
             break;
         case "ERROR":
-            notyAlert('error', JsonResult.Message);
+            notyAlert('error', JsonResult.Record.Message);
             break;
         default:
-            notyAlert('error', JsonResult.Message);
+            notyAlert('error', JsonResult.Record.Message);
             break;
     }
 }
 
+//To Reset Quotation Form
+function Resetform() {
+    debugger;
+    var validator = $("#QuoteForm").validate();
+    $('#QuoteForm').find('.field-validation-error span').each(function () {
+        validator.settings.success($(this));
+    });
+    $('#QuoteForm')[0].reset();
+}
 
 
 
@@ -557,23 +549,24 @@ function GetQuationDetailsByID(ID) {
 }
 function AddNew() {
     ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
-    openNav();
-    EG_ClearTable();
-    Reset();
+    Resetform();
+    openNav();   
+    EG_ClearTable();   
+    $('#ID').val('');
+    $("#DetailJSON").val('');
+    //Reset();  
     $("#ddlQuoteStage").val('DFT');
-    $("#lblQuoteStage").text('N/A');
-    $("#lblEmailSent").text('N/A');
+    $("#lblQuoteStage").text('Draft');
+   $("#lblEmailSent").text('No');
     $("#lblQuotationNo").text('New Quotation');
     clearUploadControl();
     EG_AddBlankRows(5)
   //  clearUploadControl();
 }
 
-function Reset() {
-   
-    $('#QuoteForm')[0].reset();
-    $('#ID').val('');
-    $("#QuoteBodyFoot").val(footer);
+function Reset() {      
+    BindQuationDetails($('#ID').val());    
+    $("#QuoteBodyFoot").val(footer);    
 }
 
 //---------------Bind logics-------------------
@@ -771,6 +764,81 @@ function GetCustomerDeails(curobj) {
     }
 
 }
+
+
+//Delete Quotation
+function DeleteClick() {
+    debugger;
+    notyConfirm('Are you sure to delete?', 'DeleteQuotation()');
+}
+
+
+function DeleteQuotation() {
+    try {
+        debugger;
+        var id = $('#ID').val();
+        if (id != '' && id != null) {
+            var data = { "ID": id };
+            var ds = {};
+            ds = GetDataFromServer("Quotation/DeleteQuotation/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                notyAlert('success', ds.Record.Message);
+                debugger;
+                BindAllQuotes();
+                closeNav();
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.Message);
+                return 0;
+            }
+            return 1;
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+        return 0;
+    }
+}
+
+
+// change quotestatus of label on dropdown selection
+
+
+function ChangeQuoteStatus()
+{
+    debugger;
+
+    if ($("#ddlQuoteStage").val() == "DFT") {
+        $("#lblQuoteStage").text('Draft');
+    }
+    if ($("#ddlQuoteStage").val() == "CFD") {
+        $("#lblQuoteStage").text('Confirmed');
+    }
+    if ($("#ddlQuoteStage").val() == "CLT") {
+        $("#lblQuoteStage").text('Closed Lost');
+    }
+
+    if ($("#ddlQuoteStage").val() == "CWN") {
+        $("#lblQuoteStage").text('Closed Won');
+    }
+    if ($("#ddlQuoteStage").val() == "DVD") {
+        $("#lblQuoteStage").text('Delivered');
+    }
+    if ($("#ddlQuoteStage").val() == "NGT") {
+        $("#lblQuoteStage").text('Negotiation');
+    }
+
+    if ($("#ddlQuoteStage").val() == "OHD") {
+        $("#lblQuoteStage").text('On Hold');
+        }
+    }
+
+
+
+
 
 
 //------------------------------------------------ Filter clicks------------------------------------------------------------//

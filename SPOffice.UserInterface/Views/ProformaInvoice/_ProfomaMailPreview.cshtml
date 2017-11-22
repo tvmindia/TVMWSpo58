@@ -64,7 +64,7 @@
 
         <table>
             <tr>
-                <td style="font-size:15px;">@Model.proformaHeaderViewModel.BodyHead</td>
+                <td style="font-size:15px;">@Html.Raw( @Model.proformaHeaderViewModel.BodyHead)</td>
             </tr>
         </table>
         <br />
@@ -159,7 +159,7 @@
             <tr class="details">
                 <td style="vertical-align: top; padding: 5px 5px 20px;font-size:15px;" valign="top">
 
-                    @Model.proformaHeaderViewModel.BodyFoot
+                    @Html.Raw( @Model.proformaHeaderViewModel.BodyFoot)
                 </td>
             </tr>
         </table>

@@ -15,16 +15,15 @@ namespace SPOffice.BusinessService.Contracts
 
         List<QuoteHeader> GetAllQuotations();
         object InsertQuotation(QuoteHeader quoteHeader);
-        object UpdateQuotation(QuoteHeader quoteHeader);
-       
+        object UpdateQuotation(QuoteHeader quoteHeader);     
 
         List<QuoteStage> GetAllQuoteStages();
         QuoteHeader GetQuationDetailsByID(Guid ID);
-
         List<QuoteItem> GetAllQuoteItems(Guid? ID);
         object DeleteQuoteItem(Guid? ID);
         QuoteHeader GetMailPreview(Guid ID);
         object UpdateQuoteMailStatus(QuoteHeader quoteHeader);
         Task<bool> QuoteEmailPush(QuoteHeader quoteHeader);
+        object DeleteQuotation(Guid? ID);
     }
 }

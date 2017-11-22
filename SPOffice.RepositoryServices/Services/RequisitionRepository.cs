@@ -17,7 +17,7 @@ namespace SPOffice.RepositoryServices.Services
         {
             _databaseFactory = databaseFactory;
         }
-        public List<Requisition> GetUserRequisitionList(string LoginName,Guid AppID)
+        public List<Requisition> GetUserRequisitionList(string LoginName,Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj)
         {
 
             List<Requisition> RequisitionList = null;
@@ -35,6 +35,11 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[GetUserRequisitionList]";
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar).Value = LoginName;
                         cmd.Parameters.Add("@AppID", SqlDbType.UniqueIdentifier).Value = AppID;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = ReqAdvanceSearchObj.FromDate;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ReqAdvanceSearchObj.ToDate;
+                        cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar,250).Value = ReqAdvanceSearchObj.ReqStatus;
+                        cmd.Parameters.Add("@ReqSearch", SqlDbType.NVarChar,250).Value = ReqAdvanceSearchObj.ReqSearch;
+                        cmd.Parameters.Add("@IsAdminOrCeo", SqlDbType.Bit).Value = IsAdminOrCeo;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
@@ -77,9 +82,62 @@ namespace SPOffice.RepositoryServices.Services
 
             return RequisitionList;
         }
-        public List<Requisition> GetRequisitionDetails(Guid ID)
+        public List<RequisitionDetail> GetRequisitionDetailList(Guid ID)
         {
-            List<Requisition> RequisitionList = null;
+            List<RequisitionDetail> RequisitionDetailList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetRequisitionDetailList]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                RequisitionDetailList = new List<RequisitionDetail>();
+                                while (sdr.Read())
+                                {
+                                    RequisitionDetail _requisitionDetailObj = new RequisitionDetail();
+                                    _requisitionDetailObj.RawMaterialObj = new RawMaterial();
+                                    {
+                                        _requisitionDetailObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _requisitionDetailObj.ID);
+                                        _requisitionDetailObj.ReqID = (sdr["ReqID"].ToString() != "" ? Guid.Parse(sdr["ReqID"].ToString()) : _requisitionDetailObj.ReqID);
+                                        _requisitionDetailObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _requisitionDetailObj.MaterialID);
+                                        _requisitionDetailObj.Description = (sdr["Description"].ToString());
+                                        _requisitionDetailObj.ExtendedDescription = (sdr["ExtendedDescription"].ToString());
+                                        _requisitionDetailObj.RawMaterialObj.ID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _requisitionDetailObj.MaterialID);
+                                        _requisitionDetailObj.RawMaterialObj.MaterialCode = (sdr["MaterialCode"].ToString());
+                                        _requisitionDetailObj.CurrStock = (sdr["CurrStock"].ToString());
+                                        _requisitionDetailObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _requisitionDetailObj.AppxRate);
+                                        _requisitionDetailObj.RequestedQty = (sdr["RequestedQty"].ToString());
+                                        }
+                                    RequisitionDetailList.Add(_requisitionDetailObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return RequisitionDetailList;
+        }
+        public Requisition GetRequisitionDetails(Guid ID, string LoginName)
+        {
+            Requisition _requisitionObj = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -93,16 +151,14 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetRequisitionDetails]";
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.Parameters.Add("@LoginName", SqlDbType.VarChar, 250).Value = LoginName;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
-                            if ((sdr != null) && (sdr.HasRows))
+                            if ((sdr != null) && (sdr.HasRows)&&(sdr.Read()))
                             {
-                                RequisitionList = new List<Requisition>();
-                                while (sdr.Read())
-                                {
-                                    Requisition _requisitionObj = new Requisition();
+                                     _requisitionObj = new Requisition();
                                     {
                                         _requisitionObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _requisitionObj.ID);
                                         _requisitionObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : _requisitionObj.ReqNo);
@@ -119,9 +175,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _requisitionObj.FinalApproval = (sdr["FinalApproval"].ToString() != "" ? bool.Parse(sdr["FinalApproval"].ToString()) : _requisitionObj.FinalApproval);
                                         _requisitionObj.FinalApprovalDate = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()) : _requisitionObj.FinalApprovalDate);
                                         _requisitionObj.FinalApprovalDateFormatted = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.FinalApprovalDateFormatted);
+                                        _requisitionObj.IsApprover = (sdr["IsApprover"].ToString() != "" ? bool.Parse(sdr["IsApprover"].ToString()) : _requisitionObj.IsApprover);
                                     }
-                                    RequisitionList.Add(_requisitionObj);
-                                }
                             }
                         }
                     }
@@ -132,11 +187,11 @@ namespace SPOffice.RepositoryServices.Services
                 throw ex;
             }
 
-            return RequisitionList;
+            return _requisitionObj;
         }
-        public object InsertRequisition(Requisition RequisitionObj)
+        public object InsertRequisition(Requisition RequisitionObj, bool isAdminOrCeo)
         {
-            SqlParameter outputStatus, outputID;
+            SqlParameter outputStatus, outputID, outputReqNo,outputApprovedBy;
             try
             {
 
@@ -152,7 +207,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[InsertRequisition]";
                        
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@ReqNo", SqlDbType.VarChar, 250).Value = RequisitionObj.ReqNo;
+                        cmd.Parameters.Add("@IsAdminOrCeo", SqlDbType.Bit).Value = isAdminOrCeo;
                         cmd.Parameters.Add("@Title", SqlDbType.NVarChar,250).Value = RequisitionObj.Title;
                         cmd.Parameters.Add("@ReqDate", SqlDbType.DateTime).Value = RequisitionObj.ReqDateFormatted;
                         cmd.Parameters.Add("@ReqForCompany", SqlDbType.VarChar, 10).Value = RequisitionObj.ReqForCompany;
@@ -163,6 +218,10 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = RequisitionObj.CommonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.CreatedDate;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.UpdatedDate;
+                        outputApprovedBy = cmd.Parameters.Add("@ApprovedBy", SqlDbType.NVarChar, 250);
+                        outputApprovedBy.Direction = ParameterDirection.Output;
+                        outputReqNo = cmd.Parameters.Add("@ReqNo", SqlDbType.VarChar, 250);
+                        outputReqNo.Direction = ParameterDirection.Output;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
@@ -180,6 +239,8 @@ namespace SPOffice.RepositoryServices.Services
                         return new
                         {
                             ID = outputID.Value.ToString(),
+                            ReqNo=outputReqNo.Value.ToString(),
+                            ApprovedBy=outputApprovedBy.Value.ToString(),
                             Status = outputStatus.Value.ToString(),
                             Message = Cobj.InsertSuccess
                         };
@@ -201,13 +262,11 @@ namespace SPOffice.RepositoryServices.Services
                 // Message = Cobj.InsertSuccess
             };
         }
-
         public object UpdateRequisition(Requisition RequisitionObj)
         {
             SqlParameter outputStatus = null;
             try
             {
-
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -217,31 +276,21 @@ namespace SPOffice.RepositoryServices.Services
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[Office].[UpdateProformaInvoice]";
+                        cmd.CommandText = "[Office].[UpdateRequisition]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = RequisitionObj.ID;
-                        //cmd.Parameters.Add("@InvoiceNo", SqlDbType.VarChar, 20).Value = RequisitionObj.InvoiceNo;
-                        //cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = proformaHeader.CustomerID;
-                        //cmd.Parameters.Add("@InvoiceDate", SqlDbType.DateTime).Value = RequisitionObj.InvoiceDate;
-                        //cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = proformaHeader.ValidTillDate;
-                        //cmd.Parameters.Add("@Subject", SqlDbType.VarChar, 500).Value = proformaHeader.Subject;
-                        //cmd.Parameters.Add("@OriginCompCode", SqlDbType.VarChar, 10).Value = proformaHeader.OriginCompCode;
-                        //cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = proformaHeader.ContactPerson;
-                        //cmd.Parameters.Add("@SentToAddress", SqlDbType.NVarChar, -1).Value = proformaHeader.SentToAddress;
-                        //cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = proformaHeader.BodyHead;
-                        //cmd.Parameters.Add("@BodyFooter", SqlDbType.NVarChar, -1).Value = proformaHeader.BodyFoot;
-                        //cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = proformaHeader.Discount;
-                        //cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = proformaHeader.TaxTypeCode;
-                        //cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = proformaHeader.TaxPercApplied;
-                        //cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = proformaHeader.TaxAmount;
-                        //cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = proformaHeader.DetailXML;
-                        //cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = proformaHeader.commonObj.UpdatedBy;
-                        //cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = proformaHeader.commonObj.UpdatedDate;
+                        //cmd.Parameters.Add("@ReqNo", SqlDbType.VarChar, 250).Value = RequisitionObj.ReqNo;
+                        cmd.Parameters.Add("@Title", SqlDbType.NVarChar, 250).Value = RequisitionObj.Title;
+                        cmd.Parameters.Add("@ReqDate", SqlDbType.DateTime).Value = RequisitionObj.ReqDateFormatted;
+                        cmd.Parameters.Add("@ReqForCompany", SqlDbType.VarChar, 10).Value = RequisitionObj.ReqForCompany;
+                        cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar, 50).Value = RequisitionObj.ReqStatus;
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = RequisitionObj.DetailXML;
+                        //cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = RequisitionObj.ManagerApproved;
+                        //cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = RequisitionObj.FinalApproval;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
-
-
                     }
                 }
                 AppConst Cobj = new AppConst();
@@ -274,6 +323,133 @@ namespace SPOffice.RepositoryServices.Services
                 // Message = Cobj.UpdateSuccess
             };
         }
+        public object DeleteRequisitionDetailByID(Guid ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteRequisitionDetailByID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+
+            };
+        }
+        public RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo)
+        {
+            RequisitionOverViewCount _requisitionOverviewCountObj = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetRequisitionOverViewCount]";
+                        cmd.Parameters.Add("@UserName", SqlDbType.VarChar,250).Value = UserName;
+                        cmd.Parameters.Add("@IsAdminORCeo", SqlDbType.Bit).Value = IsAdminORCeo;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows) && (sdr.Read()))
+                            {
+                                _requisitionOverviewCountObj = new RequisitionOverViewCount();
+                                {
+                                    _requisitionOverviewCountObj.OpenCount = (sdr["OpenCount"].ToString() != "" ? int.Parse(sdr["OpenCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.AllCount = (sdr["AllCount"].ToString() != "" ? int.Parse(sdr["AllCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.PendingManagerCount = (sdr["PendingManagerCount"].ToString() != "" ? int.Parse(sdr["PendingManagerCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.PendingFinalCount = (sdr["PendingFinalCount"].ToString() != "" ? int.Parse(sdr["PendingFinalCount"].ToString()) : -1);
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return _requisitionOverviewCountObj;
+        }
+        public Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[ApproveRequisition]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = RequisitionObj.ID;
+                        cmd.Parameters.Add("@IsAdminOrCeo", SqlDbType.Bit).Value = IsAdminORCeo;
+                        cmd.Parameters.Add("@ApprovalDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.UpdatedDate;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar, 250).Value = RequisitionObj.CommonObj.CreatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.UpdateFailure);                  
+                    case "1":
+                        if(IsAdminORCeo)
+                        {
+                            RequisitionObj.FinalApproval = true;
+                        }
+                        else
+                        {
+                            RequisitionObj.ManagerApproved = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
 
         public string RequisitionCount(string LoginName)
         {

@@ -19,6 +19,8 @@ namespace SPOffice.UserInterface.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         [Required(ErrorMessage = "Email is missing")]
+        [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
+        [MaxLength(150)]
         public string Email { get; set; }
         [Required(ErrorMessage = "Address is missing")]
         public string Address { get; set; }
@@ -63,6 +65,7 @@ namespace SPOffice.UserInterface.Models
         public CourierAgencyViewModel courierAgency { get; set; }
         public List<SelectListItem> AgencyList { get; set; }
         [Display(Name = "Tracking Reference No")]
+        [Required(ErrorMessage = "Please enter Reference No")]
         [MaxLength(50)]
         public string TrackingRefNo { get; set; }
         [DataType(DataType.MultilineText)]
@@ -70,6 +73,8 @@ namespace SPOffice.UserInterface.Models
         public string GeneralNotes { get; set; }
         [Display(Name = "Tracking URL")]
         [MaxLength(500)]
+        [RegularExpression(@"^((http | https | ftp | www):\/\/)?([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)(\.)([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]+)", ErrorMessage = "URL format is wrong")]
+       // [RegularExpression(@" ^ http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$", ErrorMessage = "URL format is wrong")]
         public string TrackingURL { get; set; }
         public CommonViewModel commonObj { get; set; }
     }

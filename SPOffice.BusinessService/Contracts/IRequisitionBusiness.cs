@@ -8,9 +8,13 @@ namespace SPOffice.BusinessService.Contracts
 {
     public interface IRequisitionBusiness
     {
-        List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID);
-        object InsertRequisition(Requisition RequisitionObj);
+        List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID,bool IsAdminOrCeo,ReqAdvanceSearch ReqAdvanceSearchObj);
+        List<RequisitionDetail> GetRequisitionDetailList(Guid ID);
+        object InsertRequisition(Requisition RequisitionObj,bool isAdminOrCeo);
         object UpdateRequisition(Requisition RequisitionObj);
-        List<Requisition> GetRequisitionDetails(Guid ID);
+        Requisition GetRequisitionDetails(Guid ID, string LoginName);
+        object DeleteRequisitionDetailByID(Guid ID);
+        RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo);
+        Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo);
     }
 }

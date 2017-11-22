@@ -128,29 +128,7 @@
         }
 
     }
-
-    @if (Model.CloseBtn.Visible)
-    {
-        if (Model.CloseBtn.Disable)
-        {
-
-            <a class="thr_disbtn" title="@Model.CloseBtn.Title-@Model.CloseBtn.DisableReason">
-                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
-                <span class="btnText">@Model.CloseBtn.Text</span>
-            </a>
-        }
-        else
-        {
-
-            <a title="@Model.CloseBtn.Title" class="thr_btn" onclick=@Model.CloseBtn.Event>
-                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
-                <span class="btnText">@Model.CloseBtn.Text</span>
-            </a>
-        }
-
-    }
-
-    @if (Model.DepositBtn.Visible)
+ @if (Model.DepositBtn.Visible)
     {
         if (Model.DepositBtn.Disable)
         {
@@ -233,4 +211,53 @@
         }
 
     }
+
+
+
+    @if (Model.CloseBtn.Visible)
+    {
+        if (Model.CloseBtn.Disable)
+        {
+
+            <a class="thr_disbtn" title="@Model.CloseBtn.Title-@Model.CloseBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
+                <span class="btnText">@Model.CloseBtn.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a title="@Model.CloseBtn.Title" class="thr_btn" onclick=@Model.CloseBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/close.png")">
+                <span class="btnText">@Model.CloseBtn.Text</span>
+            </a>
+        }
+
+    }
+    <!-- Access check then visible button-->
+    @if ((Model.ApproveBtn.Visible)&&(Model.ApproveBtn.HasAccess))
+    {
+        if (Model.ApproveBtn.Disable)
+        {
+
+            <a class="thr_disbtn" title="@Model.ApproveBtn.Title-@Model.ApproveBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/Approve.PNG")">
+                <span class="btnText">@Model.ApproveBtn.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a title="@Model.ApproveBtn.Title" class="thr_btn" onclick=@Model.ApproveBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/Approve.PNG")">
+                <span class="btnText">@Model.ApproveBtn.Text</span>
+            </a>
+        }
+
+    }
+
+
+
+
+
 </div>

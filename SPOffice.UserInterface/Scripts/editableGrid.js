@@ -166,12 +166,12 @@ function EG_createTextBox(data, type, row, columnname,relatedfn) {
         align = 'style="text-align:right"'
         if ((data != '' && EG_MODE == 'ADD' && type == 'F') || (EG_MODE == 'EDIT' && type == 'F')) { data = roundoff(data); }
     }
-    // debugger;
+    
     if (data == "" || data == null) {
 
         return ('<input ' + align + ' onfocus="this.select();" type="textbox" class="gridTextbox" value="" onblur="EG_Validate_changeData_Text(this,' + c + type + c + ',' + b + ',' + c + columnname + c + ',' + c + relatedfn + c + ') " >  </input>');
     } else {
-        return ('<input ' + align + ' onfocus="this.select();" type="textbox" class="gridTextbox" value=' + data + ' onblur="EG_Validate_changeData_Text(this,' + c + type + c + ',' + b + ',' + c + columnname + c + ',' + c + relatedfn + c + ') " >  </input>');
+        return ('<input ' + align + ' onfocus="this.select();" type="textbox" class="gridTextbox" value="' + data + '" onblur="EG_Validate_changeData_Text(this,' + c + type + c + ',' + b + ',' + c + columnname + c + ',' + c + relatedfn + c + ') " >  </input>');
     }
 
 
@@ -191,8 +191,8 @@ function EG_createCombo(data, type, row, columnname, Source, relatedfn) {
         return ('<input class="gridTextbox" list="' + Source + '" name="' + columnname + randomno + '" onblur="EG_Validate_changeData_Combo(this,' + c + type + c + ',' + b + ',' + c + columnname + c + ',' + c + Source + c + ',' + c + relatedfn + c + ') " >');
     }
     else {
-        return ('<input class="gridTextbox" list="' + Source + '" name="' + columnname + randomno + '" value=' + data + ' onblur="EG_Validate_changeData_Combo(this,' + c + type + c + ',' + b + ',' + c + columnname + c + ',' + c + Source + c + ',' + c + relatedfn + c + ') " >');
-
+        return ('<input class="gridTextbox" list="' + Source + '" name="' + columnname + randomno + '" value="' + data + '"  onblur="EG_Validate_changeData_Combo(this,' + c + type + c + ',' + b + ',' + c + columnname + c + ',' + c + Source + c + ',' + c + relatedfn + c + ') " >');
+        
     }
  
 }

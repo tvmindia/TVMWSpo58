@@ -1,0 +1,137 @@
+﻿@model SPOffice.UserInterface.Models.CourierReportViewModel
+@using UserInterface.App_Start
+@{
+    ViewBag.Title = "CourierReport";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+@section styles {
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableButtons")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
+    <style>
+        table.dataTable tr.odd {
+            background-color: rgba(148, 78, 132, 0.16);
+        }
+
+        table.dataTable tr.even {
+            background-color: white;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 20px !important;
+        }
+    </style>
+}
+
+<div style="width:100%;">
+    <ol class="breadcrumb">
+        <li><a href=@Url.Action("Index","Report")><i class="fa fa-truck"></i> Reports</a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
+
+
+
+<div class="preloader" id="prelaoder">
+    <div class="col-md-12">
+        <div class="col-md-12">Loading </div>
+        <div class="col-md-12" style="margin-left:5%;margin-top:-3%;"><img src="~/Content/images/loading.gif" class="preloaderImg" /></div>
+    </div>
+
+</div>
+<div class="col-md-12">
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    &nbsp;
+</div>
+
+
+<div class="form-horizontal">
+
+    <div class="col-md-9" style="margin-top:10px;">
+        <div class="col-md-3">
+            @Html.Label("From Date", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.TextBox("fromdate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3", @onchange = "RefreshCourierDetailTable();", @Value = ViewBag.fromdate })
+
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.Label("To Date", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.TextBox("todate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3", @onchange = "RefreshCourierDetailTable();", @Value = ViewBag.todate })
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.AgencyCode, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.AgencyCode, Model.AgencyList, new { @class = "form-control BlockEnter", @onchange = "RefreshCourierDetailTable();", value = -1, style = "padding:4px 12px;", @id = "AgencyCode" })
+                @Html.ValidationMessageFor(model => model.AgencyCode, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.Type, Model.CourierTypeList, new { @class = "form-control BlockEnter", @onchange = "RefreshCourierDetailTable();", value = -1, style = "padding:4px 12px;", @id = "Type" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+
+        <div class="col-md-12"><p></p></div>
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" id="Search">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" style="height:28px"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row tableContainer">
+            <div class="col-md-12">
+                <table id="courierDetailTable" class="table stripe" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="text-center TableHead">
+                            <th>Type</th>
+                            <th>Transaction Date</th>
+                            <th>Track</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>Agency</th>
+                            <th>Referal No.</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+    @section Scripts {
+        @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
+        @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")
+        @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableButtons")
+        @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/CourierReport")
+        @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
+
+    }

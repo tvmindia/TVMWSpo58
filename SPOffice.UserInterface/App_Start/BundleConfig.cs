@@ -49,7 +49,8 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/Application").Include("~/Scripts/UserJS/Application.js"));
             bundles.Add(new ScriptBundle("~/bundles/AppObject").Include("~/Scripts/UserJS/AppObject.js"));
             bundles.Add(new ScriptBundle("~/bundles/AppSubobject").Include("~/Scripts/UserJS/AppSubobject.js"));
-            bundles.Add(new ScriptBundle("~/bundles/Roles").Include("~/Scripts/UserJS/Roles.js"));
+            bundles.Add(new ScriptBundle("~/bundles/Roles").Include("~/Scripts/UserJS/Roles.js")); 
+            bundles.Add(new ScriptBundle("~/bundles/Units").Include("~/Scripts/UserJS/Units.js"));
 
 
             bundles.Add(new ScriptBundle("~/bundles/Product").Include("~/Scripts/UserJS/Product.js"));
@@ -62,9 +63,15 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/ProformaInvoice").Include("~/Scripts/UserJS/ProformaInvoice.js"));
             bundles.Add(new ScriptBundle("~/bundles/Dashboard").Include("~/Scripts/UserJS/Dashboard.js"));
 
+            //----Report
+            bundles.Add(new ScriptBundle("~/bundles/EnquiryReport").Include("~/Scripts/UserJS/EnquiryReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/CourierReport").Include("~/Scripts/UserJS/CourierReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/QuotationReport").Include("~/Scripts/UserJS/QuotationReport.js"));
+
+
         }
-          
-        }
+
+    }
             
         }
 

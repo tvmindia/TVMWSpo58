@@ -89,6 +89,12 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "Deletion Successfull! "; }
         }
+
+        public string MailSuccess
+        {
+            get { return "Mail Send Successfully ! "; }
+        }
+
         public string FKviolation
         {
             get { return "Deletion Not Successfull!-Already In Use"; }

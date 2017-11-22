@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace SPOffice.UserInterface.Controllers
             _productBusiness = productBusiness;
         }
         // GET: Quotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
@@ -85,22 +87,22 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = new List<SelectListItem>();
             List<QuoteStageViewModel> QuoteStageList = Mapper.Map<List<QuoteStage>, List<QuoteStageViewModel>>(_quotationBusiness.GetAllQuoteStages());
             foreach (QuoteStageViewModel QS in QuoteStageList)
-            {
-                selectListItem.Add(new SelectListItem
-                {
-                    Text = QS.Description,
-                    Value = QS.Code.ToString(),
-                    Selected = false
-                });
-             
+            {                              
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = QS.Description,
+                        Value = QS.Code.ToString(),
+                        Selected = false
+                    });                              
+                
             }
             //default draft selection in drop down
             var _selected = selectListItem.Where(x => x.Value == "DFT").FirstOrDefault();
             if(_selected!=null)
-            {
+            {                
                 _selected.Selected = true;
             }
-             
+
 
             quoteHeaderVM.QuoteStageList = selectListItem;
 
@@ -122,6 +124,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #region GetAllQuotations
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllQuotations(string filter)
         {
             try
@@ -156,8 +159,10 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllQuotations
+
         #region GetQuationDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuationDetailsByID(string ID)
         {
             try
@@ -180,6 +185,7 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdateQuotaion
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "W")]
         public string InsertUpdateQuotaion(QuoteHeaderViewModel quoteHeaderVM)
         {
             try
@@ -233,10 +239,11 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion InsertUpdateQuotaion
 
-     
 
-        #region GetQuationDetailsByID
+
+        #region GetQuateItemsByQuateHeadID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuateItemsByQuateHeadID(string ID)
         {
             try
@@ -254,10 +261,11 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion GetQuationDetailsByID
+        #endregion GetQuateItemsByQuateHeadID
 
         #region  DeleteItemByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "D")]
         public string DeleteItemByID(string ID)
         {
             object result = null;
@@ -268,7 +276,7 @@ namespace SPOffice.UserInterface.Controllers
                     throw new Exception("ID Missing");
                 }
                 result=_quotationBusiness.DeleteQuoteItem(Guid.Parse(ID));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result,Message = c.DeleteSuccess });
             }
             catch (Exception ex)
             {
@@ -280,6 +288,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllProductCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllProductCodes()
         {
             try
@@ -289,7 +298,7 @@ namespace SPOffice.UserInterface.Controllers
                 {
                  productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code,Description=P.Description,Rate=P.Rate }).OrderBy(x => x.Code).ToList();
                 }
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList,Message =c.DeleteSuccess });
             }
             catch (Exception ex)
             {
@@ -301,6 +310,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllUnitCodes
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetAllUnitCodes()
         {
             try
@@ -319,9 +329,11 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllUnitCodes
+
         #region GetTaxRate
        
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetTaxRate(string Code)
         {
             try
@@ -340,6 +352,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetMailPreview
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult GetMailPreview(string ID)
         {
             QuoteMailPreviewViewModel quoteMailPreviewViewModel = null;
@@ -353,7 +366,12 @@ namespace SPOffice.UserInterface.Controllers
                 quoteMailPreviewViewModel.quoteHeaderViewModel = Mapper.Map<QuoteHeader, QuoteHeaderViewModel>(_quotationBusiness.GetMailPreview(Guid.Parse(ID)));
                 if (quoteMailPreviewViewModel.quoteHeaderViewModel!=null)
                 {
-                   quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
+                    if (quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead != null)
+                        quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyHead.Replace(Environment.NewLine,"<br/>");
+                    if (quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot != null)
+                        quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot.Replace(Environment.NewLine,"<br/>");
+
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
 
                     // quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity),2); return QI; }).ToList() : null;
                     //if(quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList!=null)
@@ -378,6 +396,7 @@ namespace SPOffice.UserInterface.Controllers
 
         [HttpPost,ValidateInput(false)]
         [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public async Task<string> SendQuoteMail(QuoteHeaderViewModel quoteHeaderVM)
         {
             try
@@ -385,10 +404,10 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (!string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
                 {
-                    //AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUA"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
-                    quoteHeaderVM.commonObj.CreatedBy = "Albert Thomson";//_appUA.UserName;
-                    quoteHeaderVM.commonObj.CreatedDate = DateTime.Now;//_appUA.DateTime;
+                    quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
+                    quoteHeaderVM.commonObj.CreatedDate = _appUA.DateTime;
                     quoteHeaderVM.commonObj.UpdatedBy = quoteHeaderVM.commonObj.CreatedBy;
                     quoteHeaderVM.commonObj.UpdatedDate = quoteHeaderVM.commonObj.CreatedDate;
                     
@@ -399,7 +418,7 @@ namespace SPOffice.UserInterface.Controllers
                         quoteHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _quotationBusiness.UpdateQuoteMailStatus(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
                     }
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result,MailResult= sendsuccess });
+                    return JsonConvert.SerializeObject(new { Result = "OK",MailResult= sendsuccess ,Message = c.MailSuccess});
                 }
                 else
                 {
@@ -418,6 +437,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetCustomerDetailsByID
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetCustomerDetailsByID(string ID)
         {
             try
@@ -436,6 +456,33 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetCustomerDetailsByID
+
+
+        #region DeleteQuotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "D")]
+        public string DeleteQuotation(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _quotationBusiness.DeleteQuotation(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, DeleteQuote = c.DeleteSuccess });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+
+        #endregion DeleteQuotation
+
+
+
 
         #region ButtonStyling
         [HttpGet]
@@ -474,20 +521,26 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Title = "Save";
                     ToolboxViewModelObj.savebtn.Event = "saveInvoices();";
 
+
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteClick();";
+
                     ToolboxViewModelObj.resetbtn.Visible = true;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
                     ToolboxViewModelObj.resetbtn.Title = "Reset";
-                    ToolboxViewModelObj.resetbtn.Event = "Reset();";
-
-                    ToolboxViewModelObj.CloseBtn.Visible = true;
-                    ToolboxViewModelObj.CloseBtn.Text = "Close";
-                    ToolboxViewModelObj.CloseBtn.Title = "Close";
-                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+                    ToolboxViewModelObj.resetbtn.Event = "Reset();";                   
 
                     ToolboxViewModelObj.EmailBtn.Visible = true;
                     ToolboxViewModelObj.EmailBtn.Text = "Mail";
                     ToolboxViewModelObj.EmailBtn.Title = "Mail";
                     ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+
+                    ToolboxViewModelObj.CloseBtn.Visible = true;
+                    ToolboxViewModelObj.CloseBtn.Text = "Close";
+                    ToolboxViewModelObj.CloseBtn.Title = "Close";
+                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
 
                     break;
                 case "Add":

@@ -62,7 +62,7 @@
 
         <table>
             <tr>
-                <td style="font-size:15px;">@Model.quoteHeaderViewModel.QuoteBodyHead</td>
+                <td style="font-size:15px;">@Html.Raw( @Model.quoteHeaderViewModel.QuoteBodyHead)</td>
             </tr>
         </table>
         <br />
@@ -70,6 +70,7 @@
             <thead>
                 <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
                     <th style="text-align: center;padding: 8px;">SlNo.</th>
+                    <th style="text-align: center;padding: 8px;">Product Code</th>
                     <th style="text-align: center;padding: 8px;">Description</th>
                     @*<th style="text-align: center;padding: 8px;">Unit</th>
                     <th style="text-align: center;padding: 8px;">Quantity</th>*@
@@ -84,6 +85,7 @@
                         <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
 
                             <td style="text-align: center;padding: 8px;">@slno</td>
+                            <td style="text-align: center;padding: 8px;">@mp.ProductCode</td>
                             <td style="text-align: center;padding: 8px;">@mp.ProductDescription</td>
                             @*<td style="text-align: center;padding: 8px;">@mp.UnitDescription</td>
                             <td style="text-align: center;padding: 8px;">@mp.Quantity</td>*@
@@ -156,8 +158,7 @@
             
             <tr class="details">
                 <td style="vertical-align: top; padding: 5px 5px 20px;font-size:15px;" valign="top">
-
-                    @Model.quoteHeaderViewModel.QuoteBodyFoot
+                   @Html.Raw( @Model.quoteHeaderViewModel.QuoteBodyFoot)
                 </td>
             </tr>
         </table>
