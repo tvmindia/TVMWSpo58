@@ -27,6 +27,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string ManagerApprovalDateFormatted { get; set; }
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
+        public string PendingRequisitionCount { get; set; }
     }
     public class RequisitionDetail
     {

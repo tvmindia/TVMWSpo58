@@ -11,6 +11,7 @@ using AutoMapper;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.UserInterface.Models;
+using Newtonsoft.Json;
 
 namespace UserInterface.Controllers
 {
@@ -115,6 +116,25 @@ namespace UserInterface.Controllers
             data.QuoteSummary = Mapper.Map<QuotationSummary, QuotationSummaryViewModel>(_dashboardBusiness.GetQuotationSummary());
 
             return PartialView("_POandQuoteSummary", data);
+        }
+
+
+       
+        public string RequisitionCount()
+        {
+            try
+            {
+                string result;
+                AppUA _appUA = Session["AppUA"] as AppUA;
+                result = _dashboardBusiness.RequisitionCount(_appUA.UserName);
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
         }
 
     }

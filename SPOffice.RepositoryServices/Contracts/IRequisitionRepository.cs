@@ -12,5 +12,6 @@ namespace SPOffice.RepositoryServices.Contracts
         object InsertRequisition(Requisition RequisitionObj);
         object UpdateRequisition(Requisition RequisitionObj);
         List<Requisition> GetRequisitionDetails(Guid ID);
+        string RequisitionCount(string LoginName);
     }
 }

@@ -15,13 +15,15 @@ namespace SPOffice.BusinessService.Services
         private IFollowUpRepository _followupRepository;
         private ICustomerRepository _customerRepository;
         private IQuotationRepository _quotationRepository;
-        public DashboardBusiness(IDashboardRepository dashboardrepository, IEnquiryRepository enquiryRepository, IFollowUpRepository followupRepository, ICustomerRepository customerRepository, IQuotationRepository quotationRepository)
+        private IRequisitionRepository _requisitionRepository;
+        public DashboardBusiness(IDashboardRepository dashboardrepository, IEnquiryRepository enquiryRepository, IFollowUpRepository followupRepository, ICustomerRepository customerRepository, IQuotationRepository quotationRepository, IRequisitionRepository requisitionRepository)
         {
             _dashboardrepository = dashboardrepository;
             _enquiryRepository = enquiryRepository;
             _followupRepository = followupRepository;
             _customerRepository = customerRepository;
             _quotationRepository = quotationRepository;
+            _requisitionRepository = requisitionRepository;
         }
         public DashboardStatus GetCountOfEnquiries(string duration)
         {
@@ -79,9 +81,15 @@ namespace SPOffice.BusinessService.Services
             return _customerRepository.GetCustomerPOSummary();
         }
 
-        public QuotationSummary GetQuotationSummary() {
+        public QuotationSummary GetQuotationSummary()
+        {
 
             return _quotationRepository.GetQuotationSummary();
+
+        }
+             public string RequisitionCount(string LoginName)
+        {
+            return _requisitionRepository.RequisitionCount(LoginName);
         }
     }
 }

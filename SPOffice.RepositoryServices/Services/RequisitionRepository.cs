@@ -275,5 +275,36 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
+        public string RequisitionCount(string LoginName)
+        {
+                Requisition _RequisitionObj = new Requisition();
+                try
+                {
+                    using (SqlConnection con = _databaseFactory.GetDBConnection())
+                    {
+                        using (SqlCommand cmd = new SqlCommand())
+                        {
+                            if (con.State == ConnectionState.Closed)
+                            {
+                                con.Open();
+                            }
+                            cmd.Connection = con;
+                            cmd.Parameters.Add("@LoginName", SqlDbType.NVarChar, 50).Value = LoginName;
+                            cmd.CommandText = "[Office].[GetPendingRequisitionCount]";
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            _RequisitionObj.PendingRequisitionCount = cmd.ExecuteScalar().ToString();
+
+                        }
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return _RequisitionObj.PendingRequisitionCount;
+            }
     }
-}
+
+    }
