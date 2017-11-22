@@ -87,7 +87,7 @@ namespace UserInterface.App_Start
                 //--For Report purpose
                 config.CreateMap<ReportViewModel, Reports>().ReverseMap();
                 config.CreateMap<EnquiryReport, EnquiryReportViewModel>().ReverseMap();
-
+                config.CreateMap<QuotationReport, QuotationReportViewModel>().ReverseMap();
             });
         }
     }

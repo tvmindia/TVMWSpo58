@@ -105,6 +105,70 @@ namespace SPOffice.UserInterface.Controllers
           
         }
 
+        /// <summary>
+        /// To Get Quotation Details in Report
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "QuotationReport", Mode = "R")]
+        public ActionResult QuotationReport()
+        {
+            AppUA _appUA = Session["AppUA"] as AppUA;
+            DateTime dt = _appUA.DateTime;
+            ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
+            ViewBag.todate = dt.ToString("dd-MMM-yyyy");
+            //QuotationReportViewModel QRVM = new QuotationReportViewModel();
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+
+
+           // List<QuotationReportViewModel> enquiryStatusList = Mapper.Map<List<EnquiryStatus>, List<QuotationReportViewModel>>(_enquiryStatusBusiness.GetAllEnquiryStatusList()).ToList();
+            //if (enquiryStatusList != null)
+            //{
+            //    selectListItem.Add(new SelectListItem
+            //    {
+            //        Text = "All",
+            //        Value = "ALL",
+            //        Selected = false
+            //    });
+
+            //    foreach (QuotationReportViewModel esvm in enquiryStatusList)
+            //    {
+            //        selectListItem.Add(new SelectListItem
+            //        {
+            //            Text = esvm.Status,
+            //            Value = esvm.StatusCode.ToString(),
+            //            Selected = false
+            //        });
+            //    }
+            //}
+            //ERVM.enquiryStatusObj = new QuotationReportViewModel();
+            //ERVM.enquiryStatusObj.EnquiryStatusList = selectListItem;
+
+            return View();
+        }
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "QuotationReport", Mode = "R")]
+        public string GetQuotationDetails(string FromDate, string ToDate, string EnquiryStatus, string search)
+        {
+
+            try
+            {
+                DateTime? FDate = string.IsNullOrEmpty(FromDate) ? (DateTime?)null : DateTime.Parse(FromDate);
+                DateTime? TDate = string.IsNullOrEmpty(ToDate) ? (DateTime?)null : DateTime.Parse(ToDate);
+                List<QuotationReportViewModel> QuotationReport = Mapper.Map<List<QuotationReport>, List<QuotationReportViewModel>>(_reportBusiness.GetQuotationDetails(FDate, TDate, EnquiryStatus, search));
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = QuotationReport });
+
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
+            }
+
+
+        }
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)

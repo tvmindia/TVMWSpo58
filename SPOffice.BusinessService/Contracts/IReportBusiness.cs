@@ -12,5 +12,6 @@ namespace SPOffice.BusinessService.Contracts
     {
         List<Reports> GetAllSysReports(AppUA appUA);
         List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate, string EnquiryStatus, string search);
+        List<QuotationReport> GetQuotationDetails(DateTime? FromDate, DateTime? ToDate, string EnquiryStatus, string search);
     }
 }

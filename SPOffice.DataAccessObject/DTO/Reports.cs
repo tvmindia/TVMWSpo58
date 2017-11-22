@@ -22,7 +22,7 @@ namespace SPOffice.DataAccessObject.DTO
     }
     public class EnquiryReport
     {
-        public string ID { get; set; }
+        public Guid ID { get; set; }
         public string EnquiryNo { get; set; }
         public string EnquiryDate { get; set; }
         public string ContactTitle { get; set; }
@@ -39,5 +39,17 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public string  EnquiryStatus { get; set; }
         public string Subject { get; set; }
+    }
+
+    public class QuotationReport
+    {
+        public Guid ID { get; set; }
+        public string QuotationNo { get; set; }
+        public string QuotationDate { get; set; }
+        public string QuoteFromCompName { get; set; }
+        public string QuoteStage { get; set; }
+        public string QuoteSubject { get; set; }
+        public string ContactPerson { get; set; }
+        public string CompanyName { get; set; }
     }
 }

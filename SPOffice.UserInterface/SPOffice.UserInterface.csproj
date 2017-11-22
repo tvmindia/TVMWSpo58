@@ -635,6 +635,7 @@
     <Content Include="Scripts\UserJS\Product.js" />
     <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
+    <Content Include="Scripts\UserJS\QuotationReport.js" />
     <Content Include="Scripts\UserJS\RawMaterial.js" />
     <Content Include="Scripts\UserJS\Requisition.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
@@ -774,8 +775,8 @@
     <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
     <Content Include="Views\Requisition\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
-    <Content Include="Views\Report\GetEnquiryDetails.cshtml" />
     <Content Include="Views\Report\EnquiryReport.cshtml" />
+    <Content Include="Views\Report\QuotationReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

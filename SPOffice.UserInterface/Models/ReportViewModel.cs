@@ -23,7 +23,7 @@ namespace SPOffice.UserInterface.Models
 
     public class EnquiryReportViewModel
     {
-        public string ID { get; set; }
+        public Guid ID { get; set; }
         public string EnquiryNo { get; set; }
         public string EnquiryDate { get; set; }
         public string ContactTitle { get; set; }
@@ -43,5 +43,17 @@ namespace SPOffice.UserInterface.Models
         public string Subject { get; set; }
         public string Search { get; set; }
         public EnquiryStatusViewModel enquiryStatusObj { get; set; }
+    }
+
+    public class QuotationReportViewModel
+    {
+        public Guid ID { get; set; }
+        public string QuotationNo { get; set; }
+        public string QuotationDate { get; set; }
+        public string QuoteFromCompName { get; set; }
+        public string QuoteStage { get; set; }
+        public string QuoteSubject { get; set; }
+        public string ContactPerson { get; set; }
+        public string CompanyName { get; set; }
     }
 }

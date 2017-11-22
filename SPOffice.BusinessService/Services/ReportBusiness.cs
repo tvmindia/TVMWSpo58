@@ -47,5 +47,20 @@ namespace SPOffice.BusinessService.Services
             return enquiryReportList;
 
         }
+
+        public List<QuotationReport> GetQuotationDetails(DateTime? FromDate, DateTime? ToDate, string EnquiryStatus, string search)
+        {
+            List<QuotationReport> quotationList = null;
+            try
+            {
+                quotationList = _reportRepository.GetQuotationDetails(FromDate, ToDate, EnquiryStatus, search);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quotationList;
+
+        }
     }
     }

@@ -76,7 +76,8 @@ namespace SPOffice.RepositoryServices.Services
         /// </summary>
         /// <param name="FromDate"></param>
         /// <param name="ToDate"></param>
-     
+        /// <param name="EnquiryStatus"></param>
+        /// <param name="search"></param>
         /// <returns>List</returns>
         public List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search)
         {
@@ -107,7 +108,7 @@ namespace SPOffice.RepositoryServices.Services
                                 {
                                     EnquiryReport enquiryReport = new EnquiryReport();
                                     {
-                                        enquiryReport.ID = (sdr["ID"].ToString() != "" ? sdr["ID"].ToString() : enquiryReport.ID);
+                                        enquiryReport.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiryReport.ID);
                                         enquiryReport.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : enquiryReport.EnquiryNo);
                                         enquiryReport.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(settings.dateformat) : enquiryReport.EnquiryDate);
                                         enquiryReport.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : enquiryReport.ContactTitle);
@@ -137,6 +138,75 @@ namespace SPOffice.RepositoryServices.Services
                 throw ex;
             }
             return enquiryList;
+        }
+
+        /// <summary>
+        ///To Get Quotation details in Report
+        /// </summary>
+        /// <param name="FromDate"></param>
+        /// <param name="ToDate"></param>
+        /// <param name=""></param>
+        /// <param name="search"></param>
+        /// <returns>List</returns>
+        public List<QuotationReport> GetQuotationDetails(DateTime? FromDate, DateTime? ToDate, string Status, string search)
+        {
+            List<QuotationReport> quotationList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = FromDate;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ToDate;
+                        //cmd.Parameters.Add("@EnquiryStatus", SqlDbType.NVarChar, 50).Value = EnquiryStatus != "" ? EnquiryStatus : null;
+                        //cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = search != "" ? search : null;
+                        cmd.CommandText = "[Office].[RPT_GetQuotationDetails]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                quotationList = new List<QuotationReport>();
+                                while (sdr.Read())
+                                {
+                                    QuotationReport quotationReport = new QuotationReport();
+                                    {
+                                        quotationReport.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationReport.ID);
+                                        quotationReport.QuotationNo = (sdr["QuotationNo"].ToString() != "" ? sdr["QuotationNo"].ToString() : quotationReport.QuotationNo);
+                                        quotationReport.QuotationDate = (sdr["QuotationDate"].ToString() != "" ? DateTime.Parse(sdr["QuotationDate"].ToString()).ToString(settings.dateformat) : quotationReport.QuotationDate);
+                                        quotationReport.QuoteFromCompName = (sdr["QuoteFromCompanyName"].ToString() != "" ? sdr["QuoteFromCompanyName"].ToString() : quotationReport.QuoteFromCompName);
+                                        quotationReport.QuoteStage = (sdr["QuoteStage"].ToString() != "" ? sdr["QuoteStage"].ToString() : quotationReport.QuoteStage);
+                                        quotationReport.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : quotationReport.CompanyName);
+                                        quotationReport.QuoteSubject = (sdr["QuoteSubject"].ToString() != "" ? sdr["QuoteSubject"].ToString() : quotationReport.QuoteSubject);
+                                        quotationReport.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : quotationReport.ContactPerson);
+                                        //enquiryReport.Email = (sdr["Email"].ToString() != "" ? sdr["Email"].ToString() : enquiryReport.Email);
+                                        //enquiryReport.LandLine = (sdr["LandLine"].ToString() != "" ? sdr["LandLine"].ToString() : enquiryReport.LandLine);
+                                        //enquiryReport.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : enquiryReport.Mobile);
+                                        //enquiryReport.Fax = (sdr["Fax"].ToString() != "" ? sdr["Fax"].ToString() : enquiryReport.Fax);
+                                        //enquiryReport.EnquirySource = (sdr["EnquirySource"].ToString() != "" ? sdr["EnquirySource"].ToString() : enquiryReport.EnquirySource);
+                                        //enquiryReport.Industry = (sdr["Industry"].ToString() != "" ? sdr["Industry"].ToString() : enquiryReport.Industry);
+                                        //enquiryReport.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiryReport.GeneralNotes);
+                                        //enquiryReport.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : enquiryReport.EnquiryStatus);
+                                        //enquiryReport.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : enquiryReport.Subject);
+                                    }
+                                    quotationList.Add(quotationReport);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quotationList;
         }
 
     }
