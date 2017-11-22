@@ -40,6 +40,14 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar,250).Value = ReqAdvanceSearchObj.ReqStatus;
                         cmd.Parameters.Add("@ReqSearch", SqlDbType.NVarChar,250).Value = ReqAdvanceSearchObj.ReqSearch;
                         cmd.Parameters.Add("@IsAdminOrCeo", SqlDbType.Bit).Value = IsAdminOrCeo;
+                        if(ReqAdvanceSearchObj.ManagerApproved)
+                        {
+                            cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = ReqAdvanceSearchObj.ManagerApproved;
+                        }
+                        if(ReqAdvanceSearchObj.FinalApproved)
+                        {
+                            cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = ReqAdvanceSearchObj.FinalApproved;
+                        }                        
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())

@@ -7,6 +7,7 @@
 @section styles {
 
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
     <style>
         textarea:focus {
         height: 5em!important;
@@ -71,7 +72,12 @@
             <div class="col-md-3" style="padding-left:0px;padding-right:0px;">
                @Html.Label("Search", htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12" style="padding-right:0px;">
-                @Html.TextBox("Search", "", new { @class = "form-control advance-filter",@id="txtReqSearch" })
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" id="txtReqSearch">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" onclick="FilterContent();" style="height:28px"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
             </div>
             </div>
         </div>
@@ -344,6 +350,8 @@
 </section>
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
-    <script src="~/Scripts/UserJS/Requisition.js"></script>
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/Requisition")
+    
 }

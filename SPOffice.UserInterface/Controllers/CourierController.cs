@@ -23,8 +23,9 @@ namespace SPOffice.UserInterface.Controllers
         }
         // GET: Courier
         [AuthSecurityFilter(ProjectObject = "Courier", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.value = id;
             CourierViewModel CourierVM = new CourierViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CourierAgencyViewModel> courierAgencyList = Mapper.Map<List<CourierAgency>, List<CourierAgencyViewModel>>(_courierBusiness.GetAllCourierAgency());

@@ -249,6 +249,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
@@ -617,6 +618,7 @@
     <Content Include="Scripts\jszip.min.js" />
     <Content Include="Scripts\lightbox.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\UserJS\Application.js" />
     <Content Include="Scripts\UserJS\AppObject.js" />
@@ -628,6 +630,7 @@
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\SupplierOrder.js" />
     <Content Include="Scripts\UserJS\Units.js" />
     <Content Include="Scripts\UserJS\Login.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
@@ -684,6 +687,7 @@
     <Compile Include="Controllers\RequisitionController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
+    <Compile Include="Controllers\SupplierOrderController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -785,6 +789,7 @@
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\Report\CourierReport.cshtml" />
+    <Content Include="Views\SupplierOrder\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
