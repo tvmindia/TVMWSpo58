@@ -90,6 +90,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<EnquiryReport, EnquiryReportViewModel>().ReverseMap();
 
                 config.CreateMap<RequisitionOverViewCountViewModel, RequisitionOverViewCount>().ReverseMap();
+                config.CreateMap<CourierReportViewModel, CourierReport>().ReverseMap();
             });
         }
     }
