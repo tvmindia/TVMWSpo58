@@ -87,9 +87,6 @@ namespace SPOffice.BusinessService.Services
             return _quotationRepository.GetQuotationSummary();
 
         }
-             public string RequisitionCount(string LoginName)
-        {
-            return _requisitionRepository.RequisitionCount(LoginName);
-        }
+        
     }
 }

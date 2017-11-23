@@ -679,27 +679,35 @@ function ShowFiles() {
     document.getElementById("text_info").value = msgs.join("\r\n");
 }
 
-
-
+ //To get the Pending Requisition Count for CEO and Managers  who has got approval permissions
 function GetRequisitionBubbleCount() {
     try {
         debugger;
         var data = {};
         var ds = {};
-        ds = GetDataFromServer("Dashboard/RequisitionCount/", data);
+        ds = GetDataFromServer("Requisition/RequisitionCount/", data);
         if (ds != '') {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-            $('#RequisitionPendingList').text(ds.Records);
-            $('#RequisitionPendingList').attr('title', ds.Records + ' Pending Requisitions Today');
-            //$('#RequisitionPendingList').attr('title', ds.Records + ' Pending Requisitions Today');
+            if (ds.isApproverManager) {
+                $('#RequisitionPendingList').text(ds.Records.PendingManagerCount);
+                $('#RequisitionPendingList').attr('title', ds.Records.PendingManagerCount + ' Pending Requisitions');
+            }
+            if (ds.isAdminOrCeo) {
+                $('#RequisitionPendingList').text(ds.Records.PendingFinalCount);
+                $('#RequisitionPendingList').attr('title', ds.Records.PendingFinalCount + ' Pending Requisitions');
+                //$('#RequisitionPendingList').attr('title', ds.Records + ' Pending Requisitions Today');
+            }
+
         }
         if (ds.Result == "ERROR") {
-            $('#').text("0");
+            $('#RequisitionPendingList').text("0");
         }
     }
     catch (e) {
 
     }
 }
+
+

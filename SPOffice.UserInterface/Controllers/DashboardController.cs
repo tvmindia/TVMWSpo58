@@ -22,13 +22,11 @@ namespace UserInterface.Controllers
 
         AppConst c = new AppConst();
         IDashboardBusiness _dashboardBusiness;
-      
         ICommonBusiness _commonBusiness;
 
         public DashboardController(IDashboardBusiness dashboardBusiness , ICommonBusiness commonBusiness)
         {
             _dashboardBusiness = dashboardBusiness;
-          
             _commonBusiness = commonBusiness;
 
         }
@@ -36,7 +34,7 @@ namespace UserInterface.Controllers
 
 
         // GET: Dashboard
-        [AuthSecurityFilter(ProjectObject = "Dashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult Index()
         {
             //AppUA _appUA = Session["AppUA"] as AppUA;
@@ -51,7 +49,7 @@ namespace UserInterface.Controllers
             return View();
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult Admin()
         {
             return View();
@@ -65,7 +63,7 @@ namespace UserInterface.Controllers
             return RedirectToAction("Admin", "DashBoard");
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult RecentEnquiries()
         {
             RecentEnquiriesViewModel data=new RecentEnquiriesViewModel();
@@ -75,7 +73,7 @@ namespace UserInterface.Controllers
         }
 
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult EnquiriesSummary()
         {
             EnquirySummaryViewModel data = new EnquirySummaryViewModel();
@@ -84,7 +82,7 @@ namespace UserInterface.Controllers
             return PartialView("_EnquirySummary", data);
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult TodaysFollowUps()
         {
             TodaysFollowUpsViewModel data = new TodaysFollowUpsViewModel();
@@ -107,7 +105,7 @@ namespace UserInterface.Controllers
         }
 
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult POandQuoteSummary()
         {
             POandQuoteSummaryViewModel data = new POandQuoteSummaryViewModel();
@@ -120,22 +118,7 @@ namespace UserInterface.Controllers
 
 
        
-        public string RequisitionCount()
-        {
-            try
-            {
-                string result;
-                AppUA _appUA = Session["AppUA"] as AppUA;
-                result = _dashboardBusiness.RequisitionCount(_appUA.UserName);
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
-
-            }
-            catch (Exception ex)
-            {
-                AppConstMessage cm = c.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
-            }
-        }
-
+       
+        
     }
 }

@@ -42,7 +42,6 @@ $(document).ready(function () {
             {
                 "data": "ManagerApproved", render: function (data, type, row)
                 {
-                    debugger;
                     if (data)
                     {
                         return "Approved ✔ <br/> 📅 " + (row.ManagerApprovalDateFormatted!==null?row.ManagerApprovalDateFormatted:"-");
@@ -124,7 +123,16 @@ $(document).ready(function () {
             FilterContent();
         });
         PaintSearchTiles();
+        //To check whether redirected from any of the pages
+        if ($('#filter').val() != '')        {
+            debugger;
+            window.history.replaceState(null, null, "/"+window.location.pathname.split('/')[1]);
+            var FilterFromDash = new Object();
+            FilterFromDash.id = $('#filter').val();
+            Gridfilter(FilterFromDash);
+        } 
     }
+
     catch (e) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
@@ -205,7 +213,7 @@ function PaintSearchTiles()
                  + '</div>'
              + '</div>'
             $('#divSearchTiles').append(html);
-            $('#FilterHeadSeperater').append('<p id="PFMAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> <span style="color:red;">⏱</span>  Manager approval</p>');
+            $('#FilterHeadSeperater').append('<p id="PFMAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Pending Manager approvals</p>');
         }
         if (RequisitionOverViewCount.PendingFinalCount !== -1) {
             var html = '<div class="col-md-3 col-sm-6 col-xs-12 " id="PFFA" onclick="Gridfilter(this);" style="cursor:pointer">'
@@ -219,7 +227,7 @@ function PaintSearchTiles()
                  + '</div>'
              + '</div>'
             $('#divSearchTiles').append(html);
-            $('#FilterHeadSeperater').append('<p id="PFFAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> <span style="color:red;">⏱</span>  final approval</p>');
+            $('#FilterHeadSeperater').append('<p id="PFFAfilter" style="padding-right:20px;font-size:medium;color:#dd4b39;" class="fa fa-th"> Pending final approvals</p>');
         }
     }
     catch(e)
@@ -253,7 +261,7 @@ function Gridfilter(filter) {
     {
         FinalApproved = true;
         $('#PFFAfilter').show();
-    }
+    }   
     FilterContent();
 }
 function ClearFormFields()

@@ -16,7 +16,7 @@
 
     <style>
         table.dataTable tr.odd {
-            background-color: rgba(148, 78, 132, 0.16);
+          background-color: rgba(102, 204, 255, 0.16);
         }
 
         table.dataTable tr.even {
@@ -55,7 +55,7 @@
         <div class="col-md-3">
             @Html.Label("From Date", htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
-                @Html.TextBox("fromdate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3", @onchange = "OnChangeCall()", @Value = ViewBag.fromdate })
+                @Html.TextBox("fromdate", "", new { @class = "form-control datepicker advance-filter",@Value = ViewBag.fromdate })
 
 
             </div>
@@ -63,31 +63,37 @@
         <div class="col-md-3">
             @Html.Label("To Date", htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
-                @Html.TextBox("todate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3", @onchange = "OnChangeCall()", @Value = ViewBag.todate })
+                @Html.TextBox("todate", "", new { @class = "form-control datepicker advance-filter" , @Value = ViewBag.todate })
             </div>
         </div>
-        @*<div class="col-md-3">
-            @Html.LabelFor(model => model.EnquiryStatus, htmlAttributes: new { @class = "control-label" })
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.QuoteFromCompName, htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
-                @Html.DropDownListFor(model => model.EnquiryStatus, Model.enquiryStatusObj.EnquiryStatusList, new { @class = "form-control BlockEnter", @onchange = "OnChangeCall()", value = -1, style = "padding:4px 12px;", @id = "statusList" })
-                @Html.ValidationMessageFor(model => model.EnquiryStatus, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.QuoteFromCompName, Model.CompanyObj.CompanyList, new { @class = "form-control datepicker advance-filter", value = -1, style = "padding:4px 12px;", @id = "ddlFromCompany" })
+                @Html.ValidationMessageFor(model => model.QuoteFromCompName, "", new { @class = "text-danger" })
 
             </div>
-        </div>*@
-        @*<div class="col-md-9">
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.QuoteStage, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.QuoteStage, Model.QuoteStageObj.quoteStageList, new { @class = "form-control datepicker advance-filter", value = -1, style = "padding:4px 12px;", @id = "ddlQuoteStage" })
+                @Html.ValidationMessageFor(model => model.QuoteStage, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
             @Html.LabelFor(model => model.Search, htmlAttributes: new { @class = "control-label", style = "visibility:hidden" })
             <div class="col-md-12">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" id="Search">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit" style="height:28px" onclick="OnChangeCall()"><i class="glyphicon glyphicon-search"></i></button>
+                        <button class="btn btn-default" type="submit" onclick="FilterContent();"  style="height:28px"><i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
             </div>
-        </div>*@
-
-
-
+        </div>
     </div>
     <div class="col-md-3" style="min-height:25px">
         @{

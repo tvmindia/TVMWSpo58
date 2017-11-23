@@ -100,4 +100,13 @@ namespace SPOffice.DataAccessObject.DTO
         public string ContactPerson { get; set; }
         public string CompanyName { get; set; }
     }
+
+    public class ReportAdvanceSearch
+    {
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string Search { get; set; }
+        public string FromCompany { get; set; }
+        public string QuoteStage { get; set; }
+    }
 }

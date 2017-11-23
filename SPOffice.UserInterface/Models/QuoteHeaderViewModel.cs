@@ -115,5 +115,8 @@ namespace UserInterface.Models
         public string Code { get; set; }
         public string Description { get; set; }
         public CommonViewModel commonObj { get; set; }
+        public List<SelectListItem> quoteStageList { get; set; }
+
+
     }
 }

@@ -81,10 +81,18 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         public string QuotationNo { get; set; }
         public string QuotationDate { get; set; }
+        [Display(Name = "From Company")]
         public string QuoteFromCompName { get; set; }
+        [Display(Name = "Quotation Stage")]
         public string QuoteStage { get; set; }
         public string QuoteSubject { get; set; }
         public string ContactPerson { get; set; }
         public string CompanyName { get; set; }
+        public CompanyViewModel CompanyObj { get; set; }
+        public QuoteStageViewModel QuoteStageObj { get; set; }
+        public string Search { get; set; }
+
     }
+
+
 }

@@ -37,7 +37,7 @@ namespace SPOffice.UserInterface.Models
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
         public bool IsApprover { get; set; }
-        public string PendingRequisitionCount { get; set; }
+       
     }
     public class RequisitionDetailViewModel
     {

@@ -19,11 +19,17 @@ namespace SPOffice.UserInterface.Controllers
         IReportBusiness _reportBusiness;
         ICourierBusiness _courierBusiness;
         IEnquiryStatusBusiness _enquiryStatusBusiness;
-        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness)
+        ICompanyBusiness _companyBusiness;
+        IQuotationBusiness _quotationBusiness;
+
+        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness)
         {
             _reportBusiness = reportBusiness;
             _enquiryStatusBusiness = enquiryStatusBusiness;
             _courierBusiness = courierBusiness;
+            _companyBusiness = companyBusiness;
+            _quotationBusiness = quotationBusiness;
+
 
         }
 
@@ -120,46 +126,72 @@ namespace SPOffice.UserInterface.Controllers
             DateTime dt = _appUA.DateTime;
             ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
             ViewBag.todate = dt.ToString("dd-MMM-yyyy");
-            //QuotationReportViewModel QRVM = new QuotationReportViewModel();
-            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+
+            QuotationReportViewModel QRVM = new QuotationReportViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<CompanyViewModel> CompaniesList = Mapper.Map<List<Company>, List<CompanyViewModel>>(_companyBusiness.GetAllCompanies());
+            if (CompaniesList != null)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = "All",
+                    Value = "ALL",
+                    Selected = false
+                });
+
+                foreach (CompanyViewModel Cmp in CompaniesList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = Cmp.Name,
+                        Value = Cmp.Code,
+                        Selected = false
+                    });
+                }
+            }
+            QRVM.CompanyObj = new CompanyViewModel();
+            QRVM.CompanyObj.CompanyList = selectListItem;
+
+            
+             selectListItem = new List<SelectListItem>();
+            List<QuoteStageViewModel> QuoteStageList = Mapper.Map<List<QuoteStage>, List<QuoteStageViewModel>>(_quotationBusiness.GetAllQuoteStages());
+           
+            if (QuoteStageList != null)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = "All",
+                    Value = "ALL",
+                    Selected = false
+                });
+
+                foreach (QuoteStageViewModel QS in QuoteStageList)
+                {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = QS.Description,
+                    Value = QS.Code.ToString(),
+                    Selected = false
+                });
+
+            }
+            }
+            QRVM.QuoteStageObj = new QuoteStageViewModel();
+            QRVM.QuoteStageObj.quoteStageList = selectListItem;
 
 
-           // List<QuotationReportViewModel> enquiryStatusList = Mapper.Map<List<EnquiryStatus>, List<QuotationReportViewModel>>(_enquiryStatusBusiness.GetAllEnquiryStatusList()).ToList();
-            //if (enquiryStatusList != null)
-            //{
-            //    selectListItem.Add(new SelectListItem
-            //    {
-            //        Text = "All",
-            //        Value = "ALL",
-            //        Selected = false
-            //    });
-
-            //    foreach (QuotationReportViewModel esvm in enquiryStatusList)
-            //    {
-            //        selectListItem.Add(new SelectListItem
-            //        {
-            //            Text = esvm.Status,
-            //            Value = esvm.StatusCode.ToString(),
-            //            Selected = false
-            //        });
-            //    }
-            //}
-            //ERVM.enquiryStatusObj = new QuotationReportViewModel();
-            //ERVM.enquiryStatusObj.EnquiryStatusList = selectListItem;
-
-            return View();
+            return View(QRVM);
         }
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "QuotationReport", Mode = "R")]
-        public string GetQuotationDetails(string FromDate, string ToDate, string EnquiryStatus, string search)
+        public string GetQuotationDetails(string AdvanceSearchObject)//string FromDate, string ToDate, string EnquiryStatus, string search)//ReportAdvanceSearch
         {
 
             try
             {
-                DateTime? FDate = string.IsNullOrEmpty(FromDate) ? (DateTime?)null : DateTime.Parse(FromDate);
-                DateTime? TDate = string.IsNullOrEmpty(ToDate) ? (DateTime?)null : DateTime.Parse(ToDate);
-                List<QuotationReportViewModel> QuotationReport = Mapper.Map<List<QuotationReport>, List<QuotationReportViewModel>>(_reportBusiness.GetQuotationDetails(FDate, TDate, EnquiryStatus, search));
+                ReportAdvanceSearch ReptAdvancedSearchObj = AdvanceSearchObject != null ? JsonConvert.DeserializeObject<ReportAdvanceSearch>(AdvanceSearchObject) : new ReportAdvanceSearch();
+                List<QuotationReportViewModel> QuotationReport = Mapper.Map<List<QuotationReport>, List<QuotationReportViewModel>>(_reportBusiness.GetQuotationDetails(ReptAdvancedSearchObj));
 
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = QuotationReport });
 

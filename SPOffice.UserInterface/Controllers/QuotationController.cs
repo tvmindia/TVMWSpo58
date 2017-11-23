@@ -36,6 +36,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
+            ViewBag.value = id;
             ViewBag.filter = id;
             QuoteHeaderViewModel quoteHeaderVM = new QuoteHeaderViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
