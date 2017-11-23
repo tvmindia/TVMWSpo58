@@ -34,7 +34,7 @@ namespace UserInterface.Controllers
 
 
         // GET: Dashboard
-        [AuthSecurityFilter(ProjectObject = "Dashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult Index()
         {
             //AppUA _appUA = Session["AppUA"] as AppUA;
@@ -49,7 +49,7 @@ namespace UserInterface.Controllers
             return View();
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult Admin()
         {
             return View();
@@ -63,7 +63,7 @@ namespace UserInterface.Controllers
             return RedirectToAction("Admin", "DashBoard");
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult RecentEnquiries()
         {
             RecentEnquiriesViewModel data=new RecentEnquiriesViewModel();
@@ -73,7 +73,7 @@ namespace UserInterface.Controllers
         }
 
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult EnquiriesSummary()
         {
             EnquirySummaryViewModel data = new EnquirySummaryViewModel();
@@ -82,7 +82,7 @@ namespace UserInterface.Controllers
             return PartialView("_EnquirySummary", data);
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult TodaysFollowUps()
         {
             TodaysFollowUpsViewModel data = new TodaysFollowUpsViewModel();
@@ -105,7 +105,7 @@ namespace UserInterface.Controllers
         }
 
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashboard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
         public ActionResult POandQuoteSummary()
         {
             POandQuoteSummaryViewModel data = new POandQuoteSummaryViewModel();

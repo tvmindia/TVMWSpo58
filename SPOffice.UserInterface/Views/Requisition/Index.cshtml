@@ -38,6 +38,7 @@
     <!-- /.col -->
     <div class="row" style="border-top:4px solid #ffffff">
         <div class="col-md-12" style="margin-top:10px;padding-left:0px;">
+            @Html.Hidden("filter", "", htmlAttributes: new { @class = "", Value = ViewBag.filter })
             <div class="col-md-3" style="padding-left:0px;">
                 @Html.Label("From Date", htmlAttributes: new { @class = "control-label" })
                 <div class="col-md-12">

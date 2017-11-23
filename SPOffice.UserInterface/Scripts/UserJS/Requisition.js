@@ -42,7 +42,6 @@ $(document).ready(function () {
             {
                 "data": "ManagerApproved", render: function (data, type, row)
                 {
-                    debugger;
                     if (data)
                     {
                         return "Approved ✔ <br/> 📅 " + (row.ManagerApprovalDateFormatted!==null?row.ManagerApprovalDateFormatted:"-");
@@ -124,7 +123,16 @@ $(document).ready(function () {
             FilterContent();
         });
         PaintSearchTiles();
+        //To check whether redirected from any of the pages
+        if ($('#filter').val() != '')        {
+            debugger;
+            window.history.replaceState(null, null, "/"+window.location.pathname.split('/')[1]);
+            var FilterFromDash = new Object();
+            FilterFromDash.id = $('#filter').val();
+            Gridfilter(FilterFromDash);
+        } 
     }
+
     catch (e) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
@@ -253,7 +261,7 @@ function Gridfilter(filter) {
     {
         FinalApproved = true;
         $('#PFFAfilter').show();
-    }
+    }   
     FilterContent();
 }
 function ClearFormFields()
