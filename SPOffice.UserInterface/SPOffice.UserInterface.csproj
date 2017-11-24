@@ -627,6 +627,7 @@
     <Content Include="Scripts\UserJS\CourierAgency.js" />
     <Content Include="Scripts\UserJS\CourierReport.js" />
     <Content Include="Scripts\UserJS\CustomerPO.js" />
+    <Content Include="Scripts\UserJS\CustomerPOReport.js" />
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\EnquiryReport.js" />
@@ -790,6 +791,7 @@
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\Report\CourierReport.cshtml" />
     <Content Include="Views\SupplierOrder\Index.cshtml" />
+    <Content Include="Views\Report\CustomerPOReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

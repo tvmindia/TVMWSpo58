@@ -69,6 +69,7 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/EnquiryReport").Include("~/Scripts/UserJS/EnquiryReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/CourierReport").Include("~/Scripts/UserJS/CourierReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/QuotationReport").Include("~/Scripts/UserJS/QuotationReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/CustomerPOReport").Include("~/Scripts/UserJS/CustomerPOReport.js"));
 
 
         }

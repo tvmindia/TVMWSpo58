@@ -52,6 +52,11 @@ $(document).ready(function () {
         $('#PurchaseOrderTable tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
+
+        if ($('#BindValue').val() != '') {
+            CustomerBind($('#BindValue').val())
+        }
+
         $('input[type="text"].Roundoff').on('focus', function () {
             $(this).select();
         });
@@ -522,6 +527,11 @@ function dashboardBind(filterValue) {
     }
 }
 
-
+function CustomerBind(ID) {
+    debugger;
+    $('#ID').val(ID);
+    openNav();
+    BindPurchaseOrderDetails(ID);
+}
 
 

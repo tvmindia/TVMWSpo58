@@ -134,7 +134,6 @@ namespace SPOffice.UserInterface.Models
         public decimal NetTaxableAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public CommonViewModel commonObj { get; set; }
-       
     }
 
     public class PurchaseOrderStatusViewModel

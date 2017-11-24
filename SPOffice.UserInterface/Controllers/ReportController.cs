@@ -21,15 +21,16 @@ namespace SPOffice.UserInterface.Controllers
         IEnquiryStatusBusiness _enquiryStatusBusiness;
         ICompanyBusiness _companyBusiness;
         IQuotationBusiness _quotationBusiness;
+        ICustomerBusiness _customerBusiness;
 
-        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness)
+        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness)
         {
             _reportBusiness = reportBusiness;
             _enquiryStatusBusiness = enquiryStatusBusiness;
             _courierBusiness = courierBusiness;
             _companyBusiness = companyBusiness;
             _quotationBusiness = quotationBusiness;
-
+            _customerBusiness = customerBusiness;
 
         }
 
@@ -340,7 +341,113 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
             }
 
-        }        
-      
+        }
+
+
+
+        //CustomerPoReport  
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CustomerPOReport", Mode = "R")]
+        public ActionResult CustomerPOReport()
+        {
+            AppUA _appUA = Session["AppUA"] as AppUA;
+            DateTime dt = _appUA.DateTime;
+            ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
+            ViewBag.todate = dt.ToString("dd-MMM-yyyy");
+            CustomerPOReportViewModel customerPOReportVMObj = new CustomerPOReportViewModel();
+            customerPOReportVMObj.CustomerPOObj = new CustomerPOViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+
+            List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = "ALL",
+                Selected = false
+            });
+
+
+            foreach (CustomerViewModel Cust in CustList)
+            {
+               
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Cust.CompanyName,
+                    Value = Cust.ID.ToString(),
+                    Selected = false
+                });
+            }
+            customerPOReportVMObj.CustomerPOObj.CustomerList = selectListItem;
+
+            customerPOReportVMObj.CustomerPOObj.CompanyList = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            List<CompanyViewModel> CompaniesList = Mapper.Map<List<Company>, List<CompanyViewModel>>(_companyBusiness.GetAllCompanies());
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = "ALL",
+                Selected = false
+            });
+            foreach (CompanyViewModel Cmp in CompaniesList)
+            {
+               
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Cmp.Name,
+                    Value = Cmp.Code,
+                    Selected = false
+                });
+            }
+            customerPOReportVMObj.CustomerPOObj.CompanyList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = "ALL",
+                Selected = false
+            });
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "Closed",
+                Value = "CSD",
+                Selected = false
+            });
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "Open",
+                Value = "OPN",
+                Selected = false
+            });
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "In Progress",
+                Value = "PGS",
+                Selected = false
+            });
+            customerPOReportVMObj.CustomerPOObj.POStatusList= selectListItem;
+            return View(customerPOReportVMObj);
+        }
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "CustomerPOReport", Mode = "R")]
+        public string GetCustomerPODetails(string AdvanceSearchObject)//string FromDate, string ToDate, string POStatus, string search
+        {
+            try
+            {
+                ReportAdvanceSearch ReptAdvancedSearchObj = AdvanceSearchObject != null ? JsonConvert.DeserializeObject<ReportAdvanceSearch>(AdvanceSearchObject) : new ReportAdvanceSearch();             
+                List<CustomerPOReportViewModel> CustomerdetailObj = Mapper.Map<List<CustomerPOReport>, List<CustomerPOReportViewModel>>(_reportBusiness.GetCustomerPODetails(ReptAdvancedSearchObj));
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = CustomerdetailObj });
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
+            }
+
+        }
+
+
     }
 }

@@ -63,8 +63,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string ShippingAddress { get; set; }
         public List<FileUpload> AttachmentLists { get; set; }
         public Guid hdnFileID { get; set; }
-
-        public Common commonObj { get; set; }
+        public Common commonObj { get; set; }      
     }
 
     public class PaymentTerms
