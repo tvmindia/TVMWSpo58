@@ -108,5 +108,14 @@ namespace SPOffice.DataAccessObject.DTO
         public string Search { get; set; }
         public string FromCompany { get; set; }
         public string QuoteStage { get; set; }
+        public string POStatus { get; set; }
+        public string Customer { get; set; }
+        public string Company { get; set; }
+    }
+
+    public class CustomerPOReport
+    {
+        public CustomerPO CustomerPOObj { get; set; }     
+      
     }
 }

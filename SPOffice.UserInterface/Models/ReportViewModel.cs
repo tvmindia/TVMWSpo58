@@ -94,5 +94,11 @@ namespace SPOffice.UserInterface.Models
 
     }
 
+    public class CustomerPOReportViewModel
+    {
+        public CustomerPOViewModel CustomerPOObj { get; set; }
+        public string Search { get; set; }
+    }
+
 
 }

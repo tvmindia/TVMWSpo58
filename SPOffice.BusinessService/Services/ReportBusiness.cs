@@ -82,7 +82,22 @@ namespace SPOffice.BusinessService.Services
             return courierDetailList;
         }
 
+        public List<CustomerPOReport> GetCustomerPODetails(ReportAdvanceSearch ReptAdvancedSearchObj)
+        {
+            List<CustomerPOReport> customerDetailList = null;
+            try
+            {
+                customerDetailList = _reportRepository.GetCustomerPODetails(ReptAdvancedSearchObj);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return customerDetailList;
+
+        }
 
 
     }
-    }
+}

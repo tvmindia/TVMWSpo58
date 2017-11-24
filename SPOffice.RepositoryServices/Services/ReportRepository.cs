@@ -258,5 +258,78 @@ namespace SPOffice.RepositoryServices.Services
             }           
             return CourierDetailList;
         }
+
+
+        /// <summary>
+        ///To Get CustomerPO details in Report
+        /// </summary>
+        /// <param name="ReptAdvancedSearchObj"></param>
+        /// <returns>List</returns>
+        public List<CustomerPOReport> GetCustomerPODetails(ReportAdvanceSearch ReptAdvancedSearchObj)
+        {
+            List<CustomerPOReport> CustomerDetailList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = ReptAdvancedSearchObj.FromDate;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ReptAdvancedSearchObj.ToDate;
+                        cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = ReptAdvancedSearchObj.Search;
+                        cmd.Parameters.Add("@POStatus", SqlDbType.NVarChar, 50).Value = ReptAdvancedSearchObj.POStatus;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar).Value = ReptAdvancedSearchObj.Customer;
+                        cmd.Parameters.Add("@Company", SqlDbType.NVarChar).Value = ReptAdvancedSearchObj.Company;
+                        cmd.CommandText = "[Office].[RPT_GetAllCustomerDetail]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                CustomerDetailList = new List<CustomerPOReport>();
+                                while (sdr.Read())
+                                {
+                                    CustomerPOReport customerDetail = new CustomerPOReport();
+                                    customerDetail.CustomerPOObj = new CustomerPO();
+                                    {
+                                        customerDetail.CustomerPOObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : customerDetail.CustomerPOObj.ID);
+                                        customerDetail.CustomerPOObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : customerDetail.CustomerPOObj.PONo);
+                                        customerDetail.CustomerPOObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(settings.dateformat) : customerDetail.CustomerPOObj.PODate);
+                                        customerDetail.CustomerPOObj.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : customerDetail.CustomerPOObj.CustomerID);
+                                        customerDetail.CustomerPOObj.customer = new Customer();
+                                        {
+                                            customerDetail.CustomerPOObj.customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : customerDetail.CustomerPOObj.customer.CompanyName);
+                                        }
+                                        
+                                        customerDetail.CustomerPOObj.POToCompCode = (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : customerDetail.CustomerPOObj.POToCompCode);
+
+                                        customerDetail.CustomerPOObj.company = new Company();
+                                        {
+                                            customerDetail.CustomerPOObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : customerDetail.CustomerPOObj.company.Name);
+                                            customerDetail.CustomerPOObj.company.Code = (sdr["POToCompCode"].ToString() != "" ? sdr["POToCompCode"].ToString() : customerDetail.CustomerPOObj.company.Code);
+                                        }
+                                         customerDetail.CustomerPOObj.POStatus = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : customerDetail.CustomerPOObj.POStatus);
+                                       
+                                        customerDetail.CustomerPOObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : customerDetail.CustomerPOObj.Amount);
+                                    }
+                                    CustomerDetailList.Add(customerDetail);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return CustomerDetailList;
+        }
+
     }
 }
