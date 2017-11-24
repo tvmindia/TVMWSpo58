@@ -384,7 +384,7 @@ function BindRequisitionDetail()
         }
         if (RequisitionViewModel.ManagerApproved) {
             IsManagerApproved = 1;
-        } else {
+        } else if (RequisitionViewModel.FinalApproval) {
             IsManagerApproved = 0;
         }
         DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
@@ -677,7 +677,7 @@ function ApproveRequsistion()
         {
             if (IsManagerApproved === 1) {
                 ApproveRequsistionByID();}
-            if (IsManagerApproved === 0) {
+            if (IsManagerApproved === -1) {
                 var msg = "This will override manager action,";
                 notyConfirm('This will override manager action,', 'ApproveRequsistionByID()', 'Do you want to continue?', 'Continue');
             }
