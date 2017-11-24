@@ -694,13 +694,12 @@ function GetRequisitionBubbleCount() {
                 $('#RequisitionPendingList').text(ds.Records.PendingManagerCount);
                 $('#RequisitionPendingList').attr('title', ds.Records.PendingManagerCount + ' Pending Requisitions');
             }
-            if(ds.isAdminOrCeo)
-            {
+            if (ds.isAdminOrCeo) {
                 $('#RequisitionPendingList').text(ds.Records.PendingFinalCount);
                 $('#RequisitionPendingList').attr('title', ds.Records.PendingFinalCount + ' Pending Requisitions');
                 //$('#RequisitionPendingList').attr('title', ds.Records + ' Pending Requisitions Today');
             }
-            
+
         }
         if (ds.Result == "ERROR") {
             $('#RequisitionPendingList').text("0");
@@ -710,3 +709,5 @@ function GetRequisitionBubbleCount() {
 
     }
 }
+
+

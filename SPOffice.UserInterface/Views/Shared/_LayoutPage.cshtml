@@ -47,22 +47,24 @@
 
         </ul>
     </li>*@
-    <!-- Notifications: style can be found in dropdown.less -->
+    <!-- Notifications: style can be found in dropdown.less  -->
     <li class="dropdown notifications-menu" id="RequisitionCount">
-       
-            <a href="@Url.Action("Index", "Requisition")">
-                <i class="fa fa-bell-o"></i>
-                <span class="label label-warning" id="RequisitionPendingList">0</span>
+     
+            <a href="/Requisition/Index/TILEFILTER" >
+                <span >
+                    <i class="fa fa-bell-o"></i>
+                    <span class="label label-warning" id="RequisitionPendingList">0</span>
+                </span>
             </a>
-        <ul class="dropdown-menu">
-            <li class="header">You have 0 notifications</li>
-            <li>
-                <!-- inner menu: contains the actual data -->
+            <ul class="dropdown-menu">
+                <li class="header">You have 0 notifications</li>
+                <li>
+                    <!-- inner menu: contains the actual data -->
 
-            </li>
+                </li>
 
-        </ul>
-    </li>
+            </ul>
+</li>
     <!-- Tasks: style can be found in dropdown.less -->
     @*<li class="dropdown tasks-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -21,5 +21,18 @@ namespace SPOffice.BusinessService.Services
         {
             return _supplierRepository.GetAllSupplierPOForMobile(duration);
         }
+
+        public List<Suppliers> GetAllSuppliers()
+        {
+            try
+            {
+                return _supplierRepository.GetAllSuppliers();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
