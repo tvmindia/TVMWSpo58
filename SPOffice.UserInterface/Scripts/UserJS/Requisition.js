@@ -213,7 +213,7 @@ function PaintSearchTiles()
                  + '</div>'
              + '</div>'
             $('#divSearchTiles').append(html);
-            $('#FilterHeadSeperater').append('<p id="PFMAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> <span style="color:red;">⏱</span>  Manager approval</p>');
+            $('#FilterHeadSeperater').append('<p id="PFMAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-yellow"> Pending Manager approvals</p>');
         }
         if (RequisitionOverViewCount.PendingFinalCount !== -1) {
             var html = '<div class="col-md-3 col-sm-6 col-xs-12 " id="PFFA" onclick="Gridfilter(this);" style="cursor:pointer">'
@@ -227,7 +227,7 @@ function PaintSearchTiles()
                  + '</div>'
              + '</div>'
             $('#divSearchTiles').append(html);
-            $('#FilterHeadSeperater').append('<p id="PFFAfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> <span style="color:red;">⏱</span>  final approval</p>');
+            $('#FilterHeadSeperater').append('<p id="PFFAfilter" style="padding-right:20px;font-size:medium;color:#dd4b39;" class="fa fa-th"> Pending final approvals</p>');
         }
     }
     catch(e)
@@ -384,7 +384,7 @@ function BindRequisitionDetail()
         }
         if (RequisitionViewModel.ManagerApproved) {
             IsManagerApproved = 1;
-        } else {
+        } else if (RequisitionViewModel.FinalApproval) {
             IsManagerApproved = 0;
         }
         DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
@@ -677,7 +677,7 @@ function ApproveRequsistion()
         {
             if (IsManagerApproved === 1) {
                 ApproveRequsistionByID();}
-            if (IsManagerApproved === 0) {
+            if (IsManagerApproved === -1) {
                 var msg = "This will override manager action,";
                 notyConfirm('This will override manager action,', 'ApproveRequsistionByID()', 'Do you want to continue?', 'Continue');
             }

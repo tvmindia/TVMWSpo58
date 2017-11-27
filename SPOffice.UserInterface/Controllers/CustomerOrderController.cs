@@ -30,6 +30,7 @@ namespace SPOffice.UserInterface.Controllers
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
+            ViewBag.value = id;
             CustomerPOViewModel customerPOlVM = new CustomerPOViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());

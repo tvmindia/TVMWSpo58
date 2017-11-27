@@ -61,6 +61,7 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/Quotation").Include("~/Scripts/UserJS/Quotation.js"));
             bundles.Add(new ScriptBundle("~/bundles/Courier").Include("~/Scripts/UserJS/Courier.js"));
             bundles.Add(new ScriptBundle("~/bundles/CustomerPO").Include("~/Scripts/UserJS/CustomerPO.js"));
+            bundles.Add(new ScriptBundle("~/bundles/SupplierOrder").Include("~/Scripts/UserJS/SupplierOrder.js"));
             bundles.Add(new ScriptBundle("~/bundles/Enquiry").Include("~/Scripts/UserJS/Enquiry.js"));
             bundles.Add(new ScriptBundle("~/bundles/ProformaInvoice").Include("~/Scripts/UserJS/ProformaInvoice.js"));
             bundles.Add(new ScriptBundle("~/bundles/Dashboard").Include("~/Scripts/UserJS/Dashboard.js"));
@@ -69,6 +70,7 @@ namespace UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/EnquiryReport").Include("~/Scripts/UserJS/EnquiryReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/CourierReport").Include("~/Scripts/UserJS/CourierReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/QuotationReport").Include("~/Scripts/UserJS/QuotationReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/CustomerPOReport").Include("~/Scripts/UserJS/CustomerPOReport.js"));
 
 
         }

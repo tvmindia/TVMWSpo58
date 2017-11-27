@@ -10,5 +10,8 @@ namespace SPOffice.RepositoryServices.Contracts
     public interface ISupplierRepository
     {
         List<Supplier> GetAllSupplierPOForMobile(string duration);
+
+        List<Suppliers> GetAllSuppliers();
+
     }
 }

@@ -14,5 +14,7 @@ namespace SPOffice.BusinessService.Contracts
         List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate, string EnquiryStatus, string search);
         List<CourierReport> GetCourierDetails(DateTime? FromDate, DateTime? ToDate, string AgencyCode, string search, string Type);
         List<QuotationReport> GetQuotationDetails(ReportAdvanceSearch ReptAdvancedSearchObj);
+        List<CustomerPOReport> GetCustomerPODetails(ReportAdvanceSearch ReptAdvancedSearchObj);
+
     }
 }
