@@ -214,16 +214,30 @@ function FillFollowUpDetails(ID) {
     var thisItem = GetFollowUpDetailsByFollowUpID(ID); //Binding Data
     debugger;
     //$("#hdnFileID").val(thisItem.ID);
-    $('#FollowUpDate').prop("disabled",true);
-    $('#FollowUpTime').prop("disabled", true);
-    $('#followUpObj_Subject').prop("disabled", true);
-    $('#ddlPriority').prop("disabled", true);
-    $('#followUpObj_ContactName').prop("disabled", true);
-    $('#followUpObj_ReminderType').prop("disabled", true);
-    $('#followUpObj_GeneralNotes').prop("disabled", true);
-    $('#followUpObj_RemindPriorTo').prop("disabled", true);
-    $('#followUpObj_Priority').prop("disabled", true);
-    
+    if (thisItem.Status == "Closed") {
+        $('#FollowUpDate').prop("disabled", true);
+        $('#FollowUpTime').prop("disabled", true);
+        $('#followUpObj_Subject').prop("disabled", true);
+        $('#ddlPriority').prop("disabled", true);
+        $('#followUpObj_ContactName').prop("disabled", true);
+        $('#followUpObj_ReminderType').prop("disabled", true);
+        $('#followUpObj_GeneralNotes').prop("disabled", true);
+        $('#followUpObj_RemindPriorTo').prop("disabled", true);
+        $('#followUpObj_Priority').prop("disabled", true);
+        $('#followUpObj_Status').prop("disabled", true);
+    }
+    else {
+        $('#FollowUpDate').prop("disabled", false);
+        $('#FollowUpTime').prop("disabled", false);
+        $('#followUpObj_Subject').prop("disabled", false);
+        $('#ddlPriority').prop("disabled", false);
+        $('#followUpObj_ContactName').prop("disabled", false);
+        $('#followUpObj_ReminderType').prop("disabled", false);
+        $('#followUpObj_GeneralNotes').prop("disabled", false);
+        $('#followUpObj_RemindPriorTo').prop("disabled", false);
+        $('#followUpObj_Priority').prop("disabled", false);
+        $('#followUpObj_Status').prop("disabled", false);
+    }
     $('#FollowUpDate').val(thisItem.FollowUpDate);
     $('#FollowUpTime').val(thisItem.FollowUpTime);
     $("#followUpObj_Subject").val(thisItem.Subject);
@@ -235,12 +249,13 @@ function FillFollowUpDetails(ID) {
     $('#followUpObj_GeneralNotes').val(thisItem.GeneralNotes);
     $('#followUpObj_Priority').val(thisItem.Priority);
 
-    if (thisItem.Status == "Closed") {
-        $('#followUpObj_Status').prop("disabled", true);
-    }
-    else {
-        $('#followUpObj_Status').prop("disabled", false);
-    }
+    var First = $('#hdnFirstRecordClosed').val()
+    //if (thisItem.Status == "Closed") {
+    //    $('#followUpObj_Status').prop("disabled", true);
+    //}
+    //else {
+    //    $('#followUpObj_Status').prop("disabled", false);
+    //}
 
 
 }
