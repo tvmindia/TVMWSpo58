@@ -285,6 +285,7 @@ function ClearFormFields()
     $('#RequisitionDetailObj_RequestedQty').prop('readonly', false);
     IsManagerApproved = -1;
     DataTables.RequisitionDetailList.clear().draw();
+    ClearItemFields();
     ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
 }
 function AddNew() {
@@ -639,10 +640,11 @@ function SaveSuccessRequisition(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
+            debugger;
             notyAlert('success', JsonResult.Record.Message);
             DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
             PaintSearchTiles();
-            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
+            //ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
                 $("#ReqNo").val(JsonResult.Record.ReqNo);
