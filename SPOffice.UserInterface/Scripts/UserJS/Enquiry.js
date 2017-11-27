@@ -170,11 +170,13 @@ function SaveSuccess(data) {
     }
 }
 
-function FollowUp(flag) {
-
+function FollowUp(flag, status)//--This function have 2 parameters ,'flag' checks whether new followup is added or edit action is performed and 'status' checks whether the  element is first record  or not 
+{                                 
+    debugger;
     //--To Reset,enable textbox and display FollowUp modal PopUp on Add Follow Up Button Click --//
+    //--
     if (flag == 1) {
-        debugger;
+      
        
         $('#ModelReset').trigger('click');
         $("#hdnFollowUpID").val(ID);
@@ -195,14 +197,21 @@ function FollowUp(flag) {
     
 
     }
-    else {
+    else 
+    {
         //--To disable textbox and display FollowUp modal PopUp on Edit Button Click --//
         var ID = flag;
+        
         debugger;
         $("#btnFollowUps").modal('show');
         $("#hdnFollowUpID").val(ID);
         $("#followUpResetbtn").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });
+       
         FillFollowUpDetails(ID);
+        if (status==1)
+        {
+            $('#followUpObj_Status').prop("disabled", false);
+        }
     }
    
 }
@@ -214,16 +223,30 @@ function FillFollowUpDetails(ID) {
     var thisItem = GetFollowUpDetailsByFollowUpID(ID); //Binding Data
     debugger;
     //$("#hdnFileID").val(thisItem.ID);
-    $('#FollowUpDate').prop("disabled",true);
-    $('#FollowUpTime').prop("disabled", true);
-    $('#followUpObj_Subject').prop("disabled", true);
-    $('#ddlPriority').prop("disabled", true);
-    $('#followUpObj_ContactName').prop("disabled", true);
-    $('#followUpObj_ReminderType').prop("disabled", true);
-    $('#followUpObj_GeneralNotes').prop("disabled", true);
-    $('#followUpObj_RemindPriorTo').prop("disabled", true);
-    $('#followUpObj_Priority').prop("disabled", true);
-    
+    if (thisItem.Status == "Closed") {
+        $('#FollowUpDate').prop("disabled", true);
+        $('#FollowUpTime').prop("disabled", true);
+        $('#followUpObj_Subject').prop("disabled", true);
+        $('#ddlPriority').prop("disabled", true);
+        $('#followUpObj_ContactName').prop("disabled", true);
+        $('#followUpObj_ReminderType').prop("disabled", true);
+        $('#followUpObj_GeneralNotes').prop("disabled", true);
+        $('#followUpObj_RemindPriorTo').prop("disabled", true);
+        $('#followUpObj_Priority').prop("disabled", true);
+        $('#followUpObj_Status').prop("disabled", true);
+    }
+    else {
+        $('#FollowUpDate').prop("disabled", false);
+        $('#FollowUpTime').prop("disabled", false);
+        $('#followUpObj_Subject').prop("disabled", false);
+        $('#ddlPriority').prop("disabled", false);
+        $('#followUpObj_ContactName').prop("disabled", false);
+        $('#followUpObj_ReminderType').prop("disabled", false);
+        $('#followUpObj_GeneralNotes').prop("disabled", false);
+        $('#followUpObj_RemindPriorTo').prop("disabled", false);
+        $('#followUpObj_Priority').prop("disabled", false);
+        $('#followUpObj_Status').prop("disabled", false);
+    }
     $('#FollowUpDate').val(thisItem.FollowUpDate);
     $('#FollowUpTime').val(thisItem.FollowUpTime);
     $("#followUpObj_Subject").val(thisItem.Subject);
@@ -235,12 +258,13 @@ function FillFollowUpDetails(ID) {
     $('#followUpObj_GeneralNotes').val(thisItem.GeneralNotes);
     $('#followUpObj_Priority').val(thisItem.Priority);
 
-    if (thisItem.Status == "Closed") {
-        $('#followUpObj_Status').prop("disabled", true);
-    }
-    else {
-        $('#followUpObj_Status').prop("disabled", false);
-    }
+    var First = $('#hdnFirstRecordClosed').val()
+    //if (thisItem.Status == "Closed") {
+    //    $('#followUpObj_Status').prop("disabled", true);
+    //}
+    //else {
+    //    $('#followUpObj_Status').prop("disabled", false);
+    //}
 
 
 }

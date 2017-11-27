@@ -99,12 +99,12 @@ $(document).ready(function () {
             { "data": "CurrStock", "defaultContent": "<i>-</i>" },
             { "data": "RequestedQty", "defaultContent": "<i>-</i>" },
             { "data":"AppxRate","defaultContent":"<i>-</i>"},
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit Item" class="actionLink"  onclick="EditIemsFromGrid(this)" ><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>' }
+            { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit Item" class="actionLink ItemEditlink"  onclick="EditIemsFromGrid(this)" ><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>' }
             ],
-            columnDefs: [{ "targets": [0], "visible": false, "searchable": false }//,
+            columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
             //{ className: "text-left", "targets": [1, 2, 3, 4, 6] },
-            //{ className: "text-center", "targets": [] },
-            //{ className: "text-right", "targets": [5] }
+            //{ className: "text-center", "targets": [6] },
+            { className: "text-right", "targets": [6] }
 
             ]
         });
@@ -125,7 +125,7 @@ $(document).ready(function () {
         PaintSearchTiles();
         //To check whether redirected from any of the pages
         if ($('#filter').val() != '')        {
-            debugger;
+            
             window.history.replaceState(null, null, "/"+window.location.pathname.split('/')[1]);
             var FilterFromDash = new Object();
             FilterFromDash.id = $('#filter').val();
@@ -140,7 +140,7 @@ $(document).ready(function () {
 });
 function FilterContent()
 {
-    debugger;
+    
     var FromDate = $('#txtFromDate');
     var ToDate = $('#txtToDate');
     var ReqStatus = $('#ddlReqStatus');
@@ -236,7 +236,7 @@ function PaintSearchTiles()
     }    
 }
 function Gridfilter(filter) {
-    debugger;
+    
     $('#FilterHeadSeperater').show();
     $('#OPENfilter').hide();
     $('#ALLfilter').hide();
@@ -270,6 +270,7 @@ function ClearFormFields()
     $('#ID').val(emptyGUID);
     $('#RequisitionDetailObj_RequisitionDetailObject').val('');
     $('#lblApprovalStatus').text('');
+    $('#lblApprovalStatus').attr('title','');
     $('#lblReqStatus').text('Open');
     $("#lblReqNo").text('Requisition No');
 
@@ -282,8 +283,10 @@ function ClearFormFields()
     $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', false);
     $('#RequisitionDetailObj_CurrStock').prop('readonly', false);
     $('#RequisitionDetailObj_RequestedQty').prop('readonly', false);
+    $('.ItemEditlink').show();
     IsManagerApproved = -1;
     DataTables.RequisitionDetailList.clear().draw();
+    ClearItemFields();
     ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
 }
 function AddNew() {
@@ -304,7 +307,7 @@ function Edit(this_Obj)
 }
 function EditIemsFromGrid(this_Obj)
 {
-    debugger;
+    
     Rowindex = DataTables.RequisitionDetailList.row($(this_Obj).parents('tr')).index();
     var rowData = DataTables.RequisitionDetailList.row($(this_Obj).parents('tr')).data();
     $("#RequisitionDetailObj_MaterialID ").val(rowData.MaterialID!==emptyGUID?rowData.MaterialID:"");
@@ -323,7 +326,7 @@ function EditIemsFromGrid(this_Obj)
 }
 function DeleteItem(ID)
 {
-    debugger;
+    
     if(ID===emptyGUID)
     {
         var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
@@ -339,7 +342,7 @@ function DeleteItem(ID)
 }
 function DeleteRequisitionDetail(ID)
 {
-    debugger;
+    
     $('.cancel').trigger('click');
     //var id = $('#ID').val();
     if (ID != '' && ID != null) {
@@ -365,7 +368,7 @@ function DeleteRequisitionDetail(ID)
 }
 function BindRequisitionDetail()
 {
-    debugger;
+    
     try{
         var RequisitionViewModel = GetRequisitionDetailByID()
         $('#ReqNo').val(RequisitionViewModel.ReqNo);
@@ -376,8 +379,9 @@ function BindRequisitionDetail()
         $('#lblReqStatus').text(RequisitionViewModel.ReqStatus);
         $('#hdnReqForCompany').val(RequisitionViewModel.ReqForCompany);
         $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Final ⏱ " : "Manager ⏱"))
+        $('#lblApprovalStatus').attr('title', (RequisitionViewModel.FinalApproval) ? "Finally approved " : ((RequisitionViewModel.ManagerApproved) ? "Pending for final approval" : "Pending for manager approval"))
         $("#lblReqNo").text(RequisitionViewModel.ReqNo);
-        
+        DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
         if (RequisitionViewModel.FinalApproval || RequisitionViewModel.ManagerApproved)
         {
             DisableApproved();
@@ -386,9 +390,7 @@ function BindRequisitionDetail()
             IsManagerApproved = 1;
         } else if (RequisitionViewModel.FinalApproval) {
             IsManagerApproved = 0;
-        }
-        DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
-        
+        }        
         if (((!RequisitionViewModel.IsApprover) || (RequisitionViewModel.FinalApproval))&&(!IsAdminOrCeo)) {
             ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
         }
@@ -411,6 +413,7 @@ function DisableApproved(){
     $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', true);
     $('#RequisitionDetailObj_CurrStock').prop('readonly', true);
     $('#RequisitionDetailObj_RequestedQty').prop('readonly', true);
+    $('.ItemEditlink').hide();
 }
 function GetRequisitionOverViewCount()
 {
@@ -435,7 +438,7 @@ function GetRequisitionOverViewCount()
 }
 function GetItemDetails()
 {
-    debugger;
+    
     try{
         var curObj = $("#RequisitionDetailObj_MaterialID").val();
         if (curObj) {
@@ -465,7 +468,7 @@ function GetItemDetails()
 }
 function GetUserRequisitionList(AdvanceSearchObject)
 {
-    debugger;
+    
     try {
         if (AdvanceSearchObject === 0)
         {
@@ -494,7 +497,7 @@ function GetUserRequisitionList(AdvanceSearchObject)
     }
 }
 function GetRequisitionDetailList(ID) {
-    debugger;
+    
     try {
         var data = {"ID":ID};
         var ds = {};
@@ -637,10 +640,11 @@ function SaveSuccessRequisition(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
+            
             notyAlert('success', JsonResult.Record.Message);
             DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
             PaintSearchTiles();
-            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
+            //ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
                 $("#ReqNo").val(JsonResult.Record.ReqNo);
@@ -648,10 +652,12 @@ function SaveSuccessRequisition(data, status) {
                 if (JsonResult.Record.ApprovedBy==="Final")
                 {
                     $('#lblApprovalStatus').text('Final ✔');
+                    $('#lblApprovalStatus').attr('title', 'Finally approved')
                     DisableApproved();
                 }
                 else if (JsonResult.Record.ApprovedBy === "Manager") {
                     $('#lblApprovalStatus').text('Final ⏱');
+                    $('#lblApprovalStatus').attr('title', 'Pending for final approval')
                     DisableApproved();
                 }
                 else {
@@ -672,7 +678,7 @@ function SaveSuccessRequisition(data, status) {
 function ApproveRequsistion()
 {
     try {
-        debugger;
+        
         if (IsAdminOrCeo)
         {
             if (IsManagerApproved === 1) {
@@ -711,11 +717,13 @@ function ApproveRequsistionByID()
             if(ds.Record.ManagerApproved)
             {
                 $('#lblApprovalStatus').text('Final ⏱');
+                $('#lblApprovalStatus').attr('title','Pending for final approval')
                 IsManagerApproved = 1;
                 DisableApproved();
             }
             if (ds.Record.FinalApproval) {
                 $('#lblApprovalStatus').text('Final ✔');
+                $('#lblApprovalStatus').attr('title', 'Finally approved')
                 DisableApproved();
             }
         }

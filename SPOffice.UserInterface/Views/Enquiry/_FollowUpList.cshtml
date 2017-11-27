@@ -62,7 +62,14 @@
                             }
                             
                             <div class="tools">
-                                <i class="fa fa-edit" onclick="FollowUp(id)" id=@Model.FollowUpList[i].ID></i>
+                               @if (i == 0)
+                               {
+                                <i class="fa fa-edit" onclick="FollowUp(id,'1')" id=@Model.FollowUpList[i].ID></i>
+                               }
+                               else
+                               {
+                                <i class="fa fa-edit" onclick="FollowUp(id,'0')" id=@Model.FollowUpList[i].ID></i>
+                               }
                                 @*<i class="fa fa-trash-o"></i>*@
                             </div>
                         </li>

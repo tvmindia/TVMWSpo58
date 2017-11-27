@@ -202,13 +202,12 @@ namespace SPOffice.UserInterface.Controllers
 
             List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
             int openCount = followUpObj == null ? 0 : followUpObj.Where(Q => Q.Status == "Open").Select(T => T.ID).Count();
-
             FollowUpListViewModel Result = new FollowUpListViewModel();
             Result.FollowUpList = followUpObj;
             Result.FlwID = followObj.ID;
             //Result.EnqID = followObj.EnquiryID;
             ViewBag.Count = openCount;
-
+          
 
             return PartialView("_FollowUpList", Result);
         }
