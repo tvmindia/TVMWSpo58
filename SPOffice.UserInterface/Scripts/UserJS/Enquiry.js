@@ -170,11 +170,13 @@ function SaveSuccess(data) {
     }
 }
 
-function FollowUp(flag) {
-
+function FollowUp(flag, status)//--This function have 2 parameters ,'flag' checks whether new followup is added or edit action is performed and 'status' checks whether the  element is first record  or not 
+{                                 
+    debugger;
     //--To Reset,enable textbox and display FollowUp modal PopUp on Add Follow Up Button Click --//
+    //--
     if (flag == 1) {
-        debugger;
+      
        
         $('#ModelReset').trigger('click');
         $("#hdnFollowUpID").val(ID);
@@ -195,14 +197,21 @@ function FollowUp(flag) {
     
 
     }
-    else {
+    else 
+    {
         //--To disable textbox and display FollowUp modal PopUp on Edit Button Click --//
         var ID = flag;
+        
         debugger;
         $("#btnFollowUps").modal('show');
         $("#hdnFollowUpID").val(ID);
         $("#followUpResetbtn").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });
+       
         FillFollowUpDetails(ID);
+        if (status==1)
+        {
+            $('#followUpObj_Status').prop("disabled", false);
+        }
     }
    
 }
