@@ -58,7 +58,7 @@ namespace UserInterface.Controllers
                     UA ua = new UA();
                     ua.UserName = uservm.LoginName;
                     ua.AppID = AppID;
-                    Session.Add("TvmValid", ua);
+                    Session.Add("TvmValidSPOffice", ua);
                     //if (uservm.RoleCSV.Contains("SAdmin") || uservm.RoleCSV.Contains("CEO"))
                     //{
                     //    return RedirectToAdminDashboard();
@@ -94,9 +94,9 @@ namespace UserInterface.Controllers
             try
             {
                 FormsAuthentication.SignOut();
-                Session.Remove("TvmValid");
-                Session.Remove("UserRights");
-                Session.Remove("AppUA");
+                Session.Remove("TvmValidSPOffice");
+                Session.Remove("UserRightsOffice");
+                Session.Remove("AppUAOffice");
             }
             catch (Exception ex)
             {

@@ -25,7 +25,7 @@ namespace SPOffice.UserInterface.SecurityFilter
            //var actionName = filterContext.RouteData.Values["action"];
            // if (filterContext.HttpContext.Request.IsAjaxRequest())
            // {
-                if ((filterContext.HttpContext.Session == null) || (filterContext.HttpContext.Session["TvmValid"] == null))
+                if ((filterContext.HttpContext.Session == null) || (filterContext.HttpContext.Session["TvmValidSPOffice"] == null))
                 {
                     filterContext.Result = new HttpUnauthorizedResult();
                     return;
@@ -50,7 +50,7 @@ namespace SPOffice.UserInterface.SecurityFilter
                     new System.Security.Principal.GenericIdentity(authTicket.Name, "Forms"), authTicket.UserData.Split(',').Select(t => t.Trim()).ToArray());
                   
                   
-                    UA _ua = (UA)filterContext.HttpContext.Session["TvmValid"];
+                    UA _ua = (UA)filterContext.HttpContext.Session["TvmValidSPOffice"];
                     AppUA appUA = new AppUA();
                     appUA.RolesCSV = authTicket.UserData;
                     appUA.UserName = _ua.UserName;
@@ -58,7 +58,7 @@ namespace SPOffice.UserInterface.SecurityFilter
                     SPOffice.DataAccessObject.DTO.Common common = new SPOffice.DataAccessObject.DTO.Common();
                     appUA.DateTime = common.GetCurrentDateTime();
                     appUA.AppID = _ua.AppID;
-                    filterContext.HttpContext.Session.Add("AppUA", appUA);
+                    filterContext.HttpContext.Session.Add("AppUAOffice", appUA);
             }
             //}
             //NON AJAX CALL
@@ -122,7 +122,7 @@ namespace SPOffice.UserInterface.SecurityFilter
             if (_permission.AccessCode.Contains(Mode))
             {
                 //Allows Permission
-                filterContext.HttpContext.Session.Add("UserRights", _permission);
+                filterContext.HttpContext.Session.Add("UserRightsOffice", _permission);
             }
             else
             {

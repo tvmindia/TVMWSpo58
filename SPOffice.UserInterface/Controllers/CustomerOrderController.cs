@@ -155,7 +155,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     customerPOViewModel.commonObj = new CommonViewModel();
                     customerPOViewModel.commonObj.CreatedBy =_appUA.UserName;
                     customerPOViewModel.commonObj.CreatedDate =_appUA.DateTime;

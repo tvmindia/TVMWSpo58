@@ -44,7 +44,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Report", Mode = "R")]
         public ActionResult Index()
         {
-            AppUA _appUA = Session["AppUA"] as AppUA;
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
             List<ReportViewModel> ReportList = Mapper.Map<List<Reports>, List<ReportViewModel>>(_reportBusiness.GetAllSysReports(_appUA));
             ReportList = ReportList != null ? ReportList.OrderBy(s => s.GroupOrder).ToList() : null;
             return View(ReportList);
@@ -59,7 +59,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "EnquiryReport", Mode = "R")]
         public ActionResult EnquiryReport()
         {
-            AppUA _appUA = Session["AppUA"] as AppUA;
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
             DateTime dt = _appUA.DateTime;
             ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
             ViewBag.todate = dt.ToString("dd-MMM-yyyy");
@@ -123,7 +123,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "QuotationReport", Mode = "R")]
         public ActionResult QuotationReport()
         {
-            AppUA _appUA = Session["AppUA"] as AppUA;
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
             DateTime dt = _appUA.DateTime;
             ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
             ViewBag.todate = dt.ToString("dd-MMM-yyyy");
@@ -210,7 +210,7 @@ namespace SPOffice.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
-            Permission _permission = Session["UserRights"] as Permission;
+            Permission _permission = Session["UserRightsOffice"] as Permission;
 
             switch (ActionType)
             {
@@ -267,7 +267,7 @@ namespace SPOffice.UserInterface.Controllers
         public ActionResult CourierReport()
         {
 
-            AppUA _appUA = Session["AppUA"] as AppUA;
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
             DateTime dt = _appUA.DateTime;
             ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
             ViewBag.todate = dt.ToString("dd-MMM-yyyy");
@@ -351,7 +351,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "CustomerPOReport", Mode = "R")]
         public ActionResult CustomerPOReport()
         {
-            AppUA _appUA = Session["AppUA"] as AppUA;
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
             DateTime dt = _appUA.DateTime;
             ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
             ViewBag.todate = dt.ToString("dd-MMM-yyyy");
