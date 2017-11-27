@@ -101,10 +101,10 @@ $(document).ready(function () {
             { "data":"AppxRate","defaultContent":"<i>-</i>"},
             { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit Item" class="actionLink"  onclick="EditIemsFromGrid(this)" ><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>' }
             ],
-            columnDefs: [{ "targets": [0], "visible": false, "searchable": false }//,
+            columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
             //{ className: "text-left", "targets": [1, 2, 3, 4, 6] },
-            //{ className: "text-center", "targets": [] },
-            //{ className: "text-right", "targets": [5] }
+            //{ className: "text-center", "targets": [6] },
+            { className: "text-right", "targets": [6] }
 
             ]
         });
@@ -270,6 +270,7 @@ function ClearFormFields()
     $('#ID').val(emptyGUID);
     $('#RequisitionDetailObj_RequisitionDetailObject').val('');
     $('#lblApprovalStatus').text('');
+    $('#lblApprovalStatus').attr('title','');
     $('#lblReqStatus').text('Open');
     $("#lblReqNo").text('Requisition No');
 
@@ -376,6 +377,7 @@ function BindRequisitionDetail()
         $('#lblReqStatus').text(RequisitionViewModel.ReqStatus);
         $('#hdnReqForCompany').val(RequisitionViewModel.ReqForCompany);
         $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Final ⏱ " : "Manager ⏱"))
+        $('#lblApprovalStatus').attr('title', (RequisitionViewModel.FinalApproval) ? "Finally approved " : ((RequisitionViewModel.ManagerApproved) ? "Pending for final approval" : "Pending for manager approval"))
         $("#lblReqNo").text(RequisitionViewModel.ReqNo);
         
         if (RequisitionViewModel.FinalApproval || RequisitionViewModel.ManagerApproved)
@@ -648,10 +650,12 @@ function SaveSuccessRequisition(data, status) {
                 if (JsonResult.Record.ApprovedBy==="Final")
                 {
                     $('#lblApprovalStatus').text('Final ✔');
+                    $('#lblApprovalStatus').attr('title', 'Finally approved')
                     DisableApproved();
                 }
                 else if (JsonResult.Record.ApprovedBy === "Manager") {
                     $('#lblApprovalStatus').text('Final ⏱');
+                    $('#lblApprovalStatus').attr('title', 'Pending for final approval')
                     DisableApproved();
                 }
                 else {
@@ -711,11 +715,13 @@ function ApproveRequsistionByID()
             if(ds.Record.ManagerApproved)
             {
                 $('#lblApprovalStatus').text('Final ⏱');
+                $('#lblApprovalStatus').attr('title','Pending for final approval')
                 IsManagerApproved = 1;
                 DisableApproved();
             }
             if (ds.Record.FinalApproval) {
                 $('#lblApprovalStatus').text('Final ✔');
+                $('#lblApprovalStatus').attr('title', 'Finally approved')
                 DisableApproved();
             }
         }
