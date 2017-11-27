@@ -292,12 +292,11 @@ function BindAllQuotes() {
 
 
 function Delete(curobj) {
+    debugger;
     var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
-    if (rowData.ID) {
-        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '");', '', "Yes, delete it!");
-    }
-
-
+    if ((rowData != null)&&(rowData.ID != null)) {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '",' + rowData[EG_SlColumn] + ')');
+    }   
 }
 
 //Delete ProformaInvoice
@@ -346,12 +345,13 @@ function CheckAmount() {
         $("#txtDiscount").val(roundoff(0));
 }
 
-function DeleteItem(ID) {
+function DeleteItem(ID,rw) {
 
     try {
+        debugger;
 
         //Event Request Case
-        if (ID) {
+        if (ID != '' && ID != null) {
             var data = { "ID": ID };
             var ds = {};
             ds = GetDataFromServer("ProformaInvoice/DeleteItemByID/", data);
@@ -372,17 +372,28 @@ function DeleteItem(ID) {
                 }
                 return ds.Record;
             }
-
+                        
         }
+        else {
+            if (EG_GridData.length != 1) {
+                EG_GridData.splice(rw - 1, 1);
+                EG_Rebind_WithData(EG_GridData, 0);
+            }
+            else {
+                reset();
+                EG_Rebind();
+            }
+            notyAlert('success', 'Deleted Successfully');
+        }
+
     }
     catch (e) {
 
         notyAlert('error', e.message);
     }
-
-
-
+    
 }
+
 function saveInvoices() {
     debugger;
     var validation = EG_Validate();
