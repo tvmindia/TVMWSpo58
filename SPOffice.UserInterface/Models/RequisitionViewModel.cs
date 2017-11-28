@@ -24,8 +24,10 @@ namespace SPOffice.UserInterface.Models
         public DateTime ManagerApprovalDate { get; set; }
         public bool FinalApproval { get; set; }
         public DateTime FinalApprovalDate { get; set; }
+        
         //External references
         public RequisitionDetailViewModel RequisitionDetailObj { get; set; }
+        public UserViewModel userObj { get; set; }
         public List<RequisitionDetailViewModel> RequisitionDetailList { get; set; }
         public CompanyViewModel CompanyObj { get; set; }
         public CommonViewModel CommonObj { get; set; }
