@@ -35,8 +35,7 @@ namespace SPOffice.BusinessService.Services
 
                 throw;
             }
-        }
-
+        } 
 
         //------------------------------------------------------------------------//
         public List<SupplierOrder> GetAllSupplierPurchaseOrders()
@@ -85,7 +84,15 @@ namespace SPOffice.BusinessService.Services
             return _supplierRepository.DeletePurchaseOrder(ID);
 
         }
+        
         //------------------------------------------------------------------------//
+
+        public List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID)
+        {
+            return _supplierRepository.GetPurchaseOrderDetailTable(ID);
+
+        }
+
 
     }
 }

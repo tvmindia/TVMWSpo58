@@ -54,7 +54,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
         //public string SupplierName { get; set; }
-        public decimal Amount { get; set; }
         public string POStatus { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
@@ -94,5 +93,18 @@ namespace SPOffice.DataAccessObject.DTO
         public string FromDate { get; set; }
         public decimal MaxLimit { get; set; }
 
+    }
+    public class SupplierPODetail
+    {
+        public Guid ID { get; set; }
+        public Guid POID { get; set; }
+        public Guid MaterialID { get; set; }
+        public string MaterialDesc { get; set; }
+        public string UnitCode { get; set; }
+        public decimal Qty { get; set; }
+        public decimal Rate { get; set; }
+
+        public decimal Amount { get; set; }
+        public Common commonObj { get; set; }
     }
 }
