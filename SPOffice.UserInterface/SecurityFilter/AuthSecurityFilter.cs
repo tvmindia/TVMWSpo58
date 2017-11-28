@@ -30,7 +30,8 @@ namespace SPOffice.UserInterface.SecurityFilter
                     filterContext.Result = new HttpUnauthorizedResult();
                     return;
                 }
-                var authCookie = filterContext.HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+          
+            var authCookie = filterContext.HttpContext.Request.Cookies[".SPOFFICE"];
                 if (authCookie == null)
                 {
                     // Unauthorized

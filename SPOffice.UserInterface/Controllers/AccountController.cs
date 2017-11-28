@@ -53,7 +53,7 @@ namespace UserInterface.Controllers
                     }
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, uservm.UserName, DateTime.Now, DateTime.Now.AddHours(24), true, uservm.RoleCSV);
                     string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket));
+                    Response.Cookies.Add(new HttpCookie(".SPOFFICE", encryptedTicket));
                     //session setting
                     UA ua = new UA();
                     ua.UserName = uservm.LoginName;
