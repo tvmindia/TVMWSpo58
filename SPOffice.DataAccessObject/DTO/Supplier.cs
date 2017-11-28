@@ -33,6 +33,7 @@ namespace SPOffice.DataAccessObject.DTO
     public class SupplierOrder
     {
         public Guid ID { get; set; }
+        public Guid hdnFileID { get; set; }
         public string PONo { get; set; }
         public string PODate { get; set; }
         public string POIssuedDate { get; set; }
@@ -52,14 +53,17 @@ namespace SPOffice.DataAccessObject.DTO
 
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
-        public string SupplierName { get; set; }
+        //public string SupplierName { get; set; }
         public decimal Amount { get; set; }
         public string POStatus { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
 
         public string CompanyName { get; set; }
-        Suppliers SuppliersObj { get; set; }
+        public Suppliers SuppliersObj { get; set; }
+        public Company company { get; set; }
+        public Common commonObj { get; set; }
+
     }
 
     public class Suppliers

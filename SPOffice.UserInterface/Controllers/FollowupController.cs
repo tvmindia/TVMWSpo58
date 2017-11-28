@@ -51,7 +51,7 @@ namespace SPOffice.UserInterface.Controllers
             FollowUp resultfromBusiness = null;
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
 
                 _followupObj.commonObj.CreatedDate =_appUA.DateTime;
                 _followupObj.commonObj.UpdatedDate = _appUA.DateTime;

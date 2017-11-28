@@ -74,7 +74,7 @@ namespace UserInterface.Controllers
             object result = null;
             if (ModelState.IsValid)
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 if (rolesObj.ID == Guid.Empty)
                 {
                     try
@@ -180,7 +180,7 @@ namespace UserInterface.Controllers
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
-            Permission _permission = Session["UserRights"] as Permission;
+            Permission _permission = Session["UserRightsOffice"] as Permission;
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
             switch (ActionType)
             {

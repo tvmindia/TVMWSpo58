@@ -17,7 +17,7 @@ namespace SPOffice.RepositoryServices.Services
         public SupplierRepository(IDatabaseFactory databaseFactory)
         {
             _databaseFactory = databaseFactory;
-        }
+        } 
 
         #region GetAllSupplierMobile
         public List<Supplier> GetAllSupplierPOForMobile(string duration)
@@ -140,6 +140,342 @@ namespace SPOffice.RepositoryServices.Services
             }
             return suppliersList;
         }
+
+
+
+        public List<SupplierOrder> GetAllSupplierPurchaseOrders()
+        {
+            List<SupplierOrder> SPOList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllSupplierPurchaseOrders]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                SPOList = new List<SupplierOrder>();
+                                while (sdr.Read())
+                                {
+                                    SupplierOrder _SuppObj = new SupplierOrder();
+                                    {
+                                        
+                                        _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
+                                        _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
+                                        _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
+                                        _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
+                                        _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
+                                        _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
+                                        
+                                        // _SuppObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()).ToString(s.dateformat) : _SuppObj.POIssuedDate);
+                                        //_SuppObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _SuppObj.BodyHeader);
+                                        //_SuppObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _SuppObj.BodyFooter);
+                                        //_SuppObj.SupplierMailingAddress = (sdr["SupplierMailingAddress"].ToString() != "" ? sdr["SupplierMailingAddress"].ToString() : _SuppObj.SupplierMailingAddress);
+                                        //_SuppObj.ShipToAddress = (sdr["ShipToAddress"].ToString() != "" ? sdr["ShipToAddress"].ToString() : _SuppObj.ShipToAddress);
+                                        //_SuppObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _SuppObj.GeneralNotes);
+                                        //_SuppObj.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? sdr["EmailSentYN"].ToString() : _SuppObj.EmailSentYN);
+                                        // _SuppObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _SuppObj.TaxAmount);
+                                        // _SuppObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _SuppObj.Discount);
+                                        // _SuppObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _SuppObj.TaxPercApplied);
+                                        // _SuppObj.GrossTotal = (sdr["GrossTotal"].ToString() != "" ? decimal.Parse(sdr["GrossTotal"].ToString()) : _SuppObj.GrossTotal);
+                                        //_SuppObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _SuppObj.TaxTypeCode);
+
+                                        _SuppObj.SuppliersObj = new Suppliers();
+                                        {
+                                            _SuppObj.SuppliersObj.ID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _SuppObj.SuppliersObj.ID);
+                                            _SuppObj.SuppliersObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _SuppObj.SuppliersObj.CompanyName);
+                                          //  _SuppObj.SuppliersObj.BillingAddress = (sdr["CustBillingAddress"].ToString() != "" ? sdr["CustBillingAddress"].ToString() : _SuppObj.SuppliersObj.BillingAddress);
+                                          //  _SuppObj.SuppliersObj.ShippingAddress = (sdr["CustShippingAddress"].ToString() != "" ? sdr["CustShippingAddress"].ToString() : _SuppObj.SuppliersObj.ShippingAddress);
+                                        }
+                                        _SuppObj.company = new Company();
+                                        {
+                                            _SuppObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : _SuppObj.company.Name);
+                                            _SuppObj.company.Code = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.company.Code);
+                                           // _SuppObj.company.BillingAddress = (sdr["POToBillingAddress"].ToString() != "" ? sdr["POToBillingAddress"].ToString() : _SuppObj.company.BillingAddress);
+                                           // _SuppObj.company.ShippingAddress = (sdr["POToShippingAddress"].ToString() != "" ? sdr["POToShippingAddress"].ToString() : _SuppObj.company.ShippingAddress);
+                                        }  
+                                    }
+                                    SPOList.Add(_SuppObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return SPOList;
+
+        }
+        public SupplierOrder GetSupplierPurchaseOrderByID(Guid ID)
+        {
+            SupplierOrder _SuppObj = new SupplierOrder();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetSupplierPurchaseOrderByID]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
+                                    _SuppObj.SupplierID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _SuppObj.SupplierID);
+                                    _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
+                                    _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
+                                    _SuppObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()).ToString(s.dateformat) : _SuppObj.POIssuedDate);
+                                    _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
+                                    _SuppObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _SuppObj.BodyHeader);
+                                    _SuppObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _SuppObj.BodyFooter);
+                                    _SuppObj.SupplierMailingAddress = (sdr["SupplierMailingAddress"].ToString() != "" ? sdr["SupplierMailingAddress"].ToString() : _SuppObj.SupplierMailingAddress);
+                                    _SuppObj.ShipToAddress = (sdr["ShipToAddress"].ToString() != "" ? sdr["ShipToAddress"].ToString() : _SuppObj.ShipToAddress);
+                                    _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
+                                    _SuppObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _SuppObj.GeneralNotes);
+                                    _SuppObj.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? sdr["EmailSentYN"].ToString() : _SuppObj.EmailSentYN);
+                                    _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
+
+
+                                     _SuppObj.TaxAmount = (sdr["TaxAmount"].ToString() != "" ? decimal.Parse(sdr["TaxAmount"].ToString()) : _SuppObj.TaxAmount);
+                                     _SuppObj.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _SuppObj.Discount);
+                                     _SuppObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _SuppObj.TaxPercApplied);
+                                     _SuppObj.GrossTotal = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.GrossTotal);
+                                    _SuppObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _SuppObj.TaxTypeCode);
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return _SuppObj;
+        }
+
+        public object InsertPurchaseOrder(SupplierOrder SPO)
+        {
+            SqlParameter outputStatus, outputID;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[InsertSupplierPurchaseOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = SPO.PONo;
+                        cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = SPO.PODate;
+                        cmd.Parameters.Add("@POIssuedDate", SqlDbType.DateTime).Value = SPO.POIssuedDate;
+                        cmd.Parameters.Add("@SupplierID", SqlDbType.UniqueIdentifier).Value = SPO.SupplierID;
+                        cmd.Parameters.Add("@POFromCompCode", SqlDbType.VarChar, 10).Value = SPO.POFromCompCode;
+                        cmd.Parameters.Add("@SupplierMailingAddress", SqlDbType.NVarChar, -1).Value = SPO.SupplierMailingAddress;
+                        cmd.Parameters.Add("@ShipToAddress", SqlDbType.NVarChar, -1).Value = SPO.ShipToAddress;
+                        cmd.Parameters.Add("@BodyFooter", SqlDbType.VarChar, 500).Value = SPO.BodyFooter;
+                        cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = SPO.BodyHeader;
+                        cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = SPO.POStatus;
+
+                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.GrossTotal;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = SPO.TaxAmount;
+
+                        //cmd.Parameters.Add("@EmailSentYN", SqlDbType.Decimal).Value = SPO.EmailSentYN;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = SPO.GeneralNotes;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = SPO.hdnFileID;
+
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = SPO.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.InsertFailure);
+                    case "1":
+                        //success
+                        return new
+                        {
+                            ID = outputID.Value.ToString(),
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.InsertSuccess
+                        };
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                ID = outputID.Value.ToString(),
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.InsertSuccess
+            };
+        }
+
+        public object UpdatePurchaseOrder(SupplierOrder SPO)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateSupplierPurchaseOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = SPO.ID;
+                        cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = SPO.PONo;
+                        cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = SPO.PODate;
+                        cmd.Parameters.Add("@POIssuedDate", SqlDbType.DateTime).Value = SPO.POIssuedDate;
+                        cmd.Parameters.Add("@SupplierID", SqlDbType.UniqueIdentifier).Value = SPO.SupplierID;
+                        cmd.Parameters.Add("@POFromCompCode", SqlDbType.VarChar, 10).Value = SPO.POFromCompCode;
+                        cmd.Parameters.Add("@SupplierMailingAddress", SqlDbType.NVarChar, -1).Value = SPO.SupplierMailingAddress;
+                        cmd.Parameters.Add("@ShipToAddress", SqlDbType.NVarChar, -1).Value = SPO.ShipToAddress;
+                        cmd.Parameters.Add("@BodyFooter", SqlDbType.VarChar, 500).Value = SPO.BodyFooter;
+                        cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = SPO.BodyHeader;
+                        cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = SPO.POStatus;
+                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.GrossTotal;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
+
+
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = SPO.TaxAmount;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = SPO.GeneralNotes;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
+        public object DeletePurchaseOrder(Guid ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteSupplierOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.DeleteFailure);
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
+        }
+
 
     }
 }

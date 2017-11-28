@@ -13,5 +13,11 @@ namespace SPOffice.BusinessService.Contracts
 
         List<Suppliers> GetAllSuppliers();
 
+        List<SupplierOrder> GetAllSupplierPurchaseOrders();
+        SupplierOrder GetSupplierPurchaseOrderByID(Guid ID);
+        object InsertPurchaseOrder(SupplierOrder SPO);
+        object UpdatePurchaseOrder(SupplierOrder SPO);
+        object DeletePurchaseOrder(Guid ID);
+
     }
 }

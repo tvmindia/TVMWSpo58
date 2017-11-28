@@ -53,12 +53,12 @@ namespace UserInterface.Controllers
                     }
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, uservm.UserName, DateTime.Now, DateTime.Now.AddHours(24), true, uservm.RoleCSV);
                     string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket));
+                    Response.Cookies.Add(new HttpCookie(".SPOFFICE", encryptedTicket));
                     //session setting
                     UA ua = new UA();
                     ua.UserName = uservm.LoginName;
                     ua.AppID = AppID;
-                    Session.Add("TvmValid", ua);
+                    Session.Add("TvmValidSPOffice", ua);
                     //if (uservm.RoleCSV.Contains("SAdmin") || uservm.RoleCSV.Contains("CEO"))
                     //{
                     //    return RedirectToAdminDashboard();
@@ -94,9 +94,9 @@ namespace UserInterface.Controllers
             try
             {
                 FormsAuthentication.SignOut();
-                Session.Remove("TvmValid");
-                Session.Remove("UserRights");
-                Session.Remove("AppUA");
+                Session.Remove("TvmValidSPOffice");
+                Session.Remove("UserRightsOffice");
+                Session.Remove("AppUAOffice");
             }
             catch (Exception ex)
             {

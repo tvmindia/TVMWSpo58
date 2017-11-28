@@ -200,7 +200,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
                     quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
                     quoteHeaderVM.commonObj.CreatedDate =_appUA.DateTime;
@@ -411,7 +411,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (!string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
                     quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
                     quoteHeaderVM.commonObj.CreatedDate = _appUA.DateTime;

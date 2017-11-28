@@ -34,7 +34,7 @@ namespace SPOffice.UserInterface.Controllers
         {
             if(id== "TILEFILTER")
             { 
-                Permission _permission = Session["UserRights"] as Permission;
+                Permission _permission = Session["UserRightsOffice"] as Permission;
                     if (_permission.SubPermissionList != null)
                     {
                         if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -93,7 +93,7 @@ namespace SPOffice.UserInterface.Controllers
             {
                 ReqAdvanceSearch ReqAdvancedSearchObj = AdvanceSearchObject!=null?JsonConvert.DeserializeObject<ReqAdvanceSearch>(AdvanceSearchObject):new ReqAdvanceSearch();
                 bool isAdminOrCeo = false;
-                Permission _permission = Session["UserRights"] as Permission;
+                Permission _permission = Session["UserRightsOffice"] as Permission;
                 if (_permission.SubPermissionList != null)
                 {
                     if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -101,7 +101,7 @@ namespace SPOffice.UserInterface.Controllers
                         isAdminOrCeo = true;
                     }
                 }
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 List<RequisitionViewModel> RequisitionList = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(_appUA.UserName,_appUA.AppID, isAdminOrCeo, ReqAdvancedSearchObj));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = RequisitionList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
@@ -163,7 +163,7 @@ namespace SPOffice.UserInterface.Controllers
         {
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails(Guid.Parse(ID),_appUA.UserName));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = requisitionViewModelObj });
             }
@@ -184,7 +184,7 @@ namespace SPOffice.UserInterface.Controllers
                 //if (ModelState.IsValid)
                 {
                     bool isAdminOrCeo = false;
-                    Permission _permission = Session["UserRights"] as Permission;
+                    Permission _permission = Session["UserRightsOffice"] as Permission;
                     if (_permission.SubPermissionList != null)
                     {
                         if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -192,7 +192,7 @@ namespace SPOffice.UserInterface.Controllers
                             isAdminOrCeo = true;
                         }
                     }
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     RequisitionObj.CommonObj = new CommonViewModel();
                     RequisitionObj.CommonObj.CreatedBy = _appUA.UserName;
                     RequisitionObj.CommonObj.CreatedDate = _appUA.DateTime;
@@ -253,7 +253,7 @@ namespace SPOffice.UserInterface.Controllers
             {
                 RequisitionViewModel RequisitionObj = new RequisitionViewModel();
                 bool isAdminOrCeo = false;
-                Permission _permission = Session["UserRights"] as Permission;
+                Permission _permission = Session["UserRightsOffice"] as Permission;
                 if (_permission.SubPermissionList != null)
                 {
                     if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -261,7 +261,7 @@ namespace SPOffice.UserInterface.Controllers
                         isAdminOrCeo = true;
                     }
                 }
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 RequisitionObj.CommonObj = new CommonViewModel();
                 RequisitionObj.CommonObj.CreatedBy = _appUA.UserName;
                 RequisitionObj.CommonObj.UpdatedDate = _appUA.DateTime;
@@ -302,8 +302,8 @@ namespace SPOffice.UserInterface.Controllers
             try
             {
                 bool isAdminOrCeo = false;
-                AppUA _appUA = Session["AppUA"] as AppUA;
-                Permission _permission = Session["UserRights"] as Permission;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
+                Permission _permission = Session["UserRightsOffice"] as Permission;
                 if(_permission.SubPermissionList!=null)
                 {
                     if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -332,10 +332,10 @@ namespace SPOffice.UserInterface.Controllers
             {
                 bool isAdminOrCeo = false;
                 bool isApproverManager = false;
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
 
 
-                Permission _permission = Session["UserRights"] as Permission;
+                Permission _permission = Session["UserRightsOffice"] as Permission;
                 if (_permission.SubPermissionList != null)
                 {
                     if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -365,7 +365,7 @@ namespace SPOffice.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
-            Permission _permission = Session["UserRights"] as Permission;
+            Permission _permission = Session["UserRightsOffice"] as Permission;
             switch (ActionType)
             {
                 case "List":
