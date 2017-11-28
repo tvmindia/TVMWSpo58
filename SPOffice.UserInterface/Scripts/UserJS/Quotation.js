@@ -320,524 +320,537 @@ function GetTaxPercentage()
 
 function Delete(curobj) {
     var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
-    if (rowData.ID)
-    {
-        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '");', '', "Yes, delete it!");
-    }
-   
-    
-}
-
-function CheckAmount() {
-  
-    if ($("#txtDiscount").val() == "")
-        $("#txtDiscount").val(roundoff(0));
-}
-
-function DeleteItem(ID) {
-    
-    try {
-       
-        //Event Request Case
-        if (ID)
+    if ((rowData != null) && (rowData.ID != null)) {
         {
+            notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '",' + rowData[EG_SlColumn] + ')');
+        }
+
+
+    }
+}
+
+    function CheckAmount() {
+
+        if ($("#txtDiscount").val() == "")
+            $("#txtDiscount").val(roundoff(0));
+    }
+
+    function DeleteItem(ID, rw) {
+
+        try {
+            debugger;
+            //Event Request Case
+            if (ID != '' && ID != null)
+            {
+                var data = { "ID": ID };
+                var ds = {};
+                ds = GetDataFromServer("Quotation/DeleteItemByID/", data);
+                if (ds != '') {
+                    ds = JSON.parse(ds);
+                }
+                if (ds.Result == "OK") {
+                    switch (ds.Result) {
+                        case "OK":
+                            notyAlert('success', ds.Record.Message);
+                            EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                            break;
+                        case "ERROR":
+                            notyAlert('error', ds.Message);
+                            break;
+                        default:
+                            break;
+                    }
+                    return ds.Record;
+                }
+
+            }
+
+
+            else {
+                if (EG_GridData.length != 1) {
+                    EG_GridData.splice(rw - 1, 1);
+                    EG_Rebind_WithData(EG_GridData, 0);
+                }
+                else {
+                    reset();
+                    EG_Rebind();
+                }
+                notyAlert('success', 'Deleted Successfully');
+            }
+
+        }
+        catch (e) {
+
+            notyAlert('error', e.message);
+        }
+
+
+
+    }
+
+    function saveInvoices() {
+        debugger;
+        $("#DetailJSON").val('');//
+        var validation = EG_Validate();
+        if (validation == "") {
+
+            var result = JSON.stringify(EG_GridData);
+            $("#DetailJSON").val(result);
+            $('#btnSave').trigger('click');
+        }
+        else {
+            notyAlert('error', validation);
+        }
+
+
+
+    }
+
+
+
+    function SaveSuccess(data, status) {
+
+        var JsonResult = JSON.parse(data)
+        switch (JsonResult.Result) {
+            case "OK":
+
+                notyAlert('success', JsonResult.Record.Message);
+                ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
+                if (JsonResult.Record.ID) {
+                    $("#ID").val(JsonResult.Record.ID);
+                    $('#deleteId').val(JsonResult.Record.ID);
+                }
+                BindAllQuotes();
+                EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                break;
+            case "ERROR":
+                notyAlert('error', JsonResult.Record.Message);
+                break;
+            default:
+                notyAlert('error', JsonResult.Record.Message);
+                break;
+        }
+    }
+
+    //To Reset Quotation Form
+    function Resetform() {
+        debugger;
+        var validator = $("#QuoteForm").validate();
+        $('#QuoteForm').find('.field-validation-error span').each(function () {
+            validator.settings.success($(this));
+        });
+        $('#QuoteForm')[0].reset();
+    }
+
+
+
+
+
+    function Edit(Obj) {
+        debugger;
+        $('#QuoteForm')[0].reset();
+        var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
+        $('#ID').val(rowData.ID);
+        $('#deleteId').val(rowData.ID);
+        $('#QuoteMAilHeaderID').val(rowData.ID);
+
+        BindQuationDetails(rowData.ID);
+        GetTaxPercentage();
+        ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
+        openNav();
+    }
+    function PreviewMail()
+    {
+        try
+        {
+
+            var QHID = $("#ID").val();
+            if (QHID) {
+                //Bind mail html into model
+                GetMailPreview(QHID);
+
+                $("#MailPreviewModel").modal('show');
+            }
+
+
+        }
+        catch(e)
+        {
+            notyAlert('error', e.Message);
+        }
+
+    }
+    function GetMailPreview(ID) {
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Quotation/GetMailPreview/", data);
+        if (ds == "Nochange") {
+            return; 0
+        }
+        $("#mailmodelcontent").empty();
+        $("#mailmodelcontent").html(ds);
+        $("#MailBody").val(ds);
+
+    }
+
+
+    function BindQuationDetails(ID)
+    {
+        try
+        {
+            var jsresult = GetQuationDetailsByID(ID)
+            if(jsresult)
+            {
+                //bind
+                $("#txtQuotationNo").val(jsresult.QuotationNo);
+                $("#QuotationDate").val(jsresult.QuotationDate);
+                $("#ValidTillDate").val(jsresult.ValidTillDate);
+                $("#ddlCustomer").val(jsresult.CustomerID);
+                $("#SentToAddress").val(jsresult.SentToAddress);
+                $("#ContactPerson").val(jsresult.ContactPerson);
+                $("#ddlSalesPerson").val(jsresult.SalesPersonID);
+                $("#ddlCompany").val(jsresult.company.Code);
+                $("#ddlQuoteStage").val(jsresult.quoteStage.Code);
+                $("#QuoteSubject").val(jsresult.QuoteSubject);
+                $("#QuoteBodyHead").val(jsresult.QuoteBodyHead);
+
+                $("#GrossAmount").val(jsresult.GrossAmount);
+                $("#Discount").val(jsresult.Discount);
+                $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
+                $("#TaxTypeCode").val(jsresult.TaxTypeCode);
+                $("#TaxPercApplied").val(jsresult.TaxPercApplied);
+                $("#TaxAmount").val(jsresult.TaxAmount);
+                $("#TotalAmount").val(jsresult.TotalAmount);
+                $("#QuoteBodyFoot").val(jsresult.QuoteBodyFoot);
+                $("#GeneralNotes").val(jsresult.GeneralNotes);
+
+                $("#lblQuoteStage").text(jsresult.quoteStage.Description);
+                $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
+
+                $('#SentToEmails').val(jsresult.SentToEmails);
+                $("#lblQuotationNo").text(jsresult.QuotationNo);
+                debugger;
+                EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
+                clearUploadControl();
+                PaintImages(ID);
+
+
+            }
+
+        }
+        catch(e)
+        {
+            notyAlert('error', e.Message);
+        }
+    }
+
+    function GetQuationDetailsByID(ID) {
+        try {
+
             var data = { "ID": ID };
             var ds = {};
-            ds = GetDataFromServer("Quotation/DeleteItemByID/", data);
+            ds = GetDataFromServer("Quotation/GetQuationDetailsByID/", data);
             if (ds != '') {
                 ds = JSON.parse(ds);
             }
             if (ds.Result == "OK") {
-                switch (ds.Result) {
-                            case "OK":
-                                notyAlert('success', ds.Record.Message);
-                                EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
-                            break;
-                            case "ERROR":
-                                notyAlert('error', ds.Message);
-                            break;
-                            default:
-                            break;
-                        }
                 return ds.Record;
             }
-            
-        }
-    }
-    catch (e) {
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.Message);
 
-        notyAlert('error', e.message);
-    }
-
-
-   
-}
-
-function saveInvoices() {
-    debugger;
-    $("#DetailJSON").val('');//
-    var validation = EG_Validate();
-    if (validation == "") {
-
-        var result = JSON.stringify(EG_GridData);
-        $("#DetailJSON").val(result);
-        $('#btnSave').trigger('click');
-    }
-    else {
-        notyAlert('error', validation);
-    }
-
-   
-   
-}
-
-
-
-function SaveSuccess(data, status) {
-   
-    var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
-        case "OK":
-           
-            notyAlert('success', JsonResult.Record.Message);
-            ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
-            if (JsonResult.Record.ID) {
-                $("#ID").val(JsonResult.Record.ID);
-                $('#deleteId').val(JsonResult.Record.ID);
             }
-            BindAllQuotes();
-            EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
-            break;
-        case "ERROR":
-            notyAlert('error', JsonResult.Record.Message);
-            break;
-        default:
-            notyAlert('error', JsonResult.Record.Message);
-            break;
-    }
-}
-
-//To Reset Quotation Form
-function Resetform() {
-    debugger;
-    var validator = $("#QuoteForm").validate();
-    $('#QuoteForm').find('.field-validation-error span').each(function () {
-        validator.settings.success($(this));
-    });
-    $('#QuoteForm')[0].reset();
-}
-
-
-
-
-
-function Edit(Obj) {
-    debugger;
-    $('#QuoteForm')[0].reset();
-    var rowData = DataTables.QuotationTable.row($(Obj).parents('tr')).data();
-    $('#ID').val(rowData.ID);
-    $('#deleteId').val(rowData.ID);
-    $('#QuoteMAilHeaderID').val(rowData.ID);
-    
-    BindQuationDetails(rowData.ID);
-    GetTaxPercentage();
-    ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
-    openNav();
-}
-function PreviewMail()
-{
-    try
-    {
-       
-        var QHID = $("#ID").val();
-        if (QHID) {
-            //Bind mail html into model
-            GetMailPreview(QHID);
-
-            $("#MailPreviewModel").modal('show');
         }
-        
-        
+        catch (e) {
+            notyAlert('error', e.message);
+        }
     }
-    catch(e)
-    {
-        notyAlert('error', e.Message);
+    function AddNew() {
+        ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
+        Resetform();
+        openNav();
+        EG_ClearTable();
+        $('#ID').val('');
+        $("#DetailJSON").val('');
+        //Reset();  
+        $("#ddlQuoteStage").val('DFT');
+        $("#lblQuoteStage").text('Draft');
+        $("#lblEmailSent").text('No');
+        $("#lblQuotationNo").text('New Quotation');
+        clearUploadControl();
+        EG_AddBlankRows(5)
+        //  clearUploadControl();
+        $("#QuoteBodyFoot").val(footer);
     }
- 
-}
-function GetMailPreview(ID) {
 
-    var data = { "ID": ID };
-    var ds = {};
-    ds = GetDataFromServer("Quotation/GetMailPreview/", data);
-    if (ds == "Nochange") {
-        return; 0
+    function Reset() {
+        BindQuationDetails($('#ID').val());
+        $("#QuoteBodyFoot").val(footer);
     }
-    $("#mailmodelcontent").empty();
-    $("#mailmodelcontent").html(ds);
-    $("#MailBody").val(ds);
-    
-}
 
-
-function BindQuationDetails(ID)
-{
-    try
-    {
-        var jsresult = GetQuationDetailsByID(ID)
-        if(jsresult)
-        {
-            //bind
-            $("#txtQuotationNo").val(jsresult.QuotationNo);
-            $("#QuotationDate").val(jsresult.QuotationDate);
-            $("#ValidTillDate").val(jsresult.ValidTillDate);
-            $("#ddlCustomer").val(jsresult.CustomerID);
-            $("#SentToAddress").val(jsresult.SentToAddress);
-            $("#ContactPerson").val(jsresult.ContactPerson);
-            $("#ddlSalesPerson").val(jsresult.SalesPersonID);
-            $("#ddlCompany").val(jsresult.company.Code);
-            $("#ddlQuoteStage").val(jsresult.quoteStage.Code);
-            $("#QuoteSubject").val(jsresult.QuoteSubject);
-            $("#QuoteBodyHead").val(jsresult.QuoteBodyHead);
-
-            $("#GrossAmount").val(jsresult.GrossAmount);
-            $("#Discount").val(jsresult.Discount);
-            $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
-            $("#TaxTypeCode").val(jsresult.TaxTypeCode);
-            $("#TaxPercApplied").val(jsresult.TaxPercApplied);
-            $("#TaxAmount").val(jsresult.TaxAmount);
-            $("#TotalAmount").val(jsresult.TotalAmount);
-            $("#QuoteBodyFoot").val(jsresult.QuoteBodyFoot);
-            $("#GeneralNotes").val(jsresult.GeneralNotes);
-             
-            $("#lblQuoteStage").text(jsresult.quoteStage.Description);
-            $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
-            
-            $('#SentToEmails').val(jsresult.SentToEmails);
-            $("#lblQuotationNo").text(jsresult.QuotationNo);
+    //---------------Bind logics-------------------
+    function GetAllQuotations(filter) {
+        try {
             debugger;
-            EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
-            clearUploadControl();
-            PaintImages(ID);
-         
-
-        }
-
-    }
-    catch(e)
-    {
-        notyAlert('error', e.Message);
-    }
-}
-
-function GetQuationDetailsByID(ID) {
-    try {
-
-        var data = { "ID": ID };
-        var ds = {};
-        ds = GetDataFromServer("Quotation/GetQuationDetailsByID/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            return ds.Record;
-        }
-        if (ds.Result == "ERROR") {
-            notyAlert('error', ds.Message);
-         
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
-function AddNew() {
-    ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
-    Resetform();
-    openNav();   
-    EG_ClearTable();   
-    $('#ID').val('');
-    $("#DetailJSON").val('');
-    //Reset();  
-    $("#ddlQuoteStage").val('DFT');
-    $("#lblQuoteStage").text('Draft');
-   $("#lblEmailSent").text('No');
-    $("#lblQuotationNo").text('New Quotation');
-    clearUploadControl();
-    EG_AddBlankRows(5)
-    //  clearUploadControl();
-    $("#QuoteBodyFoot").val(footer);
-}
-
-function Reset() {      
-    BindQuationDetails($('#ID').val());    
-    $("#QuoteBodyFoot").val(footer);    
-}
-
-//---------------Bind logics-------------------
-function GetAllQuotations(filter) {
-    try {
-
-        var data = {"filter":filter};
-        var ds = {};
-        ds = GetDataFromServer("Quotation/GetAllQuotations/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed,ds.OnHold);
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            notyAlert('error', ds.message);
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-
-        //notyAlert('error', e.message);
-    }
-}
-
-//--function to place Counts on Tiles--//
-function BindSummarBox(Draft, Delivered, InProgress, Closed, OnHold)
-{
-    $("#draftCount").text(Draft);
-    $("#deliveredCount").text(Delivered);
-    $("#inProgressCount").text(InProgress);
-    $("#closedCount").text(Closed);
-    $("#onHoldCount").text(OnHold);
-    //--To place discription--//
-    $("#draftCountDescription").text(Draft + ' Quotation(s) are Draft');
-    $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
-    $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
-    $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');
-    $("#onHoldCountDescription").text(OnHold + ' On Hold Quotation(s)');
-
-}
-
-function GetAllQuoteItems(ID) {
-    try {
-
-        var data = { "ID": ID };
-        var ds = {};
-        ds = GetDataFromServer("Quotation/GetQuateItemsByQuateHeadID/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-           return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            notyAlert('error', ds.message);
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-     
-    }
-}
-
-function GetAllProductCodes()
-{
-    try {
-
-        var data = {};
-        var ds = {};
-        ds = GetDataFromServer("Quotation/GetAllProductCodes/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            _Products = ds.Records;
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            notyAlert('error', ds.message);
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-    }
-}
-
-function GetAllUnitCodes() {
-    try {
-
-        var data = {};
-        var ds = {};
-        ds = GetDataFromServer("Quotation/GetAllUnitCodes/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            _Units = ds.Records;
-            return ds.Records;
-        }
-        if (ds.Result == "ERROR") {
-            notyAlert('error', ds.message);
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-    }
-}
-
-function ValidateEmail()
-{
-    var ste = $('#SentToEmails').val();
-    if (ste)
-    {
-        var atpos = ste.indexOf("@");
-        var dotpos = ste.lastIndexOf(".");
-        if (atpos<1 || dotpos<atpos+2 || dotpos+2>=ste.length) 
-        {
-            notyAlert('error', 'Invalid Email');
-            return false;
-        }
-            //not valid
-            
-        else
-        {
-            $("#MailPreviewModel").modal('hide');
-            showLoader();
-            return true;
-        }
-           
-    }
-       
-    else
-        notyAlert('error', 'Enter email address');
-        return false;
-}
-
-function MailSuccess(data, status)
-{
-    hideLoader();
-    var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
-        case "OK":
-
-            notyAlert('success', JsonResult.Message);
-            switch(JsonResult.MailResult)
-            {
-                case 1:
-                    $("#lblEmailSent").text('YES');
-                    break;
-                case 0:
-                    $("#lblEmailSent").text('NO');
-                    break;
+            var data = { "filter": filter };
+            var ds = {};
+            ds = GetDataFromServer("Quotation/GetAllQuotations/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
             }
-           
-            break;
-        case "ERROR":
-            notyAlert('error', JsonResult.Message);
-            break;
-        default:
-            notyAlert('error', JsonResult.Message);
-            break;
+            if (ds.Result == "OK") {
+                BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed,ds.OnHold);
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.message);
+            }
+        }
+        catch (e) {
+            //this will show the error msg in the browser console(F12) 
+            console.log(e.message);
+
+            //notyAlert('error', e.message);
+        }
     }
-}
 
+    //--function to place Counts on Tiles--//
+    function BindSummarBox(Draft, Delivered, InProgress, Closed, OnHold) {
+        $("#draftCount").text(Draft);
+        $("#deliveredCount").text(Delivered);
+        $("#inProgressCount").text(InProgress);
+        $("#closedCount").text(Closed);
+        $("#onHoldCount").text(OnHold);
+        //--To place discription--//
+        $("#draftCountDescription").text(Draft + ' Quotation(s) are Draft');
+        $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
+        $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
+        $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');
+        $("#onHoldCountDescription").text(OnHold + ' On Hold Quotation(s)');
 
-function SendMailClick() {
-    $('#btnFormSendMail').trigger('click');
-}
-function GetCustomerDeails(curobj) {
-    var customerid = $(curobj).val();
-    if (customerid) {
-        var data = { "ID": customerid };
-        var ds = {};
-        ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
+    }
+
+    function GetAllQuoteItems(ID) {
+        try {
+
+            var data = { "ID": ID };
+            var ds = {};
+            ds = GetDataFromServer("Quotation/GetQuateItemsByQuateHeadID/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.message);
+            }
         }
-        if (ds.Result == "OK") {
+        catch (e) {
+            //this will show the error msg in the browser console(F12) 
+            console.log(e.message);
 
-            $("#SentToAddress").val(ds.Record.BillingAddress);
-            $("#ContactPerson").val(ds.Record.ContactPerson);
-            $("#SentToEmails").val(ds.Record.ContactEmail);
-            return ds.Record;
         }
-        if (ds.Result == "ERROR") {
+    }
+
+    function GetAllProductCodes()
+    {
+        try {
+
+            var data = {};
+            var ds = {};
+            ds = GetDataFromServer("Quotation/GetAllProductCodes/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                _Products = ds.Records;
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.message);
+            }
+        }
+        catch (e) {
+            //this will show the error msg in the browser console(F12) 
+            console.log(e.message);
+        }
+    }
+
+    function GetAllUnitCodes() {
+        try {
+
+            var data = {};
+            var ds = {};
+            ds = GetDataFromServer("Quotation/GetAllUnitCodes/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                _Units = ds.Records;
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.message);
+            }
+        }
+        catch (e) {
+            //this will show the error msg in the browser console(F12) 
+            console.log(e.message);
+        }
+    }
+
+    function ValidateEmail()
+    {
+        var ste = $('#SentToEmails').val();
+        if (ste)
+        {
+            var atpos = ste.indexOf("@");
+            var dotpos = ste.lastIndexOf(".");
+            if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= ste.length)
+            {
+                notyAlert('error', 'Invalid Email');
+                return false;
+            }
+                //not valid
+
+            else
+            {
+                $("#MailPreviewModel").modal('hide');
+                showLoader();
+                return true;
+            }
+
+        }
+
+        else
+            notyAlert('error', 'Enter email address');
+        return false;
+    }
+
+    function MailSuccess(data, status) {
+        hideLoader();
+        var JsonResult = JSON.parse(data)
+        switch (JsonResult.Result) {
+            case "OK":
+
+                notyAlert('success', JsonResult.Message);
+                switch (JsonResult.MailResult)
+                {
+                    case 1:
+                        $("#lblEmailSent").text('YES');
+                        break;
+                    case 0:
+                        $("#lblEmailSent").text('NO');
+                        break;
+                }
+
+                break;
+            case "ERROR":
+                notyAlert('error', JsonResult.Message);
+                break;
+            default:
+                notyAlert('error', JsonResult.Message);
+                break;
+        }
+    }
+
+
+    function SendMailClick() {
+        $('#btnFormSendMail').trigger('click');
+    }
+    function GetCustomerDeails(curobj) {
+        var customerid = $(curobj).val();
+        if (customerid) {
+            var data = { "ID": customerid };
+            var ds = {};
+            ds = GetDataFromServer("CustomerOrder/GetCustomerDetailsByID/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+
+                $("#SentToAddress").val(ds.Record.BillingAddress);
+                $("#ContactPerson").val(ds.Record.ContactPerson);
+                $("#SentToEmails").val(ds.Record.ContactEmail);
+                return ds.Record;
+            }
+            if (ds.Result == "ERROR") {
+                return 0;
+            }
+        }
+
+    }
+
+
+    //Delete Quotation
+    function DeleteClick() {
+        debugger;
+        notyConfirm('Are you sure to delete?', 'DeleteQuotation()');
+    }
+
+
+    function DeleteQuotation() {
+        try {
+            debugger;
+            var id = $('#ID').val();
+            if (id != '' && id != null) {
+                var data = { "ID": id };
+                var ds = {};
+                ds = GetDataFromServer("Quotation/DeleteQuotation/", data);
+                if (ds != '') {
+                    ds = JSON.parse(ds);
+                }
+                if (ds.Result == "OK") {
+                    notyAlert('success', ds.Record.Message);
+                    debugger;
+                    BindAllQuotes();
+                    closeNav();
+                }
+                if (ds.Result == "ERROR") {
+                    notyAlert('error', ds.Message);
+                    return 0;
+                }
+                return 1;
+            }
+        }
+        catch (e) {
+            notyAlert('error', e.message);
             return 0;
         }
     }
 
-}
+
+    // change quotestatus of label on dropdown selection
 
 
-//Delete Quotation
-function DeleteClick() {
-    debugger;
-    notyConfirm('Are you sure to delete?', 'DeleteQuotation()');
-}
-
-
-function DeleteQuotation() {
-    try {
+    function ChangeQuoteStatus()
+    {
         debugger;
-        var id = $('#ID').val();
-        if (id != '' && id != null) {
-            var data = { "ID": id };
-            var ds = {};
-            ds = GetDataFromServer("Quotation/DeleteQuotation/", data);
-            if (ds != '') {
-                ds = JSON.parse(ds);
-            }
-            if (ds.Result == "OK") {
-                notyAlert('success', ds.Record.Message);
-                debugger;
-                BindAllQuotes();
-                closeNav();
-            }
-            if (ds.Result == "ERROR") {
-                notyAlert('error', ds.Message);
-                return 0;
-            }
-            return 1;
+
+        if ($("#ddlQuoteStage").val() == "DFT") {
+            $("#lblQuoteStage").text('Draft');
         }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-        return 0;
-    }
-}
+        if ($("#ddlQuoteStage").val() == "CFD") {
+            $("#lblQuoteStage").text('Confirmed');
+        }
+        if ($("#ddlQuoteStage").val() == "CLT") {
+            $("#lblQuoteStage").text('Closed Lost');
+        }
 
+        if ($("#ddlQuoteStage").val() == "CWN") {
+            $("#lblQuoteStage").text('Closed Won');
+        }
+        if ($("#ddlQuoteStage").val() == "DVD") {
+            $("#lblQuoteStage").text('Delivered');
+        }
+        if ($("#ddlQuoteStage").val() == "NGT") {
+            $("#lblQuoteStage").text('Negotiation');
+        }
 
-// change quotestatus of label on dropdown selection
-
-
-function ChangeQuoteStatus()
-{
-    debugger;
-
-    if ($("#ddlQuoteStage").val() == "DFT") {
-        $("#lblQuoteStage").text('Draft');
-    }
-    if ($("#ddlQuoteStage").val() == "CFD") {
-        $("#lblQuoteStage").text('Confirmed');
-    }
-    if ($("#ddlQuoteStage").val() == "CLT") {
-        $("#lblQuoteStage").text('Closed Lost');
-    }
-
-    if ($("#ddlQuoteStage").val() == "CWN") {
-        $("#lblQuoteStage").text('Closed Won');
-    }
-    if ($("#ddlQuoteStage").val() == "DVD") {
-        $("#lblQuoteStage").text('Delivered');
-    }
-    if ($("#ddlQuoteStage").val() == "NGT") {
-        $("#lblQuoteStage").text('Negotiation');
-    }
-
-    if ($("#ddlQuoteStage").val() == "OHD") {
-        $("#lblQuoteStage").text('On Hold');
+        if ($("#ddlQuoteStage").val() == "OHD") {
+            $("#lblQuoteStage").text('On Hold');
         }
     }
 
@@ -846,78 +859,78 @@ function ChangeQuoteStatus()
 
 
 
-//------------------------------------------------ Filter clicks------------------------------------------------------------//
+    //------------------------------------------------ Filter clicks------------------------------------------------------------//
 
-function Gridfilter(filter) {
-    debugger;
-    $('#hdnfilterDescriptionDiv').show();
+    function Gridfilter(filter) {
+        debugger;
+        $('#hdnfilterDescriptionDiv').show();
 
-    $('#Draftfilter').hide();
-    $('#Deliveredfilter').hide();
-    $('#Progressfilter').hide();
-    $('#Closedfilter').hide();
-    $('#OnHoldfilter').hide();
-
-
-    if (filter == 'DFT') {
-        $('#Draftfilter').show();
-    }
-    else if (filter == 'DVD') {
-        $('#Deliveredfilter').show();
-    }
-    else if (filter == 'NGT,CFD') {
-        $('#Progressfilter').show();
-    }
-    else if (filter == "CLT,CWN") {
-        $('#Closedfilter').show();
-    }
-    else if (filter == "OHD") {
-        $('#OnHoldfilter').show();
-    }
-    var result = GetAllQuotations(filter);
-    if (result != null) {
-        DataTables.QuotationTable.clear().rows.add(result).draw(false);
-    }
-}
-
-//--Function To Reset Quotation Table--//
-function FilterReset() {
-    $('#hdnfilterDescriptionDiv').hide();
-    var result = GetAllQuotations();
-    if (result != null) {
-        DataTables.QuotationTable.clear().rows.add(result).draw(false);
-    }
-}
-
-//--function To Filter Quatation Table by call from dashboard ----//
-function dashboardBind(filterValue) {
-    if (filterValue == 'Quotation') {
-        GetAllQuotations()
-
-    }
-    else {
-    if (filterValue == 'Draft') {
-        filter = 'DFT';
-    }
-    else if (filterValue == 'InProgress') {
-        filter = 'NGT,CFD';
-    }
-    else if (filterValue == 'Closed') {
-        filter = 'CLT,CWN';
-    }
-    else if (filterValue == 'OnHold') {
-        filter = 'OHD';
-    }
-        Gridfilter(filter)
-
-    }  
-}
+        $('#Draftfilter').hide();
+        $('#Deliveredfilter').hide();
+        $('#Progressfilter').hide();
+        $('#Closedfilter').hide();
+        $('#OnHoldfilter').hide();
 
 
-//setting value to hidden field in quotation
-function quotationBind(ID) {
-    debugger;
-    $('#ID').val(ID);
-    openNav();
-    BindQuationDetails(ID);
-}
+        if (filter == 'DFT') {
+            $('#Draftfilter').show();
+        }
+        else if (filter == 'DVD') {
+            $('#Deliveredfilter').show();
+        }
+        else if (filter == 'NGT,CFD') {
+            $('#Progressfilter').show();
+        }
+        else if (filter == "CLT,CWN") {
+            $('#Closedfilter').show();
+        }
+        else if (filter == "OHD") {
+            $('#OnHoldfilter').show();
+        }
+        var result = GetAllQuotations(filter);
+        if (result != null) {
+            DataTables.QuotationTable.clear().rows.add(result).draw(false);
+        }
+    }
+
+    //--Function To Reset Quotation Table--//
+    function FilterReset() {
+        $('#hdnfilterDescriptionDiv').hide();
+        var result = GetAllQuotations();
+        if (result != null) {
+            DataTables.QuotationTable.clear().rows.add(result).draw(false);
+        }
+    }
+
+    //--function To Filter Quatation Table by call from dashboard ----//
+    function dashboardBind(filterValue) {
+        if (filterValue == 'Quotation') {
+            GetAllQuotations()
+
+        }
+        else {
+            if (filterValue == 'Draft') {
+                filter = 'DFT';
+            }
+            else if (filterValue == 'InProgress') {
+                filter = 'NGT,CFD';
+            }
+            else if (filterValue == 'Closed') {
+                filter = 'CLT,CWN';
+            }
+            else if (filterValue == 'OnHold') {
+                filter = 'OHD';
+            }
+            Gridfilter(filter)
+
+        }
+    }
+
+
+    //setting value to hidden field in quotation
+    function quotationBind(ID) {
+        debugger;
+        $('#ID').val(ID);
+        openNav();
+        BindQuationDetails(ID);
+    }
