@@ -98,6 +98,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<CourierReportViewModel, CourierReport>().ReverseMap();
                 config.CreateMap<QuotationReport, QuotationReportViewModel>().ReverseMap();
                 config.CreateMap<CustomerPOReportViewModel, CustomerPOReport>().ReverseMap();
+                config.CreateMap<ReqAdvanceSearchViewModel, ReqAdvanceSearch>().ReverseMap();
             });
         }
     }
