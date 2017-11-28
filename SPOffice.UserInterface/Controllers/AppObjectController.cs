@@ -124,7 +124,7 @@ namespace UserInterface.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     AppObjectObj.commonDetails = new CommonViewModel();
                     AppObjectObj.commonDetails.CreatedBy = _appUA.UserName;
                     AppObjectObj.commonDetails.CreatedDate = _appUA.DateTime;
@@ -154,7 +154,7 @@ namespace UserInterface.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     AppObjectObj.commonDetails = new CommonViewModel();
                     AppObjectObj.commonDetails.CreatedBy = _appUA.UserName;
                     AppObjectObj.commonDetails.CreatedDate = _appUA.DateTime;

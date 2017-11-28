@@ -222,7 +222,7 @@ namespace SPOffice.UserInterface.Controllers
             //FollowUpViewModel _followupObj = new FollowUpViewModel();
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 _enquiryObj.followUpObj.commonObj = new CommonViewModel();
                 _enquiryObj.followUpObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiryObj.followUpObj.commonObj.CreatedDate = _appUA.DateTime;
@@ -287,7 +287,7 @@ namespace SPOffice.UserInterface.Controllers
 
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 _enquiriesObj.commonObj = new CommonViewModel();
                 _enquiriesObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiriesObj.commonObj.CreatedDate = _appUA.DateTime;
