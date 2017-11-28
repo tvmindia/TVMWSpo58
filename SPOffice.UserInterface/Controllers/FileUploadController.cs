@@ -56,7 +56,7 @@ namespace SPOffice.UserInterface.Controllers
                         fileuploadObj.ParentID = Request["ParentID"].ToString() != "" ? Guid.Parse(Request["ParentID"].ToString()) : FileID;
                         fileuploadObj.ParentType = Request["ParentID"].ToString() != "" ? Request["ParentType"] : null;
                         fileuploadObj.commonObj = new Common();
-                        AppUA _appUA = new AppUA();
+                        AppUA _appUA = Session["AppUAOffice"] as AppUA; 
                         fileuploadObj.commonObj.CreatedBy = _appUA.UserName;
                         fileuploadObj.commonObj.CreatedDate = _appUA.DateTime;
                         fileuploadObj.commonObj.UpdatedBy = _appUA.UserName;
