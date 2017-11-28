@@ -146,7 +146,7 @@ function GetAllSupplierPurchaseOrders(filter)
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-          //  BindSummaryBox(ds.Open, ds.InProgress, ds.Closed);
+            BindSummaryBox(ds.Open, ds.InProgress, ds.Closed);
             return ds.Records;
         }
         if (ds.Result == "ERROR") {
@@ -158,6 +158,16 @@ function GetAllSupplierPurchaseOrders(filter)
         console.log(e.message);
     }
 
+}
+
+function BindSummaryBox(Open, InProgress, Closed) {
+
+    $("#openCount").text(Open);
+    $("#inProgressCount").text(InProgress);
+    $("#closedCount").text(Closed);
+    $("#openCountDescription").text(Open + ' Supplier Purchase Order(s) are Opened');
+    $("#progressCountDescription").text(InProgress + ' In Progress Supplier Purchase Order(s)');
+    $("#closedCountDescription").text(Closed + ' Closed Supplier Purchase Order(s)');
 }
 
 function BindAllPurchaseOrders() {
@@ -260,15 +270,56 @@ function Save() {
     $('#btnSave').trigger('click');
 }
 
-//-----------------------------------------------------------
+function Reset()
+{
+    BindPurchaseOrder($("#ID").val());
+}
 
+function DeleteSupplierPO() {
+    var ID = $("#ID").val();
+    if (ID) {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + ID + '");', '', "Yes, delete it!");
+    }  
+}
+function DeleteItem(ID) {
+    try {
+        //Event Request Case
+        if (ID) {
+            var data = { "ID": ID };
+            var ds = {};
+            ds = GetDataFromServer("SupplierOrder/DeletePurchaseOrder/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                switch (ds.Result) {
+                    case "OK":
+                        notyAlert('success', ds.Message);
+                        BindAllPurchaseOrders();
+                        closeNav();
+                        break;
+                    case "ERROR":
+                        notyAlert('error', ds.Message);
+                        break;
+                    default:
+                        break;
+                }
+                return ds.Record;
+            }
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
 
+//-----------------------------------------------------------//
 function ResetForm() {
     $('#ID').val('');
     $('#SupplierPOForm')[0].reset();
-
 }
-
+//-----------------------------------------------------------//
 function RemovevalidationMsg() {
     var validator = $("#SupplierPOForm").validate();
     $('#SupplierPOForm').find('.field-validation-error span').each(function () {
@@ -306,7 +357,78 @@ function SaveSuccess(data, status) {
     }
 }
 
+//------------------------------------------------ Filter clicks-----------------------------------------------//
+
+function GridFilter(status) {
+    debugger;
+    $('#hdnfilterDescriptionDiv').show();
+
+    $('#OPNfilter').hide();
+    $('#CSDfilter').hide();
+    $('#PGSfilter').hide();
+
+    if (status == 'OPN') {
+        $('#OPNfilter').show();
+    }
+    else if (status == 'CSD') {
+        $('#CSDfilter').show();
+    }
+    else if (status == 'PGS') {
+        $('#PGSfilter').show();
+    }
+    var result = GetAllSupplierPurchaseOrders(status);
+    if (result != null) {
+        DataTables.PurchaseOrderTable.clear().rows.add(result).draw(false);
+    }
+}
+
+
+//--Function To Reset Purchase Order Table--//
+function FilterReset() {
+    $('#hdnfilterDescriptionDiv').hide();
+    var result = GetAllSupplierPurchaseOrders();
+    if (result != null) {
+        DataTables.PurchaseOrderTable.clear().rows.add(result).draw(false);
+    }
+}
+
+
 //----------------Calculations---------------------------------//
+
+function GetTaxPercentage() {
+    debugger;
+    try {
+        var curObj = $("#TaxTypeCode").val();
+        if (curObj) {
+            $("#TaxPercApplied").val(0);
+            var data = { "Code": curObj };
+            var ds = {};
+            ds = GetDataFromServer("Quotation/GetTaxRate/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+
+                $("#TaxPercApplied").val(ds.Records);
+                AmountSummary();
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                return 0;
+            }
+        }
+        else {
+            $("#TaxPercApplied").val(0);
+        }
+
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+    AmountSummary();
+}
+
 
 function AmountSummary() {
     var total = 0.00;

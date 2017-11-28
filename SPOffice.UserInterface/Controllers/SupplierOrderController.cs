@@ -96,22 +96,22 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllSupplierPurchaseOrders
         [HttpGet]
-      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public string GetAllSupplierPurchaseOrders(string filter)
         {
             try
             {
                 List<SupplierOrderViewModel> SPOVMList = Mapper.Map<List<SupplierOrder>, List<SupplierOrderViewModel>>(_supplierBusiness.GetAllSupplierPurchaseOrders());
 
-                //int openCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "OPN").Select(T => T.ID).Count();
-                //int inProgressCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "PGS").Select(T => T.ID).Count();
-                //int closedCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "CSD").Select(T => T.ID).Count();
+                int openCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.POStatus == "OPN").Select(T => T.ID).Count();
+                int inProgressCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.POStatus == "PGS").Select(T => T.ID).Count();
+                int closedCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.POStatus == "CSD").Select(T => T.ID).Count();
 
-                //if (filter != null)
-                //{
-                //    SPOVMList = SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == filter).ToList();
-                //}
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+                if (filter != null)
+                {
+                    SPOVMList = SPOVMList.Where(Q => Q.POStatus == filter).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
             catch (Exception ex)
             {
@@ -154,7 +154,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     SPOViewModel.commonObj = new CommonViewModel();
                     SPOViewModel.commonObj.CreatedBy = _appUA.UserName;
                     SPOViewModel.commonObj.CreatedDate = _appUA.DateTime;

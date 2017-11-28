@@ -82,7 +82,8 @@ namespace SPOffice.BusinessService.Services
 
         public object DeletePurchaseOrder(Guid ID)
         {
-            throw new NotImplementedException();
+            return _supplierRepository.DeletePurchaseOrder(ID);
+
         }
         //------------------------------------------------------------------------//
 
