@@ -132,7 +132,7 @@
             </div>
 
             <div class="EntryForms" style="height:550px">
-                @using (Ajax.BeginForm("InsertUpdatePurchaseOrder", "SupplierOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "PurchaseOrderForm" }))
+                @using (Ajax.BeginForm("InsertUpdatePurchaseOrder", "SupplierOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "SupplierPOForm" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-yellow" aria-hidden="true"></i> Basic Details</div>
@@ -140,13 +140,13 @@
                         <div class="col-md-8">
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", @value = Guid.Empty })
+                                    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
                                     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
                                     @Html.LabelFor(model => model.SupplierID, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.SupplierID, Model.SupplierList, "-- Select Supplier --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSupplier", onchange = "GetSupplierDeails(this);" })
+                                        @Html.DropDownListFor(model => model.SupplierID, Model.SupplierList, "-- Select Supplier --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSupplier" })
                                         @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1 mandatory"></div>
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.PONo, new { htmlAttributes = new { @class = "form-control HeaderBox", onkeyup = "OrderNumberOnChange(this);" } })
+                                        @Html.EditorFor(model => model.PONo, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.PONo, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1 mandatory"></div>
@@ -186,12 +186,12 @@
 
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.PODate, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.POIssuedDate, htmlAttributes: new { @class = "control-label" })
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.PODate, new { htmlAttributes = new { @class = "form-control HeaderBox datepicker" } })
-                                        @Html.ValidationMessageFor(model => model.PODate, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.POIssuedDate, new { htmlAttributes = new { @class = "form-control HeaderBox datepicker" } })
+                                        @Html.ValidationMessageFor(model => model.POIssuedDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
@@ -236,7 +236,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.SupplierMailingAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                        @Html.TextAreaFor(model => model.SupplierMailingAddress, new { @class = "form-control ", @rows = 5 })
                                         @Html.ValidationMessageFor(model => model.SupplierMailingAddress, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -250,8 +250,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.ShipToAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
-                                        @Html.ValidationMessageFor(model => model.ShipToAddress, "", new { @class = "text-danger" })
+                                        @Html.TextAreaFor(model => model.ShipToAddress, new { @class = "form-control ", @rows = 5 })
+                                        @Html.ValidationMessageFor(model => model.ShipToAddress,"", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -264,7 +264,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.BodyHeader, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
+                                        @Html.TextAreaFor(model => model.BodyHeader,  new { @class = "form-control HeaderBox ", @rows = 5 })
                                         @Html.ValidationMessageFor(model => model.BodyHeader, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -279,7 +279,7 @@
                                     <div class="rightAmtCaption">Order Status</div>
                                 </div>
                                 <div class="col-md-12 text-right">
-                                    <div class="rightAmt" id="lblQuoteStage">N/A</div>
+                                    <div class="rightAmt" id="lblStatus">N/A</div>
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
@@ -424,7 +424,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.BodyFooter, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
+                                        @Html.TextAreaFor(model => model.BodyFooter, new { @class = "form-control HeaderBox", @rows = 5 })
                                         @Html.ValidationMessageFor(model => model.BodyFooter, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -438,7 +438,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
+                                        @Html.TextAreaFor(model => model.GeneralNotes, new { @class = "form-control", @rows = 5 })
                                         @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>

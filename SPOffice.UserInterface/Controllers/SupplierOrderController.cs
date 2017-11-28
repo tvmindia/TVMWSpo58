@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
+using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,7 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         // GET: SupplierOrder
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
@@ -95,6 +98,133 @@ namespace SPOffice.UserInterface.Controllers
             return View(SPOVM);
         }
 
+
+        #region GetAllSupplierPurchaseOrders
+        [HttpGet]
+      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetAllSupplierPurchaseOrders(string filter)
+        {
+            try
+            {
+                List<SupplierOrderViewModel> SPOVMList = Mapper.Map<List<SupplierOrder>, List<SupplierOrderViewModel>>(_supplierBusiness.GetAllSupplierPurchaseOrders());
+
+                //int openCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "OPN").Select(T => T.ID).Count();
+                //int inProgressCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "PGS").Select(T => T.ID).Count();
+                //int closedCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "CSD").Select(T => T.ID).Count();
+
+                //if (filter != null)
+                //{
+                //    SPOVMList = SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == filter).ToList();
+                //}
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllSupplierPurchaseOrders
+
+        #region GetPurchaseOrderByID
+        [HttpGet]
+      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetPurchaseOrderByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                SupplierOrderViewModel customerPOViewModel = Mapper.Map<SupplierOrder, SupplierOrderViewModel>(_supplierBusiness.GetSupplierPurchaseOrderByID(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = customerPOViewModel });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetPurchaseOrderByID
+
+        #region InsertUpdatePurchaseOrder
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
+        [ValidateAntiForgeryToken]
+        public string InsertUpdatePurchaseOrder(SupplierOrderViewModel SPOViewModel)
+        {
+            try
+            {
+                object result = null;
+                if (ModelState.IsValid)
+                {
+                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    SPOViewModel.commonObj = new CommonViewModel();
+                    SPOViewModel.commonObj.CreatedBy = _appUA.UserName;
+                    SPOViewModel.commonObj.CreatedDate = _appUA.DateTime;
+                    SPOViewModel.commonObj.UpdatedBy = SPOViewModel.commonObj.CreatedBy;
+                    SPOViewModel.commonObj.UpdatedDate = SPOViewModel.commonObj.CreatedDate;
+
+                    switch (string.IsNullOrEmpty(SPOViewModel.ID.ToString()))
+                    {
+                        case true:
+                            result = _supplierBusiness.InsertPurchaseOrder(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
+                            break;
+                        case false:
+                            result = _supplierBusiness.UpdatePurchaseOrder(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
+                            break;
+                    }
+
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                }
+                else
+                {
+                    List<string> modelErrors = new List<string>();
+                    foreach (var modelState in ModelState.Values)
+                    {
+                        foreach (var modelError in modelState.Errors)
+                        {
+                            modelErrors.Add(modelError.ErrorMessage);
+                        }
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+
+
+        }
+        #endregion InsertUpdatePurchaseOrder
+
+        #region  DeletePurchaseOrder
+        [HttpGet]
+      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "D")]
+        public string DeletePurchaseOrder(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _supplierBusiness.DeletePurchaseOrder(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeletePurchaseOrder
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
@@ -119,9 +249,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "Add";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
-                    ToolboxViewModelObj.addbtn.Event = "AddNew();";
-
-
+                    ToolboxViewModelObj.addbtn.Event = "AddNew();"; 
 
                     ToolboxViewModelObj.savebtn.Visible = true;
                     ToolboxViewModelObj.savebtn.Text = "Save";
@@ -138,10 +266,15 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.CloseBtn.Title = "Close";
                     ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
 
+                    ToolboxViewModelObj.EmailBtn.Visible = true;
+                    ToolboxViewModelObj.EmailBtn.Text = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Title = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+
                     ToolboxViewModelObj.deletebtn.Visible = true;
                     ToolboxViewModelObj.deletebtn.Text = "Delete";
                     ToolboxViewModelObj.deletebtn.Title = "Delete";
-                    ToolboxViewModelObj.deletebtn.Event = "DeleteCustomerPO()";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteSupplierPO()";
 
                     break;
                 case "Add":
