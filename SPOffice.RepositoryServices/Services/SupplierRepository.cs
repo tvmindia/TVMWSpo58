@@ -18,7 +18,6 @@ namespace SPOffice.RepositoryServices.Services
         {
             _databaseFactory = databaseFactory;
         } 
-      
 
         #region GetAllSupplierMobile
         public List<Supplier> GetAllSupplierPOForMobile(string duration)
@@ -80,8 +79,6 @@ namespace SPOffice.RepositoryServices.Services
 
             return supplierList;
         }
-
-      
         #endregion GetAllSupplierMobile
 
         public List<Suppliers> GetAllSuppliers()

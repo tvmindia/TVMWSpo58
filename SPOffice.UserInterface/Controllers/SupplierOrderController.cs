@@ -20,12 +20,15 @@ namespace SPOffice.UserInterface.Controllers
         ISupplierBusiness _supplierBusiness;
         ICompanyBusiness _companyBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
+        ICommonBusiness _commonBusiness;
 
-        public SupplierOrderController(ISupplierBusiness supplierBusiness, ICompanyBusiness companyBusiness, ITaxTypeBusiness taxTypeBusiness)
+        public SupplierOrderController(ISupplierBusiness supplierBusiness, ICompanyBusiness companyBusiness, 
+            ITaxTypeBusiness taxTypeBusiness, ICommonBusiness commonBusiness)
         {
             _supplierBusiness = supplierBusiness;
             _companyBusiness = companyBusiness;
             _taxTypeBusiness = taxTypeBusiness;
+            _commonBusiness = commonBusiness;
         }
 
         // GET: SupplierOrder
@@ -76,24 +79,16 @@ namespace SPOffice.UserInterface.Controllers
             SPOVM.TaxTypeList = selectListItem;
 
             selectListItem = new List<SelectListItem>();
-            selectListItem.Add(new SelectListItem
+            List<POStatusesViewModel> POStatusesList = Mapper.Map<List<POStatuses>, List<POStatusesViewModel>>(_commonBusiness.GetAllPOStatuses());
+            foreach (POStatusesViewModel TT in POStatusesList)
             {
-                Text = "Closed",
-                Value = "CSD",
-                Selected = false
-            });
-            selectListItem.Add(new SelectListItem
-            {
-                Text = "Open",
-                Value = "OPN",
-                Selected = false
-            });
-            selectListItem.Add(new SelectListItem
-            {
-                Text = "In Progress",
-                Value = "PGS",
-                Selected = false
-            });
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = TT.Description,
+                    Value = TT.Code.ToString(),
+                    Selected = false
+                });
+            }
             SPOVM.POStatusList = selectListItem;
             return View(SPOVM);
         }

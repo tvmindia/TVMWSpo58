@@ -12,7 +12,11 @@ namespace SPOffice.BusinessService.Services
 {
     public class CommonBusiness : ICommonBusiness
     {
-        
+        ICommonRepository _commonRepository;
+        public CommonBusiness(ICommonRepository commonRepository)
+        {
+            _commonRepository = commonRepository;
+        }
 
         public string ConvertCurrency(decimal value, int DecimalPoints = 0, bool Symbol = true)
         {
@@ -191,6 +195,9 @@ namespace SPOffice.BusinessService.Services
 
         }
 
-
+        public List<POStatuses> GetAllPOStatuses()
+        {
+            return _commonRepository.GetAllPOStatuses();
+        }
     }
 }

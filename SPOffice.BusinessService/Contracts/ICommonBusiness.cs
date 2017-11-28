@@ -13,5 +13,6 @@ namespace SPOffice.BusinessService.Contracts
         string GetXMLfromObject(List<QuoteItem> myObj, string mandatoryProperties);
         string GetXMLfromObj(List<ProformaItem> myOb, string mandatoryProperties);
         string GetXMLfromRequisitionDetailList(List<RequisitionDetail> myObj, string mandatoryProperties);
+        List<POStatuses> GetAllPOStatuses();
     }
 }
