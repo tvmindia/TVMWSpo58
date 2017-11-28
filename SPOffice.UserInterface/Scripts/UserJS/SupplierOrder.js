@@ -19,7 +19,7 @@ $(document).ready(function () {
             order: [],
             searching: true,
             paging: true,
-            data:null, //GetAllSupplierPurchaseOrders(),
+            data:GetAllSupplierPurchaseOrders(),
             pageLength: 15,
             language: {
                 search: "_INPUT_",
@@ -29,10 +29,10 @@ $(document).ready(function () {
               { "data": "ID" },
               { "data": "PONo", "defaultContent": "<i>-</i>" },
               { "data": "PODate", "defaultContent": "<i>-</i>" },
-              { "data": "supplier.CompanyName", "defaultContent": "<i>-</i>" },
+              { "data": "SuppliersObj.CompanyName", "defaultContent": "<i>-</i>" },
               { "data": "company.Name", "defaultContent": "<i>-</i>" },
-              { "data": "Amount", "defaultContent": "<i>-</i>" },
-              { "data": "purchaseOrderStatus", "defaultContent": "<i>-</i>" },
+              { "data": "TotalAmount", "defaultContent": "<i>-</i>" },
+              { "data": "POStatus", "defaultContent": "<i>-</i>" },
               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
@@ -76,7 +76,7 @@ $(document).ready(function () {
               { "data": "Rate", "defaultContent": "<i>-</i>" },
               { "data": "Amount", "defaultContent": "<i>-</i>" },
               { "data": "Particulars", "defaultContent": "<i>-</i>" },
-              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
+              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                  { className: "text-right", "targets": [] },
@@ -87,7 +87,7 @@ $(document).ready(function () {
         });
 
         $('#tblPurchaseOrderDetail tbody').on('dblclick', 'td', function () {
-            Edit(this);
+            EditDetail(this);
         });
 
     } catch (x) {
@@ -159,19 +159,151 @@ function GetAllSupplierPurchaseOrders(filter)
     }
 
 }
+
+function BindAllPurchaseOrders() {
+    try {
+        DataTables.PurchaseOrderTable.clear().rows.add(GetAllSupplierPurchaseOrders()).draw(false);
+}
+    catch (e) {
+//this will show the error msg in the browser console(F12) 
+console.log(e.message);
+}
+}
 //---------------------------------------------------------------------------//
+
+//--------------------------------Edit Clicks-------------------------------------------//
+function Edit(Obj) {
+    debugger;
+    $('#SupplierPOForm')[0].reset();
+    var rowData = DataTables.PurchaseOrderTable.row($(Obj).parents('tr')).data();
+    $('#ID').val(rowData.ID);
+    BindPurchaseOrder(rowData.ID)
+    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+    RemovevalidationMsg();
+    openNav();
+
+}
+
+function BindPurchaseOrder(ID) {
+    try {
+        var jsresult = GetPurchaseOrderDetailsByID(ID)
+        debugger;
+        if (jsresult) {
+            $("#ddlSupplier").val(jsresult.SupplierID);
+            $("#ddlCompany").val(jsresult.POFromCompCode);
+            $("#PONo").val(jsresult.PONo);
+            $("#PODate").val(jsresult.PODate);
+            $("#POIssuedDate").val(jsresult.POIssuedDate);
+           
+            $("#ShipToAddress").val(jsresult.ShipToAddress);
+            $("#SupplierMailingAddress").val(jsresult.SupplierMailingAddress);
+            $("#ddlOrderStatus").val(jsresult.POStatus);
+            OrderStatusChange();
+
+            $("#BodyFooter").val(jsresult.BodyFooter);
+            $("#BodyHeader").val(jsresult.BodyHeader);
+            $("#GeneralNotes").val(jsresult.GeneralNotes);
+
+            $("#TaxTypeCode").val(jsresult.TaxTypeCode);
+            $("#TaxPercApplied").val(jsresult.TaxPercApplied);
+            $("#GrossAmount").val(roundoff(jsresult.GrossAmount));
+            $("#Discount").val(roundoff(jsresult.Discount));
+            $("#NetTaxableAmount").val(roundoff(jsresult.NetTaxableAmount));
+            $("#TaxAmount").val(roundoff(jsresult.TaxAmount));
+            $("#TotalAmount").val(roundoff(jsresult.TotalAmount));
+
+            //clearUploadControl();
+            //PaintImages(ID);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.Message);
+    }
+}
+
+function GetPurchaseOrderDetailsByID(ID) {
+    try {
+        debugger;
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/GetPurchaseOrderByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
 
 
 //--------------------------------Button Patch Clicks-------------------------------------------//
 function AddNew() {
     ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Add');
     ResetForm();
+    RemovevalidationMsg()
     openNav();
 }
 
+
+function Save() {
+    debugger;
+    $('#btnSave').trigger('click');
+}
+
+//-----------------------------------------------------------
+
+
 function ResetForm() {
     $('#ID').val('');
-    $('#PurchaseOrderForm')[0].reset();
+    $('#SupplierPOForm')[0].reset();
+
+}
+
+function RemovevalidationMsg() {
+    var validator = $("#SupplierPOForm").validate();
+    $('#SupplierPOForm').find('.field-validation-error span').each(function () {
+        validator.settings.success($(this));
+    });
+}
+
+function OrderStatusChange()
+{
+    if ($("#ddlOrderStatus").val()!="")
+        $("#lblStatus").text($("#ddlOrderStatus option:selected").text());
+    else
+        $("#lblStatus").text('N/A');
+
+}
+
+function SaveSuccess(data, status) {
+
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Result) {
+        case "OK":
+            notyAlert('success', JsonResult.Message);
+            ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+            if (JsonResult.Record.ID) {
+                $("#ID").val(JsonResult.Record.ID);
+            }
+            BindAllPurchaseOrders();
+            break;
+        case "ERROR":
+            notyAlert('error', JsonResult.Message);
+            break;
+        default:
+            notyAlert('error', JsonResult.Message);
+            break;
+    }
 }
 
 //----------------Calculations---------------------------------//
@@ -200,4 +332,6 @@ function AddPurchaseOrderDetail() {
     //Modal close
     //$('#EditRequisitionDetailsModal').modal('hide');
 }
+
+
 

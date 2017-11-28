@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UserInterface.Models;
 
 namespace SPOffice.UserInterface.Models
 {
@@ -36,7 +37,7 @@ namespace SPOffice.UserInterface.Models
 
     public class SupplierOrderViewModel
     {
-        public Guid ID { get; set; }
+        public Guid? ID { get; set; }
 
         [Display(Name = "Purchase Order Number")]
         [Required(ErrorMessage = "PONo required")]
@@ -51,7 +52,6 @@ namespace SPOffice.UserInterface.Models
         public string POIssuedDate { get; set; }
 
         [Display(Name = "Supplier")]
-        [MaxLength(150)]
         [Required(ErrorMessage = "Supplier is missing")]
         public Guid SupplierID { get; set; }
 
@@ -88,7 +88,7 @@ namespace SPOffice.UserInterface.Models
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
         public string SupplierName { get; set; }
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         [Display(Name = "Order Status")]
         [Required(ErrorMessage = "Status required")]
@@ -105,10 +105,12 @@ namespace SPOffice.UserInterface.Models
         public List<SelectListItem> CompanyList { get; set; }
         public List<SelectListItem> TaxTypeList { get; set; }
         public List<SelectListItem> POStatusList { get; set; }
-        
 
-//class
-SuppliersViewModel SuppliersObj { get; set; }
+
+        //class
+        public SuppliersViewModel SuppliersObj { get; set; }
+        public CommonViewModel commonObj { get; set; }
+        public CompanyViewModel company { get; set; }
 
         //file upload 
         public List<FileUpload> AttachmentLists { get; set; }
