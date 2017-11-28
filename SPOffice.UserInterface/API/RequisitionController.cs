@@ -50,5 +50,51 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
+//Get requisition details by Id with parameters id and username
+        [HttpPost]
+        public string GetRequisitionDetailByID(RequisitionViewModel ReqObj)
+        { 
+            try
+            {
+                RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails( Guid.Parse(ReqObj.ID.ToString()) , ReqObj.userObj.UserName));
+                requisitionViewModelObj.RequisitionDetailList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_requisitionBusiness.GetRequisitionDetailList((ReqObj.ID)));
+                return JsonConvert.SerializeObject(new { Result = true, Records = requisitionViewModelObj });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
+//Get Material details by requisition ID
+        [HttpPost]
+        public string GetRequisitionDetail(RequisitionDetailViewModel ReqObj)
+        {
+            try
+            {
+                List<RequisitionDetailViewModel> RequisitionDetailList = new List<RequisitionDetailViewModel>();
+                RequisitionDetailViewModel RequisitionDetailObj = new RequisitionDetailViewModel();
+                if (ReqObj == null)
+                {
+                    RequisitionDetailObj.ID = Guid.Empty;
+                    RequisitionDetailObj.MaterialID = Guid.Empty;
+                    RequisitionDetailObj.ReqID = Guid.Empty;
+                    RequisitionDetailObj.RawMaterialObj = new RawMaterialViewModel();
+                    RequisitionDetailObj.RawMaterialObj.Description = "";
+                    RequisitionDetailObj.RawMaterialObj.ID = Guid.Empty;
+                    RequisitionDetailList.Add(RequisitionDetailObj);
+                }
+                else
+                {
+                    RequisitionDetailList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_requisitionBusiness.GetRequisitionDetailList((ReqObj.ID)));
+                }
+                return JsonConvert.SerializeObject(new { Result = true, Records = RequisitionDetailList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
     }
 }

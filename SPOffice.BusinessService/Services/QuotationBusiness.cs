@@ -143,7 +143,7 @@ namespace SPOffice.BusinessService.Services
                
                 if (!string.IsNullOrEmpty(quoteHeader.SentToEmails))
                 {
-                    string[] EmailList = quoteHeader.SentToEmails.Split(',');
+                    string[] EmailList = quoteHeader.SentToEmails.Replace(';',',').Split(',');
                     foreach (string email in EmailList)
                     {
                         Mail _mail = new Mail();

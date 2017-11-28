@@ -36,8 +36,14 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
-            ViewBag.value = id;
-            ViewBag.filter = id;
+            if (id == "Draft" || id == "OnHold" || id == "InProgress" || id == "Closed") {
+                ViewBag.filter = id;
+            }
+            else if (id != "") {
+                ViewBag.value = id;
+            }
+          
+           
             QuoteHeaderViewModel quoteHeaderVM = new QuoteHeaderViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
@@ -194,7 +200,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
                     quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
                     quoteHeaderVM.commonObj.CreatedDate =_appUA.DateTime;
@@ -405,7 +411,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (!string.IsNullOrEmpty(quoteHeaderVM.ID.ToString()))
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
                     quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
                     quoteHeaderVM.commonObj.CreatedDate = _appUA.DateTime;

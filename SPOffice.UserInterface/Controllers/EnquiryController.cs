@@ -202,13 +202,12 @@ namespace SPOffice.UserInterface.Controllers
 
             List<FollowUpViewModel> followUpObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetFollowUpDetails(followObj.EnquiryID != null && followObj.EnquiryID.ToString() != "" ? Guid.Parse(followObj.EnquiryID.ToString()) : Guid.Empty));
             int openCount = followUpObj == null ? 0 : followUpObj.Where(Q => Q.Status == "Open").Select(T => T.ID).Count();
-
             FollowUpListViewModel Result = new FollowUpListViewModel();
             Result.FollowUpList = followUpObj;
             Result.FlwID = followObj.ID;
             //Result.EnqID = followObj.EnquiryID;
             ViewBag.Count = openCount;
-
+          
 
             return PartialView("_FollowUpList", Result);
         }
@@ -223,7 +222,7 @@ namespace SPOffice.UserInterface.Controllers
             //FollowUpViewModel _followupObj = new FollowUpViewModel();
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 _enquiryObj.followUpObj.commonObj = new CommonViewModel();
                 _enquiryObj.followUpObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiryObj.followUpObj.commonObj.CreatedDate = _appUA.DateTime;
@@ -288,7 +287,7 @@ namespace SPOffice.UserInterface.Controllers
 
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 _enquiriesObj.commonObj = new CommonViewModel();
                 _enquiriesObj.commonObj.CreatedBy = _appUA.UserName;
                 _enquiriesObj.commonObj.CreatedDate = _appUA.DateTime;

@@ -115,7 +115,7 @@ namespace SPOffice.UserInterface.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     proformaHeaderVM.commonObj = new CommonViewModel();
                     proformaHeaderVM.commonObj.CreatedBy = _appUA.UserName;
                     proformaHeaderVM.commonObj.CreatedDate =_appUA.DateTime;
@@ -348,7 +348,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (!string.IsNullOrEmpty(proformaHeaderVM.ID.ToString()))
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     proformaHeaderVM.commonObj = new CommonViewModel();
                     proformaHeaderVM.commonObj.CreatedBy = proformaHeaderVM.commonObj.CreatedBy;
                     proformaHeaderVM.commonObj.CreatedDate = _appUA.DateTime;

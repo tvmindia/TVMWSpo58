@@ -23,7 +23,7 @@ namespace UserInterface.Controllers
         public ActionResult Index() 
         {
             // AppUA _appUA= Session["AppUA"] as AppUA;
-              Permission _permission = Session["UserRights"] as Permission;
+              Permission _permission = Session["UserRightsOffice"] as Permission;
               
             // string R = _permission.SubPermissionList.First(s => s.Name == "RHS").AccessCode;
             SAMPanelViewModel SAMPanelViewModel = new SAMPanelViewModel();
@@ -36,7 +36,7 @@ namespace UserInterface.Controllers
             {
                 SAMPanelViewModel._RHSSysMenuViewModel = SysMenuViewModelList != null ? SysMenuViewModelList.Where(s => s.Type == "RHS").ToList() : new List<SysMenuViewModel>();
             }
-            Session.Remove("UserRights");
+            Session.Remove("UserRightsOffice");
             return View(SAMPanelViewModel);
         }
     }

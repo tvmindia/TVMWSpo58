@@ -93,9 +93,9 @@
                                 <!-- Menu Body -->
                                 <li class="user-body">
                                    @{
-                                       if (Session["AppUA"] != null)
+                                       if (Session["AppUAOffice"] != null)
                                        {
-                                           AppUA _appUA = Session["AppUA"] as AppUA;
+                                           AppUA _appUA = Session["AppUAOffice"] as AppUA;
                                         <span>Role : @_appUA.RolesCSV </span>
                                        }
 

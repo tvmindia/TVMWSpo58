@@ -104,7 +104,7 @@ namespace SPOffice.UserInterface.Controllers
             object result = null;
             try
             {
-                AppUA _appUA = Session["AppUA"] as AppUA;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 courierViewModel.commonObj = new CommonViewModel();
                 courierViewModel.commonObj.CreatedBy = _appUA.UserName;
                 courierViewModel.commonObj.CreatedDate =_appUA.DateTime;
