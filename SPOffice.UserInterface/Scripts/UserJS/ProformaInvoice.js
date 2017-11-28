@@ -4,7 +4,6 @@ var _Products = [];
 var _Units = [];
 $(document).ready(function () {
     try {
-        debugger;
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
