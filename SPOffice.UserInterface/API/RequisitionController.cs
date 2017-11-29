@@ -140,7 +140,56 @@ namespace SPOffice.UserInterface.API
             }
 
         }
-
         #endregion
+
+        #region Insert and Update Requisitions
+        public string InsertUpdateRequisition(RequisitionViewModel RequisitionObj)
+        {
+            try
+            {
+                object result = null;
+               
+                {
+                    bool isAdminOrCeo = false;
+                    Permission _permission = _userBusiness.GetSecurityCode(RequisitionObj.userObj.UserName, "Requisition");
+                    if (_permission.SubPermissionList != null)
+                    {
+                        if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                        {
+                            isAdminOrCeo = true;
+                        }
+                    }
+                   
+                    RequisitionObj.CommonObj = new CommonViewModel();
+                    DataAccessObject.DTO.Common commonobj = new DataAccessObject.DTO.Common();
+                    RequisitionObj.CommonObj.CreatedBy = RequisitionObj.userObj.UserName;
+                    RequisitionObj.CommonObj.CreatedDate = commonobj.GetCurrentDateTime();
+                    RequisitionObj.CommonObj.UpdatedBy = RequisitionObj.userObj.UserName;
+                    RequisitionObj.CommonObj.UpdatedDate = commonobj.GetCurrentDateTime();
+           
+                    switch (RequisitionObj.ID == Guid.Empty)
+                    {
+                        case true:
+                            result = _requisitionBusiness.InsertRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo);
+                            break;
+                        case false:
+                            if (RequisitionObj.ReqForCompany == null)
+                            {
+                                RequisitionObj.ReqForCompany = RequisitionObj.hdnReqForCompany;
+                            }
+                            result = _requisitionBusiness.UpdateRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj));
+                            break;
+                    }
+
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion Insert and Update Requisitions
     }
 }
