@@ -1,5 +1,5 @@
 ﻿//CreatedDate: 22-Nov-2017 Wednesday
-//LastModified: 22-nov-2017 Wednesday
+//Created By : Gibin Jacob Job
 //FileName: SupplierOrder.js
 //Description: Client side coding for Supplier PO
 //******************************************************************************
@@ -43,7 +43,7 @@ $(document).ready(function () {
             ]
         });
 
-        $('#tblPurchaseOrderDetail tbody').on('dblclick', 'td', function () {
+        $('#tblSupplierPurchaseOrder tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
 
@@ -97,43 +97,72 @@ $(document).ready(function () {
 
     }
   
+    //------------------------Modal Popups Add SPO Details-------------------------------------//
 
-//------------------------Table3
-    //------------------------Modal Popup Add SPO Details-------------------------------------//
-    //try
-    //{
-    //    debugger;
-    //    DataTables.RequisitionDetailsTable = $('#tblRequisitionDetails').DataTable({
-    //        dom: '<"pull-left"f>rt<"bottom"ip><"clear">',
-    //        order: [],
-    //        searching: false,
-    //        paging: false,
-    //        data: null,
-    //        columns: [
-    //             { "data": "ID", "defaultContent": "<i>-</i>" },
-    //             { "data": null, "defaultContent": "", "width": "5%" },
-    //             { "data": "RequisitionNo", "defaultContent": "<i>-</i>"},
-    //             { "data": "Title", "defaultContent": "<i>-</i>" },
-    //               { "data": "Date", "defaultContent": "<i>-</i>" },
-    //             { "data": "Status", "defaultContent": "<i>-</i>" },
-    //            { "data": "CreatedBy", "defaultContent": "<i>-</i>" }                 
-    //        ],
-    //        columnDefs: [{ orderable: false, className: 'select-checkbox', "targets": 1 }
-    //            , { className: "text-right", "targets": [4, 5, 6] }
-    //            , { "targets": [0], "visible": false, "searchable": false }
-    //            , { "targets": [2, 3, 4, 5, 6], "bSortable": false }],
+    //------------------------Table3 tblRequisitionList
+    try
+    {
+        debugger;
+        DataTables.RequisitionListTable = $('#tblRequisitionList').DataTable({
+            dom: '<"pull-left"f>rt<"bottom"ip><"clear">',
+            order: [],
+            searching: true,
+            paging: true,
+            pageLength: 10,
+            data: null,
+            columns: [
+                 { "data": "ID", "defaultContent": "<i>-</i>" },
+                 { "data": null, "defaultContent": "", "width": "5%" },
+                 { "data": "ReqNo", "defaultContent": "<i>-</i>" },
+                 { "data": "Title", "defaultContent": "<i>-</i>" },
+                 { "data": "ReqDateFormatted", "defaultContent": "<i>-</i>" },
+                 { "data": "FinalApprovalDateFormatted", "defaultContent": "<i>-</i>" },
+                 { "data": "ReqStatus", "defaultContent": "<i>-</i>" },
+                 { "data": "CommonObj.CreatedBy", "defaultContent": "<i>-</i>" }
+            ],
+            columnDefs: [{ orderable: false, className: 'select-checkbox', "targets": 1 }
+                , { className: "text-left", "targets": [2,3,7,6] }
+                , { className: "text-center", "targets": [1,4,5] }
+                , { "targets": [0], "visible": false, "searchable": false }
+                , { "targets": [2, 3, 4, 5, 6,7], "bSortable": false }],
+            select: { style: 'multi', selector: 'td:first-child' }
+        });
+    } catch (x) {
+        notyAlert('error', x.message);
+    }
+    //Table4 tblRequisitionDetails
+    try {
+        debugger;
+        DataTables.RequisitionDetailsTable = $('#tblRequisitionDetails').DataTable({
+            dom: '<"pull-left"f>rt<"bottom"ip><"clear">',
+            order: [],
+            searching: true,
+            paging: true,
+            pageLength: 10,
+            data: null,
+            columns: [
+                 { "data": "ID", "defaultContent": "<i>-</i>" },
+                 { "data": "ReqID", "defaultContent": "<i>-</i>" },
+                 { "data": "MaterialID", "defaultContent": "<i>-</i>" },
+                 { "data": null, "defaultContent": "", "width": "5%" },
+                 { "data": "ReqNo", "defaultContent": "<i>-</i>", "width": "10%" },
+                 { "data": "RawMaterialObj.MaterialCode", "defaultContent": "<i>-</i>", "width": "10%" },
+                 { "data": "ExtendedDescription", "defaultContent": "<i>-</i>", "width": "40%" },
+                 //{ "data": "CurrStock", "defaultContent": "<i>-</i>" },
+                 { "data": "RequestedQty", "defaultContent": "<i>-</i>", "width": "10%" },
+                 { "data": "", "defaultContent": "<i>-</i>", "width": "10%" }
+            ],
+            columnDefs: [{ orderable: false, className: 'select-checkbox', "targets": 3 }
+                , { className: "text-left", "targets": [5,6] }
+                , { className: "text-center", "targets": [1, 4] }
+                , { "targets": [0,1,2], "visible": false, "searchable": false }
+                , { "targets": [2, 3, 4, 5, 6], "bSortable": false }],
 
-    //        select: { style: 'multi', selector: 'td:first-child' }
-    //    });
-
-
-    //    //Table3 tblRequisitionList
-
-    //} catch (x) {
-
-    //    notyAlert('error', x.message);
-
-    //}
+            select: { style: 'multi', selector: 'td:first-child' }
+        });     
+    } catch (x) {
+        notyAlert('error', x.message);
+    }
 
 });
 //---------------------------------Data Table Bindings------------------------------------------//
@@ -489,12 +518,121 @@ function AmountSummary() {
 }
 
 //----------------Modals---------------------------------//
-function AddPurchaseOrderDetail() {
 
+//----------ADD Requisition------------//
+function AddPurchaseOrderDetail() {
+    debugger;
     $('#RequisitionDetailsModal').modal('show');
-    //Modal close
-    //$('#EditRequisitionDetailsModal').modal('hide');
+    ViewRequisitionList(1);
+    DataTables.RequisitionDetailsTable.clear().draw(false);
+    BindAllRequisitions();
+}
+
+function BindAllRequisitions() {
+    try {
+        DataTables.RequisitionListTable.clear().rows.add(GetAllRequisitionHeaderForSupplierPO()).draw(false);
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function GetAllRequisitionHeaderForSupplierPO() {
+    try {
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/GetAllRequisitionHeaderForSupplierPO/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+
+}
+
+function ViewRequisitionDetails(value) {
+    debugger;
+    //selecting Checked IDs for  bind the detail Table
+    var IDs = GetSelectedRowIDs();
+        if (IDs) {
+            BindGetRequisitionDetailsTable(IDs);
+            if (value)
+            $('#tabDetail').trigger('click');
+            $('#btnViewDetails').hide();
+            $('#btnAddSPODetails').show();
+        }
+        else {
+            notyAlert('error', "Please Select Requisition");
+        }
+}
+
+function ViewRequisitionList(value) {
+    debugger
+    $('#btnViewDetails').show();
+    $('#btnAddSPODetails').hide();
+    if(value)
+        $('#tabList').trigger('click');
+}
+
+function GetSelectedRowIDs() {
+    debugger;
+    var SelectedRows = DataTables.RequisitionListTable.rows(".selected").data();
+    if ((SelectedRows) && (SelectedRows.length > 0)) {
+        var arrIDs="";
+        for (var r = 0; r < SelectedRows.length; r++) {
+            if (r == 0)
+                arrIDs = SelectedRows[r].ID;
+            else
+                arrIDs = arrIDs + ',' + SelectedRows[r].ID;
+        }
+        return arrIDs;
+    }
+}
+
+function BindGetRequisitionDetailsTable(IDs) { 
+    try {
+        DataTables.RequisitionDetailsTable.clear().rows.add(GetRequisitionDetailsByIDs(IDs)).draw(false);
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function GetRequisitionDetailsByIDs(IDs) {
+    try {
+        debugger;
+        var data = {IDs};
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/GetRequisitionDetailsByIDs/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
 }
 
 
+//----------Edit Requisition------------//
+function EditDetail(curObj) {
+    var rowData = DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).data();
+    $('#EditRequisitionDetailsModal').modal('show');
+}
 

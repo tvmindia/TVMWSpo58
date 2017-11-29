@@ -90,9 +90,16 @@ namespace SPOffice.BusinessService.Services
         public List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID)
         {
             return _supplierRepository.GetPurchaseOrderDetailTable(ID);
-
         }
 
+        public List<Requisition> GetAllRequisitionHeaderForSupplierPO()
+        {
+            return _supplierRepository.GetAllRequisitionHeaderForSupplierPO();
+        }
 
+        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs)
+        {
+            return _supplierRepository.GetRequisitionDetailsByIDs(IDs);
+        }
     }
 }

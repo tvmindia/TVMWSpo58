@@ -54,6 +54,8 @@ namespace SPOffice.UserInterface.Models
         public string CurrStock { get; set; }
         public decimal? AppxRate { get; set; }
         public string RequestedQty { get; set; }
+
+        public string ReqNo { get; set; }
         //External references
         public string RequisitionDetailObject { get; set; }
         public RawMaterialViewModel RawMaterialObj { get; set; }
