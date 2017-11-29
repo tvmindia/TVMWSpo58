@@ -11,7 +11,7 @@ var emptyGUID = '00000000-0000-0000-0000-000000000000'
 $(document).ready(function () {
   
     debugger;
-    //----------------------------Table 1
+    //----------------------------Table 1 :Supplier Purchase Order Table List---------------------//
     try {
         DataTables.PurchaseOrderTable = $('#tblSupplierPurchaseOrder').DataTable(
         {
@@ -53,7 +53,7 @@ $(document).ready(function () {
 
     }
   
-    //----------------------------Table2
+    //----------------------------Table2 : Supplier Purchase Order Detail Table ----------------//
     try {
         DataTables.PurchaseOrderDetailTable = $('#tblPurchaseOrderDetail').DataTable(
         {
@@ -69,19 +69,20 @@ $(document).ready(function () {
             },
             columns: [
               { "data": "ID" },
-              { "data": "Code", "defaultContent": "<i>-</i>" },
-              { "data": "material", "defaultContent": "<i>-</i>" },
+              { "data": "MaterialID", "defaultContent": "<i>-</i>" },
+              { "data": "MaterialCode", "defaultContent": "<i>-</i>" },
+              { "data": "MaterialDesc", "defaultContent": "<i>-</i>" },
               { "data": "UnitCode", "defaultContent": "<i>-</i>" },
-              { "data": "Quantity", "defaultContent": "<i>-</i>" },
+              { "data": "Qty", "defaultContent": "<i>-</i>" },
               { "data": "Rate", "defaultContent": "<i>-</i>" },
-              { "data": "Amount", "defaultContent": "<i>-</i>" },
+              { "data": "Amount", "defaultContent": "<i>-</i>"},
               { "data": "Particulars", "defaultContent": "<i>-</i>" },
               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
-            columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-right", "targets": [] },
-                  { className: "text-left", "targets": [1, 2, 3, 4, 5] },
-            { className: "text-center", "targets": [] }
+            columnDefs: [{ "targets": [0,1], "visible": false, "searchable": false },
+                 { className: "text-right", "targets": [5,6,7] },
+                  { className: "text-left", "targets": [2,3,4] },
+            { className: "text-center", "targets": [8,9] }
 
             ]
         });
@@ -179,6 +180,44 @@ function BindAllPurchaseOrders() {
 console.log(e.message);
 }
 }
+
+
+//----PurchaseOrderDetailTable------//
+function PurchaseOrderDetailBindTable() {
+    debugger;
+    try {
+        DataTables.PurchaseOrderDetailTable.clear().rows.add(GetPurchaseOrderDetailTable()).draw(false);
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function GetPurchaseOrderDetailTable() {
+    try {
+        debugger;
+        var id = $('#ID').val();
+        var data = { "ID": id };
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/GetPurchaseOrderDetailTable/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            $('#GrossTotal').val(roundoff(ds.GrossAmount));
+            return ds.Record;
+
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+
 //---------------------------------------------------------------------------//
 
 //--------------------------------Edit Clicks-------------------------------------------//
@@ -213,14 +252,15 @@ function BindPurchaseOrder(ID) {
             $("#BodyFooter").val(jsresult.BodyFooter);
             $("#BodyHeader").val(jsresult.BodyHeader);
             $("#GeneralNotes").val(jsresult.GeneralNotes);
-
+            debugger;
             $("#TaxTypeCode").val(jsresult.TaxTypeCode);
             $("#TaxPercApplied").val(jsresult.TaxPercApplied);
-            $("#GrossAmount").val(roundoff(jsresult.GrossAmount));
             $("#Discount").val(roundoff(jsresult.Discount));
-            $("#NetTaxableAmount").val(roundoff(jsresult.NetTaxableAmount));
+           // $("#NetTaxableAmount").val(roundoff(jsresult.NetTaxableAmount));
             $("#TaxAmount").val(roundoff(jsresult.TaxAmount));
             $("#TotalAmount").val(roundoff(jsresult.TotalAmount));
+            
+            PurchaseOrderDetailBindTable() //------binding Details table
 
             //clearUploadControl();
             //PaintImages(ID);
@@ -242,6 +282,7 @@ function GetPurchaseOrderDetailsByID(ID) {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
+         
             return ds.Record;
         }
         if (ds.Result == "ERROR") {

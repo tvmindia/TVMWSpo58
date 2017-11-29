@@ -220,6 +220,30 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion DeletePurchaseOrder
 
+        //GetPurchaseOrderDetailTable
+        #region GetPurchaseOrderDetailTable
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetPurchaseOrderDetailTable(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                List<SupplierPODetailViewModel> SPOVMList = Mapper.Map<List<SupplierPODetail>, List<SupplierPODetailViewModel>>(_supplierBusiness.GetPurchaseOrderDetailTable(Guid.Parse(ID)));
+                decimal GrossAmount = SPOVMList == null ? 0 : SPOVMList.Sum(Q => Q.Amount);
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = SPOVMList, GrossAmount= GrossAmount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetPurchaseOrderDetailTable
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)

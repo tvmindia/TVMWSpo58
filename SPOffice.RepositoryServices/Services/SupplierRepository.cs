@@ -476,6 +476,58 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
+        public List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID)
+        {
+            List<SupplierPODetail> SPODList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetPurchaseOrderDetails]";
+                        cmd.Parameters.Add("@SupplierPOID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
 
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                SPODList = new List<SupplierPODetail>();
+                                while (sdr.Read())
+                                {
+                                    SupplierPODetail _SuppObj = new SupplierPODetail();
+                                    {
+
+                                        _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
+                                        _SuppObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _SuppObj.MaterialID);
+                                        _SuppObj.MaterialDesc = (sdr["MaterialDesc"].ToString() != "" ? sdr["MaterialDesc"].ToString() : _SuppObj.MaterialDesc);
+                                        _SuppObj.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _SuppObj.MaterialCode);
+                                        _SuppObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _SuppObj.UnitCode);
+                                        _SuppObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : _SuppObj.Qty);
+                                        _SuppObj.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _SuppObj.Rate);
+                                        _SuppObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _SuppObj.Amount);
+
+                                    }
+                                    SPODList.Add(_SuppObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return SPODList;
+
+        }
     }
 }
