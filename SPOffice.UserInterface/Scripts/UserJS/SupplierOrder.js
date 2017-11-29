@@ -69,7 +69,8 @@ $(document).ready(function () {
             },
             columns: [
               { "data": "ID" },
-              { "data": "Code", "defaultContent": "<i>-</i>" },
+              { "data": "MaterialID", "defaultContent": "<i>-</i>" },
+              { "data": "MaterialCode", "defaultContent": "<i>-</i>" },
               { "data": "MaterialDesc", "defaultContent": "<i>-</i>" },
               { "data": "UnitCode", "defaultContent": "<i>-</i>" },
               { "data": "Qty", "defaultContent": "<i>-</i>" },
@@ -78,10 +79,10 @@ $(document).ready(function () {
               { "data": "Particulars", "defaultContent": "<i>-</i>" },
               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
-            columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-right", "targets": [4,5,6] },
-                  { className: "text-left", "targets": [1, 2, 3] },
-            { className: "text-center", "targets": [7,8] }
+            columnDefs: [{ "targets": [0,1], "visible": false, "searchable": false },
+                 { className: "text-right", "targets": [5,6,7] },
+                  { className: "text-left", "targets": [2,3,4] },
+            { className: "text-center", "targets": [8,9] }
 
             ]
         });

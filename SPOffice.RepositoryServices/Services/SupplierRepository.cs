@@ -507,6 +507,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
                                         _SuppObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _SuppObj.MaterialID);
                                         _SuppObj.MaterialDesc = (sdr["MaterialDesc"].ToString() != "" ? sdr["MaterialDesc"].ToString() : _SuppObj.MaterialDesc);
+                                        _SuppObj.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _SuppObj.MaterialCode);
                                         _SuppObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _SuppObj.UnitCode);
                                         _SuppObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : _SuppObj.Qty);
                                         _SuppObj.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _SuppObj.Rate);

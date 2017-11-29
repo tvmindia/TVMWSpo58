@@ -100,6 +100,7 @@ namespace SPOffice.DataAccessObject.DTO
         public Guid POID { get; set; }
         public Guid MaterialID { get; set; }
         public string MaterialDesc { get; set; }
+        public string MaterialCode { get; set; }
         public string UnitCode { get; set; }
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
