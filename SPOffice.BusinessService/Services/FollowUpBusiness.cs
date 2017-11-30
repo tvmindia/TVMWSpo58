@@ -49,5 +49,10 @@ namespace SPOffice.BusinessService.Services
             return _followupRepository.GetFollowupDetailsByFollowUpID(ID);
         }
 
+
+        public List<FollowUp> GetRecentFollowUpCount(DateTime? Today)
+        {
+            return _followupRepository.GetRecentFollowUpCount(Today);
+        }
     }
 }
