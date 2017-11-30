@@ -778,15 +778,12 @@
     <Content Include="Views\Dashboard\_TodaysFollowups.cshtml" />
     <Content Include="Views\Dashboard\_POandQuoteSummary.cshtml" />
     <Content Include="Views\Enquiry\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Enquiry\_FollowUpList.cshtml" />
     <Content Include="Views\ProformaInvoice\Index.cshtml" />
     <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
     <Content Include="Views\Requisition\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Units\Index.cshtml" />
-    <Content Include="Views\Report\GetEnquiryDetails.cshtml" />
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\Report\CourierReport.cshtml" />
