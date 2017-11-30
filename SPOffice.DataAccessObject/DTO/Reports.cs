@@ -111,11 +111,22 @@ namespace SPOffice.DataAccessObject.DTO
         public string POStatus { get; set; }
         public string Customer { get; set; }
         public string Company { get; set; }
+        public string ReqStatus { get; set; }
+        public string ApprovalStatus { get; set; }
+        public bool ManagerApproved { get; set; }
+        public bool FinalApproved { get; set; }
+        public string RequisitionBy { get; set; }
     }
 
     public class CustomerPOReport
     {
-        public CustomerPO CustomerPOObj { get; set; }     
-      
+        public CustomerPO CustomerPOObj { get; set; }
+
+    }
+
+    public class RequisitionReport
+    {
+        public Requisition RequisitionObj { get; set; }
+
     }
 }

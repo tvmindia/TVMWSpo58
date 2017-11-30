@@ -32,6 +32,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public ActionResult Index(string id)
         {
+            ViewBag.value = id;
             if(id== "TILEFILTER")
             { 
                 Permission _permission = Session["UserRightsOffice"] as Permission;

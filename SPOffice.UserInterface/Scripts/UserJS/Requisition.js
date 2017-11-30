@@ -2,7 +2,7 @@
 //*****************************************************************************
 //Author: Thomson Varkey
 //CreatedDate: 14-Nov-2017 Tuesday
-//LastModified: 14-nov-2017 Tuesday
+//LastModified: 30-nov-2017 Tuesday
 //FileName: Requisition.js
 //Description: Client side coding for Requisition
 //******************************************************************************
@@ -109,8 +109,13 @@ $(document).ready(function () {
             ]
         });
         $('#tblRequisitionList tbody').on('dblclick', 'td', function () {
-            Edit(this);
+            Edit(this);           
+
         });
+
+        if ($('#BindValue').val() != '') {
+            RequisitionBind($('#BindValue').val())
+        }
         //Remove border color red while added data into the fields
         $('.Ivalidate').keypress(function (event) {
             if ($(this).val() !== "")
@@ -734,4 +739,11 @@ function ApproveRequsistionByID()
     catch (e) {
         console.log(e.message);
     }
+}
+
+//setting value to hidden field in requisition
+function RequisitionBind(ID) {
+    $('#ID').val(ID);
+    openNav();
+    BindRequisitionDetail(ID);
 }
