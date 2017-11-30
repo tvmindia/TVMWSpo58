@@ -727,7 +727,7 @@ function GetRecentFollowUpCount() {
                 for (var i = 0; i < ds.Result.length; i++)
                 {
                    // var html = "<li class='header'>" + ds.Records[i].FollowUpDate+ " " + ds.Records[i].Subject+ " " + ds.Records[i].ContactName+ "</li>"
-                    var html = "<li><a href='/Enquiry/Index/"+ds.Records[i].EnquiryID+"'><span class='text-yellow'>" +ds.Records[i].FollowUpDate + "</span > <span class='text-red'>" +ds.Records[i].Subject + "</span> <span class='text-green'>" +ds.Records[i].ContactName + " </span> </a> </li>"
+                    var html = "<li title='" + ds.Records[i].Subject + "'><a style='width:500px;' href='/Enquiry/Index/" + ds.Records[i].EnquiryID + "'><span class='label label-warning'>" + ds.Records[i].FollowUpDate + "</span > <span class='text-aqua' >Sub:</span>" + ds.Records[i].Subject.substring(0, 25) + ".. <span style='float:right'><span class='text-green'> Client: </span>" + ds.Records[i].Company + "</span> </a> </li>"
                     $('#ulEnquiryNotification').append(html);
                 }
         }
