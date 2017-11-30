@@ -13,5 +13,6 @@ namespace SPOffice.RepositoryServices.Contracts
         List<FollowUp> GetFollowUpDetails(Guid EnquiryID);
         List<FollowUp> GetFollowUpDetailsOnDate(DateTime onDate);
         FollowUp GetFollowupDetailsByFollowUpID(Guid ID);
+        List<FollowUp> GetRecentFollowUpCount(DateTime? Today);
       }
 }

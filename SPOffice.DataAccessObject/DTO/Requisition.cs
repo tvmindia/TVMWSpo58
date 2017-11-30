@@ -40,6 +40,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string CurrStock { get; set; }
         public decimal AppxRate { get; set; }
         public string RequestedQty { get; set; }
+
+        public string ReqNo { get; set; }
         //External references
         public RawMaterial RawMaterialObj { get; set; }
     }

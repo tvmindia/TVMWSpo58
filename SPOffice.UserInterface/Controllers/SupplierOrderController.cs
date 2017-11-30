@@ -20,12 +20,15 @@ namespace SPOffice.UserInterface.Controllers
         ISupplierBusiness _supplierBusiness;
         ICompanyBusiness _companyBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
+        ICommonBusiness _commonBusiness;
 
-        public SupplierOrderController(ISupplierBusiness supplierBusiness, ICompanyBusiness companyBusiness, ITaxTypeBusiness taxTypeBusiness)
+        public SupplierOrderController(ISupplierBusiness supplierBusiness, ICompanyBusiness companyBusiness, 
+            ITaxTypeBusiness taxTypeBusiness, ICommonBusiness commonBusiness)
         {
             _supplierBusiness = supplierBusiness;
             _companyBusiness = companyBusiness;
             _taxTypeBusiness = taxTypeBusiness;
+            _commonBusiness = commonBusiness;
         }
 
         // GET: SupplierOrder
@@ -76,24 +79,16 @@ namespace SPOffice.UserInterface.Controllers
             SPOVM.TaxTypeList = selectListItem;
 
             selectListItem = new List<SelectListItem>();
-            selectListItem.Add(new SelectListItem
+            List<POStatusesViewModel> POStatusesList = Mapper.Map<List<POStatuses>, List<POStatusesViewModel>>(_commonBusiness.GetAllPOStatuses());
+            foreach (POStatusesViewModel TT in POStatusesList)
             {
-                Text = "Closed",
-                Value = "CSD",
-                Selected = false
-            });
-            selectListItem.Add(new SelectListItem
-            {
-                Text = "Open",
-                Value = "OPN",
-                Selected = false
-            });
-            selectListItem.Add(new SelectListItem
-            {
-                Text = "In Progress",
-                Value = "PGS",
-                Selected = false
-            });
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = TT.Description,
+                    Value = TT.Code.ToString(),
+                    Selected = false
+                });
+            }
             SPOVM.POStatusList = selectListItem;
             return View(SPOVM);
         }
@@ -101,22 +96,22 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllSupplierPurchaseOrders
         [HttpGet]
-      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public string GetAllSupplierPurchaseOrders(string filter)
         {
             try
             {
                 List<SupplierOrderViewModel> SPOVMList = Mapper.Map<List<SupplierOrder>, List<SupplierOrderViewModel>>(_supplierBusiness.GetAllSupplierPurchaseOrders());
 
-                //int openCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "OPN").Select(T => T.ID).Count();
-                //int inProgressCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "PGS").Select(T => T.ID).Count();
-                //int closedCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == "CSD").Select(T => T.ID).Count();
+                int openCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.POStatus == "OPN").Select(T => T.ID).Count();
+                int inProgressCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.POStatus == "PGS").Select(T => T.ID).Count();
+                int closedCount = SPOVMList == null ? 0 : SPOVMList.Where(Q => Q.POStatus == "CSD").Select(T => T.ID).Count();
 
-                //if (filter != null)
-                //{
-                //    SPOVMList = SPOVMList.Where(Q => Q.purchaseOrderStatus.Code == filter).ToList();
-                //}
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+                if (filter != null)
+                {
+                    SPOVMList = SPOVMList.Where(Q => Q.POStatus == filter).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
             catch (Exception ex)
             {
@@ -159,7 +154,7 @@ namespace SPOffice.UserInterface.Controllers
                 object result = null;
                 if (ModelState.IsValid)
                 {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     SPOViewModel.commonObj = new CommonViewModel();
                     SPOViewModel.commonObj.CreatedBy = _appUA.UserName;
                     SPOViewModel.commonObj.CreatedDate = _appUA.DateTime;
@@ -224,6 +219,67 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion DeletePurchaseOrder
+
+        #region GetPurchaseOrderDetailTable
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetPurchaseOrderDetailTable(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                List<SupplierPODetailViewModel> SPOVMList = Mapper.Map<List<SupplierPODetail>, List<SupplierPODetailViewModel>>(_supplierBusiness.GetPurchaseOrderDetailTable(Guid.Parse(ID)));
+                decimal GrossAmount = SPOVMList == null ? 0 : SPOVMList.Sum(Q => Q.Amount);
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = SPOVMList, GrossAmount= GrossAmount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetPurchaseOrderDetailTable
+
+        #region GetAllRequisitionHeaderForSupplierPO
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetAllRequisitionHeaderForSupplierPO()
+        {
+            try
+            { 
+                List<RequisitionViewModel> SPOVMList = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_supplierBusiness.GetAllRequisitionHeaderForSupplierPO());
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList});
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllRequisitionHeaderForSupplierPO
+
+
+        #region GetRequisitionDetailsByIDs
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetRequisitionDetailsByIDs(string IDs)
+        {
+            try
+            {
+                List<RequisitionDetailViewModel> SPOVMList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_supplierBusiness.GetRequisitionDetailsByIDs(IDs));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetRequisitionDetailsByIDs
 
         #region ButtonStyling
         [HttpGet]

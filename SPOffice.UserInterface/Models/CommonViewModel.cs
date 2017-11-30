@@ -15,4 +15,11 @@ namespace UserInterface.Models
         public DateTime UpdatedDate { get; set; }
         public string UpdatedDateString { get; set; }
     }
+    
+  public class POStatusesViewModel
+    {
+        public string Code { get; set; } 
+        public string Description { get; set; } 
+        
+    }
 }

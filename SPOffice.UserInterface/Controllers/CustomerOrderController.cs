@@ -19,11 +19,14 @@ namespace SPOffice.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         ICompanyBusiness _companyBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
-        public CustomerOrderController(ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness, ITaxTypeBusiness taxTypeBusiness)
+        ICommonBusiness _commonBusiness;
+        public CustomerOrderController(ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness,
+            ITaxTypeBusiness taxTypeBusiness,ICommonBusiness commonBusiness)
         {
             _customerBusiness = customerBusiness;
             _companyBusiness = companyBusiness;
             _taxTypeBusiness = taxTypeBusiness;
+            _commonBusiness = commonBusiness;
         }
         // GET: CustomerOrder
         [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
@@ -73,24 +76,16 @@ namespace SPOffice.UserInterface.Controllers
 
             customerPOlVM.TaxTypeList = selectListItem;
             selectListItem = new List<SelectListItem>();
-            selectListItem.Add(new SelectListItem
+            List<POStatusesViewModel> POStatusesList = Mapper.Map<List<POStatuses>, List<POStatusesViewModel>>(_commonBusiness.GetAllPOStatuses());
+            foreach (POStatusesViewModel TT in POStatusesList)
             {
-                Text = "Closed",
-                Value = "CSD",
-                Selected = false
-            });
-            selectListItem.Add(new SelectListItem
-            {
-                Text = "Open",
-                Value = "OPN",
-                Selected = false
-            });
-            selectListItem.Add(new SelectListItem
-            {
-                Text = "In Progress",
-                Value = "PGS",
-                Selected = false
-            });
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = TT.Description,
+                    Value = TT.Code.ToString(),
+                    Selected = false
+                });
+            } 
             customerPOlVM.POStatusList = selectListItem;
             return View(customerPOlVM);
         }

@@ -33,7 +33,7 @@ namespace UserInterface.Models
 
         [Display(Name = "Confirm Password")]
         [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$", ErrorMessage = "should have minimum 6 Char, one alphabet,one numeric and one special character")]
-        [Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
         [StringLength(250, MinimumLength = 6, ErrorMessage = "{0} should be minimum 6 Char")]
         public string ConfirmPassword { get; set; }
 

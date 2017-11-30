@@ -35,8 +35,7 @@ namespace SPOffice.BusinessService.Services
 
                 throw;
             }
-        }
-
+        } 
 
         //------------------------------------------------------------------------//
         public List<SupplierOrder> GetAllSupplierPurchaseOrders()
@@ -82,9 +81,25 @@ namespace SPOffice.BusinessService.Services
 
         public object DeletePurchaseOrder(Guid ID)
         {
-            throw new NotImplementedException();
+            return _supplierRepository.DeletePurchaseOrder(ID);
+
         }
+        
         //------------------------------------------------------------------------//
 
+        public List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID)
+        {
+            return _supplierRepository.GetPurchaseOrderDetailTable(ID);
+        }
+
+        public List<Requisition> GetAllRequisitionHeaderForSupplierPO()
+        {
+            return _supplierRepository.GetAllRequisitionHeaderForSupplierPO();
+        }
+
+        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs)
+        {
+            return _supplierRepository.GetRequisitionDetailsByIDs(IDs);
+        }
     }
 }

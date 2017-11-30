@@ -39,7 +39,8 @@ namespace SPOffice.UserInterface.Models
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
         public bool IsApprover { get; set; }
-       
+       public ReqAdvanceSearchViewModel ReqAdvSearchObj { get; set; }
+
     }
     public class RequisitionDetailViewModel
     {
@@ -53,6 +54,8 @@ namespace SPOffice.UserInterface.Models
         public string CurrStock { get; set; }
         public decimal? AppxRate { get; set; }
         public string RequestedQty { get; set; }
+
+        public string ReqNo { get; set; }
         //External references
         public string RequisitionDetailObject { get; set; }
         public RawMaterialViewModel RawMaterialObj { get; set; }
@@ -66,6 +69,15 @@ namespace SPOffice.UserInterface.Models
         public bool IsAdminOrCeo { get; set; }
     }
 
+    public class ReqAdvanceSearchViewModel
+    {
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string ReqStatus { get; set; }
+        public string ReqSearch { get; set; }
+        public bool ManagerApproved { get; set; }
+        public bool FinalApproved { get; set; }
+    }
 
 
 }

@@ -178,6 +178,10 @@ namespace SPOffice.DataAccessObject.DTO
         public string AttachmentURL { get; set; }
         public Common commonObj { get; set; }
     }
-
+    public class POStatuses
+    {
+        public string Code { get; set; }
+        public string Description { get; set; }
+    }
 
 }

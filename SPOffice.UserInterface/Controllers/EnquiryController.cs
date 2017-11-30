@@ -73,7 +73,7 @@ namespace SPOffice.UserInterface.Controllers
 
             List<IndustryViewModel> industryList = Mapper.Map<List<Industry>, List<IndustryViewModel>>(_industryBusiness.GetAllIndustryList());
 
-            foreach(IndustryViewModel IN in industryList)
+            foreach (IndustryViewModel IN in industryList)
             {
                 selectListItem.Add(new SelectListItem
                 {
@@ -191,8 +191,8 @@ namespace SPOffice.UserInterface.Controllers
             EVM.priorityObj.PriorityList = selectListItem;
 
             return View(EVM);
-        }
-
+            }
+        
         //------------To Get FollowUp List-----//
 
 
@@ -344,8 +344,6 @@ namespace SPOffice.UserInterface.Controllers
         #endregion GetFollowUpDetails
 
 
-
-
         #region GetFollowUpDetailByFollowUpId
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -357,6 +355,27 @@ namespace SPOffice.UserInterface.Controllers
 
         }
         #endregion GetFollowUpDetailByFollowUpId
+
+
+
+
+        #region GetFollowupCount
+         public string GetRecentFollowUpCount()
+        {
+            try
+            {
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
+                 // DateTime? Date = string.IsNullOrEmpty(_appUA.DateTime) ? (DateTime?)null : DateTime.Parse(Today);
+                List<FollowUpViewModel> followupObj = Mapper.Map<List<FollowUp>, List<FollowUpViewModel>>(_followupBusiness.GetRecentFollowUpCount(_appUA.DateTime));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = followupObj });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetFollowupCount
 
         #region ButtonStyling
         [HttpGet]

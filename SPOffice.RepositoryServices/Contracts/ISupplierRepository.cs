@@ -18,6 +18,9 @@ namespace SPOffice.RepositoryServices.Contracts
         object InsertPurchaseOrder(SupplierOrder SPO);
         object UpdatePurchaseOrder(SupplierOrder SPO);
         object DeletePurchaseOrder(Guid ID);
+        List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID);
+        List<Requisition> GetAllRequisitionHeaderForSupplierPO();
+        List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs);
 
     }
 }

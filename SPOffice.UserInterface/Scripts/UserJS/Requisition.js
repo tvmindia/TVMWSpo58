@@ -502,7 +502,7 @@ function GetUserRequisitionList(AdvanceSearchObject)
     }
 }
 function GetRequisitionDetailList(ID) {
-    
+    debugger;
     try {
         var data = {"ID":ID};
         var ds = {};
