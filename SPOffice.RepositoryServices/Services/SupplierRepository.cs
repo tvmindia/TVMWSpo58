@@ -529,5 +529,113 @@ namespace SPOffice.RepositoryServices.Services
             return SPODList;
 
         }
+
+        public List<Requisition> GetAllRequisitionHeaderForSupplierPO()
+        {
+            List<Requisition> Req_List = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllRequisitionHeaderForSupplierPO]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                Req_List = new List<Requisition>();
+                                while (sdr.Read())
+                                {
+                                    Requisition _ReqObj = new Requisition();
+                                    {
+
+                                        _ReqObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _ReqObj.ID);
+                                        _ReqObj.Title = (sdr["Title"].ToString() != "" ? sdr["Title"].ToString() : _ReqObj.Title);
+                                        _ReqObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : _ReqObj.ReqNo);
+                                        _ReqObj.ReqStatus = (sdr["ReqStatus"].ToString() != "" ? sdr["ReqStatus"].ToString() : _ReqObj.ReqStatus);
+                                        _ReqObj.ReqDateFormatted = (sdr["ReqDate"].ToString() != "" ? DateTime.Parse(sdr["ReqDate"].ToString()).ToString(s.dateformat) : _ReqObj.ReqDateFormatted);
+                                        _ReqObj.FinalApprovalDateFormatted = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()).ToString(s.dateformat) : _ReqObj.FinalApprovalDateFormatted);
+                                        _ReqObj.CommonObj = new Common();
+                                        _ReqObj.CommonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : _ReqObj.CommonObj.CreatedBy);
+
+                                    }
+                                    Req_List.Add(_ReqObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Req_List;
+
+        }
+
+        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs)
+        {
+            List<RequisitionDetail> Req_List = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetRequisitionDetailsByIDs]";
+                        cmd.Parameters.Add("@IDs", SqlDbType.NVarChar,-1).Value = @IDs;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                Req_List = new List<RequisitionDetail>();
+                                while (sdr.Read())
+                                {
+                                    RequisitionDetail _ReqObj = new RequisitionDetail();
+                                    {
+                                        _ReqObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _ReqObj.ID);
+                                        _ReqObj.ReqID = (sdr["ReqID"].ToString() != "" ? Guid.Parse(sdr["ReqID"].ToString()) : _ReqObj.ReqID);
+                                        _ReqObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _ReqObj.MaterialID);
+                                        _ReqObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : _ReqObj.Description);
+                                        _ReqObj.RawMaterialObj = new RawMaterial();
+                                        _ReqObj.RawMaterialObj.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _ReqObj.RawMaterialObj.MaterialCode);
+                                        _ReqObj.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _ReqObj.Description);
+                                        _ReqObj.ExtendedDescription = (sdr["ExtendedDescription"].ToString() != "" ? sdr["ExtendedDescription"].ToString() : _ReqObj.ExtendedDescription);
+                                        _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
+                                        _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
+                                        _ReqObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _ReqObj.AppxRate);
+                                    }
+                                    Req_List.Add(_ReqObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Req_List;
+
+        }
     }
 }

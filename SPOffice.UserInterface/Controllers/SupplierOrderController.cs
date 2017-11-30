@@ -220,7 +220,6 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion DeletePurchaseOrder
 
-        //GetPurchaseOrderDetailTable
         #region GetPurchaseOrderDetailTable
         [HttpGet]
         //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
@@ -244,6 +243,44 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetPurchaseOrderDetailTable
+
+        #region GetAllRequisitionHeaderForSupplierPO
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetAllRequisitionHeaderForSupplierPO()
+        {
+            try
+            { 
+                List<RequisitionViewModel> SPOVMList = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_supplierBusiness.GetAllRequisitionHeaderForSupplierPO());
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList});
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetAllRequisitionHeaderForSupplierPO
+
+
+        #region GetRequisitionDetailsByIDs
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string GetRequisitionDetailsByIDs(string IDs)
+        {
+            try
+            {
+                List<RequisitionDetailViewModel> SPOVMList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_supplierBusiness.GetRequisitionDetailsByIDs(IDs));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetRequisitionDetailsByIDs
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)

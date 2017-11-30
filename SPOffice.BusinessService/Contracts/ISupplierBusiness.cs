@@ -20,6 +20,8 @@ namespace SPOffice.BusinessService.Contracts
         object DeletePurchaseOrder(Guid ID);
         //detail
         List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID);
+        List<Requisition> GetAllRequisitionHeaderForSupplierPO();
+        List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs);
 
     }
 }
