@@ -101,4 +101,9 @@ namespace SPOffice.UserInterface.Models
     }
 
 
+    public class RequisitionReportViewModel
+    {
+        public RequisitionViewModel RequisitionObj { get; set; }
+        public string Search { get; set; }
+    }
 }

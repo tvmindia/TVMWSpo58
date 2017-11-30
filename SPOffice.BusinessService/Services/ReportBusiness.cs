@@ -99,5 +99,21 @@ namespace SPOffice.BusinessService.Services
         }
 
 
+        public List<RequisitionReport> GetRequisitionDetails(ReportAdvanceSearch ReptAdvancedSearchObj)
+        {
+            List<RequisitionReport> requistionDetailList = null;
+            try
+            {
+                requistionDetailList = _reportRepository.GetRequisitionDetails(ReptAdvancedSearchObj);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return requistionDetailList;
+
+        }
+
     }
 }
