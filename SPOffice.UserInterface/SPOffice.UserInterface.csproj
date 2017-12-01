@@ -631,6 +631,7 @@
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\RequisitionReport.js" />
     <Content Include="Scripts\UserJS\SupplierOrder.js" />
     <Content Include="Scripts\UserJS\Units.js" />
     <Content Include="Scripts\UserJS\Login.js" />
@@ -778,20 +779,18 @@
     <Content Include="Views\Dashboard\_TodaysFollowups.cshtml" />
     <Content Include="Views\Dashboard\_POandQuoteSummary.cshtml" />
     <Content Include="Views\Enquiry\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Enquiry\_FollowUpList.cshtml" />
     <Content Include="Views\ProformaInvoice\Index.cshtml" />
     <Content Include="Views\ProformaInvoice\_ProfomaMailPreview.cshtml" />
     <Content Include="Views\Requisition\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Units\Index.cshtml" />
-    <Content Include="Views\Report\GetEnquiryDetails.cshtml" />
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\Report\CourierReport.cshtml" />
     <Content Include="Views\SupplierOrder\Index.cshtml" />
     <Content Include="Views\Report\CustomerPOReport.cshtml" />
+    <Content Include="Views\Report\RequisitionReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

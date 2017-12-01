@@ -87,8 +87,6 @@ namespace UserInterface.App_Start
                 config.CreateMap<RequisitionViewModel, Requisition>().ReverseMap();
                 config.CreateMap<RequisitionDetailViewModel, RequisitionDetail>().ReverseMap();
                 config.CreateMap<UnitsViewModel, Units>().ReverseMap();
-                config.CreateMap<POStatuses,POStatusesViewModel>().ReverseMap();
-                config.CreateMap<SupplierPODetail, SupplierPODetailViewModel>().ReverseMap();
 
                 //--For Report purpose
                 config.CreateMap<ReportViewModel, Reports>().ReverseMap();
@@ -98,7 +96,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<CourierReportViewModel, CourierReport>().ReverseMap();
                 config.CreateMap<QuotationReport, QuotationReportViewModel>().ReverseMap();
                 config.CreateMap<CustomerPOReportViewModel, CustomerPOReport>().ReverseMap();
-                config.CreateMap<ReqAdvanceSearchViewModel, ReqAdvanceSearch>().ReverseMap();
+                config.CreateMap<RequisitionReportViewModel, RequisitionReport>().ReverseMap();
             });
         }
     }

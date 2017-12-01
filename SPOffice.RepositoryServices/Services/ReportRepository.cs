@@ -331,5 +331,88 @@ namespace SPOffice.RepositoryServices.Services
             return CustomerDetailList;
         }
 
+        //
+
+
+
+        /// <summary>
+        ///To Get Requisition details in Report
+        /// </summary>
+        /// <param name="ReptAdvancedSearchObj"></param>
+        /// <returns>List</returns>
+        public List<RequisitionReport> GetRequisitionDetails(ReportAdvanceSearch ReptAdvancedSearchObj)
+        {
+            List<RequisitionReport> RequisitionDetailList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;                      
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar).Value = ReptAdvancedSearchObj.RequisitionBy;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = ReptAdvancedSearchObj.FromDate;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ReptAdvancedSearchObj.ToDate;
+                        cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = ReptAdvancedSearchObj.Search;
+                        cmd.Parameters.Add("@ReqStatus", SqlDbType.NVarChar,250).Value = ReptAdvancedSearchObj.ReqStatus;
+                        cmd.Parameters.Add("@ApprovalStatus", SqlDbType.NVarChar).Value = ReptAdvancedSearchObj.ApprovalStatus;
+                        //cmd.Parameters.Add("@RequisitionBy", SqlDbType.NVarChar).Value = ReptAdvancedSearchObj.RequisitionBy;
+                        if (ReptAdvancedSearchObj.ManagerApproved)
+                        {
+                            cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = ReptAdvancedSearchObj.ManagerApproved;
+                        }
+                        if (ReptAdvancedSearchObj.FinalApproved)
+                        {
+                            cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = ReptAdvancedSearchObj.FinalApproved;
+                        }
+                        cmd.CommandText = "[Office].[RPT_GetAllRequisitionDetail]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                RequisitionDetailList = new List<RequisitionReport>();
+                                while (sdr.Read())
+                                {
+                                    RequisitionReport requisitionDetail = new RequisitionReport();
+                                    requisitionDetail.RequisitionObj = new Requisition();
+                                    {
+                                        requisitionDetail.RequisitionObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : requisitionDetail.RequisitionObj.ID);
+                                        requisitionDetail.RequisitionObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : requisitionDetail.RequisitionObj.ReqNo);
+                                        requisitionDetail.RequisitionObj.Title = (sdr["Title"].ToString() != "" ? sdr["Title"].ToString() : requisitionDetail.RequisitionObj.Title);
+                                        requisitionDetail.RequisitionObj.ReqDate = (sdr["ReqDate"].ToString() != "" ? DateTime.Parse(sdr["ReqDate"].ToString()) : requisitionDetail.RequisitionObj.ReqDate);
+                                        requisitionDetail.RequisitionObj.ReqDateFormatted = (sdr["ReqDate"].ToString() != "" ? DateTime.Parse(sdr["ReqDate"].ToString()).ToString(settings.dateformat) : requisitionDetail.RequisitionObj.ReqDateFormatted);
+                                        requisitionDetail.RequisitionObj.CompanyObj = new Company();
+                                        {
+                                            requisitionDetail.RequisitionObj.CompanyObj.Code = (sdr["ReqForCompany"].ToString() != "" ? sdr["ReqForCompany"].ToString() : requisitionDetail.RequisitionObj.CompanyObj.Code);
+                                            requisitionDetail.RequisitionObj.CompanyObj.Name = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : requisitionDetail.RequisitionObj.CompanyObj.Name);
+                                        }
+                                        
+                                        requisitionDetail.RequisitionObj.ReqStatus = (sdr["ReqStatus"].ToString() != "" ? sdr["ReqStatus"].ToString() : requisitionDetail.RequisitionObj.ReqStatus);
+                                        requisitionDetail.RequisitionObj.ManagerApproved = (sdr["ManagerApproved"].ToString() != "" ? bool.Parse(sdr["ManagerApproved"].ToString()) : requisitionDetail.RequisitionObj.ManagerApproved);
+                                        requisitionDetail.RequisitionObj.ManagerApprovalDate = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()) : requisitionDetail.RequisitionObj.ManagerApprovalDate);
+                                        requisitionDetail.RequisitionObj.ManagerApprovalDateFormatted = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()).ToString(settings.dateformat) : requisitionDetail.RequisitionObj.ManagerApprovalDateFormatted);
+                                        requisitionDetail.RequisitionObj.FinalApproval = (sdr["FinalApproval"].ToString() != "" ? bool.Parse(sdr["FinalApproval"].ToString()) : requisitionDetail.RequisitionObj.FinalApproval);
+                                        requisitionDetail.RequisitionObj.FinalApprovalDate = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()) : requisitionDetail.RequisitionObj.FinalApprovalDate);
+                                        requisitionDetail.RequisitionObj.FinalApprovalDateFormatted = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()).ToString(settings.dateformat) : requisitionDetail.RequisitionObj.FinalApprovalDateFormatted);
+                                    }
+                                    RequisitionDetailList.Add(requisitionDetail);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return RequisitionDetailList;
+        }
+        
     }
 }

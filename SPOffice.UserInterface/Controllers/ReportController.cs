@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
@@ -22,8 +23,9 @@ namespace SPOffice.UserInterface.Controllers
         ICompanyBusiness _companyBusiness;
         IQuotationBusiness _quotationBusiness;
         ICustomerBusiness _customerBusiness;
+        IUserBusiness _userBusiness;
 
-        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness)
+        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, IUserBusiness userBusiness)
         {
             _reportBusiness = reportBusiness;
             _enquiryStatusBusiness = enquiryStatusBusiness;
@@ -31,6 +33,7 @@ namespace SPOffice.UserInterface.Controllers
             _companyBusiness = companyBusiness;
             _quotationBusiness = quotationBusiness;
             _customerBusiness = customerBusiness;
+            _userBusiness = userBusiness;
 
         }
 
@@ -448,6 +451,66 @@ namespace SPOffice.UserInterface.Controllers
 
         }
 
+        //RequisitionReport
 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "RequisitionReport", Mode = "R")]
+        public ActionResult RequisitionReport()
+        {
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
+            DateTime dt = _appUA.DateTime;
+            ViewBag.fromdate = dt.AddDays(-90).ToString("dd-MMM-yyyy");
+            ViewBag.todate = dt.ToString("dd-MMM-yyyy");
+            RequisitionReportViewModel requisitionReportVMObj = new RequisitionReportViewModel();
+            requisitionReportVMObj.RequisitionObj = new RequisitionViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+
+            requisitionReportVMObj.RequisitionObj.userObj = new UserViewModel();
+            requisitionReportVMObj.RequisitionObj.userObj.userList = new List<SelectListItem>();
+
+
+            List<UserViewModel> userList = Mapper.Map<List<User>, List<UserViewModel>>(_userBusiness.GetAllUsers());
+
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = "ALL",
+                Selected = false
+            });
+
+            foreach (UserViewModel U in userList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = U.LoginName,
+                    Value = U.ID.ToString(),
+                    Selected = false
+                });
+            }
+
+            requisitionReportVMObj.RequisitionObj.userObj.userList = selectListItem;
+           
+
+            return View(requisitionReportVMObj);
+        }
+
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "RequisitionReport", Mode = "R")]
+        public string GetRequisitionDetails(string AdvanceSearchObject)
+        {
+            try
+            {
+                ReportAdvanceSearch ReptAdvancedSearchObj = AdvanceSearchObject != null ? JsonConvert.DeserializeObject<ReportAdvanceSearch>(AdvanceSearchObject) : new ReportAdvanceSearch();
+                List<RequisitionReportViewModel> RequisitiondetailObj = Mapper.Map<List<RequisitionReport>, List<RequisitionReportViewModel>>(_reportBusiness.GetRequisitionDetails(ReptAdvancedSearchObj));
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = RequisitiondetailObj });
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
+            }
+
+        }
     }
 }

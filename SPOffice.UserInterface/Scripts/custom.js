@@ -55,6 +55,7 @@ $(document).ready(function () {
         }
     });
     GetRequisitionBubbleCount();
+    GetRecentFollowUpCount();
     $('input.datepicker').datepicker({
         format: "dd-M-yyyy",//",
         maxViewMode: 0,
@@ -710,4 +711,35 @@ function GetRequisitionBubbleCount() {
     }
 }
 
+function GetRecentFollowUpCount() {
+    try {
+        debugger;
+       
+        var data = {};
+        var ds = {};
+     
 
+        ds = GetDataFromServer("Enquiry/GetRecentFollowUpCount/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+                for (var i = 0; i < ds.Result.length; i++)
+                {
+                   // var html = "<li class='header'>" + ds.Records[i].FollowUpDate+ " " + ds.Records[i].Subject+ " " + ds.Records[i].ContactName+ "</li>"
+                    var html = "<li title='" + ds.Records[i].Subject + "'><a style='width:500px;' href='/Enquiry/Index/" + ds.Records[i].EnquiryID + "'><span class='label label-warning'>" + ds.Records[i].FollowUpDate + "</span > <span class='text-aqua' >Sub:</span>" + ds.Records[i].Subject.substring(0, 25) + ".. <span style='float:right'><span class='text-green'> Client: </span>" + ds.Records[i].Company + "</span> </a> </li>"
+                    $('#ulEnquiryNotification').append(html);
+                }
+        }
+        $('#RecentFollowUpCount').text(ds.Records.length);
+        $('#RecentFollowUpCount').attr('title', ds.Result.length + ' Pending FollowUps');
+
+
+        if (ds.Result == "ERROR") {
+            $('#RecentFollowUpCount').text("0");
+        }
+    }
+    catch (e) {
+
+    }
+}

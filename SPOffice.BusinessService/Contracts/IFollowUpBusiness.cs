@@ -11,5 +11,6 @@ namespace SPOffice.BusinessService.Contracts
         FollowUp InsertUpdateFollowUp(FollowUp _followupObj);
         List<FollowUp> GetFollowUpDetails(Guid EnquiryID);
         FollowUp GetFollowupDetailsByFollowUpID(Guid ID);
+        List<FollowUp> GetRecentFollowUpCount(DateTime? Today);
     }
 }
