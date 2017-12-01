@@ -99,6 +99,8 @@ namespace SPOffice.UserInterface.Models
 
 
         public string CompanyName { get; set; }
+        public string hdfRequisitionDetail { get; set; }
+
 
         //Lists
         public List<SelectListItem> SupplierList { get; set; }

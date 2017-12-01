@@ -805,3 +805,6 @@ color: #e32;
 .reportTable tr.odd {
                      background-color: rgba(102, 204, 255, 0.16);
         }
+.description{
+    width:100% !important;
+}
