@@ -9,7 +9,7 @@
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 $(document).ready(function () {
-  
+
     //----------------------------Table 1 :Supplier Purchase Order Table List---------------------//
     try {
         DataTables.PurchaseOrderTable = $('#tblSupplierPurchaseOrder').DataTable(
@@ -151,18 +151,18 @@ $(document).ready(function () {
                              Desc = data;
                          else
                              Desc = row.Description;
-                         return '<input class="form-control description" name="Markup" value="' + Desc + '" type="text">';
+                         return '<input class="form-control description" name="Markup" value="' + Desc + '" type="text" onchange="textBoxValueChanged(this,1);">';
                      }
                  },
                  {
                      "data": "AppxRate", "defaultContent": "<i>-</i>", "width": "10%", 'render': function (data, type, row) {
-                         return '<input class="form-control text-right " name="Markup" value="' + row.AppxRate + '" type="text">';
+                         return '<input class="form-control text-right " name="Markup" value="' + row.AppxRate + '" type="text" onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,2);">';
                      }
                  },
                  { "data": "RequestedQty", "defaultContent": "<i>-</i>", "width": "10%" },
                  {
                      "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
-                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '" onchange="POQtyChanged(this);">';
+                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
                      }
                  }
             ],
@@ -251,12 +251,12 @@ function GetPurchaseOrderDetailTable() {
 
         }
         if (ds.Result == "ERROR") {
-            notyAlert('error', ds.message);
+            notyAlert('error', ds.Message);
         }
     }
     catch (e) {
         //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
+        console.log(e.Message);
     }
 }
 
@@ -264,6 +264,7 @@ function GetPurchaseOrderDetailTable() {
 
 //--------------------------------Edit Clicks-------------------------------------------//
 function Edit(Obj) {
+    debugger;
     $('#SupplierPOForm')[0].reset();
     var rowData = DataTables.PurchaseOrderTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
@@ -296,7 +297,6 @@ function BindPurchaseOrder(ID) {
             $("#TaxTypeCode").val(jsresult.TaxTypeCode);
             $("#TaxPercApplied").val(jsresult.TaxPercApplied);
             $("#Discount").val(roundoff(jsresult.Discount));
-           // $("#NetTaxableAmount").val(roundoff(jsresult.NetTaxableAmount));
             $("#TaxAmount").val(roundoff(jsresult.TaxAmount));
             $("#TotalAmount").val(roundoff(jsresult.TotalAmount));
             
@@ -630,45 +630,109 @@ function GetRequisitionDetailsByIDs(IDs) {
     }
 }
 
-function POQtyChanged(thisObj) {
+function textBoxValueChanged(thisObj,textBoxCode) {
     debugger;
+    var IDs = selectedRowIDs();//identify the selected rows 
     var allData = DataTables.RequisitionDetailsTable.rows().data();
     var table = DataTables.RequisitionDetailsTable;
     var rowtable = table.row($(thisObj).parents('tr')).data();
     for (var i = 0; i < allData.length; i++) {
         if (allData[i].ID == rowtable.ID) {
-            allData[i].POQty = parseFloat(thisObj.value);
+            if (textBoxCode = 1)//textBoxCode is the code to know, which textbox changed is triggered
+                allData[i].ExtendedDescription = thisObj.value;
+            if (textBoxCode = 2)
+                allData[i].AppxRate = parseFloat(thisObj.value);
+            if (textBoxCode = 3)
+                allData[i].POQty = parseFloat(thisObj.value);
         }
-    } 
-    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false); 
+    }
+    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
+    selectCheckbox(IDs); //Selecting the checked rows with their ids taken 
 }
+//function POQtyChanged(thisObj) {
+//    debugger;
+//    var IDs= selectedRowIDs();
+//    var allData = DataTables.RequisitionDetailsTable.rows().data();
+//    var table = DataTables.RequisitionDetailsTable;
+//    var rowtable = table.row($(thisObj).parents('tr')).data();
+//    for (var i = 0; i < allData.length; i++) {
+//        if (allData[i].ID == rowtable.ID) {
+//            allData[i].POQty = parseFloat(thisObj.value);
+//        }
+//    } 
+//    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
+//    selectCheckbox(IDs);
+//}
+//function AppxRateChanged(thisObj) {
+//    debugger;
+//    var IDs = selectedRowIDs();
+//    var allData = DataTables.RequisitionDetailsTable.rows().data();
+//    var table = DataTables.RequisitionDetailsTable;
+//    var rowtable = table.row($(thisObj).parents('tr')).data();
+//    for (var i = 0; i < allData.length; i++) {
+//        if (allData[i].ID == rowtable.ID) {
+//            allData[i].AppxRate = parseFloat(thisObj.value);
+//        }
+//    }
+//    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
+//    selectCheckbox(IDs);
+//}
+//function ExtendedDescriptionChanged(thisObj) {
+//    debugger;
+//    var IDs = selectedRowIDs();
+//    var allData = DataTables.RequisitionDetailsTable.rows().data();
+//    var table = DataTables.RequisitionDetailsTable;
+//    var rowtable = table.row($(thisObj).parents('tr')).data();
+//    for (var i = 0; i < allData.length; i++) {
+//        if (allData[i].ID == rowtable.ID) {
+//            allData[i].ExtendedDescription = thisObj.value;
+//        }
+//    }
+//    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
+//    selectCheckbox(IDs);
+//}
 
 function AddSPODetails()
 {
-    //club the row with same MaterialID
-
     debugger;
-    var SelectedRows = DataTables.RequisitionDetailsTable.rows(".selected").data();
-    if ((SelectedRows) && (SelectedRows.length > 0)) {
+    //Merging  the rows with same MaterialID
+    var allData = DataTables.RequisitionDetailsTable.rows(".selected").data();
+    var mergedRows = []; //to store rows after merging
+    var currentMaterial,QuantitySum;
+    for (var r = 0; r < allData.length; r++) {
+        var Particulars="";
+        Particulars = allData[r].ReqNo;
+        currentMaterial = allData[r].MaterialID
+        for (var j = r + 1; j < allData.length; j++) {
+            if(allData[j].MaterialID==currentMaterial)
+            {
+                Particulars = Particulars + "," + allData[j].ReqNo;
+                allData[r].POQty = parseFloat(allData[r].POQty) + parseFloat(allData[j].POQty);
+                allData.splice(j, 1);//removing duplicate after adding value 
+            }
+        }
+        allData[r].Particulars = "Requisitions are: " + Particulars
+        mergedRows.push(allData[r])// adding ros to merge array
+    }
+    // adding values to object array to bind detail table
+    if ((mergedRows) && (mergedRows.length > 0)) {
         var ar = [];
-          
-        for (var r = 0; r < SelectedRows.length; r++) {
+        for (var r = 0; r < mergedRows.length; r++) {
             var RequisitionDetailViewModel = new Object();
-            RequisitionDetailViewModel.MaterialID = SelectedRows[r].MaterialID; 
-            RequisitionDetailViewModel.ID = SelectedRows[r].ID;
-            RequisitionDetailViewModel.ReqID = SelectedRows[r].ReqID;
-            RequisitionDetailViewModel.MaterialCode = SelectedRows[r].RawMaterialObj.MaterialCode;
-            RequisitionDetailViewModel.MaterialDesc = SelectedRows[r].ExtendedDescription;
-            RequisitionDetailViewModel.Qty = SelectedRows[r].POQty;
-            RequisitionDetailViewModel.Rate = SelectedRows[r].AppxRate;
-            //RequisitionDetailViewModel.UnitCode = SelectedRows[r].UnitCode;
-            RequisitionDetailViewModel.Amount = parseFloat(SelectedRows[r].AppxRate) * parseFloat(SelectedRows[r].POQty);
+            RequisitionDetailViewModel.MaterialID = mergedRows[r].MaterialID;
+            RequisitionDetailViewModel.ID = mergedRows[r].ID;//ReqDetailId ?
+            RequisitionDetailViewModel.ReqID = mergedRows[r].ReqID;
+            RequisitionDetailViewModel.MaterialCode = mergedRows[r].RawMaterialObj.MaterialCode;
+            RequisitionDetailViewModel.MaterialDesc = mergedRows[r].ExtendedDescription;
+            RequisitionDetailViewModel.Qty = mergedRows[r].POQty;
+            RequisitionDetailViewModel.Rate = mergedRows[r].AppxRate;
+            //RequisitionDetailViewModel.UnitCode = mergedRows[r].UnitCode;
+            RequisitionDetailViewModel.Particulars = mergedRows[r].Particulars;            
+            RequisitionDetailViewModel.Amount = parseFloat(mergedRows[r].AppxRate) * parseFloat(mergedRows[r].POQty);
             //Particulars after adding same material(item)
             ar.push(RequisitionDetailViewModel);
         }
-        DataTables.PurchaseOrderDetailTable.rows.add(ar).draw(false);
-       
-        //   $('#hdfRequisitionDetail').val(JSON.stringify(ar));
+        DataTables.PurchaseOrderDetailTable.rows.add(ar).draw(false); //binding Detail table 
         CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
         $('#RequisitionDetailsModal').modal('hide');
     }
@@ -678,6 +742,22 @@ function AddSPODetails()
 
     }
     
+}
+function selectedRowIDs() {
+    var allData = DataTables.RequisitionDetailsTable.rows(".selected").data();
+    var IDs = allData.ID.toString();
+    return IDs;
+}
+function selectCheckbox(IDs) {
+    var allData = DataTables.RequisitionDetailsTable.rows().data()
+    for (var i = 0; i < allData.length; i++) {
+        if (IDs.contains(allData[i].ID)) {
+            DataTables.RequisitionDetailsTable.rows(i).deselect();
+        }
+        else {
+            DataTables.RequisitionDetailsTable.rows(i).select();
+        }
+    }
 }
 function CalculateGrossAmount()
 {
