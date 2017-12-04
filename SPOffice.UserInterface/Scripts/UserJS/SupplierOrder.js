@@ -676,8 +676,8 @@ function AddSPODetails()
                 allData.splice(j, 1);//removing duplicate after adding value 
             }
         }
-        allData[r].Particulars = "Requisitions are: " + Particulars
-        mergedRows.push(allData[r])// adding ros to merge array
+        allData[r].Particulars =  Particulars
+        mergedRows.push(allData[r])// adding rows to merge array
     }
     // adding values to object array to bind detail table
     if ((mergedRows) && (mergedRows.length > 0)) {
