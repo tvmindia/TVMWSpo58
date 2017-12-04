@@ -75,7 +75,14 @@ $(document).ready(function () {
               { "data": "Qty", "defaultContent": "<i>-</i>" },
               { "data": "Rate", "defaultContent": "<i>-</i>" },
               { "data": "Amount", "defaultContent": "<i>-</i>"},
-              { "data": "Particulars", "defaultContent": "<i>-</i>" },
+              {
+                  "data": "Particulars", "defaultContent": "<i>-</i>", 'render': function (data, type, row) {
+                      if (data != null)
+                          return 'Requisitions are: ' + data
+                      else
+                          return '-'
+                  }
+              },
               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0,1], "visible": false, "searchable": false },
@@ -638,59 +645,17 @@ function textBoxValueChanged(thisObj,textBoxCode) {
     var rowtable = table.row($(thisObj).parents('tr')).data();
     for (var i = 0; i < allData.length; i++) {
         if (allData[i].ID == rowtable.ID) {
-            if (textBoxCode = 1)//textBoxCode is the code to know, which textbox changed is triggered
+            if (textBoxCode == 1)//textBoxCode is the code to know, which textbox changed is triggered
                 allData[i].ExtendedDescription = thisObj.value;
-            if (textBoxCode = 2)
+            if (textBoxCode == 2)
                 allData[i].AppxRate = parseFloat(thisObj.value);
-            if (textBoxCode = 3)
+            if (textBoxCode == 3)
                 allData[i].POQty = parseFloat(thisObj.value);
         }
     }
     DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
     selectCheckbox(IDs); //Selecting the checked rows with their ids taken 
 }
-//function POQtyChanged(thisObj) {
-//    debugger;
-//    var IDs= selectedRowIDs();
-//    var allData = DataTables.RequisitionDetailsTable.rows().data();
-//    var table = DataTables.RequisitionDetailsTable;
-//    var rowtable = table.row($(thisObj).parents('tr')).data();
-//    for (var i = 0; i < allData.length; i++) {
-//        if (allData[i].ID == rowtable.ID) {
-//            allData[i].POQty = parseFloat(thisObj.value);
-//        }
-//    } 
-//    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
-//    selectCheckbox(IDs);
-//}
-//function AppxRateChanged(thisObj) {
-//    debugger;
-//    var IDs = selectedRowIDs();
-//    var allData = DataTables.RequisitionDetailsTable.rows().data();
-//    var table = DataTables.RequisitionDetailsTable;
-//    var rowtable = table.row($(thisObj).parents('tr')).data();
-//    for (var i = 0; i < allData.length; i++) {
-//        if (allData[i].ID == rowtable.ID) {
-//            allData[i].AppxRate = parseFloat(thisObj.value);
-//        }
-//    }
-//    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
-//    selectCheckbox(IDs);
-//}
-//function ExtendedDescriptionChanged(thisObj) {
-//    debugger;
-//    var IDs = selectedRowIDs();
-//    var allData = DataTables.RequisitionDetailsTable.rows().data();
-//    var table = DataTables.RequisitionDetailsTable;
-//    var rowtable = table.row($(thisObj).parents('tr')).data();
-//    for (var i = 0; i < allData.length; i++) {
-//        if (allData[i].ID == rowtable.ID) {
-//            allData[i].ExtendedDescription = thisObj.value;
-//        }
-//    }
-//    DataTables.RequisitionDetailsTable.clear().rows.add(allData).draw(false);
-//    selectCheckbox(IDs);
-//}
 
 function AddSPODetails()
 {
@@ -720,7 +685,8 @@ function AddSPODetails()
         for (var r = 0; r < mergedRows.length; r++) {
             var RequisitionDetailViewModel = new Object();
             RequisitionDetailViewModel.MaterialID = mergedRows[r].MaterialID;
-            RequisitionDetailViewModel.ID = mergedRows[r].ID;//ReqDetailId ?
+            RequisitionDetailViewModel.ID = emptyGUID; //newly added items has emptyguid
+            RequisitionDetailViewModel.ReqDetailId = mergedRows[r].ID;
             RequisitionDetailViewModel.ReqID = mergedRows[r].ReqID;
             RequisitionDetailViewModel.MaterialCode = mergedRows[r].RawMaterialObj.MaterialCode;
             RequisitionDetailViewModel.MaterialDesc = mergedRows[r].ExtendedDescription;
@@ -745,17 +711,23 @@ function AddSPODetails()
 }
 function selectedRowIDs() {
     var allData = DataTables.RequisitionDetailsTable.rows(".selected").data();
-    var IDs = allData.ID.toString();
-    return IDs;
+    var arrIDs = "";
+    for (var r = 0; r < allData.length; r++) {
+        if (r == 0)
+            arrIDs = allData[r].ID;
+        else
+            arrIDs = arrIDs + ',' + allData[r].ID;
+    }
+    return arrIDs; 
 }
 function selectCheckbox(IDs) {
     var allData = DataTables.RequisitionDetailsTable.rows().data()
     for (var i = 0; i < allData.length; i++) {
-        if (IDs.contains(allData[i].ID)) {
-            DataTables.RequisitionDetailsTable.rows(i).deselect();
+        if (IDs.includes(allData[i].ID)) {
+            DataTables.RequisitionDetailsTable.rows(i).select();
         }
         else {
-            DataTables.RequisitionDetailsTable.rows(i).select();
+            DataTables.RequisitionDetailsTable.rows(i).deselect();
         }
     }
 }

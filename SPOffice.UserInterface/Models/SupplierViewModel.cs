@@ -161,6 +161,7 @@ namespace SPOffice.UserInterface.Models
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
 
+        public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
     }

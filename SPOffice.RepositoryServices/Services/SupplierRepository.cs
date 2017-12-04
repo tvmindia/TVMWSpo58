@@ -512,7 +512,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _SuppObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : _SuppObj.Qty);
                                         _SuppObj.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _SuppObj.Rate);
                                         _SuppObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : _SuppObj.Amount);
-
+                                        _SuppObj.Particulars=(sdr["Particulars"].ToString() != "" ? sdr["Particulars"].ToString() : _SuppObj.Particulars);
                                     }
                                     SPODList.Add(_SuppObj);
                                 }
