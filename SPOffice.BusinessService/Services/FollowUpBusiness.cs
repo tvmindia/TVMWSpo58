@@ -54,5 +54,12 @@ namespace SPOffice.BusinessService.Services
         {
             return _followupRepository.GetRecentFollowUpCount(Today);
         }
+
+
+        //Delete enquiry followUp
+        public object DeleteFollowUp(Guid ID)
+        {
+            return _followupRepository.DeleteFollowUp(ID);
+        }
     }
 }

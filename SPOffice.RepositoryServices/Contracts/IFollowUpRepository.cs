@@ -14,5 +14,6 @@ namespace SPOffice.RepositoryServices.Contracts
         List<FollowUp> GetFollowUpDetailsOnDate(DateTime onDate);
         FollowUp GetFollowupDetailsByFollowUpID(Guid ID);
         List<FollowUp> GetRecentFollowUpCount(DateTime? Today);
-      }
+        object DeleteFollowUp(Guid ID);
+    }
 }

@@ -22,10 +22,17 @@ namespace UserInterface.Models
         public ToolBoxStructure ClearBtn;
         public ToolBoxStructure EmailBtn;
         public ToolBoxStructure ApproveBtn;
+       
         public ToolboxViewModel()
         {
             ApproveBtn.SecurityObject = "ApproveBtn";
+            deletebtn.SecurityObject = "ButtonDelete";
+           
+
+
             ApproveBtn.HasAccess = false;
+            deletebtn.HasAccess = true;
+           
         }
         }
 

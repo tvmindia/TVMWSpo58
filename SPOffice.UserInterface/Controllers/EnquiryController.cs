@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using Newtonsoft.Json;
+using SAMTool.DataAccessObject.DTO;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
@@ -25,8 +26,9 @@ namespace SPOffice.UserInterface.Controllers
         IFollowUpBusiness _followupBusiness;
         IReminderBusiness _reminderBusiness;
         IPriorityBusiness _priorityBusiness;
+        SecurityFilter.ToolBarAccess _tool;
 
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness)
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
@@ -37,7 +39,7 @@ namespace SPOffice.UserInterface.Controllers
             _followupBusiness = followupBusiness;
             _reminderBusiness = reminderBusiness;
             _priorityBusiness = priorityBusiness;
-
+            _tool = tool;
 
         }
 
@@ -47,6 +49,33 @@ namespace SPOffice.UserInterface.Controllers
         public ActionResult Index(string id)
         {
             ViewBag.value = id;
+            Permission _permission = Session["UserRightsOffice"] as Permission;
+
+            //if (_permission.SubPermissionList != null)
+            //{
+            //    if (_permission.SubPermissionList.Exists(s => s.Name == "DeleteBtn") == false || _permission.SubPermissionList.First(s => s.Name == "DeleteBtn").AccessCode.Contains("R"))
+            //    {
+            //        ViewBag.disabled = 0;
+            //    }
+            //    else
+            //    {
+            //        ViewBag.disabled = 1;
+            //    }
+            //}
+
+            if (_permission.SubPermissionList != null)
+            {
+                if (_permission.SubPermissionList.Exists(s => s.Name == "DeleteBtn")== false || _permission.SubPermissionList.First(s => s.Name == "DeleteBtn").AccessCode.Contains("R"))
+                {
+                    ViewBag.FollowUpDeleteBtnDisplay = true;
+                    
+                }
+                else
+                {
+                    ViewBag.FollowUpDeleteBtnDisplay =false;
+                }
+            }
+
             EnquiryViewModel EVM = new EnquiryViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EVM.salesPersonObj = new SalesPersonViewModel();
@@ -165,14 +194,29 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = new List<SelectListItem>();
             EVM.reminderObj = new ReminderViewModel();
             List<ReminderViewModel> reminderList = Mapper.Map<List<Reminder>, List<ReminderViewModel>>(_reminderBusiness.GetAllReminders());
+
             foreach (ReminderViewModel rvm in reminderList)
             {
-                selectListItem.Add(new SelectListItem
+                if(rvm.ReminderDesc == "Popup")
                 {
-                    Text = rvm.ReminderDesc,
-                    Value = rvm.Code,
-                    Selected = false
-                });
+
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = "Popup",
+                        Value = "POP",
+                        Selected = true
+                    });
+                }
+                else
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = rvm.ReminderDesc,
+                        Value = rvm.Code,
+                        Selected = false
+                    });
+                }
+               
             }
             EVM.reminderObj.ReminderList = selectListItem;
 
@@ -377,12 +421,70 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetFollowupCount
 
-        #region ButtonStyling
+
+        #region DeleteEnquiry
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Department", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "D")]
+        public string DeleteEnquiry(string ID)
+        {
+            object result = null;
+
+            try
+            {
+                if(string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _enquiryBusiness.DeleteEnquiry(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message = c.DeleteSuccess });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeleteEnquiry
+
+        #region DeleteFollowUp
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string DeleteFollowUp(string ID)
+         {
+            
+            
+            ////    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "DeleteBtn").AccessCode : string.Empty).Contains("R"))
+            //{
+            //    ViewBag.Disabled = "disabled";
+            //}
+
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _followupBusiness.DeleteFollowUp(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message = c.DeleteSuccess });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+
+        #endregion DeleteFollowUp
+
+
+            #region ButtonStyling
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
-            ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
+            ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();           
+            Permission _permission = Session["UserRightsOffice"] as Permission;
             switch (ActionType)
             {
                 case "List":
@@ -400,7 +502,7 @@ namespace SPOffice.UserInterface.Controllers
                     break;
                 case "Edit":
 
-                    ToolboxViewModelObj.addbtn.Visible = true;
+                    ToolboxViewModelObj.addbtn.Visible = false;
                     ToolboxViewModelObj.addbtn.Text = "New";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "openNav();";
@@ -415,7 +517,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.deletebtn.Title = "Delete";
                     ToolboxViewModelObj.deletebtn.Event = "Delete()";
 
-                    ToolboxViewModelObj.resetbtn.Visible = true;
+                    ToolboxViewModelObj.resetbtn.Visible = false;
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
                     ToolboxViewModelObj.resetbtn.Title = "Reset";
                     ToolboxViewModelObj.resetbtn.Event = "Reset();";
@@ -466,6 +568,7 @@ namespace SPOffice.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
         #endregion ButtonStyling

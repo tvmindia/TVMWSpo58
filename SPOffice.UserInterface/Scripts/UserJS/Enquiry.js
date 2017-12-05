@@ -81,6 +81,9 @@ $(document).ready(function () {
             debugger;
             dashboardBind($('#BindValue').val())
         }
+
+        
+        
     } catch (x) {
 
         notyAlert('error', x.message);
@@ -157,8 +160,9 @@ function SaveSuccess(data) {
     switch (JsonResult.Result) {
         case "OK":
             debugger;
-            FillEnquiryDetails(JsonResult.Records.ID)
-            BindAllEnquiries()
+            FillEnquiryDetails(JsonResult.Records.ID);
+            ChangeButtonPatchView('Enquiry', 'btnPatchAdd', 'Edit');
+            BindAllEnquiries();
             notyAlert('success', JsonResult.Message);
             break;
         case "ERROR":
@@ -175,45 +179,89 @@ function FollowUp(flag, status)//--This function have 2 parameters ,'flag' check
     debugger;
     //--To Reset,enable textbox and display FollowUp modal PopUp on Add Follow Up Button Click --//
     //--
-    if (flag == 1) {
-      
-       
-        $('#ModelReset').trigger('click');
-        $("#hdnFollowUpID").val(ID);
-            $('#FollowUpDate').prop("disabled", false);
-            $('#FollowUpTime').prop("disabled", false);
-            $('#followUpObj_Subject').prop("disabled", false);
-           // $('#ddlPriority').prop("disabled", false);
-            $('#followUpObj_ContactName').prop("disabled", false);
-            $('#followUpObj_ReminderType').prop("disabled", false);
-            $('#followUpObj_GeneralNotes').prop("disabled", false);
-            $('#followUpObj_RemindPriorTo').prop("disabled", false);
-            $('#followUpObj_Status').prop("disabled", false);
-            $('#followUpObj_Priority').prop("disabled", false);
-            $("#followUpResetbtn").removeAttr("disabled");
-            $("#followUpResetbtn").removeAttr("style");
-            $("#btnFollowUps").modal('show');
-         
-    
-
+    if ((flag == 1)) {            
+               
+                $('#ModelReset').trigger('click');
+                $("#hdnFollowUpID").val(ID);
+                $('#FollowUpDate').prop("disabled", false);
+                $('#FollowUpTime').prop("disabled", false);
+                $('#followUpObj_Subject').prop("disabled", false);
+               // $('#ddlPriority').prop("disabled", false);
+                $('#followUpObj_ContactName').prop("disabled", false);
+                $('#followUpObj_ReminderType').prop("disabled", false);
+                $('#followUpObj_GeneralNotes').prop("disabled", false);
+                $('#followUpObj_RemindPriorTo').prop("disabled", false);
+                $('#followUpObj_Status').prop("disabled", false);
+                $('#followUpObj_Status').attr('onchange', 'EnableTextbox("new")');
+                $('#followUpObj_Priority').prop("disabled", false);
+                $("#followUpResetbtn").removeAttr("disabled");
+                $("#followUpResetbtn").removeAttr("style");
+                $("#btnFollowUps").modal('show');
+                $('#followUpDeletebtn').hide();
     }
     else 
     {
         //--To disable textbox and display FollowUp modal PopUp on Edit Button Click --//
-        var ID = flag;
-        
+        var ID = flag;        
         debugger;
         $("#btnFollowUps").modal('show');
         $("#hdnFollowUpID").val(ID);
         $("#followUpResetbtn").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });
-       
+        $('#followUpObj_Status').attr('onchange', 'EnableTextbox("Edit")');        
+        
         FillFollowUpDetails(ID);
         if (status==1)
         {
+            debugger;
             $('#followUpObj_Status').prop("disabled", false);
+            //deletefollowup
+            //if ($("#Permission").val()==1)
+            //{
+            //    $('#followUpDeletebtn').hide();
+            //}
+            //else {
+            //    $('#followUpDeletebtn').show();
+            //}
+            EnableTextbox("Edit");         
         }
-    }
-   
+        else
+        {
+            $('#followUpDeletebtn').hide();
+        }       
+    }   
+}
+
+function EnableTextbox(flag)
+{
+    debugger;   
+    if (flag === "Edit")
+    {
+        if ((($('#followUpObj_Status').val()) == 'Open')) {
+            $('#FollowUpDate').prop("disabled", false);
+            $('#FollowUpTime').prop("disabled", false);
+            $('#followUpObj_Subject').prop("disabled", false);
+            $('#ddlPriority').prop("disabled", false);
+            $('#followUpObj_ContactName').prop("disabled", false);
+            $('#followUpObj_ReminderType').prop("disabled", false);
+            $('#followUpObj_GeneralNotes').prop("disabled", false);
+            $('#followUpObj_RemindPriorTo').prop("disabled", false);
+            $('#followUpObj_Priority').prop("disabled", false);
+            $('#followUpObj_Status').prop("disabled", false);
+
+        }
+        else if ((($('#followUpObj_Status').val()) == 'Closed')) {
+            $('#FollowUpDate').prop("disabled", true);
+            $('#FollowUpTime').prop("disabled", true);
+            $('#followUpObj_Subject').prop("disabled", true);
+            $('#ddlPriority').prop("disabled", true);
+            $('#followUpObj_ContactName').prop("disabled", true);
+            $('#followUpObj_ReminderType').prop("disabled", true);
+            $('#followUpObj_GeneralNotes').prop("disabled", true);
+            $('#followUpObj_RemindPriorTo').prop("disabled", true);
+            $('#followUpObj_Priority').prop("disabled", true);
+
+        }
+    }   
 }
 
 //--Fills the Edit FollowUp form  with details corresponding to FollowUp ID--//
@@ -233,7 +281,8 @@ function FillFollowUpDetails(ID) {
         $('#followUpObj_GeneralNotes').prop("disabled", true);
         $('#followUpObj_RemindPriorTo').prop("disabled", true);
         $('#followUpObj_Priority').prop("disabled", true);
-        $('#followUpObj_Status').prop("disabled", true);
+        $('#followUpObj_Status').prop("disabled", true);       
+     
     }
     else {
         $('#FollowUpDate').prop("disabled", false);
@@ -246,6 +295,8 @@ function FillFollowUpDetails(ID) {
         $('#followUpObj_RemindPriorTo').prop("disabled", false);
         $('#followUpObj_Priority').prop("disabled", false);
         $('#followUpObj_Status').prop("disabled", false);
+       
+       
     }
     $('#FollowUpDate').val(thisItem.FollowUpDate);
     $('#FollowUpTime').val(thisItem.FollowUpTime);
@@ -303,8 +354,9 @@ function Reset() {
 //--To Edit Enquiry Table with row details with particular enquiry ID--//
 function Edit(currentObj) {
 
-    debugger;  
+    debugger;    
     Resetform();
+    ChangeButtonPatchView('Enquiry', 'btnPatchAdd', 'Edit');
     openNav();
     var rowData = DataTables.EnquiryTable.row($(currentObj).parents('tr')).data();
     if ((rowData != null) && (rowData.ID != null)) {
@@ -361,7 +413,7 @@ function FillEnquiryDetails(ID) {
         else {
             $("#btnAddFollowup").removeAttr("disabled");
             $("#btnAddFollowup").removeAttr("style");
-            $("#btnAddFollowup").attr({ "title": "Add New FollowUps" });
+            $("#btnAddFollowup").attr({ "title": "Add New FollowUps" });     
         }
 }
 
@@ -447,11 +499,12 @@ function SaveFollowUp() {
         var time = hrsTo24hrormat();
         $("#hdnFollowUpTime").val(time);
         $("#btnFollowUpSave").trigger('click');
+         GetRecentFollowUpCount();
     }
         catch(e){
             notyAlert('error',e.Message);   //--Shows error id save is failed--//
-}
-   
+        }
+
 }
 
 //Function onsucess ajax post event for follow Up form save
@@ -462,15 +515,16 @@ function FollowUpSaveSuccess(data) {
         case "OK":
             debugger;
             FollowUpList($('#ID').val());
-            $('#divAddFollowUp,#flist').show();
+            $('#divAddFollowUp,#flist').show();          
             var Count = $('#hdnCountOpen').val()
             if (parseInt(Count) !== 0) {
-                $("#btnAddFollowup").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });
+                $("#btnAddFollowup").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });                
             }
             else {
                 $("#btnAddFollowup").removeAttr("disabled");
-                $("#btnAddFollowup").removeAttr("style");
+                $("#btnAddFollowup").removeAttr("style");                
             }
+            GetRecentFollowUpCount();
             $("#btnFollowUps").modal('hide');
             notyAlert('success', JsonResult.Message);
             break;
@@ -553,7 +607,127 @@ function FilterReset() {
 //Bind values to dashboard
 function dashboardBind(ID) {
     debugger;
+    ChangeButtonPatchView('Enquiry', 'btnPatchAdd', 'Edit');
     $('#ID').val(ID);
     openNav();
     FillEnquiryDetails(ID);   
 }
+
+
+
+//to delete enquiry
+function Delete()
+{
+    debugger;
+    notyConfirm('Are you sure to delete?', 'EnquiryDelete()');
+}
+
+function EnquiryDelete()
+{
+    try {
+        debugger;
+        var id = $('#ID').val();
+        if (id != '' && id != null) {
+            var data = { "ID": id };
+            var ds = {};
+            ds = GetDataFromServer("Enquiry/DeleteEnquiry/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                notyAlert('success', ds.Record.Message);
+                debugger;
+                BindAllEnquiries();
+                closeNav();
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.Message);
+                return 0;
+            }
+            return 1;
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+        return 0;
+    }
+}
+
+// Delete FollowUp
+function DeleteFollowUp()
+{
+    notyConfirm('Are you sure to delete?', 'FollowUpDelete(ID);');
+}
+
+function FollowUpDelete(ID)
+{
+    try {
+        debugger;
+        var ID = $('#hdnFollowUpID').val();
+        if (ID != '' && ID != null) {
+            var data = { "ID": ID };
+            var ds = {};
+            ds = GetDataFromServer("Enquiry/DeleteFollowUp/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK")
+            {
+                debugger;               
+                $("#btnFollowUps").modal('hide');                                               
+                notyAlert('success', ds.Record.Message);
+                var id = $('#ID').val();
+                FollowUpList(id);
+                GetRecentFollowUpCount();
+                
+            }
+           
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.Message);
+                return 0;
+            }
+            return 1;
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+        return 0;
+    }
+
+}
+
+// To get recent followup count
+function GetRecentFollowUpCount() {
+    try {
+        debugger;
+
+        var data = {};
+        var ds = {};
+
+
+        ds = GetDataFromServer("Enquiry/GetRecentFollowUpCount/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            for (var i = 0; i < ds.Result.length; i++) {
+                // var html = "<li class='header'>" + ds.Records[i].FollowUpDate+ " " + ds.Records[i].Subject+ " " + ds.Records[i].ContactName+ "</li>"
+                var html = "<li title='" + ds.Records[i].Subject + "'><a style='width:500px;' href='/Enquiry/Index/" + ds.Records[i].EnquiryID + "'><span class='label label-warning'>" + ds.Records[i].FollowUpDate + "</span > <span class='text-aqua' >Sub:</span>" + ds.Records[i].Subject.substring(0, 25) + ".. <span style='float:right'><span class='text-green'> Client: </span>" + ds.Records[i].Company + "</span> </a> </li>"
+                $('#ulEnquiryNotification').append(html);
+            }
+        }
+        $('#RecentFollowUpCount').text(ds.Records.length);
+        $('#RecentFollowUpCount').attr('title', ds.Result.length + ' Pending FollowUps');
+
+
+        if (ds.Result == "ERROR") {
+            $('#RecentFollowUpCount').text("0");
+        }
+    }
+    catch (e) {
+
+    }
+}
+
+
+

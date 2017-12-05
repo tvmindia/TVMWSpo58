@@ -82,9 +82,13 @@ namespace SPOffice.BusinessService.Services
         {
             return _enquiryRepository.GetEnquiryDetailsById(ID);
 
-
-
         }
 
+        //DeleteEnquiry
+        public object DeleteEnquiry(Guid ID)
+        {
+            return _enquiryRepository.DeleteEnquiry(ID);
+        }
+       
     }
 }

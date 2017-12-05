@@ -66,7 +66,7 @@
 
     @if (Model.deletebtn.Visible)
     {
-        if (Model.deletebtn.Disable)
+        if (Model.deletebtn.Disable || !Model.deletebtn.HasAccess)
         {
 
             <a class="thr_disbtn" title="@Model.deletebtn.Title-@Model.deletebtn.DisableReason">
@@ -255,9 +255,5 @@
         }
 
     }
-
-
-
-
 
 </div>

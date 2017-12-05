@@ -41,7 +41,7 @@ namespace SPOffice.UserInterface.Models
         public CommonViewModel commonObj { get; set; }
         public string URL { get; set; }
         [Display(Name = "Min")]
-        public string Minutes { get; set; }
+        public string Minutes { get; set; }        
     }
 
 
