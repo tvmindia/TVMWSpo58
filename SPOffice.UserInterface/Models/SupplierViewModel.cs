@@ -99,6 +99,8 @@ namespace SPOffice.UserInterface.Models
 
 
         public string CompanyName { get; set; }
+        public string hdfRequisitionDetail { get; set; }
+
 
         //Lists
         public List<SelectListItem> SupplierList { get; set; }
@@ -159,6 +161,7 @@ namespace SPOffice.UserInterface.Models
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
 
+        public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
     }

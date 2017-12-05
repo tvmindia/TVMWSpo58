@@ -118,25 +118,28 @@ namespace SPOffice.UserInterface.SecurityFilter
 
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-             Permission _permission =null;
-            _permission = _userBusiness.GetSecurityCode(LoggedUserName, ProjectObject);
-            if (_permission.AccessCode.Contains(Mode))
-            {
-                //Allows Permission
-                filterContext.HttpContext.Session.Add("UserRightsOffice", _permission);
-            }
-            else
-            {
-                if (filterContext.HttpContext.Request.IsAjaxRequest())
+            Permission permission = (Permission)filterContext.HttpContext.Session["UserRightsOffice"];
+            
+                Permission _permission = null;
+                _permission = ((permission == null) || (permission.Name != ProjectObject))?_userBusiness.GetSecurityCode(LoggedUserName, ProjectObject):permission;
+                if (_permission.AccessCode.Contains(Mode))
                 {
-                    filterContext.Result = new HttpUnauthorizedResult();
+                    //Allows Permission
+                    filterContext.HttpContext.Session.Add("UserRightsOffice", _permission);
                 }
                 else
-               {    //unauthorized page show here 
-                    filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary() { { "controller", "Account" }, { "action", "NotAuthorized" } });
+                {
+                    if (filterContext.HttpContext.Request.IsAjaxRequest())
+                    {
+                        filterContext.Result = new HttpUnauthorizedResult();
+                    }
+                    else
+                    {    //unauthorized page show here 
+                        filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary() { { "controller", "Account" }, { "action", "NotAuthorized" } });
+                    }
+
                 }
-                    
-            }
+             
         }
 
         //
