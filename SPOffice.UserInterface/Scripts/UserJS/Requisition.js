@@ -649,26 +649,11 @@ function SaveSuccessRequisition(data, status) {
             notyAlert('success', JsonResult.Record.Message);
             DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
             PaintSearchTiles();
-            //ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
                 $("#ReqNo").val(JsonResult.Record.ReqNo);
                 $("#lblReqNo").text(JsonResult.Record.ReqNo);
-                if (JsonResult.Record.ApprovedBy==="Final")
-                {
-                    $('#lblApprovalStatus').text('Final ✔');
-                    $('#lblApprovalStatus').attr('title', 'Finally approved')
-                    DisableApproved();
-                }
-                else if (JsonResult.Record.ApprovedBy === "Manager") {
-                    $('#lblApprovalStatus').text('Final ⏱');
-                    $('#lblApprovalStatus').attr('title', 'Pending for final approval')
-                    DisableApproved();
-                }
-                else {
-                    $('#lblApprovalStatus').text('Manager ⏱');
-                    ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
-                }
+                BindRequisitionDetail();
             }
             
             break;
