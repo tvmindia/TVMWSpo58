@@ -43,7 +43,7 @@ var fileArray = [];
 
 
 $(document).ready(function () {
-    
+    debugger;
     var wrap = $(".EntryForms");
     wrap.on("scroll", function (e) {
         if (this.scrollTop > 147) {
@@ -170,7 +170,32 @@ function PostDataToServer(page, formData, callback)
     
 }
 
+function GetDataFromServerAsync(page, formData) {
+    var jsonResult = {};
+    $.ajax({
 
+        type: "GET",
+        url: appAddress + page,
+        data: formData,
+        beforeSend: function () {
+            showLoader();
+        },
+        async: true,
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            jsonResult = data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            notyAlert('error', errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
+        },
+        complete: function () {
+            hideLoader();
+        }
+
+    });
+    return jsonResult;
+}
 function GetDataFromServer(page, formData) {
     var jsonResult = {};
     $.ajax({
@@ -683,63 +708,99 @@ function ShowFiles() {
  //To get the Pending Requisition Count for CEO and Managers  who has got approval permissions
 function GetRequisitionBubbleCount() {
     try {
-        debugger;
-        var data = {};
+        var formData = {};
         var ds = {};
-        ds = GetDataFromServer("Requisition/RequisitionCount/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            if (ds.isApproverManager) {
-                $('#RequisitionPendingList').text(ds.Records.PendingManagerCount);
-                $('#RequisitionPendingList').attr('title', ds.Records.PendingManagerCount + ' Pending Requisitions');
-            }
-            if (ds.isAdminOrCeo) {
-                $('#RequisitionPendingList').text(ds.Records.PendingFinalCount);
-                $('#RequisitionPendingList').attr('title', ds.Records.PendingFinalCount + ' Pending Requisitions');
-                //$('#RequisitionPendingList').attr('title', ds.Records + ' Pending Requisitions Today');
+        $.ajax({
+            type: "GET",
+            url: appAddress + "Requisition/RequisitionCount/",
+            data: formData,
+            beforeSend: function () {
+                showLoader();
+            },
+            async: true,
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                if (data != '') {
+                    data = JSON.parse(data);
+                }
+                if (data.Result == "OK") {
+                    if (data.isApproverManager) {
+                        $('#RequisitionPendingList').text(data.Records.PendingManagerCount);
+                        $('#RequisitionPendingList').attr('title', data.Records.PendingManagerCount + ' Pending Requisitions');
+                    }
+                    if (data.isAdminOrCeo) {
+                        $('#RequisitionPendingList').text(data.Records.PendingFinalCount);
+                        $('#RequisitionPendingList').attr('title', data.Records.PendingFinalCount + ' Pending Requisitions');
+                        //$('#RequisitionPendingList').attr('title', ds.Records + ' Pending Requisitions Today');
+                    }
+
+                }
+                if (data.Result == "ERROR") {
+                    $('#RequisitionPendingList').text("0");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
+            },
+            complete: function () {
+                hideLoader();
             }
 
-        }
-        if (ds.Result == "ERROR") {
-            $('#RequisitionPendingList').text("0");
-        }
+        });
+        
     }
     catch (e) {
-
+        console.log(e.message);
     }
 }
 
 function GetRecentFollowUpCount() {
     try {
-        debugger;
-       
-        var data = {};
+        var formData = {};
         var ds = {};
-     
-
-        ds = GetDataFromServer("Enquiry/GetRecentFollowUpCount/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-                for (var i = 0; i < ds.Result.length; i++)
-                {
-                   // var html = "<li class='header'>" + ds.Records[i].FollowUpDate+ " " + ds.Records[i].Subject+ " " + ds.Records[i].ContactName+ "</li>"
-                    var html = "<li title='" + ds.Records[i].Subject + "'><a style='width:500px;' href='/Enquiry/Index/" + ds.Records[i].EnquiryID + "'><span class='label label-warning'>" + ds.Records[i].FollowUpDate + "</span > <span class='text-aqua' >Sub:</span>" + ds.Records[i].Subject.substring(0, 25) + ".. <span style='float:right'><span class='text-green'> Client: </span>" + ds.Records[i].Company + "</span> </a> </li>"
-                    $('#ulEnquiryNotification').append(html);
+        $.ajax({
+            type: "GET",
+            url: appAddress + "Enquiry/GetRecentFollowUpCount/",
+            data: formData,
+            beforeSend: function () {
+                showLoader();
+            },
+            async: true,
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                if (data != '') {
+                    data = JSON.parse(data);
                 }
-        }
-        $('#RecentFollowUpCount').text(ds.Records.length);
-        $('#RecentFollowUpCount').attr('title', ds.Result.length + ' Pending FollowUps');
+                if (data.Result == "OK") {
+                    for (var i = 0; i < data.Records.length; i++) {
+                        // var html = "<li class='header'>" + ds.Records[i].FollowUpDate+ " " + ds.Records[i].Subject+ " " + ds.Records[i].ContactName+ "</li>"
+                        var html = "<li title='" + data.Records[i].Subject + "'><a style='width:500px;' href='/Enquiry/Index/" + data.Records[i].EnquiryID + "'><span class='label label-warning'>" + data.Records[i].FollowUpDate + "</span > <span class='text-aqua' >Sub:</span>" + data.Records[i].Subject.substring(0, 25) + ".. <span style='float:right'><span class='text-green'> Client: </span>" + data.Records[i].Company + "</span> </a> </li>"
+                        $('#ulEnquiryNotification').append(html);
+                    }
+                }
+                $('#RecentFollowUpCount').text(data.Records.length);
+                $('#RecentFollowUpCount').attr('title', data.Records.length + ' Pending FollowUps');
 
 
-        if (ds.Result == "ERROR") {
-            $('#RecentFollowUpCount').text("0");
-        }
+                if (data.Result == "ERROR") {
+                    $('#RecentFollowUpCount').text("0");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
+            },
+            complete: function () {
+                hideLoader();
+            }
+
+        });
+        
     }
     catch (e) {
-
+        console.log(e.message);
     }
 }
