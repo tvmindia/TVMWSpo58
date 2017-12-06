@@ -776,6 +776,7 @@ function GetRecentFollowUpCount() {
                     data = JSON.parse(data);
                 }
                 if (data.Result == "OK") {
+                    $('#ulEnquiryNotification').empty();
                     for (var i = 0; i < data.Records.length; i++) {
                         // var html = "<li class='header'>" + ds.Records[i].FollowUpDate+ " " + ds.Records[i].Subject+ " " + ds.Records[i].ContactName+ "</li>"
                         var html = "<li title='" + data.Records[i].Subject + "'><a style='width:500px;' href='/Enquiry/Index/" + data.Records[i].EnquiryID + "'><span class='label label-warning'>" + data.Records[i].FollowUpDate + "</span > <span class='text-aqua' >Sub:</span>" + data.Records[i].Subject.substring(0, 25) + ".. <span style='float:right'><span class='text-green'> Client: </span>" + data.Records[i].Company + "</span> </a> </li>"
