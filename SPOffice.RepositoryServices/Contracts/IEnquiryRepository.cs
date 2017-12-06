@@ -17,5 +17,6 @@ namespace SPOffice.RepositoryServices.Contracts
         EnquirySummary GetEnquirySummary();
         List<Titles> GetAllTitles();
         Enquiry GetEnquiryDetailsById(Guid ID);
+        object DeleteEnquiry(Guid ID);      
     }
 }

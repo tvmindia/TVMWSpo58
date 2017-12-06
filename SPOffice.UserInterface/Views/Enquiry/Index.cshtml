@@ -2,7 +2,7 @@
 @using UserInterface.App_Start
 @{
     ViewBag.Title = "Enquiry";
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
  @section styles {
@@ -663,7 +663,7 @@
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, "-- Select Reminder Type --", new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px;" })
+                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px;" })
                                         @Html.ValidationMessageFor(model => model.followUpObj.ReminderType, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -742,7 +742,7 @@
                                                 FollowUpStatus.Add(new SelectListItem
                                                 { Text = "Closed", Value = "Closed" });
                                             }
-                                            @Html.DropDownListFor(model => model.followUpObj.Status, FollowUpStatus, new { @class = "form-control BlockEnter", style = "padding:4px 12px;" })
+                                            @Html.DropDownListFor(model => model.followUpObj.Status, FollowUpStatus, new { @class = "form-control BlockEnter", style = "padding:4px 12px;",@onchange ="EnableTextbox(new);" })
                                             @Html.ValidationMessageFor(model => model.followUpObj.Status, "", new { @class = "text-danger" })
 
 
@@ -781,7 +781,11 @@
                             <button id="ModelReset" type="reset" hidden></button>
                             <a class="btn btn-primary" onclick="SaveFollowUp()" id="btnSave"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
                             <a class="btn btn-default" id="followUpResetbtn" onclick="Reset()"><i class="glyphicon glyphicon-refresh"></i> Reset</a>
-
+                        @if (ViewBag.FollowUpDeleteBtnDisplay)
+                        {
+                            <a class="btn btn-default" id="followUpDeletebtn" onclick="DeleteFollowUp()"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+                        }
+                            
                     </div>
                     <div class="form-group" style="display:none;">
                         <div class="col-md-offset-2 col-md-10">

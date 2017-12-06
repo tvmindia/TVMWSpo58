@@ -401,6 +401,65 @@ namespace SPOffice.RepositoryServices.Services
 
             return followUpList;
         }
-            #endregion GetRecentFollowUps
+        #endregion GetRecentFollowUps
+
+        #region DeleteFollowUp
+        public object DeleteFollowUp(Guid ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteFollowUpDetails]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        //Const Cobj = new Const();
+                        throw new Exception(Cobj.DeleteFailure);
+                    case "1":
+                        return new
+                        {
+                            status = outputStatus.Value.ToString(),
+                            Message = Cobj.DeleteSuccess
+                        };
+
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return new
+            {
+
+            };
+
         }
+
+        #endregion DeleteFollowUp
+
+
     }
+}

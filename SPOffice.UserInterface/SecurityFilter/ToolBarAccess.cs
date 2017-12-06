@@ -17,6 +17,7 @@ namespace SPOffice.UserInterface.SecurityFilter
                 if (_permission.SubPermissionList != null)
                 {
                     toolbar.ApproveBtn = setAccess(toolbar.ApproveBtn, _permission);
+                    toolbar.deletebtn = setAccess(toolbar.deletebtn, _permission);                    
                 }
 
                 return toolbar;
