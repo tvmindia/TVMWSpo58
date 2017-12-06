@@ -663,7 +663,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, "-- Select Reminder Type --", new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px;" })
+                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px;" })
                                         @Html.ValidationMessageFor(model => model.followUpObj.ReminderType, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
