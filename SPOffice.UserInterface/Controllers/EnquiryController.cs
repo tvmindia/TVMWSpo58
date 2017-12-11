@@ -78,6 +78,10 @@ namespace SPOffice.UserInterface.Controllers
                     ViewBag.FollowUpDeleteBtnDisplay =false;
                 }
             }
+            else//if object not registered
+            {
+                ViewBag.FollowUpDeleteBtnDisplay = false;
+            }
 
             EnquiryViewModel EVM = new EnquiryViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();

@@ -51,20 +51,15 @@ namespace SPOffice.RepositoryServices.Services
                                         _proformaHeader.InvoiceNo = (sdr["InvoiceNo"].ToString() != "" ? sdr["InvoiceNo"].ToString() : _proformaHeader.InvoiceNo);
                                         _proformaHeader.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _proformaHeader.CustomerID);
                                         _proformaHeader.customer = new CustomerPO();
-                                        {
-                                            _proformaHeader.customer.ID = (Guid)_proformaHeader.CustomerID;
-                                            _proformaHeader.customer.CustomerName = (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _proformaHeader.customer.CustomerName);
-
-                                        }
+                                        _proformaHeader.customer.ID = (Guid)_proformaHeader.CustomerID;
+                                        _proformaHeader.customer.CustomerName = (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _proformaHeader.customer.CustomerName);
                                         _proformaHeader.InvoiceDate = (sdr["InvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["InvoiceDate"].ToString()).ToString(settings.dateformat) : _proformaHeader.InvoiceDate);
                                         _proformaHeader.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()).ToString(settings.dateformat) : _proformaHeader.ValidTillDate);
                                         _proformaHeader.OriginCompCode = (sdr["OriginCompCode"].ToString() != "" ? sdr["OriginCompCode"].ToString() : _proformaHeader.OriginCompCode);
                                         _proformaHeader.company = new Company();
-                                        {
-                                            _proformaHeader.company.Code = _proformaHeader.OriginCompCode;
-                                            _proformaHeader.company.Name = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _proformaHeader.company.Name);
-                                           _proformaHeader.company.BillingAddress = (sdr["CompanyAddress"].ToString() != "" ? sdr["CompanyAddress"].ToString() : _proformaHeader.company.BillingAddress);
-                                        }
+                                        _proformaHeader.company.Code = _proformaHeader.OriginCompCode;
+                                        _proformaHeader.company.Name = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _proformaHeader.company.Name);
+                                        _proformaHeader.company.BillingAddress = (sdr["CompanyAddress"].ToString() != "" ? sdr["CompanyAddress"].ToString() : _proformaHeader.company.BillingAddress);
                                         _proformaHeader.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _proformaHeader.Subject);
                                         _proformaHeader.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : _proformaHeader.Discount);
 
