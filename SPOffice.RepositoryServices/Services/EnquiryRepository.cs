@@ -564,5 +564,40 @@ namespace SPOffice.RepositoryServices.Services
 
         }
         #endregion DeleteEnquiry
+
+
+        public string GetEnquiryMessage()
+        {
+          object textMessage = string.Empty;
+
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetValueFromSysSettings]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        textMessage = cmd.ExecuteScalar();                        
+
+                    }
+                }
+            }
+
+
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return textMessage.ToString();
+        }
+
     }
 }

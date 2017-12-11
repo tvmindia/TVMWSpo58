@@ -26,9 +26,11 @@ namespace SPOffice.UserInterface.Controllers
         IFollowUpBusiness _followupBusiness;
         IReminderBusiness _reminderBusiness;
         IPriorityBusiness _priorityBusiness;
+        ICommonBusiness _commonBusiness;
         SecurityFilter.ToolBarAccess _tool;
+        
 
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness, SecurityFilter.ToolBarAccess tool)
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness, ICommonBusiness commonBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
@@ -39,6 +41,7 @@ namespace SPOffice.UserInterface.Controllers
             _followupBusiness = followupBusiness;
             _reminderBusiness = reminderBusiness;
             _priorityBusiness = priorityBusiness;
+            _commonBusiness = commonBusiness;
             _tool = tool;
 
         }
@@ -191,34 +194,34 @@ namespace SPOffice.UserInterface.Controllers
             }
             EVM.titleObj.TitleList = selectListItem;
 
-            selectListItem = new List<SelectListItem>();
-            EVM.reminderObj = new ReminderViewModel();
-            List<ReminderViewModel> reminderList = Mapper.Map<List<Reminder>, List<ReminderViewModel>>(_reminderBusiness.GetAllReminders());
+            //selectListItem = new List<SelectListItem>();
+            //EVM.reminderObj = new ReminderViewModel();
+            //List<ReminderViewModel> reminderList = Mapper.Map<List<Reminder>, List<ReminderViewModel>>(_reminderBusiness.GetAllReminders());
 
-            foreach (ReminderViewModel rvm in reminderList)
-            {
-                if(rvm.ReminderDesc == "Popup")
-                {
+            //foreach (ReminderViewModel rvm in reminderList)
+            //{
+            //    if(rvm.ReminderDesc == "Popup")
+            //    {
 
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = "Popup",
-                        Value = "POP",
-                        Selected = true
-                    });
-                }
-                else
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = rvm.ReminderDesc,
-                        Value = rvm.Code,
-                        Selected = false
-                    });
-                }
+            //        selectListItem.Add(new SelectListItem
+            //        {
+            //            Text = "Popup",
+            //            Value = "POP",
+            //            Selected = true
+            //        });
+            //    }
+            //    else
+            //    {
+            //        selectListItem.Add(new SelectListItem
+            //        {
+            //            Text = rvm.ReminderDesc,
+            //            Value = rvm.Code,
+            //            Selected = false
+            //        });
+            //    }
                
-            }
-            EVM.reminderObj.ReminderList = selectListItem;
+            //}
+            //EVM.reminderObj.ReminderList = selectListItem;
 
             selectListItem = new List<SelectListItem>();
             EVM.priorityObj = new PriorityViewModel();
@@ -478,7 +481,32 @@ namespace SPOffice.UserInterface.Controllers
         #endregion DeleteFollowUp
 
 
-            #region ButtonStyling
+        #region sendmessage
+        public string SendEnquiryMessage(string mobileNumber)
+        {
+            string result = null;
+           
+            try
+            {
+              
+                    result = _enquiryBusiness.SendEnquiryMessage(mobileNumber);
+                                     
+             return JsonConvert.SerializeObject(new { Result = "OK",Record=result, Message = c.MessageSuccess });
+               
+
+            }
+
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+
+        #endregion sendmessage
+
+        #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)

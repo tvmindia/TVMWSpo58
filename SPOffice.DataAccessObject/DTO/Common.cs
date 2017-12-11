@@ -140,8 +140,11 @@ namespace SPOffice.DataAccessObject.DTO
 
 
         }
-
-
+        public string MessageSuccess
+        {
+            get { return "Message Send Successfully"; }
+        }
+      
         #endregion Messages
 
         #region Strings

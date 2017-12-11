@@ -122,7 +122,8 @@ namespace SPOffice.UserInterface.Models
 
         public Guid PriorityID { get; set; }
         public PriorityViewModel priorityObj { get;set;}
-
+        public MessageViewModel messageObj { get; set; }
+       
 
     }
 

@@ -11,10 +11,12 @@ namespace SPOffice.BusinessService.Services
     public class EnquiryBusiness: IEnquiryBusiness
     {
         private IEnquiryRepository _enquiryRepository;
+        private ICommonRepository _commonRepository;
 
-        public EnquiryBusiness(IEnquiryRepository enquiryRepository)
+        public EnquiryBusiness(IEnquiryRepository enquiryRepository, ICommonRepository commonRepository)
         {
             _enquiryRepository = enquiryRepository;
+            _commonRepository = commonRepository;
         }
         public Enquiry InsertUpdateEnquiry(Enquiry _enquiriesObj)
         {
@@ -89,6 +91,18 @@ namespace SPOffice.BusinessService.Services
         {
             return _enquiryRepository.DeleteEnquiry(ID);
         }
-       
+
+
+        #region messageSending
+
+        public string SendEnquiryMessage(string mobileNumber)
+        {
+           string result = _enquiryRepository.GetEnquiryMessage();
+            result = "0000";//---- resetting msg to otp 
+            return _commonRepository.SendMessage(result, mobileNumber, "2factor", "OTP");
+        }
+
+        #endregion messageSending
+
     }
 }
