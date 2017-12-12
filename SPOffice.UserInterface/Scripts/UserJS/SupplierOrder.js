@@ -8,6 +8,12 @@
 //Global Declarations
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
+var reqDetail = [];
+var RequisitionDetailViewModel = new Object();
+var reqDetailLink = [];
+var RequisitionDetailLink = new Object();
+var SupplierOrderViewModel = new Object();
+
 $(document).ready(function () {
 
     //----------------------------Table 1 :Supplier Purchase Order Table List---------------------//
@@ -171,13 +177,15 @@ $(document).ready(function () {
                      "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
                          return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
                      }
-                 }
+                 },
+                 { "data": "Unit", "defaultContent": "<i>-</i>" }
+
             ],
             columnDefs: [{ orderable: false, className: 'select-checkbox', "targets": 3 }
                 , { className: "text-left", "targets": [5, 6] }
                 , { className: "text-right", "targets": [7, 8] }
                 , { className: "text-center", "targets": [1, 4] }
-                , { "targets": [0,1,2], "visible": false, "searchable": false }
+                , { "targets": [0,1,2,10], "visible": false, "searchable": false }
                 , { "targets": [2, 3, 4, 5, 6,7,8], "bSortable": false }],
 
             select: { style: 'multi', selector: 'td:first-child' }
@@ -354,7 +362,59 @@ function AddNew() {
 
 function Save() {
     debugger;
-    $('#btnSave').trigger('click');
+    var x = reqDetail;
+    var y = reqDetailLink;
+
+    //validation main form 
+    var $form = $('#SupplierPOForm');
+    if($form.valid())
+    {
+        SupplierOrderViewModel.ID = $('#ID').val();
+        SupplierOrderViewModel.hdnFileID = $('#hdnFileID').val();
+        SupplierOrderViewModel.PONo = $('#PONo').val();
+        SupplierOrderViewModel.PODate = $('#PODate').val();
+        SupplierOrderViewModel.POIssuedDate = $('#POIssuedDate').val();
+        SupplierOrderViewModel.SupplierID = $('#ddlSupplier').val();
+        SupplierOrderViewModel.POFromCompCode = $('#ddlCompany').val();
+        SupplierOrderViewModel.SupplierMailingAddress = $('#SupplierMailingAddress').val();
+        SupplierOrderViewModel.ShipToAddress = $('#ShipToAddress').val();
+        SupplierOrderViewModel.BodyHeader = $('#BodyHeader').val();
+        SupplierOrderViewModel.BodyFooter = $('#BodyFooter').val();
+        SupplierOrderViewModel.GrossTotal = $('#GrossTotal').val();
+        SupplierOrderViewModel.Discount = $('#Discount').val();
+        SupplierOrderViewModel.TaxPercApplied = $('#TaxPercApplied').val();
+        SupplierOrderViewModel.TaxAmount = $('#TaxAmount').val();
+        SupplierOrderViewModel.TaxTypeCode = $('#TaxTypeCode').val();
+        SupplierOrderViewModel.TotalAmount = $('#TotalAmount').val();
+        SupplierOrderViewModel.GeneralNotes = $('#GeneralNotes').val();
+        // SupplierOrderViewModel.EmailSentYN = $('#EmailSentYN').val();
+        SupplierOrderViewModel.POStatus = $('#POStatus').val();
+       
+        SupplierOrderViewModel.reqDetailObj = reqDetail;
+        SupplierOrderViewModel.reqDetailLinkObj = reqDetailLink;
+
+        var data = "{'SPOViewModel':" + JSON.stringify(SupplierOrderViewModel) + "}";
+
+        PostDataToServer("SupplierOrder/InsertUpdatePurchaseOrder/", data, function (JsonResult) {
+            var i = JsonResult
+            switch (i.Result) {
+                case "OK":
+                    notyAlert('success', i.Message);
+                    break;
+                case "Error":
+                    notyAlert('error', i.Message);
+                    break;
+                case "ERROR":
+                    notyAlert('error', i.Message);
+                    break;
+                default:
+                    break;
+            }
+        })
+    }
+
+  
+  //  $('#btnSave').trigger('click');
 }
 
 function Reset()
@@ -663,7 +723,9 @@ function AddSPODetails()
     //Merging  the rows with same MaterialID
     var allData = DataTables.RequisitionDetailsTable.rows(".selected").data();
     var mergedRows = []; //to store rows after merging
-    var currentMaterial,QuantitySum;
+    var currentMaterial, QuantitySum;
+    AddRequsitionDetailLink(allData)// adding to object function call
+
     for (var r = 0; r < allData.length; r++) {
         var Particulars="";
         Particulars = allData[r].ReqNo;
@@ -674,6 +736,7 @@ function AddSPODetails()
                 Particulars = Particulars + "," + allData[j].ReqNo;
                 allData[r].POQty = parseFloat(allData[r].POQty) + parseFloat(allData[j].POQty);
                 allData.splice(j, 1);//removing duplicate after adding value 
+                j = j - 1;// for avoiding skipping row while checking
             }
         }
         allData[r].Particulars =  Particulars
@@ -681,9 +744,8 @@ function AddSPODetails()
     }
     // adding values to object array to bind detail table
     if ((mergedRows) && (mergedRows.length > 0)) {
-        var ar = [];
         for (var r = 0; r < mergedRows.length; r++) {
-            var RequisitionDetailViewModel = new Object();
+            RequisitionDetailViewModel = new Object();
             RequisitionDetailViewModel.MaterialID = mergedRows[r].MaterialID;
             RequisitionDetailViewModel.ID = emptyGUID; //newly added items has emptyguid
             RequisitionDetailViewModel.ReqDetailId = mergedRows[r].ID;
@@ -692,13 +754,13 @@ function AddSPODetails()
             RequisitionDetailViewModel.MaterialDesc = mergedRows[r].ExtendedDescription;
             RequisitionDetailViewModel.Qty = mergedRows[r].POQty;
             RequisitionDetailViewModel.Rate = mergedRows[r].AppxRate;
-            //RequisitionDetailViewModel.UnitCode = mergedRows[r].UnitCode;
+            RequisitionDetailViewModel.UnitCode = mergedRows[r].Unit;
             RequisitionDetailViewModel.Particulars = mergedRows[r].Particulars;            
             RequisitionDetailViewModel.Amount = parseFloat(mergedRows[r].AppxRate) * parseFloat(mergedRows[r].POQty);
             //Particulars after adding same material(item)
-            ar.push(RequisitionDetailViewModel);
+            reqDetail.push(RequisitionDetailViewModel);
         }
-        DataTables.PurchaseOrderDetailTable.rows.add(ar).draw(false); //binding Detail table 
+        DataTables.PurchaseOrderDetailTable.rows.add(reqDetail).draw(false); //binding Detail table 
         CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
         $('#RequisitionDetailsModal').modal('hide');
     }
@@ -708,6 +770,19 @@ function AddSPODetails()
 
     }
     
+}
+
+function AddRequsitionDetailLink(data) {
+    debugger;
+    for (var r = 0; r < data.length; r++) {
+        RequisitionDetailLink = new Object();
+        RequisitionDetailLink.MaterialID = data[r].MaterialID;
+        RequisitionDetailLink.ID = emptyGUID; //[PODetailID]
+        RequisitionDetailLink.ReqDetailID = data[r].ID;//[ReqDetailID]
+        RequisitionDetailLink.ReqID = data[r].ReqID;
+        RequisitionDetailLink.Qty = data[r].POQty;
+        reqDetailLink.push(RequisitionDetailLink);
+    }
 }
 function selectedRowIDs() {
     var allData = DataTables.RequisitionDetailsTable.rows(".selected").data();

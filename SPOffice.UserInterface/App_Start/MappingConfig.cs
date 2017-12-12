@@ -89,6 +89,8 @@ namespace UserInterface.App_Start
                 config.CreateMap<UnitsViewModel, Units>().ReverseMap();
                 config.CreateMap<POStatusesViewModel, POStatuses>().ReverseMap();
                 config.CreateMap<SupplierPODetailViewModel, SupplierPODetail>().ReverseMap();
+                config.CreateMap<ReqDetailViewModel, ReqDetail>().ReverseMap();
+                config.CreateMap<ReqDetailLinkViewModel, ReqDetailLink>().ReverseMap();
 
                 //--For Report purpose
                 config.CreateMap<ReportViewModel, Reports>().ReverseMap();

@@ -141,7 +141,7 @@
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-                                    @Html.HiddenFor(model => model.hdfRequisitionDetail, htmlAttributes: new { @class = "" })
+                                    @Html.HiddenFor(model => model.reqDetailObj, htmlAttributes: new { @class = "" })
                                     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
                                     @Html.LabelFor(model => model.SupplierID, htmlAttributes: new { @class = "control-label " })
                                 </div>
@@ -538,6 +538,7 @@
                                         <th>Rate</th>
                                         <th>Req Qty</th>
                                         <th>PO Qty</th>
+                                        <th>Unit</th>
                                     </tr>
                                 </thead>
                             </table>

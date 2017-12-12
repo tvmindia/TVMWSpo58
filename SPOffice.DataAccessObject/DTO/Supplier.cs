@@ -62,6 +62,10 @@ namespace SPOffice.DataAccessObject.DTO
         public Suppliers SuppliersObj { get; set; }
         public Company company { get; set; }
         public Common commonObj { get; set; }
+        public List<ReqDetail> reqDetailObj { get; set; }
+        public List<ReqDetailLink> reqDetailLinkObj { get; set; }
+        public string reqDetailObjXML { get; set; }
+        public string reqDetailLinkObjXML { get; set; }
 
     }
 
@@ -108,5 +112,28 @@ namespace SPOffice.DataAccessObject.DTO
         public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
+    }
+
+    public class ReqDetail
+    {
+        public Guid MaterialID { get; set; }
+        public Guid ID { get; set; }
+        public Guid ReqDetailId { get; set; }
+        public Guid ReqID { get; set; }
+        public string MaterialCode { get; set; }
+        public string MaterialDesc { get; set; }
+        public decimal Qty { get; set; }
+        public decimal Rate { get; set; }
+        public string Particulars { get; set; }
+        public decimal Amount { get; set; }
+    }
+
+    public class ReqDetailLink
+    {
+        public Guid MaterialID { get; set; }
+        public Guid ID { get; set; }
+        public Guid ReqDetailId { get; set; }
+        public Guid ReqID { get; set; }
+        public decimal Qty { get; set; }
     }
 }

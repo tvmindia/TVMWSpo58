@@ -146,14 +146,14 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdatePurchaseOrder
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
-        [ValidateAntiForgeryToken]
+      //  [ValidateAntiForgeryToken]
         public string InsertUpdatePurchaseOrder(SupplierOrderViewModel SPOViewModel)
         {
             try
             {
                 object result = null;
-                if (ModelState.IsValid)
-                {
+                //if (ModelState.IsValid)
+                //{
                     AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     SPOViewModel.commonObj = new CommonViewModel();
                     SPOViewModel.commonObj.CreatedBy = _appUA.UserName;
@@ -172,19 +172,19 @@ namespace SPOffice.UserInterface.Controllers
                     }
 
                     return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
-                }
-                else
-                {
-                    List<string> modelErrors = new List<string>();
-                    foreach (var modelState in ModelState.Values)
-                    {
-                        foreach (var modelError in modelState.Errors)
-                        {
-                            modelErrors.Add(modelError.ErrorMessage);
-                        }
-                    }
-                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
-                }
+                //}
+                //else
+                //{
+                //    List<string> modelErrors = new List<string>();
+                //    foreach (var modelState in ModelState.Values)
+                //    {
+                //        foreach (var modelError in modelState.Errors)
+                //        {
+                //            modelErrors.Add(modelError.ErrorMessage);
+                //        }
+                //    }
+                //    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                //}
             }
             catch (Exception ex)
             {

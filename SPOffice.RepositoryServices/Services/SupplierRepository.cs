@@ -317,6 +317,10 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = SPO.GeneralNotes;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = SPO.hdnFileID;
 
+                        cmd.Parameters.Add("@reqDetailLinkObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailLinkObjXML;
+                        cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
+
+
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = SPO.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -621,6 +625,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
                                         _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
                                         _ReqObj.POQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.POQty);
+                                        _ReqObj.Unit = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.Unit);
                                         _ReqObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _ReqObj.AppxRate);
                                     }
                                     Req_List.Add(_ReqObj);

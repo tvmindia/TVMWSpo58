@@ -113,6 +113,8 @@ namespace SPOffice.UserInterface.Models
         public SuppliersViewModel SuppliersObj { get; set; }
         public CommonViewModel commonObj { get; set; }
         public CompanyViewModel company { get; set; }
+        public List<ReqDetailViewModel> reqDetailObj { get; set; }
+        public List<ReqDetailLinkViewModel> reqDetailLinkObj { get; set; }
 
         //file upload 
         public List<FileUpload> AttachmentLists { get; set; }
@@ -164,6 +166,29 @@ namespace SPOffice.UserInterface.Models
         public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
+    }
+
+    public class ReqDetailViewModel
+    {
+        public Guid MaterialID  { get; set; }
+        public Guid ID { get; set; }
+        public Guid ReqDetailId { get; set; }
+        public Guid ReqID { get; set; }
+        public string MaterialCode { get; set; }
+        public string MaterialDesc { get; set; }
+        public decimal Qty { get; set; }
+        public decimal Rate { get; set; }
+        public string Particulars { get; set; }
+        public decimal Amount { get; set; }
+    }
+
+    public class ReqDetailLinkViewModel
+    {
+        public Guid MaterialID { get; set; }
+        public Guid ID { get; set; }
+        public Guid ReqDetailId { get; set; }
+        public Guid ReqID { get; set; }
+        public decimal Qty { get; set; }
     }
 
 
