@@ -171,13 +171,16 @@ function SaveSuccess(data) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
+            var isInsert=0;
             if ($("#ID").val()===emptyGUID)
             {
-                SendEnquiryMessage();
+                isInsert=1;              
             }
             FillEnquiryDetails(JsonResult.Records.ID);
             ChangeButtonPatchView('Enquiry', 'btnPatchAdd', 'Edit');
             BindAllEnquiries();
+            if (isInsert === 1)
+            { SendEnquiryMessage(); }
             notyAlert('success', JsonResult.Message);
             $('#hdnMessageID').val("");
             break;
@@ -714,13 +717,14 @@ function FollowUpDelete(ID)
 
 }
 
-function SendEnquiryMessage()
+function SendEnquiryMessage(DS)
 {
     try {
         debugger;
         //var ID = $("#ID").val();
         var Mobile = $("#Mobile").val();       
-        var data = { "mobileNumber": Mobile };
+        var eqno=$("#lblEnquiryNo").text();
+        var data = { "mobileNumber": Mobile, "EQNumber": eqno };
         var ds = {};
         ds = GetDataFromServer("Enquiry/SendEnquiryMessage/", data);
         if (ds != '') {

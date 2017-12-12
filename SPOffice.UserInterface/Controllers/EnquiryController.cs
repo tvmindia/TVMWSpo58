@@ -486,14 +486,14 @@ namespace SPOffice.UserInterface.Controllers
 
 
         #region sendmessage
-        public string SendEnquiryMessage(string mobileNumber)
+        public string SendEnquiryMessage(string mobileNumber, string EQNumber)
         {
             string result = null;
            
             try
             {
               
-                    result = _enquiryBusiness.SendEnquiryMessage(mobileNumber);
+                    result = _enquiryBusiness.SendEnquiryMessage(mobileNumber, EQNumber);
                                      
              return JsonConvert.SerializeObject(new { Result = "OK",Record=result, Message = c.MessageSuccess });
                

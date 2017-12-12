@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Text.RegularExpressions;
 namespace SPOffice.BusinessService.Services
 {
     public class EnquiryBusiness: IEnquiryBusiness
@@ -95,10 +95,25 @@ namespace SPOffice.BusinessService.Services
 
         #region messageSending
 
-        public string SendEnquiryMessage(string mobileNumber)
+        public string SendEnquiryMessage(string mobileNumber,string EQNumber)
         {
-           string result = _enquiryRepository.GetEnquiryMessage();
+            string result = "";//_enquiryRepository.GetEnquiryMessage();
             result = "0000";//---- resetting msg to otp 
+            Regex re = new Regex(@"([a-zA-Z]+)(\d+)");
+            Match matchresult = re.Match(EQNumber);
+
+            string alphaPart = matchresult.Groups[1].Value;
+            string numberPart = matchresult.Groups[2].Value;
+
+            if (numberPart != null && numberPart.Trim() !="") {
+                if (numberPart.Length >= 4)
+                {
+                    result = numberPart.Substring(numberPart.Length - 4, 4);
+                }
+                else {
+                    result = "0" + numberPart;//expexting number will be atleast 3 digits
+                }
+            }
             return _commonRepository.SendMessage(result, mobileNumber, "2factor", "OTP");
         }
 
