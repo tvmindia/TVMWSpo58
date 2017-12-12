@@ -199,5 +199,18 @@ namespace SPOffice.BusinessService.Services
         {
             return _commonRepository.GetAllPOStatuses();
         }
+
+        //Send Message
+
+
+        #region messageSending
+
+        public string SendMessage(string message, string MobileNo, string provider, string type)
+        {           
+
+            return _commonRepository.SendMessage(message, MobileNo, provider, type);
+        }
+
+        #endregion messageSending
     }
 }

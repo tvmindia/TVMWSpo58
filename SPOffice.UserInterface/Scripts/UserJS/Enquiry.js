@@ -18,7 +18,7 @@ $(document).ready(function () {
             FileObject.ParentType = "Enquiry";
             FileObject.Controller = "FileUpload";
             UploadFile(FileObject);
-        });
+        });       
 
    //-- Initialising TimePicker plugin in FollowUp Modal--//   
         $('input.timepicker').timepicker({
@@ -91,6 +91,18 @@ $(document).ready(function () {
     }
 
 });
+//function CheckInsert()
+//{
+//    var flag;
+//    if ($('#hdnMessageID').val() == emptyGUID) {
+
+//        flag == "INSERT"
+//    }
+//    else {
+//        flag == "UPDATE"
+//    }
+//}
+
 
 
 //--To Get List of Enquiries from server --// 
@@ -159,11 +171,18 @@ function SaveSuccess(data) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
         case "OK":
-            debugger;
+            var isInsert=0;
+            if ($("#ID").val()===emptyGUID)
+            {
+                isInsert=1;              
+            }
             FillEnquiryDetails(JsonResult.Records.ID);
             ChangeButtonPatchView('Enquiry', 'btnPatchAdd', 'Edit');
             BindAllEnquiries();
+            if (isInsert === 1)
+            { SendEnquiryMessage(); }
             notyAlert('success', JsonResult.Message);
+            $('#hdnMessageID').val("");
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -392,6 +411,7 @@ function FillEnquiryDetails(ID) {
         $("#Fax").val(thisItem.Fax);
         $("#lblEnquiryNo").text(thisItem.EnquiryNo);
         $("#hdnEnqID").val(thisItem.ID);
+       // $("#hdnmessageID").val(thisItem.hdnMessageID);
 
     //--Checking Enquiry Status and displays the corresponding description --//
         if (thisItem.EnquiryStatus == "OE") {
@@ -695,6 +715,33 @@ function FollowUpDelete(ID)
         return 0;
     }
 
+}
+
+function SendEnquiryMessage(DS)
+{
+    try {
+        debugger;
+        //var ID = $("#ID").val();
+        var Mobile = $("#Mobile").val();       
+        var eqno=$("#lblEnquiryNo").text();
+        var data = { "mobileNumber": Mobile, "EQNumber": eqno };
+        var ds = {};
+        ds = GetDataFromServer("Enquiry/SendEnquiryMessage/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+          
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
 }
 
 

@@ -10,5 +10,6 @@ namespace SPOffice.RepositoryServices.Contracts
     public interface ICommonRepository
     {
         List<POStatuses> GetAllPOStatuses();
+        string SendMessage(string message, string MobileNo,string provider,string type);
     }
 }

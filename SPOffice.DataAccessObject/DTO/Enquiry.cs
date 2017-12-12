@@ -40,9 +40,11 @@ namespace SPOffice.DataAccessObject.DTO
         public string URL { get; set; }
         public string EnquiryStatusCode { get; set; }
         public string Subject { get; set; }
+        public Message messageObj { get; set; }
 
     }
 
+ 
 
     public class EnquirySummary {
 

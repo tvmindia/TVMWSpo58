@@ -13,7 +13,7 @@ namespace SPOffice.BusinessService.Contracts
         Enquiry SearchEnquiriesList(Enquiry enqObj);
         List<Titles> GetAllTitles();
         Enquiry GetEnquiryDetailsByID(Guid ID);
-        object DeleteEnquiry(Guid ID);      
-
+        object DeleteEnquiry(Guid ID);
+        string SendEnquiryMessage(string mobileNumber, string EQNumber);
     }
 }

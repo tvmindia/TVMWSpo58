@@ -5,16 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using System.Text.RegularExpressions;
 namespace SPOffice.BusinessService.Services
 {
     public class EnquiryBusiness: IEnquiryBusiness
     {
         private IEnquiryRepository _enquiryRepository;
+        private ICommonRepository _commonRepository;
 
-        public EnquiryBusiness(IEnquiryRepository enquiryRepository)
+        public EnquiryBusiness(IEnquiryRepository enquiryRepository, ICommonRepository commonRepository)
         {
             _enquiryRepository = enquiryRepository;
+            _commonRepository = commonRepository;
         }
         public Enquiry InsertUpdateEnquiry(Enquiry _enquiriesObj)
         {
@@ -89,6 +91,33 @@ namespace SPOffice.BusinessService.Services
         {
             return _enquiryRepository.DeleteEnquiry(ID);
         }
-       
+
+
+        #region messageSending
+
+        public string SendEnquiryMessage(string mobileNumber,string EQNumber)
+        {
+            string result = "";//_enquiryRepository.GetEnquiryMessage();
+            result = "0000";//---- resetting msg to otp 
+            Regex re = new Regex(@"([a-zA-Z]+)(\d+)");
+            Match matchresult = re.Match(EQNumber);
+
+            string alphaPart = matchresult.Groups[1].Value;
+            string numberPart = matchresult.Groups[2].Value;
+
+            if (numberPart != null && numberPart.Trim() !="") {
+                if (numberPart.Length >= 4)
+                {
+                    result = numberPart.Substring(numberPart.Length - 4, 4);
+                }
+                else {
+                    result = "0" + numberPart;//expexting number will be atleast 3 digits
+                }
+            }
+            return _commonRepository.SendMessage(result, mobileNumber, "2factor", "OTP");
+        }
+
+        #endregion messageSending
+
     }
 }

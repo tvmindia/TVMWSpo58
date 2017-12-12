@@ -160,7 +160,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                 <div class="form-group col-md-6">
                                     <div class="col-md-12">
                                         @Html.HiddenFor(model => model.ID, htmlAttributes: new { @Value = Guid.Empty })
-                                        @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
+                                        @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })                                        
                                         @Html.LabelFor(model => model.EnquiryDate, htmlAttributes: new { @class = "control-label " })
                                     </div>
                                     <div class="col-md-12">
@@ -599,7 +599,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.HiddenFor(model => model.followUpObj.EnquiryID, htmlAttributes: new { @Value = Guid.Empty, @id = "hdnEnqID" })
-                                    @Html.HiddenFor(model => model.followUpObj.ID, htmlAttributes: new { @Value = Guid.Empty , @id = "hdnFollowUpID" }) 
+                                    @Html.HiddenFor(model => model.followUpObj.ID, htmlAttributes: new { @Value = Guid.Empty , @id = "hdnFollowUpID" })                                  
                                     @Html.LabelFor(model => model.followUpObj.FollowUpDate, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
@@ -653,22 +653,30 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                 </div>
 
                             </div>
+
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
 
-                                    @Html.LabelFor(model => model.followUpObj.ReminderType, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.followUpObj.ReminderType, htmlAttributes: new { @class = "control-label",@style ="display:none;" })
 
 
                                 </div>
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType, Model.reminderObj.ReminderList, new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px;" })
+                                        @{
+                                            List<SelectListItem> ReminderType = new List<SelectListItem>();
+                                            ReminderType.Add(new SelectListItem
+                                            { Text = "Popup", Value = "POP", Selected = true });
+                                           
+                                        }
+                                        @Html.DropDownListFor(model => model.followUpObj.ReminderType,ReminderType, new { @class = "form-control", @id = "followUpObj_ReminderType", @style = "padding:4px 12px; display:none;" })
                                         @Html.ValidationMessageFor(model => model.followUpObj.ReminderType, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
                             </div>
+
                             <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="form-group col-md-12">

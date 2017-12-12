@@ -14,5 +14,6 @@ namespace SPOffice.BusinessService.Contracts
         string GetXMLfromObj(List<ProformaItem> myOb, string mandatoryProperties);
         string GetXMLfromRequisitionDetailList(List<RequisitionDetail> myObj, string mandatoryProperties);
         List<POStatuses> GetAllPOStatuses();
+        string SendMessage(string message, string mobileNo,string provider,string type);
     }
 }

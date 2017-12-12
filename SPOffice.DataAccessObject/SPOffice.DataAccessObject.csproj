@@ -107,6 +107,7 @@
     <Compile Include="DTO\Industry.cs" />
     <Compile Include="DTO\Mail.cs" />
     <Compile Include="DTO\Menu.cs" />
+    <Compile Include="DTO\Message.cs" />
     <Compile Include="DTO\Priority.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\Proforma.cs" />
