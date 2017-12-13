@@ -388,7 +388,7 @@ function Save() {
         SupplierOrderViewModel.TotalAmount = $('#TotalAmount').val();
         SupplierOrderViewModel.GeneralNotes = $('#GeneralNotes').val();
         // SupplierOrderViewModel.EmailSentYN = $('#EmailSentYN').val();
-        SupplierOrderViewModel.POStatus = $('#POStatus').val();
+        SupplierOrderViewModel.POStatus = $('#ddlOrderStatus').val();
        
         SupplierOrderViewModel.reqDetailObj = reqDetail;
         SupplierOrderViewModel.reqDetailLinkObj = reqDetailLink;
@@ -465,6 +465,8 @@ function DeleteItem(ID) {
 function ResetForm() {
     $('#ID').val('');
     $('#SupplierPOForm')[0].reset();
+    DataTables.PurchaseOrderDetailTable.clear().draw(false);
+
 }
 //-----------------------------------------------------------//
 function RemovevalidationMsg() {

@@ -306,20 +306,17 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@BodyFooter", SqlDbType.VarChar, 500).Value = SPO.BodyFooter;
                         cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = SPO.BodyHeader;
                         cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = SPO.POStatus;
-
                         cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.GrossTotal;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = SPO.TaxAmount;
-
                         //cmd.Parameters.Add("@EmailSentYN", SqlDbType.Decimal).Value = SPO.EmailSentYN;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = SPO.GeneralNotes;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = SPO.hdnFileID;
 
                         cmd.Parameters.Add("@reqDetailLinkObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailLinkObjXML;
                         cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
-
 
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = SPO.commonObj.CreatedDate;
@@ -347,7 +344,6 @@ namespace SPOffice.RepositoryServices.Services
                     default:
                         break;
                 }
-
             }
             catch (Exception ex)
             {
@@ -392,12 +388,14 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = SPO.POStatus;
                         cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.GrossTotal;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
-
-
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = SPO.TaxAmount;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = SPO.GeneralNotes;
+
+                        cmd.Parameters.Add("@reqDetailLinkObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailLinkObjXML;
+                        cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
+
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
