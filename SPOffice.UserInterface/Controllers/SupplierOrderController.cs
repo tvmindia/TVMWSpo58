@@ -281,6 +281,30 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetRequisitionDetailsByIDs
 
+
+        #region  DeletePurchaseOrderDetail
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "D")]
+        public string DeletePurchaseOrderDetail(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _supplierBusiness.DeletePurchaseOrderDetail(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeletePurchaseOrderDetail
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)

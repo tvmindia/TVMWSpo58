@@ -131,7 +131,12 @@ namespace SPOffice.BusinessService.Services
             return _supplierRepository.DeletePurchaseOrder(ID);
 
         }
-        
+        public object DeletePurchaseOrderDetail(Guid ID)
+        {
+            return _supplierRepository.DeletePurchaseOrderDetail(ID);
+
+        }
+
         //------------------------------------------------------------------------//
 
         public List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID)

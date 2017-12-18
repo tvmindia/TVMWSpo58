@@ -125,6 +125,7 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
         public string Particulars { get; set; }
+        public string UnitCode { get; set; }
         public decimal Amount { get; set; }
     }
 

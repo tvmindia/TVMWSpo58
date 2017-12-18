@@ -89,7 +89,7 @@ $(document).ready(function () {
                           return '-'
                   }
               },
-              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
+            { "data": null, "orderable": false, "width": "5%", "defaultContent": '<a href="#" onclick="EditPurchaseOrderDetailTable(this)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a><span> | </span><a href="#" onclick="DeletePurchaseOrderDetailTable(this)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0,1], "visible": false, "searchable": false },
                  { className: "text-right", "targets": [5,6,7] },
@@ -100,7 +100,7 @@ $(document).ready(function () {
         });
 
         $('#tblPurchaseOrderDetail tbody').on('dblclick', 'td', function () {
-            EditDetail(this);
+            EditPurchaseOrderDetailTable(this);
         });
 
     } catch (x) {
@@ -173,20 +173,26 @@ $(document).ready(function () {
                      }
                  },
                  { "data": "RequestedQty", "defaultContent": "<i>-</i>", "width": "10%" },
+                 { "data": "OrderedQty", "defaultContent": "<i>-</i>", "width": "10%" },
                  {
                      "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
-                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
+                         var value;
+                         if (row.OrderedQty)
+                             value = parseFloat(data) - parseFloat(row.OrderedQty);
+                         else
+                             value = data;
+                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + value + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
                      }
                  },
-                 { "data": "Unit", "defaultContent": "<i>-</i>" }
+                 { "data": "UnitCode", "defaultContent": "<i>-</i>" }
 
             ],
             columnDefs: [{ orderable: false, className: 'select-checkbox', "targets": 3 }
                 , { className: "text-left", "targets": [5, 6] }
-                , { className: "text-right", "targets": [7, 8] }
+                , { className: "text-right", "targets": [7, 8,9,10] }
                 , { className: "text-center", "targets": [1, 4] }
-                , { "targets": [0,1,2,10], "visible": false, "searchable": false }
-                , { "targets": [2, 3, 4, 5, 6,7,8], "bSortable": false }],
+                , { "targets": [0,1,2,11], "visible": false, "searchable": false }
+                , { "targets": [2, 3, 4, 5, 6,7,8,9,10], "bSortable": false }],
 
             select: { style: 'multi', selector: 'td:first-child' }
         });     
@@ -425,7 +431,10 @@ function Save() {
 
 function Reset()
 {
-    BindPurchaseOrder($("#ID").val());
+    if ($("#ID").val())
+        BindPurchaseOrder($("#ID").val());
+    else
+        DataTables.PurchaseOrderDetailTable.clear().draw(false);
 }
 
 function DeleteSupplierPO() {
@@ -441,10 +450,10 @@ function DeleteItem(ID) {
             var data = { "ID": ID };
             var ds = {};
             ds = GetDataFromServer("SupplierOrder/DeletePurchaseOrder/", data);
+            debugger;
             if (ds != '') {
                 ds = JSON.parse(ds);
             }
-            if (ds.Result == "OK") {
                 switch (ds.Result) {
                     case "OK":
                         notyAlert('success', ds.Message);
@@ -457,8 +466,7 @@ function DeleteItem(ID) {
                     default:
                         break;
                 }
-                return ds.Record;
-            }
+                //return ds.Record;
         }
     }
     catch (e) {
@@ -598,6 +606,7 @@ function AmountSummary() {
 //----------ADD Requisition------------//
 function AddPurchaseOrderDetail() {
     debugger;
+    Reset();
     reqDetail = [];
     reqDetailLink = [];
     $('#RequisitionDetailsModal').modal('show');
@@ -765,7 +774,7 @@ function AddSPODetails()
             RequisitionDetailViewModel.MaterialDesc = mergedRows[r].ExtendedDescription == null ? mergedRows[r].Description : mergedRows[r].ExtendedDescription;
             RequisitionDetailViewModel.Qty = mergedRows[r].POQty;
             RequisitionDetailViewModel.Rate = mergedRows[r].AppxRate;
-            RequisitionDetailViewModel.UnitCode = mergedRows[r].Unit;
+            RequisitionDetailViewModel.UnitCode = mergedRows[r].UnitCode;
             RequisitionDetailViewModel.Particulars = mergedRows[r].Particulars;            
             RequisitionDetailViewModel.Amount = parseFloat(mergedRows[r].AppxRate) * parseFloat(mergedRows[r].POQty);
             //Particulars after adding same material(item)
@@ -862,8 +871,48 @@ function CalculateGrossAmount()
 
 
 //----------Edit Requisition------------//
-function EditDetail(curObj) {
+function EditPurchaseOrderDetailTable(curObj) {
     var rowData = DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).data();
     $('#EditRequisitionDetailsModal').modal('show');
+}
+
+
+function DeletePurchaseOrderDetailTable(curObj) {
+    debugger; 
+    var rowData = DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).data();
+    var ID = rowData.ID;
+    if (ID) {
+    notyConfirm('Are you sure to delete?', 'DeletePurchaseOrderDetail("' + ID + '");', '', "Yes, delete it!");
+    }
+}
+function DeletePurchaseOrderDetail(ID) {
+    try { 
+        if (ID) {
+            var data = { "ID": ID };
+            var ds = {};
+            ds = GetDataFromServer("SupplierOrder/DeletePurchaseOrderDetail/", data);
+            debugger;
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            switch (ds.Result) {
+                case "OK":
+                    notyAlert('success', ds.Message);
+                    BindAllPurchaseOrders();
+                    closeNav();
+                    break;
+                case "ERROR":
+                    notyAlert('error', ds.Message);
+                    break;
+                default:
+                    break;
+            }
+            //return ds.Record;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
 }
 

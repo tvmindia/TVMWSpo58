@@ -477,6 +477,48 @@ namespace SPOffice.RepositoryServices.Services
                 Message = Cobj.DeleteSuccess
             };
         }
+        public object DeletePurchaseOrderDetail(Guid ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteSupplierOrderDetail]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.DeleteFailure);
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
+        }
 
         public List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID)
         {
@@ -622,8 +664,9 @@ namespace SPOffice.RepositoryServices.Services
                                         _ReqObj.ExtendedDescription = (sdr["ExtendedDescription"].ToString() != "" ? sdr["ExtendedDescription"].ToString() : _ReqObj.ExtendedDescription);
                                         _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
                                         _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
+                                        _ReqObj.OrderedQty = (sdr["OrderedQty"].ToString() != "" ? sdr["OrderedQty"].ToString() : _ReqObj.OrderedQty);
                                         _ReqObj.POQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.POQty);
-                                        _ReqObj.Unit = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.Unit);
+                                        _ReqObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.UnitCode);
                                         _ReqObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _ReqObj.AppxRate);
                                     }
                                     Req_List.Add(_ReqObj);
