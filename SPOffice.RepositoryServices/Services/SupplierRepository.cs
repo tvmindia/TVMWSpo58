@@ -665,7 +665,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
                                         _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
                                         _ReqObj.OrderedQty = (sdr["OrderedQty"].ToString() != "" ? sdr["OrderedQty"].ToString() : _ReqObj.OrderedQty);
-                                        _ReqObj.POQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.POQty);
+                                        // _ReqObj.POQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.POQty);
+                                        _ReqObj.POQty = (decimal.Parse(_ReqObj.RequestedQty) - decimal.Parse(_ReqObj.OrderedQty)).ToString();
                                         _ReqObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.UnitCode);
                                         _ReqObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _ReqObj.AppxRate);
                                     }

@@ -176,12 +176,12 @@ $(document).ready(function () {
                  { "data": "OrderedQty", "defaultContent": "<i>-</i>", "width": "10%" },
                  {
                      "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
-                         var value;
-                         if (row.OrderedQty)
-                             value = parseFloat(data) - parseFloat(row.OrderedQty);
-                         else
-                             value = data;
-                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + value + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
+                         //var value;
+                         //if (row.OrderedQty)
+                         //    value = parseFloat(data) - parseFloat(row.OrderedQty);
+                         //else
+                         //    value = data;
+                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
                      }
                  },
                  { "data": "UnitCode", "defaultContent": "<i>-</i>" }
