@@ -23,6 +23,7 @@ namespace SPOffice.RepositoryServices.Contracts
         List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID);
         List<Requisition> GetAllRequisitionHeaderForSupplierPO();
         List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs);
+        List<RequisitionDetail> EditPurchaseOrderDetail(string ID);
 
     }
 }

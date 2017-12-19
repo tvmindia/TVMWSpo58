@@ -665,7 +665,6 @@ namespace SPOffice.RepositoryServices.Services
                                         _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
                                         _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
                                         _ReqObj.OrderedQty = (sdr["OrderedQty"].ToString() != "" ? sdr["OrderedQty"].ToString() : _ReqObj.OrderedQty);
-                                        // _ReqObj.POQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.POQty);
                                         _ReqObj.POQty = (decimal.Parse(_ReqObj.RequestedQty) - decimal.Parse(_ReqObj.OrderedQty)).ToString();
                                         _ReqObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.UnitCode);
                                         _ReqObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _ReqObj.AppxRate);
@@ -684,6 +683,62 @@ namespace SPOffice.RepositoryServices.Services
 
             return Req_List;
 
+        }
+
+        public List<RequisitionDetail> EditPurchaseOrderDetail(string ID)
+        {
+            List<RequisitionDetail> Req_List = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetPurchaseOrderDetailByID]";
+                        cmd.Parameters.Add("@ID", SqlDbType.NVarChar, -1).Value = @ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                Req_List = new List<RequisitionDetail>();
+                                while (sdr.Read())
+                                {
+                                    RequisitionDetail _ReqObj = new RequisitionDetail();
+                                    {
+                                        _ReqObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _ReqObj.ID);
+                                        _ReqObj.ReqID = (sdr["ReqID"].ToString() != "" ? Guid.Parse(sdr["ReqID"].ToString()) : _ReqObj.ReqID);
+                                        _ReqObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _ReqObj.MaterialID);
+                                        _ReqObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : _ReqObj.Description);
+                                        _ReqObj.RawMaterialObj = new RawMaterial();
+                                        _ReqObj.RawMaterialObj.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _ReqObj.RawMaterialObj.MaterialCode);
+                                        _ReqObj.ExtendedDescription = (sdr["MaterialDesc"].ToString() != "" ? sdr["MaterialDesc"].ToString() : _ReqObj.ExtendedDescription);
+                                        _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
+                                        _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
+                                        _ReqObj.OrderedQty = (sdr["OrderedQty"].ToString() != "" ? sdr["OrderedQty"].ToString() : _ReqObj.OrderedQty);
+                                        _ReqObj.POQty = _ReqObj.OrderedQty;// (decimal.Parse(_ReqObj.RequestedQty) - decimal.Parse(_ReqObj.OrderedQty)).ToString();
+                                        _ReqObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.UnitCode);
+                                        _ReqObj.AppxRate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _ReqObj.AppxRate);
+                                    }
+                                    Req_List.Add(_ReqObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Req_List;
         }
     }
 }

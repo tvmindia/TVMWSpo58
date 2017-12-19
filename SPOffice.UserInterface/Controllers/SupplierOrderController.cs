@@ -244,6 +244,28 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetPurchaseOrderDetailTable
 
+        #region EditPurchaseOrderDetailByID
+        [HttpGet]
+        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        public string EditPurchaseOrderDetail(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                } 
+                    List<RequisitionDetailViewModel> SPOVMList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_supplierBusiness.EditPurchaseOrderDetail(ID));
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });
+                }
+                catch (Exception ex)
+                {
+                    AppConstMessage cm = c.GetMessage(ex.Message);
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                }
+            }
+        #endregion EditPurchaseOrderDetailByID
+
         #region GetAllRequisitionHeaderForSupplierPO
         [HttpGet]
         //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]

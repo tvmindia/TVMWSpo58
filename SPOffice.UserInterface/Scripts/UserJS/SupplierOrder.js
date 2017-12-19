@@ -200,6 +200,71 @@ $(document).ready(function () {
         notyAlert('error', x.message);
     }
 
+    //------------------------Table5 tblRequisitionDetailsEdit
+
+    try {
+        debugger;
+        DataTables.EditRequisitionDetailsTable = $('#tblRequisitionDetailsEdit').DataTable({
+            dom: '<"pull-left"f>rt<"bottom"ip><"clear">',
+            order: [],
+            searching: true,
+            paging: true,
+            pageLength: 7,
+            data: null,
+            columns: [
+                 { "data": "ID", "defaultContent": "<i>-</i>" },
+                 { "data": "ReqID", "defaultContent": "<i>-</i>" },
+                 { "data": "MaterialID", "defaultContent": "<i>-</i>" },
+                // { "data": null, "defaultContent": "", "width": "5%" },
+                 { "data": "ReqNo", "defaultContent": "<i>-</i>", "width": "10%" },
+                 { "data": "RawMaterialObj.MaterialCode", "defaultContent": "<i>-</i>" },
+                 {
+                     "data": "ExtendedDescription", "defaultContent": "<i>-</i>", 'render': function (data, type, row) {
+                         debugger;
+                         if (row.ExtendedDescription)
+                             Desc = data;
+                         else
+                             Desc = row.Description;
+                         return '<input class="form-control description" name="Markup" value="' + Desc + '" type="text" onchange="EdittextBoxValue(this,1);">';
+                     }
+                 },
+                 {
+                     "data": "AppxRate", "defaultContent": "<i>-</i>", "width": "10%", 'render': function (data, type, row) {
+                         return '<input class="form-control text-right " name="Markup" value="' + row.AppxRate + '" type="text" onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="EdittextBoxValue(this,2);">';
+                     }
+                 },
+                 { "data": "RequestedQty", "defaultContent": "<i>-</i>", "width": "10%" },
+                 { "data": "OrderedQty", "defaultContent": "<i>-</i>", "width": "10%" },
+                 {
+                     "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
+                         //var value;
+                         //if (row.OrderedQty)
+                         //    value = parseFloat(data) - parseFloat(row.OrderedQty);
+                         //else
+                         //    value = data;
+                         return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="EdittextBoxValue(this,3);">';
+                     }
+                 },
+                 { "data": "UnitCode", "defaultContent": "<i>-</i>" }
+
+            ],
+            columnDefs: [//{ orderable: false, className: 'select-checkbox', "targets": 3 },
+                { className: "text-left", "targets": [4, 5] }
+                , { className: "text-right", "targets": [6,7, 8, 9] }
+                , { className: "text-center", "targets": [1, 3] }
+                , { "targets": [0, 1, 2, 10], "visible": false, "searchable": false }
+                , { "targets": [2, 3, 4, 5, 6, 7, 8, 9, 10], "bSortable": false }],
+
+            select: { style: 'multi', selector: 'td:first-child' }
+        });
+    } catch (x) {
+        notyAlert('error', x.message);
+    }
+
+
+
+    //-----------------------------
+
 });
 //---------------------------------Data Table Bindings------------------------------------------//
 function GetAllSupplierPurchaseOrders(filter)
@@ -698,6 +763,7 @@ function BindGetRequisitionDetailsTable(IDs) {
 }
 function GetRequisitionDetailsByIDs(IDs) {
     try {
+        debugger;
         var data = {IDs};
         var ds = {};
         ds = GetDataFromServer("SupplierOrder/GetRequisitionDetailsByIDs/", data);
@@ -775,23 +841,23 @@ function AddSPODetails()
             RequisitionDetailViewModel.Qty = mergedRows[r].POQty;
             RequisitionDetailViewModel.Rate = mergedRows[r].AppxRate;
             RequisitionDetailViewModel.UnitCode = mergedRows[r].UnitCode;
-            RequisitionDetailViewModel.Particulars = mergedRows[r].Particulars;            
+            RequisitionDetailViewModel.Particulars = mergedRows[r].Particulars;
             RequisitionDetailViewModel.Amount = parseFloat(mergedRows[r].AppxRate) * parseFloat(mergedRows[r].POQty);
             //Particulars after adding same material(item)
             reqDetail.push(RequisitionDetailViewModel);
         }
         debugger;
- 
+
         mergedRowsWithExistingData();
         CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
         $('#RequisitionDetailsModal').modal('hide');
     }
-    else 
+    else
     {
         notyAlert('warning', "Please Select Requisition");
 
     }
-    
+
 }
 
 function mergedRowsWithExistingData() {
@@ -872,16 +938,142 @@ function CalculateGrossAmount()
 
 //----------Edit Requisition------------//
 function EditPurchaseOrderDetailTable(curObj) {
+    debugger;
     var rowData = DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).data();
+    EditPurchaseOrderDetailByID(rowData.ID)
     $('#EditRequisitionDetailsModal').modal('show');
 }
 
+function EditPurchaseOrderDetailByID(ID) {
+    try {
+        DataTables.EditRequisitionDetailsTable.clear().rows.add(EditPurchaseOrderDetail(ID)).draw(false);
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+
+function EditPurchaseOrderDetail(ID) {
+    try {
+        var data = {ID};
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/EditPurchaseOrderDetail/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+
+function EditSPODetails()
+{
+    debugger;
+    var allData = DataTables.EditRequisitionDetailsTable.rows().data();
+
+    var mergedRows = []; //to store rows after merging
+   
+   // EditRequsitionDetailLink(allData)// adding to object function call
+
+    for (var r = 0; r < allData.length; r++) {
+        for (var j = r + 1; j < allData.length; j++) {
+                allData[r].POQty = parseFloat(allData[r].POQty) + parseFloat(allData[j].POQty);
+                allData.splice(j, 1);//removing duplicate after adding value 
+                j = j - 1;// for avoiding skipping row while checking
+        }
+        mergedRows.push(allData[r])// adding rows to merge array
+    }
+    debugger;
+    if ((mergedRows) && (mergedRows.length > 0)) {
+        for (var r = 0; r < mergedRows.length; r++) {
+            RequisitionDetailViewModel = new Object();
+            RequisitionDetailViewModel.MaterialID = mergedRows[r].MaterialID;
+            RequisitionDetailViewModel.ID = emptyGUID;
+            RequisitionDetailViewModel.ReqDetailId = mergedRows[r].ID;
+            RequisitionDetailViewModel.ReqID = mergedRows[r].ReqID;
+            RequisitionDetailViewModel.MaterialCode = mergedRows[r].RawMaterialObj.MaterialCode;
+            RequisitionDetailViewModel.MaterialDesc = mergedRows[r].ExtendedDescription == null ? mergedRows[r].Description : mergedRows[r].ExtendedDescription;
+            RequisitionDetailViewModel.Qty = mergedRows[r].POQty;
+            RequisitionDetailViewModel.Rate = mergedRows[r].AppxRate;
+            RequisitionDetailViewModel.UnitCode = mergedRows[r].UnitCode;
+            RequisitionDetailViewModel.Particulars = mergedRows[r].Particulars;
+            RequisitionDetailViewModel.Amount = parseFloat(mergedRows[r].AppxRate) * parseFloat(mergedRows[r].POQty);
+            //Particulars after adding same material(item)
+            reqDetail.push(RequisitionDetailViewModel);
+        }
+        debugger;
+        mergedEditedRowsWithExistingData();
+        CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
+        $('#EditRequisitionDetailsModal').modal('hide');
+    }
+}
+
+function mergedEditedRowsWithExistingData() {
+    debugger;
+    var updatedData = [];
+    var allDataExists = DataTables.PurchaseOrderDetailTable.rows().data();
+    if (allDataExists.length > 0) {
+        for (var j = 0; j < allDataExists.length; j++) {
+            for (var r = 0; r < reqDetail.length; r++) {
+                if (allDataExists[j].MaterialID == reqDetail[r].MaterialID) {
+                    allDataExists[j].Qty = parseFloat(reqDetail[r].Qty);//new Qty
+                    allDataExists[j].Amount = parseFloat(reqDetail[r].Rate) * parseFloat(allDataExists[j].Qty); //new Rate * changed Qty
+                    allDataExists[j].MaterialDesc = reqDetail[r].MaterialDesc; //New Material Description
+                    allDataExists[j].Particulars = allDataExists[j].Particulars 
+                    reqDetail.splice(r, 1);//removing duplicate after adding value 
+                    r = r - 1;// for avoiding skipping row while checking
+                    updatedData.push(allDataExists[j]);
+                }
+            }
+        }
+        DataTables.PurchaseOrderDetailTable.clear().rows.add(allDataExists).draw(false);// binding table with Existing data changed
+    }
+    debugger;
+    var temp = DataTables.PurchaseOrderDetailTable.rows().data();
+    reqDetail = temp; 
+}
+
+
+function EdittextBoxValue(thisObj, textBoxCode) {
+    debugger;
+    var IDs = selectedRowIDs();//identify the selected rows 
+    var allData = DataTables.EditRequisitionDetailsTable.rows().data();
+    var table = DataTables.EditRequisitionDetailsTable;
+    var rowtable = table.row($(thisObj).parents('tr')).data();
+    for (var i = 0; i < allData.length; i++) {
+        if (allData[i].ID == rowtable.ID) {
+            if (textBoxCode == 1)//textBoxCode is the code to know, which textbox changed is triggered
+                allData[i].ExtendedDescription = thisObj.value;
+            if (textBoxCode == 2)
+                allData[i].AppxRate = parseFloat(thisObj.value);
+            if (textBoxCode == 3)
+                allData[i].POQty = parseFloat(thisObj.value);
+        }
+    }
+    DataTables.EditRequisitionDetailsTable.clear().rows.add(allData).draw(false);
+}
+
+
+//----------Delete Purchase Order Detail Table------------//
 
 function DeletePurchaseOrderDetailTable(curObj) {
     debugger; 
     var rowData = DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).data();
     var ID = rowData.ID;
-    if (ID) {
+    if (ID == emptyGUID)
+    {
+        DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).remove().draw();
+    }
+    else if (ID) {
     notyConfirm('Are you sure to delete?', 'DeletePurchaseOrderDetail("' + ID + '");', '', "Yes, delete it!");
     }
 }

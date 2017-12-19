@@ -153,5 +153,10 @@ namespace SPOffice.BusinessService.Services
         {
             return _supplierRepository.GetRequisitionDetailsByIDs(IDs);
         }
+        public List<RequisitionDetail> EditPurchaseOrderDetail(string ID)
+        {
+            return _supplierRepository.EditPurchaseOrderDetail(ID);
+        }
+        
     }
 }
