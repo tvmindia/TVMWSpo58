@@ -1160,4 +1160,23 @@ function DeletePurchaseOrderDetail(ID) {
         console.log(e.message);
     }
 }
+function ApproveSupplierPO() {
+    try {
+        var data = { "ID": $('#ID').val() };
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/ApproveSupplierOrder/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            notyAlert('success', ds.Record.Message);          
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
 

@@ -67,7 +67,10 @@ namespace SPOffice.BusinessService.Services
             }
             return SPOList;
         }
-
+        public object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate)
+        {
+            return _supplierRepository.ApproveSupplierOrder(ID, FinalApprovedDate);
+        }
         public object InsertPurchaseOrder(SupplierOrder SPO)
         {
             DetailsXMl(SPO);

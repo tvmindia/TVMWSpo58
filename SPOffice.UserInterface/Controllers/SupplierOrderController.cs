@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using SAMTool.DataAccessObject.DTO;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
@@ -21,14 +22,15 @@ namespace SPOffice.UserInterface.Controllers
         ICompanyBusiness _companyBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
         ICommonBusiness _commonBusiness;
-
+        SecurityFilter.ToolBarAccess _tool;
         public SupplierOrderController(ISupplierBusiness supplierBusiness, ICompanyBusiness companyBusiness, 
-            ITaxTypeBusiness taxTypeBusiness, ICommonBusiness commonBusiness)
+            ITaxTypeBusiness taxTypeBusiness, ICommonBusiness commonBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _supplierBusiness = supplierBusiness;
             _companyBusiness = companyBusiness;
             _taxTypeBusiness = taxTypeBusiness;
             _commonBusiness = commonBusiness;
+            _tool = tool;
         }
 
         // GET: SupplierOrder
@@ -342,11 +344,32 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion DeletePurchaseOrderDetail
 
+        public string ApproveSupplierOrder(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
+                result = _supplierBusiness.ApproveSupplierOrder(Guid.Parse(ID),_appUA.DateTime);
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+
         #region ButtonStyling
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
+            Permission _permission = Session["UserRightsOffice"] as Permission;
             switch (ActionType)
             {
                 case "List":
@@ -392,6 +415,12 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.deletebtn.Text = "Delete";
                     ToolboxViewModelObj.deletebtn.Title = "Delete";
                     ToolboxViewModelObj.deletebtn.Event = "DeleteSupplierPO()";
+
+                    ToolboxViewModelObj.ApproveBtn.Visible = true;
+                    ToolboxViewModelObj.ApproveBtn.Text = "Approve";
+                    ToolboxViewModelObj.ApproveBtn.Title = "Approve";
+                    ToolboxViewModelObj.ApproveBtn.Event = "ApproveSupplierPO()";
+                    ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
 
                     break;
                 case "Add":

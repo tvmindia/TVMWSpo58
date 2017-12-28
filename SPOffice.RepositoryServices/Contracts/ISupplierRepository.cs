@@ -20,7 +20,7 @@ namespace SPOffice.RepositoryServices.Contracts
         object UpdatePurchaseOrderDetailLink(SupplierOrder SPO);
         object DeletePurchaseOrder(Guid ID);
         object DeletePurchaseOrderDetail(Guid ID);
-        
+        object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate);
         List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID);
         List<Requisition> GetAllRequisitionHeaderForSupplierPO();
         List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID);

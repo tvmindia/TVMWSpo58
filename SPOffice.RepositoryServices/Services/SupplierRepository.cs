@@ -803,5 +803,55 @@ namespace SPOffice.RepositoryServices.Services
 
             return Req_List;
         }
+
+        public object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[ApproveSupplierOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.Parameters.Add("@FinalApprovedDate", SqlDbType.DateTime).Value = FinalApprovedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                object obj = new object();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.UpdateFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.ApproveSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString()
+            };
+        }
     }
 }
