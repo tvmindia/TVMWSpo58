@@ -81,6 +81,12 @@ namespace SPOffice.BusinessService.Services
             return _supplierRepository.UpdatePurchaseOrder(SPO);
 
         }
+        public object UpdatePurchaseOrderDetailLink(SupplierOrder SPO)
+        {
+            DetailsXMl(SPO);
+            return _supplierRepository.UpdatePurchaseOrderDetailLink(SPO);
+
+        }
 
         public void DetailsXMl(SupplierOrder SPO)
         {
@@ -149,9 +155,9 @@ namespace SPOffice.BusinessService.Services
             return _supplierRepository.GetAllRequisitionHeaderForSupplierPO();
         }
 
-        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs)
+        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID)
         {
-            return _supplierRepository.GetRequisitionDetailsByIDs(IDs);
+            return _supplierRepository.GetRequisitionDetailsByIDs(IDs,SPOID);
         }
         public List<RequisitionDetail> EditPurchaseOrderDetail(string ID)
         {

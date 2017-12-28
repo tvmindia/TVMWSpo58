@@ -8,6 +8,7 @@
 //Global Declarations
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
+var EditSPOdetailID;
 var reqDetail = [];
 var RequisitionDetailViewModel = new Object();
 var reqDetailLink = [];
@@ -220,7 +221,6 @@ $(document).ready(function () {
                  { "data": "RawMaterialObj.MaterialCode", "defaultContent": "<i>-</i>" },
                  {
                      "data": "ExtendedDescription", "defaultContent": "<i>-</i>", 'render': function (data, type, row) {
-                         debugger;
                          if (row.ExtendedDescription)
                              Desc = data;
                          else
@@ -237,11 +237,6 @@ $(document).ready(function () {
                  { "data": "OrderedQty", "defaultContent": "<i>-</i>", "width": "10%" },
                  {
                      "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
-                         //var value;
-                         //if (row.OrderedQty)
-                         //    value = parseFloat(data) - parseFloat(row.OrderedQty);
-                         //else
-                         //    value = data;
                          return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="EdittextBoxValue(this,3);">';
                      }
                  },
@@ -432,10 +427,7 @@ function AddNew() {
 
 
 function Save() {
-    debugger;
-    //var x = reqDetail;
-    //var y = reqDetailLink;
-
+    debugger; 
     //validation main form 
     var $form = $('#SupplierPOForm');
     if($form.valid())
@@ -475,6 +467,7 @@ function Save() {
                     ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
                     if (JsonResult.Record.ID) {
                         $("#ID").val(JsonResult.Record.ID);
+                        BindPurchaseOrder($("#ID").val());
                     }
                     BindAllPurchaseOrders();
                     break;
@@ -492,6 +485,40 @@ function Save() {
 
   
   //  $('#btnSave').trigger('click');
+}
+
+function UpdateDetailLinkSave() {
+    debugger;
+    //validation main form 
+    var $form = $('#SupplierPOForm');
+    if ($form.valid()) {
+        SupplierOrderViewModel.ID = $('#ID').val(); 
+        SupplierOrderViewModel.reqDetailObj = reqDetail;
+        SupplierOrderViewModel.reqDetailLinkObj = reqDetailLink;
+
+        var data = "{'SPOViewModel':" + JSON.stringify(SupplierOrderViewModel) + "}";
+
+        PostDataToServer("SupplierOrder/UpdatePurchaseOrderDetailLink/", data, function (JsonResult) {
+
+            debugger;
+            switch (JsonResult.Result) {
+                case "OK":
+                    notyAlert('success', JsonResult.Record.Message);
+                    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+                    BindPurchaseOrder($("#ID").val());
+                    BindAllPurchaseOrders();
+                    break;
+                case "Error":
+                    notyAlert('error', JsonResult.Message);
+                    break;
+                case "ERROR":
+                    notyAlert('error', JsonResult.Message);
+                    break;
+                default:
+                    break;
+            }
+        })
+    } 
 }
 
 function Reset()
@@ -542,10 +569,15 @@ function DeleteItem(ID) {
 
 //-----------------------------------------------------------//
 function ResetForm() {
+    debugger;
     $('#ID').val('');
+    var validator = $("#SupplierPOForm").validate();
+    $('#SupplierPOForm').find('.field-validation-error span').each(function () {
+            validator.settings.success($(this));
+    });
     $('#SupplierPOForm')[0].reset();
-    DataTables.PurchaseOrderDetailTable.clear().draw(false);
 
+    DataTables.PurchaseOrderDetailTable.clear().draw(false);
 }
 //-----------------------------------------------------------//
 function RemovevalidationMsg() {
@@ -671,13 +703,20 @@ function AmountSummary() {
 //----------ADD Requisition------------//
 function AddPurchaseOrderDetail() {
     debugger;
-    Reset();
-    reqDetail = [];
-    reqDetailLink = [];
-    $('#RequisitionDetailsModal').modal('show');
-    ViewRequisitionList(1);
-    DataTables.RequisitionDetailsTable.clear().draw(false);
-    BindAllRequisitions();
+    //Reset();
+    //reqDetail = [];
+    //reqDetailLink = [];
+    var $form = $('#SupplierPOForm');
+    if ($form.valid()) {
+        $('#RequisitionDetailsModal').modal('show');
+        ViewRequisitionList(1);
+        DataTables.RequisitionDetailsTable.clear().draw(false);
+        BindAllRequisitions();
+    }
+    else 
+    {
+        notyAlert('warning', "Please Fill Required Fields,To Add Items ");
+    }
 }
 
 function BindAllRequisitions() {
@@ -764,7 +803,9 @@ function BindGetRequisitionDetailsTable(IDs) {
 function GetRequisitionDetailsByIDs(IDs) {
     try {
         debugger;
-        var data = {IDs};
+        var SPOID=$('#ID').val();
+        var data = { "IDs": IDs, "SPOID": SPOID };
+
         var ds = {};
         ds = GetDataFromServer("SupplierOrder/GetRequisitionDetailsByIDs/", data);
         if (ds != '') {
@@ -810,7 +851,7 @@ function AddSPODetails()
     var allData = DataTables.RequisitionDetailsTable.rows(".selected").data();
     var mergedRows = []; //to store rows after merging
     var currentMaterial, QuantitySum;
-    AddRequsitionDetailLink(allData)// adding to object function call
+    AddRequsitionDetailLink(allData)// adding values to reqDetailLink array function call
 
     for (var r = 0; r < allData.length; r++) {
         var Particulars="";
@@ -828,7 +869,19 @@ function AddSPODetails()
         allData[r].Particulars =  Particulars
         mergedRows.push(allData[r])// adding rows to merge array
     }
-    // adding values to object array to bind detail table
+
+    var res=AddRequsitionDetail(mergedRows)// adding to reqDetail array function call
+
+    if (res) {
+        debugger;
+        CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
+        $('#RequisitionDetailsModal').modal('hide');
+        Save();
+    }
+}
+
+function AddRequsitionDetail(mergedRows)
+{
     if ((mergedRows) && (mergedRows.length > 0)) {
         for (var r = 0; r < mergedRows.length; r++) {
             RequisitionDetailViewModel = new Object();
@@ -846,18 +899,12 @@ function AddSPODetails()
             //Particulars after adding same material(item)
             reqDetail.push(RequisitionDetailViewModel);
         }
-        debugger;
-
-        mergedRowsWithExistingData();
-        CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
-        $('#RequisitionDetailsModal').modal('hide');
+        return true;
     }
-    else
-    {
+    else {
         notyAlert('warning', "Please Select Requisition");
-
+        return false;
     }
-
 }
 
 function mergedRowsWithExistingData() {
@@ -941,6 +988,7 @@ function EditPurchaseOrderDetailTable(curObj) {
     debugger;
     var rowData = DataTables.PurchaseOrderDetailTable.row($(curObj).parents('tr')).data();
     EditPurchaseOrderDetailByID(rowData.ID)
+    EditSPOdetailID = rowData.ID// to set SPODetailID
     $('#EditRequisitionDetailsModal').modal('show');
 }
 
@@ -982,7 +1030,7 @@ function EditSPODetails()
 
     var mergedRows = []; //to store rows after merging
    
-   // EditRequsitionDetailLink(allData)// adding to object function call
+    EditRequsitionDetailLink(allData)// adding to object function call
 
     for (var r = 0; r < allData.length; r++) {
         for (var j = r + 1; j < allData.length; j++) {
@@ -997,7 +1045,7 @@ function EditSPODetails()
         for (var r = 0; r < mergedRows.length; r++) {
             RequisitionDetailViewModel = new Object();
             RequisitionDetailViewModel.MaterialID = mergedRows[r].MaterialID;
-            RequisitionDetailViewModel.ID = emptyGUID;
+            RequisitionDetailViewModel.ID = EditSPOdetailID;
             RequisitionDetailViewModel.ReqDetailId = mergedRows[r].ID;
             RequisitionDetailViewModel.ReqID = mergedRows[r].ReqID;
             RequisitionDetailViewModel.MaterialCode = mergedRows[r].RawMaterialObj.MaterialCode;
@@ -1011,36 +1059,48 @@ function EditSPODetails()
             reqDetail.push(RequisitionDetailViewModel);
         }
         debugger;
-        mergedEditedRowsWithExistingData();
-        CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
+        UpdateDetailLinkSave();
         $('#EditRequisitionDetailsModal').modal('hide');
     }
 }
 
-function mergedEditedRowsWithExistingData() {
+function EditRequsitionDetailLink(data) {
     debugger;
-    var updatedData = [];
-    var allDataExists = DataTables.PurchaseOrderDetailTable.rows().data();
-    if (allDataExists.length > 0) {
-        for (var j = 0; j < allDataExists.length; j++) {
-            for (var r = 0; r < reqDetail.length; r++) {
-                if (allDataExists[j].MaterialID == reqDetail[r].MaterialID) {
-                    allDataExists[j].Qty = parseFloat(reqDetail[r].Qty);//new Qty
-                    allDataExists[j].Amount = parseFloat(reqDetail[r].Rate) * parseFloat(allDataExists[j].Qty); //new Rate * changed Qty
-                    allDataExists[j].MaterialDesc = reqDetail[r].MaterialDesc; //New Material Description
-                    allDataExists[j].Particulars = allDataExists[j].Particulars 
-                    reqDetail.splice(r, 1);//removing duplicate after adding value 
-                    r = r - 1;// for avoiding skipping row while checking
-                    updatedData.push(allDataExists[j]);
-                }
-            }
-        }
-        DataTables.PurchaseOrderDetailTable.clear().rows.add(allDataExists).draw(false);// binding table with Existing data changed
+    for (var r = 0; r < data.length; r++) {
+        RequisitionDetailLink = new Object();
+        RequisitionDetailLink.MaterialID = data[r].MaterialID;
+        RequisitionDetailLink.ID = data[r].LinkID;//LinkId
+        RequisitionDetailLink.ReqDetailID = data[r].ReqDetailID;//[ReqDetailID]
+        RequisitionDetailLink.ReqID = data[r].ReqID;
+        RequisitionDetailLink.Qty = data[r].POQty;
+        reqDetailLink.push(RequisitionDetailLink);
     }
-    debugger;
-    var temp = DataTables.PurchaseOrderDetailTable.rows().data();
-    reqDetail = temp; 
 }
+
+//function mergedEditedRowsWithExistingData() {
+//    debugger;
+//    var updatedData = [];
+//    var allDataExists = DataTables.PurchaseOrderDetailTable.rows().data();
+//    if (allDataExists.length > 0) {
+//        for (var j = 0; j < allDataExists.length; j++) {
+//            for (var r = 0; r < reqDetail.length; r++) {
+//                if (allDataExists[j].MaterialID == reqDetail[r].MaterialID) {
+//                    allDataExists[j].Qty = parseFloat(reqDetail[r].Qty);//new Qty
+//                    allDataExists[j].Amount = parseFloat(reqDetail[r].Rate) * parseFloat(allDataExists[j].Qty); //new Rate * changed Qty
+//                    allDataExists[j].MaterialDesc = reqDetail[r].MaterialDesc; //New Material Description
+//                    allDataExists[j].Particulars = allDataExists[j].Particulars 
+//                    reqDetail.splice(r, 1);//removing duplicate after adding value 
+//                    r = r - 1;// for avoiding skipping row while checking
+//                    updatedData.push(allDataExists[j]);
+//                }
+//            }
+//        }
+//        DataTables.PurchaseOrderDetailTable.clear().rows.add(allDataExists).draw(false);// binding table with Existing data changed
+//    }
+//    debugger;
+//    var temp = DataTables.PurchaseOrderDetailTable.rows().data();
+//    reqDetail = temp; 
+//}
 
 
 function EdittextBoxValue(thisObj, textBoxCode) {

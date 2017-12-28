@@ -47,6 +47,7 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         public Guid ReqID { get; set; }
         public Guid? MaterialID { get; set; }
+        public Guid LinkID { get; set; }
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [DataType(DataType.MultilineText)]

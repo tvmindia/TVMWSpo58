@@ -146,14 +146,11 @@ namespace SPOffice.UserInterface.Controllers
         #region InsertUpdatePurchaseOrder
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
-      //  [ValidateAntiForgeryToken]
         public string InsertUpdatePurchaseOrder(SupplierOrderViewModel SPOViewModel)
         {
             try
             {
-                object result = null;
-                //if (ModelState.IsValid)
-                //{
+                object result = null; 
                     AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     SPOViewModel.commonObj = new CommonViewModel();
                     SPOViewModel.commonObj.CreatedBy = _appUA.UserName;
@@ -172,19 +169,39 @@ namespace SPOffice.UserInterface.Controllers
                     }
 
                     return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
-                //}
-                //else
-                //{
-                //    List<string> modelErrors = new List<string>();
-                //    foreach (var modelState in ModelState.Values)
-                //    {
-                //        foreach (var modelError in modelState.Errors)
-                //        {
-                //            modelErrors.Add(modelError.ErrorMessage);
-                //        }
-                //    }
-                //    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
-                //}
+           
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+
+
+        }
+        #endregion InsertUpdatePurchaseOrder
+
+        #region InsertUpdatePurchaseOrder
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
+        public string UpdatePurchaseOrderDetailLink(SupplierOrderViewModel SPOViewModel)
+        {
+            try
+            {
+                object result = null;
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
+                SPOViewModel.commonObj = new CommonViewModel();
+                SPOViewModel.commonObj.CreatedBy = _appUA.UserName;
+                SPOViewModel.commonObj.CreatedDate = _appUA.DateTime;
+                SPOViewModel.commonObj.UpdatedBy = SPOViewModel.commonObj.CreatedBy;
+                SPOViewModel.commonObj.UpdatedDate = SPOViewModel.commonObj.CreatedDate;
+
+
+                result = _supplierBusiness.UpdatePurchaseOrderDetailLink(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+
             }
             catch (Exception ex)
             {
@@ -244,7 +261,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetPurchaseOrderDetailTable
 
-        #region EditPurchaseOrderDetailByID
+        #region GetPurchaseOrderDetailByID
         [HttpGet]
         //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public string EditPurchaseOrderDetail(string ID)
@@ -264,7 +281,7 @@ namespace SPOffice.UserInterface.Controllers
                     return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
                 }
             }
-        #endregion EditPurchaseOrderDetailByID
+        #endregion GetPurchaseOrderDetailByID
 
         #region GetAllRequisitionHeaderForSupplierPO
         [HttpGet]
@@ -284,15 +301,14 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetAllRequisitionHeaderForSupplierPO
 
-
         #region GetRequisitionDetailsByIDs
         [HttpGet]
         //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
-        public string GetRequisitionDetailsByIDs(string IDs)
+        public string GetRequisitionDetailsByIDs(string IDs,string SPOID)
         {
             try
             {
-                List<RequisitionDetailViewModel> SPOVMList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_supplierBusiness.GetRequisitionDetailsByIDs(IDs));
+                List<RequisitionDetailViewModel> SPOVMList = Mapper.Map<List<RequisitionDetail>, List<RequisitionDetailViewModel>>(_supplierBusiness.GetRequisitionDetailsByIDs(IDs,SPOID));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = SPOVMList });
             }
             catch (Exception ex)
@@ -302,7 +318,6 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetRequisitionDetailsByIDs
-
 
         #region  DeletePurchaseOrderDetail
         [HttpGet]

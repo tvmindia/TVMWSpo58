@@ -435,6 +435,66 @@ namespace SPOffice.RepositoryServices.Services
                 Message = Cobj.UpdateSuccess
             };
         }
+
+        public object UpdatePurchaseOrderDetailLink(SupplierOrder SPO)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdatePurchaseOrderDetailLink]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@POID", SqlDbType.UniqueIdentifier).Value = SPO.ID;
+                        cmd.Parameters.Add("@reqDetailLinkObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailLinkObjXML;
+                        cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
         public object DeletePurchaseOrder(Guid ID)
         {
             SqlParameter outputStatus = null;
@@ -627,7 +687,7 @@ namespace SPOffice.RepositoryServices.Services
 
         }
 
-        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs)
+        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID)
         {
             List<RequisitionDetail> Req_List = null;
             try
@@ -643,6 +703,8 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetRequisitionDetailsByIDs]";
                         cmd.Parameters.Add("@IDs", SqlDbType.NVarChar,-1).Value = @IDs;
+                        if(SPOID!="")
+                        cmd.Parameters.Add("@POID", SqlDbType.UniqueIdentifier).Value = SPOID;
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
@@ -713,6 +775,7 @@ namespace SPOffice.RepositoryServices.Services
                                     RequisitionDetail _ReqObj = new RequisitionDetail();
                                     {
                                         _ReqObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _ReqObj.ID);
+                                        _ReqObj.LinkID = (sdr["LinkID"].ToString() != "" ? Guid.Parse(sdr["LinkID"].ToString()) : _ReqObj.ID);
                                         _ReqObj.ReqID = (sdr["ReqID"].ToString() != "" ? Guid.Parse(sdr["ReqID"].ToString()) : _ReqObj.ReqID);
                                         _ReqObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _ReqObj.MaterialID);
                                         _ReqObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : _ReqObj.Description);
