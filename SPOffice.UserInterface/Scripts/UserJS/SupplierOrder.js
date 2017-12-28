@@ -450,7 +450,6 @@ function Save() {
         var data = "{'SPOViewModel':" + JSON.stringify(SupplierOrderViewModel) + "}";
 
         PostDataToServer("SupplierOrder/InsertUpdatePurchaseOrder/", data, function (JsonResult) {
-           
             debugger;
             switch (JsonResult.Result) {
                 case "OK":
@@ -459,7 +458,12 @@ function Save() {
                     if (JsonResult.Record.ID) {
                         $("#ID").val(JsonResult.Record.ID);
                         BindPurchaseOrder($("#ID").val());
+                    } else
+                    {
+                        Reset();
                     }
+                    reqDetail = [];
+                    reqDetailLink = [];
                     BindAllPurchaseOrders();
                     break;
                 case "Error":
