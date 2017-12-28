@@ -607,6 +607,7 @@ function SaveSuccess(data, status) {
                 $("#ID").val(JsonResult.Record.ID);
             }
             BindAllPurchaseOrders();
+            Reset();
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Message);
@@ -1151,7 +1152,7 @@ function DeletePurchaseOrderDetail(ID) {
                 case "OK":
                     notyAlert('success', ds.Message);
                     BindAllPurchaseOrders();
-                    closeNav();
+                    Reset();
                     break;
                 case "ERROR":
                     notyAlert('error', ds.Message);

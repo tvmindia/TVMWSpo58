@@ -704,7 +704,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[GetRequisitionDetailsByIDs]";
                         cmd.Parameters.Add("@IDs", SqlDbType.NVarChar,-1).Value = @IDs;
                         if(SPOID!="")
-                        cmd.Parameters.Add("@POID", SqlDbType.UniqueIdentifier).Value = SPOID;
+                        cmd.Parameters.Add("@POID", SqlDbType.UniqueIdentifier).Value = Guid.Parse(SPOID);
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
