@@ -177,11 +177,6 @@ $(document).ready(function () {
                  { "data": "OrderedQty", "defaultContent": "<i>-</i>", "width": "10%" },
                  {
                      "data": "POQty", "defaultContent": "<i>-</i>", "width": "10px", 'render': function (data, type, row) {
-                         //var value;
-                         //if (row.OrderedQty)
-                         //    value = parseFloat(data) - parseFloat(row.OrderedQty);
-                         //else
-                         //    value = data;
                          return '<input class="form-control text-right " name="Markup" type="text"  value="' + data + '"  onclick="SelectAllValue(this);" onkeypress = "return isNumber(event)", onchange="textBoxValueChanged(this,3);">';
                      }
                  },
@@ -255,10 +250,6 @@ $(document).ready(function () {
     } catch (x) {
         notyAlert('error', x.message);
     }
-
-
-
-    //-----------------------------
 
 });
 //---------------------------------Data Table Bindings------------------------------------------//
@@ -482,9 +473,6 @@ function Save() {
             }
         })
     }
-
-  
-  //  $('#btnSave').trigger('click');
 }
 
 function UpdateDetailLinkSave() {
@@ -596,27 +584,27 @@ function OrderStatusChange()
 
 }
 
-function SaveSuccess(data, status) {
+//function SaveSuccess(data, status) {
 
-    var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
-        case "OK":
-            notyAlert('success', JsonResult.Message);
-            ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
-            if (JsonResult.Record.ID) {
-                $("#ID").val(JsonResult.Record.ID);
-            }
-            BindAllPurchaseOrders();
-            Reset();
-            break;
-        case "ERROR":
-            notyAlert('error', JsonResult.Message);
-            break;
-        default:
-            notyAlert('error', JsonResult.Message);
-            break;
-    }
-}
+//    var JsonResult = JSON.parse(data)
+//    switch (JsonResult.Result) {
+//        case "OK":
+//            notyAlert('success', JsonResult.Message);
+//            ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+//            if (JsonResult.Record.ID) {
+//                $("#ID").val(JsonResult.Record.ID);
+//            }
+//            BindAllPurchaseOrders();
+//            Reset();
+//            break;
+//        case "ERROR":
+//            notyAlert('error', JsonResult.Message);
+//            break;
+//        default:
+//            notyAlert('error', JsonResult.Message);
+//            break;
+//    }
+//}
 
 //------------------------------------------------ Filter clicks-----------------------------------------------//
 function GridFilter(status) {
