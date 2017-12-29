@@ -29,6 +29,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string POStatus { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
+
     }
     public class SupplierOrder
     {
@@ -57,7 +58,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string POStatus { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
-
+        public bool IsFinalApproved { get; set; }
+        public DateTime FinalApprovedDate { get; set; }
         public string CompanyName { get; set; }
         public Suppliers SuppliersObj { get; set; }
         public Company company { get; set; }
