@@ -826,13 +826,14 @@ function GetAllRequisitionHeaderForSupplierPO() {
 function ViewRequisitionDetails(value) {
     debugger;
     $('#tabDetail').attr('data-toggle', 'tab');
-    //selecting Checked IDs for  bind the detail Table
-    var IDs = GetSelectedRowIDs();
+    if (value)
+        $('#tabDetail').trigger('click');
+    else {
+        //selecting Checked IDs for  bind the detail Table
+        var IDs = GetSelectedRowIDs();
         if (IDs) {
             BindGetRequisitionDetailsTable(IDs);
             DataTables.RequisitionDetailsTable.rows().select();
-            if (value)
-            $('#tabDetail').trigger('click');
             $('#btnForward').hide();
             $('#btnBackward').show();
             $('#btnAddSPODetails').show();
@@ -842,6 +843,7 @@ function ViewRequisitionDetails(value) {
             DataTables.RequisitionDetailsTable.clear().draw(false);
             notyAlert('warning', "Please Select Requisition");
         }
+    }  
 }
 function ViewRequisitionList(value) {
     $('#tabDetail').attr('data-toggle', 'tab');
