@@ -397,8 +397,9 @@ function BindPurchaseOrder(ID) {
             {
                 EnableSupplierPoForm();
             }
-            //clearUploadControl();
-            //PaintImages(ID);
+            //Attachment below functions calls go to custom.js
+            clearUploadControl();
+            PaintImages(ID);
         }
     }
     catch (e) {
