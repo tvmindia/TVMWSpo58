@@ -264,7 +264,8 @@ namespace SPOffice.RepositoryServices.Services
                                      _SuppObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _SuppObj.TaxPercApplied);
                                      _SuppObj.GrossTotal = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.GrossTotal);
                                     _SuppObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _SuppObj.TaxTypeCode);
-
+                                    _SuppObj.IsFinalApproved= (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);
+                                    _SuppObj.FinalApprovedDate= (sdr["FinalApprovedDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovedDate"].ToString()) : _SuppObj.FinalApprovedDate);
                                 }
                             }
                         }
