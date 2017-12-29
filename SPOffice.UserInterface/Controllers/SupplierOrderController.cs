@@ -34,7 +34,7 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         // GET: SupplierOrder
-        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.filter = id;
@@ -98,7 +98,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllSupplierPurchaseOrders
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string GetAllSupplierPurchaseOrders(string filter)
         {
             try
@@ -153,7 +153,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region InsertUpdatePurchaseOrder
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "W")]
         public string InsertUpdatePurchaseOrder(SupplierOrderViewModel SPOViewModel)
         {
             try
@@ -192,7 +192,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region InsertUpdatePurchaseOrder
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "W")]
         public string UpdatePurchaseOrderDetailLink(SupplierOrderViewModel SPOViewModel)
         {
             try
@@ -224,7 +224,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeletePurchaseOrder
         [HttpGet]
-      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "D")]
         public string DeletePurchaseOrder(string ID)
         {
             object result = null;
@@ -247,7 +247,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetPurchaseOrderDetailTable
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string GetPurchaseOrderDetailTable(string ID)
         {
             try
@@ -271,7 +271,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetPurchaseOrderDetailByID
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string EditPurchaseOrderDetail(string ID)
         {
             try
@@ -293,7 +293,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetAllRequisitionHeaderForSupplierPO
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string GetAllRequisitionHeaderForSupplierPO()
         {
             try
@@ -311,7 +311,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetRequisitionDetailsByIDs
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string GetRequisitionDetailsByIDs(string IDs,string SPOID)
         {
             try
@@ -329,7 +329,7 @@ namespace SPOffice.UserInterface.Controllers
 
         #region  DeletePurchaseOrderDetail
         [HttpGet]
-        //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "D")]
+          [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "D")]
         public string DeletePurchaseOrderDetail(string ID)
         {
             object result = null;
