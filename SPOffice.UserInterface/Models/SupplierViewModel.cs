@@ -102,7 +102,9 @@ namespace SPOffice.UserInterface.Models
         public string hdfRequisitionDetail { get; set; }
 
         public bool IsFinalApproved { get; set; }
+        public bool IsApprover { get; set; }
         public DateTime FinalApprovedDate { get; set; }
+        public string FinalApprovedDateString { get; set; }
         //Lists
         public List<SelectListItem> SupplierList { get; set; }
         public List<SelectListItem> CompanyList { get; set; }

@@ -125,16 +125,22 @@ namespace SPOffice.UserInterface.Controllers
 
         #region GetPurchaseOrderByID
         [HttpGet]
-      //  [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string GetPurchaseOrderByID(string ID)
         {
             try
             {
+                AppUA _appUA = Session["AppUAOffice"] as AppUA;
+                
                 if (string.IsNullOrEmpty(ID))
                 {
                     throw new Exception("ID required");
                 }
                 SupplierOrderViewModel customerPOViewModel = Mapper.Map<SupplierOrder, SupplierOrderViewModel>(_supplierBusiness.GetSupplierPurchaseOrderByID(Guid.Parse(ID)));
+                if (_appUA.RolesCSV.Contains("CEO") || _appUA.RolesCSV.Contains("SAdmin"))
+                {
+                    customerPOViewModel.IsApprover = true;
+                }
                 return JsonConvert.SerializeObject(new { Result = "OK", Record = customerPOViewModel });
             }
             catch (Exception ex)
@@ -422,6 +428,44 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.ApproveBtn.Title = "Approve";
                     ToolboxViewModelObj.ApproveBtn.Event = "ApproveSupplierPO()";
                     ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+
+                    break;
+                case "EditDisable":
+                    ToolboxViewModelObj.addbtn.Visible = true;
+                    ToolboxViewModelObj.addbtn.Text = "Add";
+                    ToolboxViewModelObj.addbtn.Title = "Add New";
+                    ToolboxViewModelObj.addbtn.Event = "AddNew();";
+
+                    ToolboxViewModelObj.savebtn.Visible = true;
+                    ToolboxViewModelObj.savebtn.Disable = true;
+                    ToolboxViewModelObj.savebtn.DisableReason = "Approved Order";
+                    ToolboxViewModelObj.savebtn.Text = "Save";
+                    ToolboxViewModelObj.savebtn.Title = "Save";
+                    ToolboxViewModelObj.savebtn.Event = "";
+
+                    ToolboxViewModelObj.resetbtn.Visible = true;
+                    ToolboxViewModelObj.resetbtn.Disable = true;
+                    ToolboxViewModelObj.resetbtn.DisableReason = "Approved Order";
+                    ToolboxViewModelObj.resetbtn.Text = "Reset";
+                    ToolboxViewModelObj.resetbtn.Title = "Reset";
+                    ToolboxViewModelObj.resetbtn.Event = "";
+
+                    ToolboxViewModelObj.CloseBtn.Visible = true;
+                    ToolboxViewModelObj.CloseBtn.Text = "Close";
+                    ToolboxViewModelObj.CloseBtn.Title = "Close";
+                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+
+                    ToolboxViewModelObj.EmailBtn.Visible = true;
+                    ToolboxViewModelObj.EmailBtn.Text = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Title = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Disable = true;
+                    ToolboxViewModelObj.deletebtn.DisableReason = "Approved Order";
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "";
 
                     break;
                 case "Add":

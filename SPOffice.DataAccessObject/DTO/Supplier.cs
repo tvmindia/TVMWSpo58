@@ -60,6 +60,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string duration { get; set; }
         public bool IsFinalApproved { get; set; }
         public DateTime FinalApprovedDate { get; set; }
+        public string FinalApprovedDateString { get; set; }
         public string CompanyName { get; set; }
         public Suppliers SuppliersObj { get; set; }
         public Company company { get; set; }

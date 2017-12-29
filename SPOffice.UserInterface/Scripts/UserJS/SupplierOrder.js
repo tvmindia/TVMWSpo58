@@ -39,6 +39,17 @@ $(document).ready(function () {
               { "data": "company.Name", "defaultContent": "<i>-</i>" },
               { "data": "TotalAmount", "defaultContent": "<i>-</i>" },
               { "data": "POStatus", "defaultContent": "<i>-</i>" },
+            {
+                "data": "IsFinalApproved", render: function (data, type, row) {
+                    if (data) {
+                        return "Approved ✔ <br/>📅 " + (row.FinalApprovedDateString !== null ? row.FinalApprovedDateString : "-");
+                    }
+                    else {
+                        return 'Pending';
+                    }
+
+                }, "defaultContent": "<i>-</i>"
+            },
               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
@@ -90,7 +101,7 @@ $(document).ready(function () {
                           return '-'
                   }
               },
-            { "data": null, "orderable": false, "width": "5%", "defaultContent": '<a href="#" onclick="EditPurchaseOrderDetailTable(this)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a><span> | </span><a href="#" onclick="DeletePurchaseOrderDetailTable(this)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>' }
+            { "data": null, "orderable": false, "width": "5%", "defaultContent": '<a href="#" class="ItemEditlink" onclick="EditPurchaseOrderDetailTable(this)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a><span> | </span><a href="#" class="ItemEditlink" onclick="DeletePurchaseOrderDetailTable(this)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0,1], "visible": false, "searchable": false },
                  { className: "text-right", "targets": [5,6,7] },
@@ -341,7 +352,7 @@ function Edit(Obj) {
     var rowData = DataTables.PurchaseOrderTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
     BindPurchaseOrder(rowData.ID)
-    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+    //ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
     RemovevalidationMsg();
     openNav();
 
@@ -349,6 +360,7 @@ function Edit(Obj) {
 
 function BindPurchaseOrder(ID) {
     try {
+        debugger;
         var jsresult = GetPurchaseOrderDetailsByID(ID)
         if (jsresult) {
             $("#ddlSupplier").val(jsresult.SupplierID);
@@ -373,7 +385,18 @@ function BindPurchaseOrder(ID) {
             $("#TotalAmount").val(roundoff(jsresult.TotalAmount));
             
             PurchaseOrderDetailBindTable() //------binding Details table
-
+            if ((jsresult.IsFinalApproved) && (jsresult.IsApprover))
+            {
+                EnableSupplierPoForm();
+            }
+            else if ((jsresult.IsFinalApproved) && !(jsresult.IsApprover))
+            {
+                DisableSupplierPoForm();
+            }
+            else if (!(jsresult.IsFinalApproved))
+            {
+                EnableSupplierPoForm();
+            }
             //clearUploadControl();
             //PaintImages(ID);
         }
@@ -382,7 +405,64 @@ function BindPurchaseOrder(ID) {
         notyAlert('error', e.Message);
     }
 }
+function EnableSupplierPoForm()
+{
+    $("#ddlSupplier").prop('disabled', false);
+    $("#ddlCompany").prop('disabled', false);
+    $("#PONo").prop('disabled', false);
+    $("#PODate").prop('disabled', false);
+    $("#POIssuedDate").prop('disabled', false);
 
+    $("#ShipToAddress").prop('disabled', false);
+    $("#SupplierMailingAddress").prop('disabled', false);
+    $("#ddlOrderStatus").prop('disabled', false);
+
+    $("#BodyFooter").prop('disabled', false);
+    $("#BodyHeader").prop('disabled', false);
+    $("#GeneralNotes").prop('disabled', false);
+
+    $("#TaxTypeCode").prop('disabled', false);
+    $("#TaxPercApplied").prop('disabled', false);
+    $("#Discount").prop('disabled', false);
+    $("#TaxAmount").prop('disabled', false);
+    $("#TotalAmount").prop('disabled', false);
+    $('#btnAddRequisitionItems').attr('disabled', false);
+    $('#btnAddRequisitionItems').attr('onclick', 'AddPurchaseOrderDetail()');
+    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+    $('.ItemEditlink').show();
+    $('.attachbutton').attr('disabled', false);
+    $('.attachbutton').attr('onclick',"$('#FileUpload1').click();")
+    $('input[type="button"]').prop('disabled', false);
+}
+function DisableSupplierPoForm()
+{
+    $("#ddlSupplier").prop('disabled', true);
+    $("#ddlCompany").prop('disabled', true);
+    $("#PONo").prop('disabled', true);
+    $("#PODate").prop('disabled', true);
+    $("#POIssuedDate").prop('disabled', true);
+
+    $("#ShipToAddress").prop('disabled', true);
+    $("#SupplierMailingAddress").prop('disabled', true);
+    $("#ddlOrderStatus").prop('disabled', true);
+
+    $("#BodyFooter").prop('disabled', true);
+    $("#BodyHeader").prop('disabled', true);
+    $("#GeneralNotes").prop('disabled', 'disabled');
+
+    $("#TaxTypeCode").prop('disabled', true);
+    $("#TaxPercApplied").prop('disabled', true);
+    $("#Discount").prop('disabled', true);
+    $("#TaxAmount").prop('disabled', true);
+    $("#TotalAmount").prop('disabled', true);
+    $('#btnAddRequisitionItems').attr('disabled', true);
+    $('#btnAddRequisitionItems').removeAttr('onclick');
+    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'EditDisable');
+    $('.ItemEditlink').hide();
+    $('.attachbutton').attr('disabled', true);
+    $('.attachbutton').removeAttr('onclick');
+    $('input[type="button"]').prop('disabled', true);
+}
 function GetPurchaseOrderDetailsByID(ID) {
     try {
 
@@ -1169,7 +1249,9 @@ function ApproveSupplierPO() {
             ds = JSON.parse(ds);
         }
         if (ds.Result == "OK") {
-            notyAlert('success', ds.Record.Message);          
+            notyAlert('success', ds.Record.Message);
+            BindPurchaseOrder($('#ID').val());
+            BindAllPurchaseOrders();
         }
         if (ds.Result == "ERROR") {
             notyAlert('error', ds.Message);

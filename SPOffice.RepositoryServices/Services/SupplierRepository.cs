@@ -176,7 +176,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
                                         _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
                                         _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
-                                        
+                                        _SuppObj.IsFinalApproved= (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);
+                                        _SuppObj.FinalApprovedDateString = (sdr["FinalApprovedDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovedDate"].ToString()).ToString(s.dateformat) : _SuppObj.FinalApprovedDateString);
                                         // _SuppObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()).ToString(s.dateformat) : _SuppObj.POIssuedDate);
                                         //_SuppObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _SuppObj.BodyHeader);
                                         //_SuppObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _SuppObj.BodyFooter);
