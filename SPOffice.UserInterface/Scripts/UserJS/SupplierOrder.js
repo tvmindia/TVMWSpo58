@@ -1265,3 +1265,6 @@ function ApproveSupplierPO() {
     }
 }
 
+function PreviewMail() {
+    notyAlert('warning', "Under Construction");
+}
