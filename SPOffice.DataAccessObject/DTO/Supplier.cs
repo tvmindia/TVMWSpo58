@@ -65,6 +65,8 @@ namespace SPOffice.DataAccessObject.DTO
         public Suppliers SuppliersObj { get; set; }
         public Company company { get; set; }
         public Common commonObj { get; set; }
+        public SupplierPOMailPreview mailPreviewVMObj { get; set; }
+        public SupplierPODetail SPODObj{ get; set; }
         public List<ReqDetail> reqDetailObj { get; set; }
         public List<ReqDetailLink> reqDetailLinkObj { get; set; }
         public string reqDetailObjXML { get; set; }
@@ -115,6 +117,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
+        public List<SupplierPODetail> SupplierPODetailList { get; set; }
     }
 
     public class ReqDetail

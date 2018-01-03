@@ -728,6 +728,7 @@
     <Compile Include="Models\ReminderViewModel.cs" />
     <Compile Include="Models\RequisitionViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
+    <Compile Include="Models\SupplierPOMailPreviewViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
@@ -792,6 +793,7 @@
     <Content Include="Views\SupplierOrder\Index.cshtml" />
     <Content Include="Views\Report\CustomerPOReport.cshtml" />
     <Content Include="Views\Report\RequisitionReport.cshtml" />
+    <Content Include="Views\SupplierOrder\_SupplierOrderMailPreview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

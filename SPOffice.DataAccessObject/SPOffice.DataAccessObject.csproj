@@ -121,6 +121,7 @@
     <Compile Include="DTO\Reports.cs" />
     <Compile Include="DTO\Requisition.cs" />
     <Compile Include="DTO\Supplier.cs" />
+    <Compile Include="DTO\SupplierPOMailPreview.cs" />
     <Compile Include="DTO\TaxType.cs" />
     <Compile Include="DTO\Units.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

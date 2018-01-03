@@ -26,7 +26,9 @@ namespace SPOffice.BusinessService.Contracts
         List<Requisition> GetAllRequisitionHeaderForSupplierPO();
         List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID);
         List<RequisitionDetail> EditPurchaseOrderDetail(string ID);
-        
+
+        SupplierOrder GetMailPreview(Guid ID);
+        Task<bool> QuoteEmailPush(SupplierOrder SOObj);
 
     }
 }

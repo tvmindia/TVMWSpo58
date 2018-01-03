@@ -8,6 +8,7 @@ using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using UserInterface.Models;
@@ -184,13 +185,10 @@ namespace SPOffice.UserInterface.Controllers
                 AppConstMessage cm = c.GetMessage(ex.Message);
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
-
-
-
         }
         #endregion InsertUpdatePurchaseOrder
 
-        #region InsertUpdatePurchaseOrder
+        #region UpdatePurchaseOrderDetailLink
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "W")]
         public string UpdatePurchaseOrderDetailLink(SupplierOrderViewModel SPOViewModel)
@@ -205,7 +203,6 @@ namespace SPOffice.UserInterface.Controllers
                 SPOViewModel.commonObj.UpdatedBy = SPOViewModel.commonObj.CreatedBy;
                 SPOViewModel.commonObj.UpdatedDate = SPOViewModel.commonObj.CreatedDate;
 
-
                 result = _supplierBusiness.UpdatePurchaseOrderDetailLink(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
 
                 return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
@@ -216,11 +213,8 @@ namespace SPOffice.UserInterface.Controllers
                 AppConstMessage cm = c.GetMessage(ex.Message);
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
-
-
-
         }
-        #endregion InsertUpdatePurchaseOrder
+        #endregion UpdatePurchaseOrderDetailLink
 
         #region  DeletePurchaseOrder
         [HttpGet]
@@ -369,6 +363,80 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
+
+        #region GetMailPreview
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
+        public ActionResult GetMailPreview(string ID)
+        {
+            SupplierPOMailPreviewViewModel MPVM = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID is missing");
+                }
+                MPVM = new SupplierPOMailPreviewViewModel();
+                MPVM.SOVMobj = Mapper.Map<SupplierOrder, SupplierOrderViewModel>(_supplierBusiness.GetMailPreview(Guid.Parse(ID)));
+                if (MPVM.SOVMobj != null)
+                {
+                    if (MPVM.SOVMobj.BodyHeader != null)
+                        MPVM.SOVMobj.BodyHeader = MPVM.SOVMobj.BodyHeader.Replace("\n", "<br/>");
+                    if (MPVM.SOVMobj.BodyFooter != null)
+                        MPVM.SOVMobj.BodyFooter = MPVM.SOVMobj.BodyFooter.Replace("\n", "<br/>");
+ 
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return PartialView("_SupplierOrderMailPreview", MPVM);
+        }
+        #endregion GetMailPreview
+
+
+        #region SendProformaMail
+
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
+        public async Task<string> SendQuoteMail(SupplierOrderViewModel SOVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(SOVM.ID.ToString()))
+                {
+                    AppUA _appUA = Session["AppUAOffice"] as AppUA;
+                    SOVM.commonObj = new CommonViewModel();
+                    SOVM.commonObj.CreatedBy = SOVM.commonObj.CreatedBy;
+                    SOVM.commonObj.CreatedDate = _appUA.DateTime;
+                    SOVM.commonObj.UpdatedBy = SOVM.commonObj.CreatedBy;
+                    SOVM.commonObj.UpdatedDate = SOVM.commonObj.CreatedDate;
+
+                    bool sendsuccess = await _supplierBusiness.QuoteEmailPush(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SOVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        SOVM.EmailSentYN = sendsuccess.ToString();
+                        //result = _supplierBusiness.UpdateSupplierOrderMailStatus(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SOVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess, Message = c.MailSuccess });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion SendProformaMail
 
         #region ButtonStyling
         [HttpGet]

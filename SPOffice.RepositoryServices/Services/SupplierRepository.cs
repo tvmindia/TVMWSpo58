@@ -246,6 +246,11 @@ namespace SPOffice.RepositoryServices.Services
                                 {
                                     _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
                                     _SuppObj.SupplierID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _SuppObj.SupplierID);
+                                    _SuppObj.SuppliersObj = new Suppliers();
+                                    _SuppObj.SuppliersObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _SuppObj.SuppliersObj.CompanyName);
+                                    _SuppObj.SuppliersObj.ContactEmail = (sdr["ContactEmail"].ToString() != "" ? sdr["ContactEmail"].ToString() : _SuppObj.SuppliersObj.ContactEmail);
+                                    _SuppObj.company = new Company();
+                                    _SuppObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : _SuppObj.company.Name);
                                     _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
                                     _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
                                     _SuppObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()).ToString(s.dateformat) : _SuppObj.POIssuedDate);

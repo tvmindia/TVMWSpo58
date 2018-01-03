@@ -118,10 +118,12 @@ namespace SPOffice.UserInterface.Models
         public CompanyViewModel company { get; set; }
         public List<ReqDetailViewModel> reqDetailObj { get; set; }
         public List<ReqDetailLinkViewModel> reqDetailLinkObj { get; set; }
-
+        public SupplierPOMailPreviewViewModel mailPreviewVMObj { get; set; }
+        public SupplierPODetailViewModel SPODObj { get; set; }
         //file upload 
         public List<FileUpload> AttachmentLists { get; set; }
         public Guid hdnFileID { get; set; }
+        public string MailBody { get; set; }
     }
 
     public class SuppliersViewModel
@@ -169,6 +171,7 @@ namespace SPOffice.UserInterface.Models
         public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
+        public List<SupplierPODetailViewModel> SupplierPODetailList { get; set; }
     }
 
     public class ReqDetailViewModel

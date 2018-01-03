@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace SPOffice.BusinessService.Services
@@ -12,10 +13,12 @@ namespace SPOffice.BusinessService.Services
     public class SupplierBusiness : ISupplierBusiness
     {
         private ISupplierRepository _supplierRepository;
+        IMailBusiness _mailBusiness;
 
-        public SupplierBusiness(ISupplierRepository supplierRepository)
+        public SupplierBusiness(ISupplierRepository supplierRepository, IMailBusiness mailBusiness)
         {
             _supplierRepository = supplierRepository;
+            _mailBusiness = mailBusiness;
         }
 
       
@@ -56,16 +59,16 @@ namespace SPOffice.BusinessService.Services
 
         public SupplierOrder GetSupplierPurchaseOrderByID(Guid ID)
         {
-            SupplierOrder SPOList = null;
+            SupplierOrder SPO = null;
             try
             {
-                SPOList = _supplierRepository.GetSupplierPurchaseOrderByID(ID);
+                SPO = _supplierRepository.GetSupplierPurchaseOrderByID(ID);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return SPOList;
+            return SPO;
         }
         public object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate)
         {
@@ -166,6 +169,58 @@ namespace SPOffice.BusinessService.Services
         {
             return _supplierRepository.EditPurchaseOrderDetail(ID);
         }
-        
-    }
+
+        public SupplierOrder GetMailPreview(Guid ID)
+        {
+            SupplierOrder SOObj = null;
+            try
+            {
+                SOObj = GetSupplierPurchaseOrderByID(ID);
+                if (SOObj != null)
+                {
+                    if ((SOObj.ID != Guid.Empty) && (SOObj.ID != null))
+                    {
+                        SOObj.SPODObj = new SupplierPODetail();
+                        SOObj.SPODObj.SupplierPODetailList = GetPurchaseOrderDetailTable(ID);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return SOObj;
+        }
+
+        public async Task<bool> QuoteEmailPush(SupplierOrder SOObj)
+        {
+             
+            bool sendsuccess = false;
+            SupplierOrder pH = null;
+            try
+            {
+                pH = GetSupplierPurchaseOrderByID((Guid)SOObj.ID);
+
+                if (!string.IsNullOrEmpty(SOObj.mailPreviewVMObj.SentToEmails))
+                {
+                    string[] EmailList = SOObj.mailPreviewVMObj.SentToEmails.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = SOObj.mailPreviewVMObj.MailBody;
+                        _mail.Subject = "Supplier Purchase Order";
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
+        }
+     }
 }

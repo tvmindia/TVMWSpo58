@@ -352,6 +352,7 @@ function Edit(Obj) {
     var rowData = DataTables.PurchaseOrderTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
     BindPurchaseOrder(rowData.ID)
+    $('#MailHeaderID').val(rowData.ID);
     //ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
     RemovevalidationMsg();
     openNav();
@@ -378,6 +379,7 @@ function BindPurchaseOrder(ID) {
             $("#BodyHeader").val(jsresult.BodyHeader);
             $("#GeneralNotes").val(jsresult.GeneralNotes);
 
+            $("#SentToEmails").val(jsresult.SuppliersObj.ContactEmail);
             $("#TaxTypeCode").val(jsresult.TaxTypeCode);
             $("#TaxPercApplied").val(jsresult.TaxPercApplied);
             $("#Discount").val(roundoff(jsresult.Discount));
@@ -1263,8 +1265,93 @@ function ApproveSupplierPO() {
     catch (e) {
         console.log(e.message);
     }
-}
+} 
 
 function PreviewMail() {
-    notyAlert('warning', "Under Construction");
+    try {
+        debugger;
+
+        var QHID = $("#ID").val();
+        if (QHID) {
+            //Bind mail html into model
+            GetMailPreview(QHID);
+
+            $("#MailPreviewModel").modal('show');
+        } 
+    }
+    catch (e) {
+        notyAlert('error', e.Message);
+    }
+
 }
+function GetMailPreview(ID) {
+    debugger;
+    var data = { "ID": ID };
+    var ds = {};
+    ds = GetDataFromServer("SupplierOrder/GetMailPreview/", data);
+    if (ds == "Nochange") {
+        return; 0
+    }
+    debugger;
+    $("#mailmodelcontent").empty();
+    $("#mailmodelcontent").html(ds);
+    $("#mailBodyText").val(ds);
+
+}
+
+function SendMailClick() {
+    debugger;
+    $('#btnFormSendMail').trigger('click');
+}
+
+function ValidateEmail() {
+    debugger;
+    var ste = $('#SentToEmails').val();
+    if (ste) {
+        var atpos = ste.indexOf("@");
+        var dotpos = ste.lastIndexOf(".");
+        if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= ste.length) {
+            notyAlert('error', 'Invalid Email');
+            return false;
+        }
+            //not valid
+
+        else {
+            $("#MailPreviewModel").modal('hide');
+            showLoader();
+            return true;
+        }
+
+    }
+
+    else
+        notyAlert('error', 'Enter email address');
+    return false;
+}
+
+function MailSuccess(data, status) {
+    debugger;
+    hideLoader();
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Result) {
+        case "OK":
+            notyAlert('success', JsonResult.Message);
+            switch (JsonResult.MailResult) {
+                case 1:
+                    $("#lblEmailSent").text('Yes');
+                    break;
+                case 0:
+                    $("#lblEmailSent").text('No');
+                    break;
+            }
+            Reset();
+            break;
+        case "ERROR":
+            notyAlert('error', JsonResult.Message);
+            break;
+        default:
+            notyAlert('error', JsonResult.Message);
+            break;
+    }
+}
+
