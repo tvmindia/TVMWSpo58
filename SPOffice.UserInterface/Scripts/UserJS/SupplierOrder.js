@@ -673,30 +673,27 @@ function OrderStatusChange()
         $("#lblStatus").text($("#ddlOrderStatus option:selected").text());
     else
         $("#lblStatus").text('N/A');
-
 }
 
-//function SaveSuccess(data, status) {
-
-//    var JsonResult = JSON.parse(data)
-//    switch (JsonResult.Result) {
-//        case "OK":
-//            notyAlert('success', JsonResult.Message);
-//            ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
-//            if (JsonResult.Record.ID) {
-//                $("#ID").val(JsonResult.Record.ID);
-//            }
-//            BindAllPurchaseOrders();
-//            Reset();
-//            break;
-//        case "ERROR":
-//            notyAlert('error', JsonResult.Message);
-//            break;
-//        default:
-//            notyAlert('error', JsonResult.Message);
-//            break;
-//    }
-//}
+function SupplierOnChange(curobj) {
+    debugger;
+    var supplierID = $(curobj).val();
+    if (supplierID) {
+        var data = { "ID": supplierID };
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/GetSupplierDetailsByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            $("#SupplierMailingAddress").val(ds.Record.BillingAddress);
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    } 
+}
 
 //------------------------------------------------ Filter clicks-----------------------------------------------//
 function GridFilter(status) {

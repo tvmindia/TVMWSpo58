@@ -39,7 +39,21 @@ namespace SPOffice.BusinessService.Services
 
                 throw;
             }
-        } 
+        }
+        public  Suppliers GetSupplierDetailsByID(Guid ID)
+        {
+            List<Suppliers> supplierList = _supplierRepository.GetAllSuppliers();
+            Suppliers supplier = null;
+            try
+            {
+                supplier = supplierList != null ? supplierList.Where(Q => Q.ID == ID).SingleOrDefault() : null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return supplier; 
+        }
 
         //------------------------------------------------------------------------//
         public List<SupplierOrder> GetAllSupplierPurchaseOrders()

@@ -394,8 +394,7 @@ namespace SPOffice.UserInterface.Controllers
             return PartialView("_SupplierOrderMailPreview", MPVM);
         }
         #endregion GetMailPreview
-
-
+        
         #region SendProformaMail
 
         [HttpPost, ValidateInput(false)]
@@ -437,6 +436,28 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion SendProformaMail
+
+        #region GetCustomerDetailsByID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
+        public string GetSupplierDetailsByID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("Supplier ID required");
+                }
+                SuppliersViewModel SupplierVM = Mapper.Map<Suppliers, SuppliersViewModel>(_supplierBusiness.GetSupplierDetailsByID(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = SupplierVM });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetCustomerDetailsByID
 
         #region ButtonStyling
         [HttpGet]

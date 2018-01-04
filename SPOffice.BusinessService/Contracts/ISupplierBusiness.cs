@@ -12,6 +12,7 @@ namespace SPOffice.BusinessService.Contracts
         List<Supplier> GetAllSupplierPOForMobile(string duration);
 
         List<Suppliers> GetAllSuppliers();
+        Suppliers GetSupplierDetailsByID(Guid ID);
 
         List<SupplierOrder> GetAllSupplierPurchaseOrders();
         SupplierOrder GetSupplierPurchaseOrderByID(Guid ID);

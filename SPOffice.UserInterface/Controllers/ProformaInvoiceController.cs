@@ -158,11 +158,7 @@ namespace SPOffice.UserInterface.Controllers
             }
           }
         #endregion InsertUpdateProformaInvoices
-
-
-       
-
-
+               
         #region GetAllProductCodes
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -206,6 +202,7 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetAllUnitCodes
+        
         #region GetTaxRate
 
         [HttpGet]
@@ -248,7 +245,6 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion GetQuateItemsByQuateHeadID
 
-
         #region GetProformaInvoiceDetailsByID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -270,8 +266,7 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion GetProformaInvoiceDetailsByID
-
-
+        
         #region  DeleteItemByID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "D")]
@@ -294,8 +289,7 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion DeleteItemByID
-
-
+        
         #region GetMailPreview
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -377,8 +371,7 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion SendProformaMail
-
-
+        
         #region DeleteProformaInvoice()
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "D")]
