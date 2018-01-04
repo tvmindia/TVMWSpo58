@@ -64,7 +64,10 @@ namespace SPOffice.UserInterface.Models
 
         [Display(Name = "Ship To Address")]
         public string ShipToAddress { get; set; }
+
+        [Display(Name = "Body Header")]
         public string BodyHeader { get; set; }
+        [Display(Name = "Body Footer")]
         public string BodyFooter { get; set; }
 
         [Display(Name = "Gross Amount")]
@@ -84,7 +87,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Total Amount")]
         public decimal TotalAmount { get; set; }
 
-
+        [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
         public string SupplierName { get; set; }

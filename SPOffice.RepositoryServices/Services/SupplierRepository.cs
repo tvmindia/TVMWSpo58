@@ -393,7 +393,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@BodyFooter", SqlDbType.VarChar, 500).Value = SPO.BodyFooter;
                         cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = SPO.BodyHeader;
                         cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = SPO.POStatus;
-                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.GrossTotal;
+                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.TotalAmount;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
