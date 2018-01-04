@@ -10,5 +10,6 @@ namespace SPOffice.BusinessService.Contracts
     public interface ICompanyBusiness
     {
         List<Company> GetAllCompanies();
+        Company GetCompanyDetailsByCode(string Code);
     }
 }

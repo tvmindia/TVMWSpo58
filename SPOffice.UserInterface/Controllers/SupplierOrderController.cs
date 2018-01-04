@@ -437,7 +437,7 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion SendProformaMail
 
-        #region GetCustomerDetailsByID
+        #region GetSupplierDetailsByID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
         public string GetSupplierDetailsByID(string ID)
@@ -457,7 +457,29 @@ namespace SPOffice.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
         }
-        #endregion GetCustomerDetailsByID
+        #endregion GetSupplierDetailsByID
+
+        #region GetCompanyDetailsByCode
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SupplierOrder", Mode = "R")]
+        public string GetCompanyDetailsByCode(string Code)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Code))
+                {
+                    throw new Exception("Company Code required");
+                }
+                CompanyViewModel SupplierVM = Mapper.Map<Company, CompanyViewModel>(_companyBusiness.GetCompanyDetailsByCode(Code));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = SupplierVM });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetCompanyDetailsByCode
 
         #region ButtonStyling
         [HttpGet]

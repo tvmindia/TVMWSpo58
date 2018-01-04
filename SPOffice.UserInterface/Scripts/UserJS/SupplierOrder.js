@@ -692,8 +692,34 @@ function SupplierOnChange(curobj) {
         if (ds.Result == "ERROR") {
             return 0;
         }
-    } 
+    }
+    else {
+        $("#SupplierMailingAddress").val('');
+    }
 }
+function CompanyOnChange(curobj) {
+    debugger;
+    var companyCode = $(curobj).val();
+    if (companyCode) {
+        var data = { "Code": companyCode };
+        var ds = {};
+        ds = GetDataFromServer("SupplierOrder/GetCompanyDetailsByCode/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            $("#ShipToAddress").val(ds.Record.BillingAddress);
+            return ds.Record;
+        }
+        if (ds.Result == "ERROR") {
+            return 0;
+        }
+    }
+    else {
+        $("#ShipToAddress").val('');
+    }
+}
+
 
 //------------------------------------------------ Filter clicks-----------------------------------------------//
 function GridFilter(status) {
