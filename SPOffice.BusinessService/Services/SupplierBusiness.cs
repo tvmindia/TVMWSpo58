@@ -222,5 +222,20 @@ namespace SPOffice.BusinessService.Services
             }
             return sendsuccess;
         }
-     }
+
+        public object UpdateSupplierOrderMailStatus(SupplierOrder SPO)
+        {
+            Object result = null;
+            try
+            {
+
+                result = _supplierRepository.UpdateSupplierOrderMailStatus(SPO);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+    }
 }

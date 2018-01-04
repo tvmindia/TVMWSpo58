@@ -29,6 +29,7 @@ namespace SPOffice.BusinessService.Contracts
 
         SupplierOrder GetMailPreview(Guid ID);
         Task<bool> QuoteEmailPush(SupplierOrder SOObj);
+        object UpdateSupplierOrderMailStatus(SupplierOrder SPO);
 
     }
 }

@@ -420,7 +420,7 @@ namespace SPOffice.UserInterface.Controllers
                     {
                         //1 is meant for mail sent successfully
                         SOVM.EmailSentYN = sendsuccess.ToString();
-                        //result = _supplierBusiness.UpdateSupplierOrderMailStatus(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SOVM));
+                        result = _supplierBusiness.UpdateSupplierOrderMailStatus(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SOVM));
                     }
                     return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess, Message = c.MailSuccess });
                 }

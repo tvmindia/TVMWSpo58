@@ -378,7 +378,12 @@ function BindPurchaseOrder(ID) {
             $("#BodyFooter").val(jsresult.BodyFooter);
             $("#BodyHeader").val(jsresult.BodyHeader);
             $("#GeneralNotes").val(jsresult.GeneralNotes);
-
+            if (jsresult.EmailSentYN=="True") {
+                $("#lblEmailSent").text('Yes');
+            }
+            else {
+                $("#lblEmailSent").text('No');
+            }
             $("#SentToEmails").val(jsresult.SuppliersObj.ContactEmail);
             $("#TaxTypeCode").val(jsresult.TaxTypeCode);
             $("#TaxPercApplied").val(jsresult.TaxPercApplied);
@@ -1336,13 +1341,11 @@ function MailSuccess(data, status) {
     switch (JsonResult.Result) {
         case "OK":
             notyAlert('success', JsonResult.Message);
-            switch (JsonResult.MailResult) {
-                case 1:
-                    $("#lblEmailSent").text('Yes');
-                    break;
-                case 0:
-                    $("#lblEmailSent").text('No');
-                    break;
+            if(JsonResult.Record.Status=="1") {
+                $("#lblEmailSent").text('Yes');
+            }
+            else{
+                $("#lblEmailSent").text('No');
             }
             Reset();
             break;
