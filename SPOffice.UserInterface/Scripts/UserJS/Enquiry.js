@@ -137,7 +137,7 @@ function BindSummarBox(Open, Converted, NotConverted) {
     $("#statusOpen").text(Open);
     $("#statusConverted").text(Converted);
     $("#statusNotConverted").text(NotConverted);
-    $("#openCountDescription").text(Open + ' Enquiry(s) are Opened');
+    $("#openCountDescription").text(Open + 'Open Enquiry(s)');
     $("#convertedCountDescription").text(Converted + ' Converted Enquiry(s)');
     $("#notConvertedCountDescription").text(NotConverted + ' Not Converted Enquiry(s)');
 }

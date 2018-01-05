@@ -248,14 +248,30 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
 
                                 </div>
 
+                                <div class="form-group col-md-12"></div>
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label " })
+                                    </div>
+                                    <div class="col-md-12">
 
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @id = "Mobile" } })
+                                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-12"></div>
 
                                 <div class="form-group col-md-12">
                                     <div class="col-md-12">
                                         @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label" })
                                     </div>
-                                    <div class="col-md-11" style ="width:730px">
-                                        <div class="col-md-11">
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
                                             @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @rows = "5", @id = "Subject" } })
                                             @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
                                         </div>
@@ -286,7 +302,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
 
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                @*<div class="form-group col-md-6">
                                     <div class="col-md-12">
 
                                         @Html.LabelFor(model => model.ProgressStatus, htmlAttributes: new { @class = "control-label" })
@@ -305,7 +321,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                         <div class="col-md-1"></div>
                                     </div>
 
-                                </div>
+                                </div>*@
 
                                 <div class="form-group col-md-6">
                                     <div class="col-md-12">
@@ -401,21 +417,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                     </div>
 
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <div class="col-md-12">
-                                        @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label " })
-                                    </div>
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", @id = "Mobile" } })
-                                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
-
-                                        </div>
-                                        <div class="col-md-1"></div>
-                                    </div>
-
-                                </div>
+                               
 
                                 <div class="form-group col-md-6">
                                     <div class="col-md-12">
@@ -459,8 +461,8 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                     <div class="col-md-12">
                                         @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
                                     </div>
-                                    <div class="col-md-11">
-                                        <div class="col-md-11">
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
                                             @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control", @rows = "6", @id = "GeneralNotes" } })
                                             @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                         </div>

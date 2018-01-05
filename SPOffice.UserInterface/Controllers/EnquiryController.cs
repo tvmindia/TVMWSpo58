@@ -534,7 +534,7 @@ namespace SPOffice.UserInterface.Controllers
                     break;
                 case "Edit":
 
-                    ToolboxViewModelObj.addbtn.Visible = false;
+                    ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "New";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "openNav();";
