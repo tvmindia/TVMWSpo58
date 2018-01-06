@@ -258,7 +258,7 @@
                                         @Html.EditorFor(model => model.QuotationNo, new { htmlAttributes = new { @class = "form-control HeaderBox", @id = "txtQuotationNo", @autofocus = true , onkeyup = "QuotationNoOnChange(this);" } })
                                         @Html.ValidationMessageFor(model => model.QuotationNo, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -275,7 +275,7 @@
                                         @Html.EditorFor(model => model.QuotationDate, new { htmlAttributes = new { @class = "form-control HeaderBox datepicker", @autofocus = true } })
                                         @Html.ValidationMessageFor(model => model.QuotationDate, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
@@ -309,7 +309,7 @@
                                         @Html.DropDownListFor(model => model.CustomerID, Model.CustomerList, "-- Select Customer --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlCustomer", onchange = "GetCustomerDeails(this);" })
                                         @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -328,7 +328,7 @@
                                         @Html.EditorFor(model => model.SentToAddress, new { htmlAttributes = new { @class = "form-control text-box multi-line" } })
                                         @Html.ValidationMessageFor(model => model.SentToAddress, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -345,7 +345,7 @@
                                         @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -364,7 +364,7 @@
                                         @Html.DropDownListFor(model => model.SalesPersonID, Model.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
                                         @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -382,7 +382,7 @@
                                         @Html.DropDownListFor(model => model.QuoteFromCompCode, Model.CompanyList, "-- Select Company --", new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "ddlCompany" })
                                         @Html.ValidationMessageFor(model => model.QuoteFromCompCode, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -414,7 +414,7 @@
                                         @Html.EditorFor(model => model.QuoteSubject, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.QuoteSubject, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
