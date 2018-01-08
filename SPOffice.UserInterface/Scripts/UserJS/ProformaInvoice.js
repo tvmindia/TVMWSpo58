@@ -242,9 +242,9 @@ function AmountSummary() {
     $('#NetTaxableAmount').val(roundoff(nettaxableamount));
 
     var applicabletax=$("#TaxPercApplied").val();
-    $('#TaxAmount').val((roundoff(nettaxableamount) * applicabletax)/100);
+    $('#TaxAmount').val(roundoff((nettaxableamount * applicabletax)/100));
     var totamt = nettaxableamount + (roundoff(nettaxableamount) * applicabletax) / 100;
-    $("#TotalAmount").val(totamt);  
+    $("#TotalAmount").val(roundoff(totamt));
     
 }
 
@@ -514,11 +514,10 @@ function BindProformaInvoiceDetails(ID) {
             $("#ddlCompany").val(jsresult.company.Code);
             
             $("#GrossAmount").val(jsresult.GrossAmount);
-            $("#Discount").val(jsresult.Discount);
+            $("#Discount").val(roundoff(jsresult.Discount));
             $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
             $("#TaxTypeCode").val(jsresult.TaxTypeCode);
             $("#TaxPercApplied").val(jsresult.TaxPercApplied);
-            $("#TaxAmount").val(jsresult.TaxAmount);
             $("#TotalAmount").val(jsresult.TotalAmount);
             $("#BodyFoot").val(jsresult.BodyFoot);       
 
