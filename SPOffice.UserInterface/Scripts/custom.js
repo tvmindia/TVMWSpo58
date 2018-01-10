@@ -65,7 +65,7 @@ $(document).ready(function () {
         todayHighlight: true
     });
    
-    $('input').keydown(function (e) {
+    $('input,select').keydown(function (e) {
         var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
         if (key == 13) {
             e.preventDefault();
@@ -100,7 +100,7 @@ $(document).ready(function () {
     });
 
     $('.BlockEnter').keydown(function (e) {
-    
+
         try {
             if (e.which === 13) {
                 var index = $('.BlockEnter').index(this) + 1;

@@ -407,6 +407,9 @@ function BindPurchaseOrder(ID) {
             //Attachment below functions calls go to custom.js
             clearUploadControl();
             PaintImages(ID);
+            $('#TaxPercApplied').prop('disabled', true);
+            $('#TaxAmount').prop('disabled', true);
+            $('#TotalAmount').prop('disabled', true);
         }
     }
     catch (e) {
@@ -502,6 +505,9 @@ function AddNew() {
     ResetForm();
     RemovevalidationMsg()
     openNav();
+    $('#TaxPercApplied').prop('disabled', true);
+    $('#TaxAmount').prop('disabled', true);
+    $('#TotalAmount').prop('disabled', true);
 }
 
 
