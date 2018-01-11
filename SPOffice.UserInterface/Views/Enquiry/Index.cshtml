@@ -572,25 +572,18 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                 <div class="container-fluid" style="padding-right: 0px;">
                     <div class="col-md-4">
                         <h3 class="modal-title SCHeader" id="modelContextLabel"></h3>
-
                         <div class="col-md-12">
                             <span style="font-weight: 600;font-size: 20px;" id="AddOrEditSpan">Add Follow Ups</span>
                         </div>
                     </div>
-
-
                     <div class="col-md-8" style="padding-right: 4px;">
                         <a class="close" data-dismiss="modal" aria-label="Close"><i style="font-size: 33px;" class="fa fa-times-circle" aria-hidden="true"></i></a>
                     </div>
-
                 </div>
             </div>
-
-
             <div class="modal-body">
                 @*<div class="col-md-12">
                     <div class="col-md-6">
-
                     </div>
                     <div class="col-md-6 text-right" style="display:inline-flex;">
                         <div class="col-md-6" style="font-weight: 600;font-size: 14px;padding-top:3%;"></div>
@@ -632,7 +625,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                         @Html.HiddenFor(model => model.followUpObj.HdnFollowUpTime, htmlAttributes: new { @id = "hdnFollowUpTime" })
 
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -640,16 +633,12 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                             <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-
-
                                     @Html.LabelFor(model => model.followUpObj.ContactName, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
-
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.followUpObj.ContactName, new { htmlAttributes = new { @class = "form-control HeaderBox", @autofocus = true } })
                                         @Html.ValidationMessageFor(model => model.followUpObj.ContactName, "", new { @class = "text-danger" })
-
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -681,130 +670,109 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                             </div>
 
                             <div class="form-group col-md-12"></div>
+                            
                             <div class="form-group col-md-6">
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-12">
-                                        @Html.LabelFor(model => model.followUpObj.Subject, htmlAttributes: new { @class = "control-label " })
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="col-md-11">
-                                            @Html.EditorFor(model => model.followUpObj.Subject, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "2", @autofocus = true } })
-                                            @Html.ValidationMessageFor(model => model.followUpObj.Subject, "", new { @class = "text-danger" })
-                                        </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-1"></div>
-                                    </div>
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.followUpObj.Subject, htmlAttributes: new { @class = "control-label " })
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <div class="col-md-12">
-
-                                        @Html.LabelFor(model => model.followUpObj.Priority, htmlAttributes: new { @class = "control-label" })
-
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.followUpObj.Subject, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "2", @autofocus = true } })
+                                        @Html.ValidationMessageFor(model => model.followUpObj.Subject, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-12" style="padding-right:0px;">
-                                            @Html.DropDownListFor(model => model.followUpObj.Priority, Model.priorityObj.PriorityList, "-- Select Priority --", new { @class = "form-control", @style = "padding:4px 12px;" })
-                                            @Html.ValidationMessageFor(model => model.followUpObj.Priority, "", new { @class = "text-danger" })
-
-
-                                        </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-1"></div>
-                                    </div>
-
+                                    <div class="col-md-1 mandatory"></div>
+                                    <div class="col-md-1"></div> 
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <div class="col-md-12" style="padding:0px;">
-
-                                        @Html.LabelFor(model => model.followUpObj.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="col-md-11 input-group">
-                                            @Html.EditorFor(model => model.followUpObj.RemindPriorTo, new { htmlAttributes = new { @class = "form-control HeaderBox", @autofocus = true } })
-                                            <span class="input-group-addon">Min</span>
-                                            @Html.ValidationMessageFor(model => model.followUpObj.RemindPriorTo, "", new { @class = "text-danger" })
-                                        </div>
-                                        @*<div class="input-group">
-                                            <input type="text" class="form-control">
-                                            
-                                        </div>*@
-                                        @*<div class="col-md-4 input-group" style="padding:0px;">
-                                             @Html.LabelFor(model => model.followUpObj.Minutes, htmlAttributes: new { @class = "", @style = "vertical-align:-5px;font-weight:300" })
-                                            
-                                        </div>*@
-                                    </div>
-
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-12">
-
-                                        @Html.LabelFor(model => model.followUpObj.Status, htmlAttributes: new { @class = "control-label" })
-
-                                    </div>
-                                    <div class="col-md-12">
-
-                                        <div class="col-md-11">
-
-                                            @{
-                                                List<SelectListItem> FollowUpStatus = new List<SelectListItem>();
-                                                FollowUpStatus.Add(new SelectListItem
-                                                { Text = "Open", Value = "Open", Selected = true });
-                                                FollowUpStatus.Add(new SelectListItem
-                                                { Text = "Closed", Value = "Closed" });
-                                            }
-                                            @Html.DropDownListFor(model => model.followUpObj.Status, FollowUpStatus, new { @class = "form-control BlockEnter", style = "padding:4px 12px;",@onchange ="EnableTextbox(new);" })
-                                            @Html.ValidationMessageFor(model => model.followUpObj.Status, "", new { @class = "text-danger" })
-
-
-                                        </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-1"></div>
-                                    </div>
-
-                                </div>
-
                             </div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
+                                    @Html.LabelFor(model => model.followUpObj.Priority, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.followUpObj.Priority, Model.priorityObj.PriorityList, "-- Select Priority --", new { @class = "form-control", @style = "padding:4px 12px;" })
+                                        @Html.ValidationMessageFor(model => model.followUpObj.Priority, "", new { @class = "text-danger" })
+                                    </div> 
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12"></div>
+                            @*<div class="form-group col-md-6">
+                                <div class="col-md-12" style="padding:0px;">
 
+                                    @Html.LabelFor(model => model.followUpObj.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-11 input-group">
+                                        @Html.EditorFor(model => model.followUpObj.RemindPriorTo, new { htmlAttributes = new { @class = "form-control HeaderBox", @autofocus = true } })
+                                        <span class="input-group-addon">Min</span>
+                                        @Html.ValidationMessageFor(model => model.followUpObj.RemindPriorTo, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control">
+                                            
+                                    </div>
+                                    <div class="col-md-4 input-group" style="padding:0px;">
+                                            @Html.LabelFor(model => model.followUpObj.Minutes, htmlAttributes: new { @class = "", @style = "vertical-align:-5px;font-weight:300" })
+                                            
+                                    </div>
+                                </div>
 
+                            </div>*@
+                            <div class="form-group col-md-6">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.followUpObj.Status, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @{
+                                            List<SelectListItem> FollowUpStatus = new List<SelectListItem>();
+                                            FollowUpStatus.Add(new SelectListItem
+                                            { Text = "Open", Value = "Open", Selected = true });
+                                            FollowUpStatus.Add(new SelectListItem
+                                            { Text = "Closed", Value = "Closed" });
+                                        }
+                                        @Html.DropDownListFor(model => model.followUpObj.Status, FollowUpStatus, new { @class = "form-control BlockEnter", style = "padding:4px 12px;",@onchange ="EnableTextbox(new);" })
+                                        @Html.ValidationMessageFor(model => model.followUpObj.Status, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-12">
                                     @Html.LabelFor(model => model.followUpObj.GeneralNotes, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.followUpObj.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "9", @autofocus = true } })
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.followUpObj.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox", @rows = "4", @autofocus = true } })
                                         @Html.ValidationMessageFor(model => model.followUpObj.GeneralNotes, "", new { @class = "text-danger" })
-
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
+                                    </div> 
                                 </div>
-
                             </div>
-                            
-                            </div>
+                         </div>
 
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 50px;padding: 7px;">
-                            <button id="ModelReset" type="reset" hidden></button>
-                            <a class="btn btn-primary" onclick="SaveFollowUp()" id="btnSave"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
-                            <a class="btn btn-default" id="followUpResetbtn" onclick="Reset()"><i class="glyphicon glyphicon-refresh"></i> Reset</a>
-                        @if (ViewBag.FollowUpDeleteBtnDisplay)
-                        {
-                            <a class="btn btn-default" id="followUpDeletebtn" onclick="DeleteFollowUp()"><i class="glyphicon glyphicon-trash"></i> Delete</a>
-                        }
-                            
-                    </div>
-                    <div class="form-group" style="display:none;">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input id="btnFollowUpSave" type="submit" value="Create" class="btn btn-default" />
-                        </div>
-                    </div>
-            }
                 </div>
+            </div>
+            <div class="modal-footer" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 50px;padding: 7px;">
+                    <button id="ModelReset" type="reset" hidden></button>
+                    <a class="btn btn-primary" onclick="SaveFollowUp()" id="btnSave"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
+                    <a class="btn btn-default" id="followUpResetbtn" onclick="Reset()"><i class="glyphicon glyphicon-refresh"></i> Reset</a>
+                @if (ViewBag.FollowUpDeleteBtnDisplay)
+                {
+                    <a class="btn btn-default" id="followUpDeletebtn" onclick="DeleteFollowUp()"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+                }
+                            
+            </div>
+            <div class="form-group" style="display:none;">
+                <div class="col-md-offset-2 col-md-10">
+                    <input id="btnFollowUpSave" type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+}
+        </div>
     </div>
 </div>
 @section Scripts {
