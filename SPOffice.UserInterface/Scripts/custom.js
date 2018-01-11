@@ -43,7 +43,6 @@ var fileArray = [];
 
 
 $(document).ready(function () {
-    debugger;
     var wrap = $(".EntryForms");
     wrap.on("scroll", function (e) {
         if (this.scrollTop > 147) {
@@ -269,7 +268,6 @@ function isNumber(e) {
 
 
 function notyConfirm(msg, functionIfSuccess, msg2, btnText, value) {
-    debugger;
     var m = 'You will not be able to recover this action!'
     if (msg2 != undefined) {
         m = msg2 + '  ' + m;
@@ -408,12 +406,10 @@ $('.EntryForms').scroll(function () {
 });
 function UploadFile(FileObject)
 {
-    debugger;
    // $('#btnUpload').click(function () {
 
         // Checking whether FormData is available in browser  
         if (window.FormData !== undefined) {
-            debugger;
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files;
             if (files.length > 0)
@@ -423,7 +419,6 @@ function UploadFile(FileObject)
 
                 // Looping over all files and add it to FormData object  
                 for (var i = 0; i < files.length; i++) {
-                    debugger;
                     fileData.append(files[i].name, files[i]);
                     var filesize = (parseInt($('#hdnFileSizebytes').val())) + files[i].size;
                     $('#hdnFileSizebytes').val(filesize);
@@ -468,7 +463,6 @@ function UploadFile(FileObject)
    // });
 }
 function DeleteFile(this_Obj) {
-    debugger;
     try {
 
         notyConfirm('Are you sure to delete?', 'DeleteNow("' + this_Obj.attributes.token.value + '")', '', "Yes, delete it!");
@@ -502,7 +496,6 @@ function DeleteNow(this_Obj) {
 }
 function PaintImages(ID) {
     try {
-        debugger;
         var data = { "ID": ID };
         var ds = {};
         ds = GetDataFromServer("FileUpload/GetAttachments/", data);
@@ -511,7 +504,6 @@ function PaintImages(ID) {
         }
         if (ds.Result == "OK") {
             //ds.Records
-            debugger;
             if (ds.Records != null) {
                 $('#ExistingPreview').empty();
                 var filesize = 0;
@@ -564,7 +556,6 @@ function clearUploadControl()
     $('#ExistingPreview').empty();
 }
 function validateType(ext) {
-    debugger;
     if (ext.match(/(doc|docx)$/i)) {
         //doc
         return '<i class="fa fa-file-word-o text-primary"></i>';
@@ -609,7 +600,6 @@ function validateType(ext) {
     }
 }
 function bytesToSize(bytes) {
-    debugger;
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes == 0) return '0 Byte';
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
@@ -638,7 +628,6 @@ function AppendToFileList(list) {
     }
 }
 function Attachment_FindRow(element) {
-    debugger;
     while (true) {
         if (element.nodeName == "A")
             return element;
@@ -647,7 +636,6 @@ function Attachment_FindRow(element) {
 }
 
 function Attachment_Remove(link) {
-    debugger;
     return;
     var row = Attachment_FindRow(link);
     if (!confirm("Are you sure you want to delete '" + row.getAttribute("filename") + "'?"))
@@ -721,7 +709,6 @@ function GetRequisitionBubbleCount() {
             cache: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                debugger;
                 if (data != '') {
                     data = JSON.parse(data);
                 }
@@ -771,7 +758,6 @@ function GetRecentFollowUpCount() {
             cache: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                debugger;
                 if (data != '') {
                     data = JSON.parse(data);
                 }
