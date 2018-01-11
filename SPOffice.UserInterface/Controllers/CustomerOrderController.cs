@@ -31,9 +31,17 @@ namespace SPOffice.UserInterface.Controllers
         // GET: CustomerOrder
         [AuthSecurityFilter(ProjectObject = "CustomerOrder", Mode = "R")]
         public ActionResult Index(string id)
-        {
-            ViewBag.filter = id;
-            ViewBag.value = id;
+        { 
+            Guid guidResult;
+            Guid.TryParse(id, out guidResult);
+            if (guidResult != Guid.Empty)
+            {
+                ViewBag.value = id;
+            }
+            else
+            {
+                ViewBag.filter = id;
+            }
             CustomerPOViewModel customerPOlVM = new CustomerPOViewModel();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerViewModel> CustList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
