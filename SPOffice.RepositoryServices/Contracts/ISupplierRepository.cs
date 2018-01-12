@@ -17,12 +17,16 @@ namespace SPOffice.RepositoryServices.Contracts
         SupplierOrder GetSupplierPurchaseOrderByID(Guid ID);
         object InsertPurchaseOrder(SupplierOrder SPO);
         object UpdatePurchaseOrder(SupplierOrder SPO);
+        object UpdatePurchaseOrderDetailLink(SupplierOrder SPO);
         object DeletePurchaseOrder(Guid ID);
         object DeletePurchaseOrderDetail(Guid ID);
-        
+        object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate);
         List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID);
         List<Requisition> GetAllRequisitionHeaderForSupplierPO();
-        List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs);
+        List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID);
+        List<RequisitionDetail> EditPurchaseOrderDetail(string ID);
+        object UpdateSupplierOrderMailStatus(SupplierOrder SPO);
+
 
     }
 }

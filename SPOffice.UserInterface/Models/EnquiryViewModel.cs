@@ -37,7 +37,7 @@ namespace SPOffice.UserInterface.Models
 
         public string Website { get; set; }
 
-        [Required(ErrorMessage = "Email is missing")]
+       // [Required(ErrorMessage = "Email is missing")]
         [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
         [MaxLength(150)]
         public string Email { get; set; }
@@ -61,11 +61,11 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Progress Status")]
         public string ProgressStatus { get; set; }
 
-        //[Required(ErrorMessage = "Owner Name is missing")]
+        [Required(ErrorMessage = "Owner Name is missing")]
         [Display(Name = "Lead Owner")]
         public Guid EnquiryOwnerID { get; set; }
 
-        [Required(ErrorMessage = "General Notes is missing")]
+       // [Required(ErrorMessage = "General Notes is missing")]
         [Display(Name = "GeneralNotes")]
         [DataType(DataType.MultilineText)]
         public string GeneralNotes { get; set; }

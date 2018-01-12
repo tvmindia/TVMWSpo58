@@ -36,21 +36,23 @@ namespace SPOffice.UserInterface.Models
         [MaxLength(10)]
         public string Type { get; set; }
         public List<SelectListItem> CourierTypeList { get; set; }
-        [Required(ErrorMessage = "Please enter Transaction Date")]
+        [Required(ErrorMessage = "Please Enter Transaction Date")]
         [Display(Name = "Transaction Date")]
         public string TransactionDate { get; set; }
         public string Track { get; set; }
-        [Required(ErrorMessage = "Please enter Source name")]
+        [Required(ErrorMessage = "Please Enter Source Name")]
         [Display(Name = "Source Name")]
         [MaxLength(150)]
         public string SourceName { get; set; }
+        [Required(ErrorMessage = "Please Enter Source Address")]
         [Display(Name = "Source Address")]
         [DataType(DataType.MultilineText)]
         public string SourceAddress { get; set; }
-        [Required(ErrorMessage = "Please enter Destination name")]
+        [Required(ErrorMessage = "Please Enter Destination Name")]
         [Display(Name = "Destination Name")]
         [MaxLength(150)]
         public string DestName { get; set; }
+        [Required(ErrorMessage = "Please Enter Destination Address")]
         [Display(Name = "Destination Address")]
         [DataType(DataType.MultilineText)]
         public string DestAddress { get; set; }
@@ -59,13 +61,13 @@ namespace SPOffice.UserInterface.Models
         public string DistributedTo { get; set; }
         [Display(Name = "Distribution Date")]
         public string DistributionDate { get; set; }
-        [Required(ErrorMessage = "Please chosse agency")]
+        [Required(ErrorMessage = "Please Choose Agency")]
         [Display(Name = "Agency")]
         public string AgencyCode { get; set; }
         public CourierAgencyViewModel courierAgency { get; set; }
         public List<SelectListItem> AgencyList { get; set; }
         [Display(Name = "Tracking Reference No")]
-        [Required(ErrorMessage = "Please enter Reference No")]
+        [Required(ErrorMessage = "Please Enter Reference No")]
         [MaxLength(50)]
         public string TrackingRefNo { get; set; }
         [DataType(DataType.MultilineText)]

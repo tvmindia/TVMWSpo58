@@ -89,7 +89,10 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "Deletion Successfull! "; }
         }
-
+        public string ApproveSuccess
+        {
+            get { return "Approved Successfull!"; }
+        }
         public string MailSuccess
         {
             get { return "Mail Send Successfully ! "; }
@@ -108,7 +111,7 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "No items"; }
         }
-
+        
         public string PasswordError
         {
             get { return "Password is wrong"; }

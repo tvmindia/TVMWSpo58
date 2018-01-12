@@ -534,10 +534,10 @@ namespace SPOffice.UserInterface.Controllers
                     break;
                 case "Edit":
 
-                    ToolboxViewModelObj.addbtn.Visible = false;
+                    ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "New";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
-                    ToolboxViewModelObj.addbtn.Event = "openNav();";
+                    ToolboxViewModelObj.addbtn.Event = "Add();";
 
                     ToolboxViewModelObj.savebtn.Visible = true;
                     ToolboxViewModelObj.savebtn.Text = "Save";
@@ -582,10 +582,10 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.deletebtn.Title = "Delete";
                     ToolboxViewModelObj.deletebtn.Event = "Delete()";
 
-                    ToolboxViewModelObj.addbtn.Visible = false;
+                    ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "New";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
-                    ToolboxViewModelObj.addbtn.Event = "openNav();";
+                    ToolboxViewModelObj.addbtn.Event = "Add();";
 
                     break;
                 case "AddSub":

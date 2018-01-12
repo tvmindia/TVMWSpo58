@@ -29,6 +29,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string POStatus { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
+
     }
     public class SupplierOrder
     {
@@ -57,11 +58,15 @@ namespace SPOffice.DataAccessObject.DTO
         public string POStatus { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
-
+        public bool IsFinalApproved { get; set; }
+        public DateTime FinalApprovedDate { get; set; }
+        public string FinalApprovedDateString { get; set; }
         public string CompanyName { get; set; }
         public Suppliers SuppliersObj { get; set; }
         public Company company { get; set; }
         public Common commonObj { get; set; }
+        public SupplierPOMailPreview mailPreviewVMObj { get; set; }
+        public SupplierPODetail SPODObj{ get; set; }
         public List<ReqDetail> reqDetailObj { get; set; }
         public List<ReqDetailLink> reqDetailLinkObj { get; set; }
         public string reqDetailObjXML { get; set; }
@@ -112,6 +117,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
+        public List<SupplierPODetail> SupplierPODetailList { get; set; }
     }
 
     public class ReqDetail

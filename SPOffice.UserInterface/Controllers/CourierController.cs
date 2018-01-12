@@ -217,7 +217,7 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.deletebtn.Title = "Delete";
                     ToolboxViewModelObj.deletebtn.Event = "Delete()";
 
-                    ToolboxViewModelObj.addbtn.Visible = false;
+                    ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "New";
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "openNav();";

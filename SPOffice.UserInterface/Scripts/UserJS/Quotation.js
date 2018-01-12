@@ -578,6 +578,7 @@ function Delete(curobj) {
         $("#lblQuoteStage").text('Draft');
         $("#lblEmailSent").text('No');
         $("#lblQuotationNo").text('New Quotation');
+        $("#txtQuotationNo").focus();
         clearUploadControl();
         EG_AddBlankRows(5)
         //  clearUploadControl();
@@ -623,7 +624,7 @@ function Delete(curobj) {
         $("#closedCount").text(Closed);
         $("#onHoldCount").text(OnHold);
         //--To place discription--//
-        $("#draftCountDescription").text(Draft + ' Quotation(s) are Draft');
+        $("#draftCountDescription").text(Draft + 'Draft Quotation(s)');
         $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
         $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
         $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');

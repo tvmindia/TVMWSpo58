@@ -64,7 +64,10 @@ namespace SPOffice.UserInterface.Models
 
         [Display(Name = "Ship To Address")]
         public string ShipToAddress { get; set; }
+
+        [Display(Name = "Body Header")]
         public string BodyHeader { get; set; }
+        [Display(Name = "Body Footer")]
         public string BodyFooter { get; set; }
 
         [Display(Name = "Gross Amount")]
@@ -84,7 +87,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Total Amount")]
         public decimal TotalAmount { get; set; }
 
-
+        [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
         public string SupplierName { get; set; }
@@ -101,7 +104,10 @@ namespace SPOffice.UserInterface.Models
         public string CompanyName { get; set; }
         public string hdfRequisitionDetail { get; set; }
 
-
+        public bool IsFinalApproved { get; set; }
+        public bool IsApprover { get; set; }
+        public DateTime FinalApprovedDate { get; set; }
+        public string FinalApprovedDateString { get; set; }
         //Lists
         public List<SelectListItem> SupplierList { get; set; }
         public List<SelectListItem> CompanyList { get; set; }
@@ -115,10 +121,12 @@ namespace SPOffice.UserInterface.Models
         public CompanyViewModel company { get; set; }
         public List<ReqDetailViewModel> reqDetailObj { get; set; }
         public List<ReqDetailLinkViewModel> reqDetailLinkObj { get; set; }
-
+        public SupplierPOMailPreviewViewModel mailPreviewVMObj { get; set; }
+        public SupplierPODetailViewModel SPODObj { get; set; }
         //file upload 
         public List<FileUpload> AttachmentLists { get; set; }
         public Guid hdnFileID { get; set; }
+        public string MailBody { get; set; }
     }
 
     public class SuppliersViewModel
@@ -166,6 +174,7 @@ namespace SPOffice.UserInterface.Models
         public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public Common commonObj { get; set; }
+        public List<SupplierPODetailViewModel> SupplierPODetailList { get; set; }
     }
 
     public class ReqDetailViewModel

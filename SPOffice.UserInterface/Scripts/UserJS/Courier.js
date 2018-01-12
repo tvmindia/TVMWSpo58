@@ -123,6 +123,21 @@ function TrackingRefnoOnChange(curobj)
     $('#lblCourierRefNo').text($(curobj).val());
 }
 
+function TypeOnChange(curobj) {
+    debugger;
+    if ($(curobj).val() == "Outbound") {
+        $('#DistributedTo').val('');
+        $('#DistributionDate').val('');
+        $('#DistributedTo').prop('disabled', true);
+        $('#DistributionDate').prop('disabled', true);
+    }
+    else
+    {
+        $('#DistributedTo').prop('disabled', false);
+        $('#DistributionDate').prop('disabled', false);
+    }
+}
+
 function Save() {
 
     try {

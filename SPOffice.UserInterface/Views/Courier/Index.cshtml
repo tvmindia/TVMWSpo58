@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.Type, Model.CourierTypeList, "-- Select Type --", new { @class = "form-control HeaderBox BlockEnter", style = "padding:4px 12px;", @id = "ddlType" })
+                                        @Html.DropDownListFor(model => model.Type, Model.CourierTypeList, "-- Select Type --", new { @class = "form-control HeaderBox", style = "padding:4px 12px;", @id = "ddlType", onChange = "TypeOnChange(this);" })
                                         @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
 
                                     </div>
@@ -108,7 +108,7 @@
                                         @Html.EditorFor(model => model.TrackingRefNo, new { htmlAttributes = new { @class = "form-control HeaderBox", onkeyup = "TrackingRefnoOnChange(this);" } })
                                         @Html.ValidationMessageFor(model => model.TrackingRefNo, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -178,7 +178,7 @@
                                         @Html.ValidationMessageFor(model => model.SourceAddress, "", new { @class = "text-danger" })
 
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -213,7 +213,7 @@
                                         @Html.ValidationMessageFor(model => model.DestAddress, "", new { @class = "text-danger" })
 
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -260,7 +260,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.AgencyCode, Model.AgencyList, "-- Select Agency --", new { @class = "form-control HeaderBox BlockEnter", style = "padding:4px 12px;", @id = "ddlAgency" })
+                                        @Html.DropDownListFor(model => model.AgencyCode, Model.AgencyList, "-- Select Agency --", new { @class = "form-control HeaderBox", style = "padding:4px 12px;", @id = "ddlAgency" })
                                         @Html.ValidationMessageFor(model => model.AgencyCode, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1 mandatory"></div>

@@ -35,6 +35,7 @@ namespace SPOffice.DataAccessObject.DTO
         public Guid ID { get; set; }
         public Guid ReqID { get; set; }
         public Guid MaterialID { get; set; }
+        public Guid LinkID { get; set; }
         public string Description { get; set; }
         public string ExtendedDescription { get; set; }
         public string CurrStock { get; set; }

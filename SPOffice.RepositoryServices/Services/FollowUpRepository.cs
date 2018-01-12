@@ -113,7 +113,7 @@ namespace SPOffice.RepositoryServices.Services
                             cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = _followupObj.ID;
                             cmd.Parameters.Add("@FollowUpDate", SqlDbType.DateTime).Value = _followupObj.FollowUpDate;
                             cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = _followupObj.EnquiryID;
-                            cmd.Parameters.Add("@FollowUpTime", SqlDbType.DateTime).Value = _followupObj.FollowUpTime; 
+                            cmd.Parameters.Add("@FollowUpTime", SqlDbType.DateTime).Value = _followupObj.HdnFollowUpTime; 
                             cmd.Parameters.Add("@Status", SqlDbType.VarChar, 10).Value = _followupObj.Status;
                             cmd.Parameters.Add("@ReminderType", SqlDbType.VarChar, 10).Value = _followupObj.ReminderType;
                             cmd.Parameters.Add("@ContactName", SqlDbType.VarChar, 50).Value = _followupObj.ContactName;

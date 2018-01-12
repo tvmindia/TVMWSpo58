@@ -176,7 +176,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
                                         _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
                                         _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
-                                        
+                                        _SuppObj.IsFinalApproved= (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);
+                                        _SuppObj.FinalApprovedDateString = (sdr["FinalApprovedDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovedDate"].ToString()).ToString(s.dateformat) : _SuppObj.FinalApprovedDateString);
                                         // _SuppObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()).ToString(s.dateformat) : _SuppObj.POIssuedDate);
                                         //_SuppObj.BodyHeader = (sdr["BodyHeader"].ToString() != "" ? sdr["BodyHeader"].ToString() : _SuppObj.BodyHeader);
                                         //_SuppObj.BodyFooter = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _SuppObj.BodyFooter);
@@ -245,6 +246,11 @@ namespace SPOffice.RepositoryServices.Services
                                 {
                                     _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
                                     _SuppObj.SupplierID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _SuppObj.SupplierID);
+                                    _SuppObj.SuppliersObj = new Suppliers();
+                                    _SuppObj.SuppliersObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _SuppObj.SuppliersObj.CompanyName);
+                                    _SuppObj.SuppliersObj.ContactEmail = (sdr["ContactEmail"].ToString() != "" ? sdr["ContactEmail"].ToString() : _SuppObj.SuppliersObj.ContactEmail);
+                                    _SuppObj.company = new Company();
+                                    _SuppObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : _SuppObj.company.Name);
                                     _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
                                     _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
                                     _SuppObj.POIssuedDate = (sdr["POIssuedDate"].ToString() != "" ? DateTime.Parse(sdr["POIssuedDate"].ToString()).ToString(s.dateformat) : _SuppObj.POIssuedDate);
@@ -264,7 +270,8 @@ namespace SPOffice.RepositoryServices.Services
                                      _SuppObj.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _SuppObj.TaxPercApplied);
                                      _SuppObj.GrossTotal = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.GrossTotal);
                                     _SuppObj.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _SuppObj.TaxTypeCode);
-
+                                    _SuppObj.IsFinalApproved= (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);
+                                    _SuppObj.FinalApprovedDate= (sdr["FinalApprovedDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovedDate"].ToString()) : _SuppObj.FinalApprovedDate);
                                 }
                             }
                         }
@@ -386,7 +393,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@BodyFooter", SqlDbType.VarChar, 500).Value = SPO.BodyFooter;
                         cmd.Parameters.Add("@BodyHeader", SqlDbType.NVarChar, -1).Value = SPO.BodyHeader;
                         cmd.Parameters.Add("@POStatus", SqlDbType.VarChar, 10).Value = SPO.POStatus;
-                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.GrossTotal;
+                        cmd.Parameters.Add("@GrossAmount", SqlDbType.Decimal).Value = SPO.TotalAmount;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
@@ -396,6 +403,66 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@reqDetailLinkObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailLinkObjXML;
                         cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
 
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
+
+        public object UpdatePurchaseOrderDetailLink(SupplierOrder SPO)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdatePurchaseOrderDetailLink]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@POID", SqlDbType.UniqueIdentifier).Value = SPO.ID;
+                        cmd.Parameters.Add("@reqDetailLinkObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailLinkObjXML;
+                        cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -627,7 +694,7 @@ namespace SPOffice.RepositoryServices.Services
 
         }
 
-        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs)
+        public List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID)
         {
             List<RequisitionDetail> Req_List = null;
             try
@@ -643,6 +710,8 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetRequisitionDetailsByIDs]";
                         cmd.Parameters.Add("@IDs", SqlDbType.NVarChar,-1).Value = @IDs;
+                        if(SPOID!="")
+                        cmd.Parameters.Add("@POID", SqlDbType.UniqueIdentifier).Value = Guid.Parse(SPOID);
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())
@@ -665,7 +734,6 @@ namespace SPOffice.RepositoryServices.Services
                                         _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
                                         _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
                                         _ReqObj.OrderedQty = (sdr["OrderedQty"].ToString() != "" ? sdr["OrderedQty"].ToString() : _ReqObj.OrderedQty);
-                                        // _ReqObj.POQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.POQty);
                                         _ReqObj.POQty = (decimal.Parse(_ReqObj.RequestedQty) - decimal.Parse(_ReqObj.OrderedQty)).ToString();
                                         _ReqObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.UnitCode);
                                         _ReqObj.AppxRate = (sdr["AppxRate"].ToString() != "" ? decimal.Parse(sdr["AppxRate"].ToString()) : _ReqObj.AppxRate);
@@ -684,6 +752,170 @@ namespace SPOffice.RepositoryServices.Services
 
             return Req_List;
 
+        }
+
+        public List<RequisitionDetail> EditPurchaseOrderDetail(string ID)
+        {
+            List<RequisitionDetail> Req_List = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetPurchaseOrderDetailByID]";
+                        cmd.Parameters.Add("@ID", SqlDbType.NVarChar, -1).Value = @ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                Req_List = new List<RequisitionDetail>();
+                                while (sdr.Read())
+                                {
+                                    RequisitionDetail _ReqObj = new RequisitionDetail();
+                                    {
+                                        _ReqObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _ReqObj.ID);
+                                        _ReqObj.LinkID = (sdr["LinkID"].ToString() != "" ? Guid.Parse(sdr["LinkID"].ToString()) : _ReqObj.ID);
+                                        _ReqObj.ReqID = (sdr["ReqID"].ToString() != "" ? Guid.Parse(sdr["ReqID"].ToString()) : _ReqObj.ReqID);
+                                        _ReqObj.MaterialID = (sdr["MaterialID"].ToString() != "" ? Guid.Parse(sdr["MaterialID"].ToString()) : _ReqObj.MaterialID);
+                                        _ReqObj.ReqNo = (sdr["ReqNo"].ToString() != "" ? sdr["ReqNo"].ToString() : _ReqObj.Description);
+                                        _ReqObj.RawMaterialObj = new RawMaterial();
+                                        _ReqObj.RawMaterialObj.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _ReqObj.RawMaterialObj.MaterialCode);
+                                        _ReqObj.ExtendedDescription = (sdr["MaterialDesc"].ToString() != "" ? sdr["MaterialDesc"].ToString() : _ReqObj.ExtendedDescription);
+                                        _ReqObj.CurrStock = (sdr["CurrStock"].ToString() != "" ? sdr["CurrStock"].ToString() : _ReqObj.CurrStock);
+                                        _ReqObj.RequestedQty = (sdr["RequestedQty"].ToString() != "" ? sdr["RequestedQty"].ToString() : _ReqObj.RequestedQty);
+                                        _ReqObj.OrderedQty = (sdr["OrderedQty"].ToString() != "" ? sdr["OrderedQty"].ToString() : _ReqObj.OrderedQty);
+                                        _ReqObj.POQty = (sdr["Qty"].ToString() != "" ? sdr["Qty"].ToString() : _ReqObj.POQty);
+                                        _ReqObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _ReqObj.UnitCode);
+                                        _ReqObj.AppxRate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _ReqObj.AppxRate);
+                                    }
+                                    Req_List.Add(_ReqObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Req_List;
+        }
+
+        public object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[ApproveSupplierOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        cmd.Parameters.Add("@FinalApprovedDate", SqlDbType.DateTime).Value = FinalApprovedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                object obj = new object();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(Cobj.UpdateFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.ApproveSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString()
+            };
+        }
+
+        public object UpdateSupplierOrderMailStatus(SupplierOrder SPO)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateSupplierPOMailStatus]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = SPO.ID;
+                        //cmd.Parameters.Add("@SentToEmails", SqlDbType.NVarChar, -1).Value = SPO.SentToEmails;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = SPO.EmailSentYN;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+            };
         }
     }
 }

@@ -12,17 +12,25 @@ namespace SPOffice.BusinessService.Contracts
         List<Supplier> GetAllSupplierPOForMobile(string duration);
 
         List<Suppliers> GetAllSuppliers();
+        Suppliers GetSupplierDetailsByID(Guid ID);
 
         List<SupplierOrder> GetAllSupplierPurchaseOrders();
         SupplierOrder GetSupplierPurchaseOrderByID(Guid ID);
         object InsertPurchaseOrder(SupplierOrder SPO);
         object UpdatePurchaseOrder(SupplierOrder SPO);
+        object UpdatePurchaseOrderDetailLink(SupplierOrder SPO);
         object DeletePurchaseOrder(Guid ID);
         object DeletePurchaseOrderDetail(Guid ID);
+        object ApproveSupplierOrder(Guid ID, DateTime FinalApprovedDate);
         //detail
         List<SupplierPODetail> GetPurchaseOrderDetailTable(Guid ID);
         List<Requisition> GetAllRequisitionHeaderForSupplierPO();
-        List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs);
+        List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID);
+        List<RequisitionDetail> EditPurchaseOrderDetail(string ID);
+
+        SupplierOrder GetMailPreview(Guid ID);
+        Task<bool> QuoteEmailPush(SupplierOrder SOObj);
+        object UpdateSupplierOrderMailStatus(SupplierOrder SPO);
 
     }
 }

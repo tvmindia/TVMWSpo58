@@ -91,6 +91,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<SupplierPODetailViewModel, SupplierPODetail>().ReverseMap();
                 config.CreateMap<ReqDetailViewModel, ReqDetail>().ReverseMap();
                 config.CreateMap<ReqDetailLinkViewModel, ReqDetailLink>().ReverseMap();
+                config.CreateMap<SupplierPOMailPreviewViewModel, SupplierPOMailPreview>().ReverseMap();
 
                 //--For Report purpose
                 config.CreateMap<ReportViewModel, Reports>().ReverseMap();
