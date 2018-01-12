@@ -101,7 +101,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<QuotationReport, QuotationReportViewModel>().ReverseMap();
                 config.CreateMap<CustomerPOReportViewModel, CustomerPOReport>().ReverseMap();
                 config.CreateMap<RequisitionReportViewModel, RequisitionReport>().ReverseMap();
-
+                config.CreateMap<ReqAdvanceSearchViewModel, ReqAdvanceSearch>().ReverseMap();
                 //--for send message
                 config.CreateMap<MessageViewModel, Message>().ReverseMap();
             });
