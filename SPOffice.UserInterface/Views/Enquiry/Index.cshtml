@@ -148,7 +148,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                     </div>
                 </div>
 
-                <div class="EntryForms" style="height:550px;position:absolute;">
+                <div class="EntryForms" style="height:550px">
                     @using (Ajax.BeginForm("InsertUpdateEnquiry", "Enquiry", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "EnquiryForm" }))
                     {
                         @Html.Hidden("BindValue", "", htmlAttributes: new { @class = "", Value = ViewBag.value });
@@ -202,18 +202,13 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                     <div class="form-group col-md-4">
                                         <div class="col-md-6">
                                             @Html.LabelFor(model => model.ContactTitle, htmlAttributes: new { @class = "control-label " })
-
-
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="col-md-10" style="padding-right:0px">
-
+                                            <div class="col-md-12" style="padding-right:0px">
                                                 @Html.DropDownListFor(model => model.ContactTitle, Model.titleObj.TitleList, new { @class = "form-control", @id = "ddlTitle" })
                                                 @Html.ValidationMessageFor(model => model.ContactTitle, "", new { @class = "text-danger" })
                                             </div>
-                                            <div class="col-md-1"></div>
                                         </div>
-
                                     </div>
 
                                     <div class="form-group col-md-8">

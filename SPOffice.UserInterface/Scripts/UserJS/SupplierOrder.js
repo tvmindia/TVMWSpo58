@@ -16,7 +16,9 @@ var RequisitionDetailLink = new Object();
 var SupplierOrderViewModel = new Object();
 
 $(document).ready(function () {
-
+    //For implementating select2
+    $("#ddlSupplier").select2({
+    });
     //----------------------------Table 1 :Supplier Purchase Order Table List---------------------//
     try {
         DataTables.PurchaseOrderTable = $('#tblSupplierPurchaseOrder').DataTable(
@@ -364,7 +366,9 @@ function BindPurchaseOrder(ID) {
         debugger;
         var jsresult = GetPurchaseOrderDetailsByID(ID)
         if (jsresult) {
-            $("#ddlSupplier").val(jsresult.SupplierID);
+          
+            $("#ddlSupplier").select2();
+            $("#ddlSupplier").val(jsresult.SupplierID).trigger('change');
             $("#ddlCompany").val(jsresult.POFromCompCode);
             $("#PONo").val(jsresult.PONo);
             $("#PODate").val(jsresult.PODate);
@@ -505,6 +509,8 @@ function AddNew() {
     ResetForm();
     RemovevalidationMsg()
     openNav();
+    $("#ddlSupplier").select2();
+    $("#ddlSupplier").val('').trigger('change');
     $('#TaxPercApplied').prop('disabled', true);
     $('#TaxAmount').prop('disabled', true);
     $('#TotalAmount').prop('disabled', true);
