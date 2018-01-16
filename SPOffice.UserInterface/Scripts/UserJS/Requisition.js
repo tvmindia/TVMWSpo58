@@ -102,9 +102,9 @@ $(document).ready(function () {
             { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit Item" class="actionLink ItemEditlink"  onclick="EditIemsFromGrid(this)" ><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-            //{ className: "text-left", "targets": [1, 2, 3, 4, 6] },
+            { className: "text-left", "targets": [1, 2, 3] },
             //{ className: "text-center", "targets": [6] },
-            { className: "text-right", "targets": [6] }
+            { className: "text-right", "targets": [4,5,6] }
 
             ]
         });
@@ -472,13 +472,10 @@ function GetItemDetails()
             if (ds.Result == "ERROR") {
                 return 0;
             }
-
         }
         else
         {
             $('#RequisitionDetailObj_Description').prop('readonly', false);
-           
-
         }
     }
     catch(e)

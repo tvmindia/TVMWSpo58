@@ -96,6 +96,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Order Status")]
         [Required(ErrorMessage = "Status required")]
         public string POStatus { get; set; }
+        public string POStatusDesc { get; set; }
 
         public string Description { get; set; }
         public string duration { get; set; }

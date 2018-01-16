@@ -174,6 +174,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
                                         _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
                                         _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
+                                        _SuppObj.POStatusDesc = (sdr["POStatusDesc"].ToString() != "" ? sdr["POStatusDesc"].ToString() : _SuppObj.POStatusDesc);
                                         _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
                                         _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
                                         _SuppObj.IsFinalApproved= (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);

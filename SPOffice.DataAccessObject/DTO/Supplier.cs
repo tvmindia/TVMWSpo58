@@ -56,6 +56,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string EmailSentYN { get; set; }
         //public string SupplierName { get; set; }
         public string POStatus { get; set; }
+        public string POStatusDesc { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
         public bool IsFinalApproved { get; set; }
