@@ -4,6 +4,9 @@ var _Products = [];
 var _Units = [];
 $(document).ready(function () {
     try {
+        //For implementating select2
+        $("#ddlCustomer").select2({
+        });
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
@@ -457,6 +460,8 @@ function AddNew() {
     openNav();
     EG_ClearTable();
     // Reset();  
+    $("#ddlCustomer").select2();
+    $("#ddlCustomer").val('').trigger('change');
     $('#ID').val(emptyGUID);
     $('#ProformaForm')[0].reset();
     $("#lblEmailSent").text('N/A');
@@ -506,7 +511,8 @@ function BindProformaInvoiceDetails(ID) {
             $("#txtInvoiceNo").val(jsresult.InvoiceNo);
             $("#txtInvoiceDate").val(jsresult.InvoiceDate);
             $("#ValidTillDate").val(jsresult.ValidTillDate);
-            $("#ddlCust").val(jsresult.CustomerID);
+            $("#ddlCustomer").select2();
+            $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
             $("#SentToAddress").val(jsresult.SentToAddress);
             $("#ContactPerson").val(jsresult.ContactPerson);            
             $("#Subject").val(jsresult.Subject);

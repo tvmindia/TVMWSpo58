@@ -9,6 +9,12 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatablecheckbox")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableSelect")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 20px !important;
+    }
+</style>
 }
 
 <style>
@@ -428,11 +434,12 @@
 
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-12">
+                                    <div class="col-md-10">
                                         @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.QuoteBodyHead, "", new { @class = "text-danger" })
                                     </div>
-                                     
+                                    <div class="col-md-1 mandatory"></div>
+                                    <div class="col-md-1"></div>
                                 </div>
 
                             </div>
@@ -620,7 +627,7 @@
                                     @Html.LabelFor(model => model.QuoteBodyFoot, htmlAttributes: new { @class = "control-label" })
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-12">
+                                    <div class="col-md-10">
                                         @Html.EditorFor(model => model.QuoteBodyFoot, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.QuoteBodyFoot, "", new { @class = "text-danger" })
                                     </div>
@@ -634,7 +641,7 @@
                                     @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-12">
+                                    <div class="col-md-10">
                                         @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                                     </div>
@@ -679,36 +686,23 @@
                             <h3 class="modal-title SCHeader" id="modelContextLabel"></h3>
                             <div class="col-md-12">
                                 <span style="font-weight: 600;font-size: 20px;" id="AddOrEditSpan">Mail Preview</span>
-
-
                             </div>
                         </div>
                         <div class="col-md-8" style="padding-right: 4px;">
-
                             <a class="close" data-dismiss="modal" aria-label="Close"><i style="font-size: 33px;" class="fa fa-times-circle" aria-hidden="true"></i></a>
                         </div>
-
                     </div>
                 </div>
-
-
+                
                 <div class="modal-body" style="max-height:510px !important;overflow-y:scroll">
                     <div class="col-md-12">
-
-
                         @using (Ajax.BeginForm("SendQuoteMail", "Quotation", new AjaxOptions { HttpMethod = "POST", OnSuccess = "MailSuccess", OnFailure = "SaveFailure", OnBegin="ValidateEmail", AllowCache = false, LoadingElementId = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", id = "sendmailform" }))
-
                         {
                             @Html.AntiForgeryToken()
-
                             @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", Value = "", @id = "QuoteMAilHeaderID" })
-
-
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
                             <div class="form-group col-md-12" hidden="hidden">
                                 @Html.HiddenFor(model => model.MailBody, htmlAttributes: new { @class = "", Value = "" })
-
                             </div>
                             <div class="col-md-10">
                                 <div class="form-group col-md-12">
@@ -723,39 +717,24 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-1"></div>
                                     </div>
-
                                 </div>
                             </div>
-                                <div class="form-group" style="display:none;">
-                                    <div class="col-md-offset-2 col-md-10">
-                                        <input id="btnFormSendMail" type="submit" value="Create" class="btn btn-default" />
-                                    </div>
+                            <div class="form-group" style="display:none;">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input id="btnFormSendMail" type="submit" value="Create" class="btn btn-default" />
                                 </div>
+                            </div>
                         }
-
-
                     </div>
-
                     <div class="col-md-12" id="mailmodelcontent">
-                   
                     </div>
-                   
-
                 </div>
-
                 <div class="modal-footer" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 50px;padding: 7px;">
                     <a class="btn btn-primary"  onclick="SendMailClick()" id="btnMail"><i class="glyphicon glyphicon-floppy-disk"></i> Send Mail</a>
-                 
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
-
 
     <div class="preloader" id="prelaoder">
         <div class="col-md-12">
@@ -766,22 +745,16 @@
     </div>
 </section>
 
-
-
-
 <datalist id="Products" onfocus='this.size=10;' onblur='this.size=1;'
           onchange='this.size=1; this.blur();'></datalist>
 <datalist id="UnitCodes" onfocus='this.size=10;' onblur='this.size=1;'
           onchange='this.size=1; this.blur();'></datalist>
 
-
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableSelect")
- 
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/Quotation")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/editableGrid")
-   
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
 }
-
