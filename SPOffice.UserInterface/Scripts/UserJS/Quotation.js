@@ -169,7 +169,7 @@ function EG_Columns() {
                //{ "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
                //{ "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(roundoff(data), 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                //{ "data": "Amount",   "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
                 { "data": "ProductID",   "defaultContent": "<i></i>" }

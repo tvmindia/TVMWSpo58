@@ -41,9 +41,14 @@ $(document).ready(function () {
                { "data": "customer.CustomerName", "defaultContent": "<i>-</i>" },
                { "data": "Subject", "defaultContent": "<i>-</i>" },
                { "data": "ValidTillDate", "defaultContent": "<i>-</i>" },
-               { "data": "Total", "defaultContent": "<i>-</i>" },
-               { "data": "Discount", "defaultContent": "<i>-</i>" },
-               { "data": "TaxAmount", "defaultContent": "<i>-</i>" },
+               { "data": "Total", render: function (data, type, row) { return roundoff(data) } ,"defaultContent": "<i>-</i>" },
+               { "data": "Discount",render: function (data, type, row) { return roundoff(data) } ,"defaultContent": "<i>-</i>" },
+               { "data": "TaxAmount", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i>-</i>" },
+               {
+                   "data": "TotalAmount", render: function (data, type, row) { 
+                       return roundoff((row.Total - row.Discount) + row.TaxAmount);
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
@@ -150,8 +155,8 @@ function EG_Columns() {
                  { "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
                 { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-                { "data": "Amount", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Amount', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(roundoff(data), 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "Amount", render: function (data, type, row) { return roundoff(data); }, "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
                 { "data": "ProductID", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductID', '')); }, "defaultContent": "<i></i>" }
                 ]
@@ -174,7 +179,7 @@ function EG_Columns_Settings() {
            { "width": "6%", "targets": 8 },
            { className: "text-center", "targets": [8] },
             //{ "width": "10%", "targets": 11 },
-        //{ className: "text-right", "targets": [8] },
+        { className: "text-right", "targets": [5,6,7] },
         //{ className: "text-left disabled", "targets": [5] },
         //{ className: "text-center", "targets": [3, 4, 6, 12] },
         //{ className: "text-center disabled", "targets": [7] },
@@ -464,7 +469,7 @@ function AddNew() {
     $("#ddlCustomer").val('').trigger('change');
     $('#ID').val(emptyGUID);
     $('#ProformaForm')[0].reset();
-    $("#lblEmailSent").text('N/A');
+    $("#lblEmailSent").text('NO');
     $("#lblInvoiceNo").text('New ProformaInvoice');
     clearUploadControl();
     EG_AddBlankRows(5)
