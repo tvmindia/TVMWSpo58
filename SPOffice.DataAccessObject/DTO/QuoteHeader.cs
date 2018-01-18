@@ -54,6 +54,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string ProductCode { get; set; }
         public Product product { get; set; }
         public Common commonObj { get; set; }
+        public Company company { get; set; }
     }
     public class QuoteStage
     {
