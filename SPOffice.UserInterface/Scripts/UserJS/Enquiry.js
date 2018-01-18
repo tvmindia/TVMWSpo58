@@ -193,8 +193,10 @@ function SaveSuccess(data) {
     }
 }
 
-function FollowUp(flag, status)//--This function have 2 parameters ,'flag' checks whether new followup is added or edit action is performed and 'status' checks whether the  element is first record  or not 
-{                                 
+function FollowUp(flag, status){
+    //--This function have 2 parameters ,
+    //'flag' checks whether new followup is added or edit action is performed 
+    //'status' checks whether the  element is first record  or not                                  
     debugger;
     //--To Reset,enable textbox and display FollowUp modal PopUp on Add Follow Up Button Click --//
     //--
@@ -213,8 +215,6 @@ function FollowUp(flag, status)//--This function have 2 parameters ,'flag' check
                 $('#followUpObj_Status').prop("disabled", false);
                 $('#followUpObj_Status').attr('onchange', 'EnableTextbox("new")');
                 $('#followUpObj_Priority').prop("disabled", false);
-                $("#followUpResetbtn").removeAttr("disabled");
-                $("#followUpResetbtn").removeAttr("style");
                 $("#btnFollowUps").modal('show');
                 $('#followUpDeletebtn').hide();
     }
@@ -225,7 +225,6 @@ function FollowUp(flag, status)//--This function have 2 parameters ,'flag' check
         debugger;
         $("#btnFollowUps").modal('show');
         $("#hdnFollowUpID").val(ID);
-        $("#followUpResetbtn").attr({ "disabled": "disabled", "style": "cursor:not-allowed;" });
         $('#followUpObj_Status').attr('onchange', 'EnableTextbox("Edit")');        
         
         FillFollowUpDetails(ID);
@@ -233,19 +232,17 @@ function FollowUp(flag, status)//--This function have 2 parameters ,'flag' check
         {
             debugger;
             $('#followUpObj_Status').prop("disabled", false);
-            //deletefollowup
-            //if ($("#Permission").val()==1)
-            //{
-            //    $('#followUpDeletebtn').hide();
-            //}
-            //else {
-            //    $('#followUpDeletebtn').show();
-            //}
+            $('#followUpDeletebtn').show();
+            $('#btnSave').show();
+            $('#followUpResetbtn').show();
             EnableTextbox("Edit");         
         }
         else
         {
+            $('#followUpObj_Status').prop("disabled", true);
             $('#followUpDeletebtn').hide();
+            $('#followUpResetbtn').hide();
+            $('#btnSave').hide();
         }       
     }   
 }
@@ -255,30 +252,11 @@ function EnableTextbox(flag)
     debugger;   
     if (flag === "Edit")
     {
-        if ((($('#followUpObj_Status').val()) == 'Open')) {
-            $('#FollowUpDate').prop("disabled", false);
-            $('#FollowUpTime').prop("disabled", false);
-            $('#followUpObj_Subject').prop("disabled", false);
-            $('#ddlPriority').prop("disabled", false);
-            $('#followUpObj_ContactName').prop("disabled", false);
-            $('#followUpObj_ReminderType').prop("disabled", false);
-            $('#followUpObj_GeneralNotes').prop("disabled", false);
-            $('#followUpObj_RemindPriorTo').prop("disabled", false);
-            $('#followUpObj_Priority').prop("disabled", false);
-            $('#followUpObj_Status').prop("disabled", false);
-
+        if ($('#followUpObj_Status').val() == 'Open') {
+            FollowUpOpen()
         }
-        else if ((($('#followUpObj_Status').val()) == 'Closed')) {
-            $('#FollowUpDate').prop("disabled", true);
-            $('#FollowUpTime').prop("disabled", true);
-            $('#followUpObj_Subject').prop("disabled", true);
-            $('#ddlPriority').prop("disabled", true);
-            $('#followUpObj_ContactName').prop("disabled", true);
-            $('#followUpObj_ReminderType').prop("disabled", true);
-            $('#followUpObj_GeneralNotes').prop("disabled", true);
-            $('#followUpObj_RemindPriorTo').prop("disabled", true);
-            $('#followUpObj_Priority').prop("disabled", true);
-
+        else if ($('#followUpObj_Status').val() == 'Closed') {
+            FollowUpClosed()
         }
     }   
 }
@@ -291,31 +269,10 @@ function FillFollowUpDetails(ID) {
     debugger;
     //$("#hdnFileID").val(thisItem.ID);
     if (thisItem.Status == "Closed") {
-        $('#FollowUpDate').prop("disabled", true);
-        $('#FollowUpTime').prop("disabled", true);
-        $('#followUpObj_Subject').prop("disabled", true);
-        $('#ddlPriority').prop("disabled", true);
-        $('#followUpObj_ContactName').prop("disabled", true);
-        $('#followUpObj_ReminderType').prop("disabled", true);
-        $('#followUpObj_GeneralNotes').prop("disabled", true);
-        $('#followUpObj_RemindPriorTo').prop("disabled", true);
-        $('#followUpObj_Priority').prop("disabled", true);
-        $('#followUpObj_Status').prop("disabled", true);       
-     
+        FollowUpClosed()
     }
     else {
-        $('#FollowUpDate').prop("disabled", false);
-        $('#FollowUpTime').prop("disabled", false);
-        $('#followUpObj_Subject').prop("disabled", false);
-        $('#ddlPriority').prop("disabled", false);
-        $('#followUpObj_ContactName').prop("disabled", false);
-        $('#followUpObj_ReminderType').prop("disabled", false);
-        $('#followUpObj_GeneralNotes').prop("disabled", false);
-        $('#followUpObj_RemindPriorTo').prop("disabled", false);
-        $('#followUpObj_Priority').prop("disabled", false);
-        $('#followUpObj_Status').prop("disabled", false);
-       
-       
+        FollowUpOpen()
     }
     $('#FollowUpDate').val(thisItem.FollowUpDate);
     $('#FollowUpTime').val(thisItem.FollowUpTime);
@@ -328,15 +285,30 @@ function FillFollowUpDetails(ID) {
     $('#followUpObj_GeneralNotes').val(thisItem.GeneralNotes);
     $('#followUpObj_Priority').val(thisItem.Priority);
 
-    var First = $('#hdnFirstRecordClosed').val()
-    //if (thisItem.Status == "Closed") {
-    //    $('#followUpObj_Status').prop("disabled", true);
-    //}
-    //else {
-    //    $('#followUpObj_Status').prop("disabled", false);
-    //}
+}
 
-
+function FollowUpClosed() {
+    $('#FollowUpDate').prop("disabled", true);
+    $('#FollowUpTime').prop("disabled", true);
+    $('#followUpObj_Subject').prop("disabled", true);
+    $('#ddlPriority').prop("disabled", true);
+    $('#followUpObj_ContactName').prop("disabled", true);
+    $('#followUpObj_ReminderType').prop("disabled", true);
+    $('#followUpObj_GeneralNotes').prop("disabled", true);
+    $('#followUpObj_RemindPriorTo').prop("disabled", true);
+    $('#followUpObj_Priority').prop("disabled", true);
+}
+function FollowUpOpen() {
+    $('#FollowUpDate').prop("disabled", false);
+    $('#FollowUpTime').prop("disabled", false);
+    $('#followUpObj_Subject').prop("disabled", false);
+    $('#ddlPriority').prop("disabled", false);
+    $('#followUpObj_ContactName').prop("disabled", false);
+    $('#followUpObj_ReminderType').prop("disabled", false);
+    $('#followUpObj_GeneralNotes').prop("disabled", false);
+    $('#followUpObj_RemindPriorTo').prop("disabled", false);
+    $('#followUpObj_Priority').prop("disabled", false);
+    $('#followUpObj_Status').prop("disabled", false);
 }
 
 //--To Get FollowUp details from server corresponding to Enquiry ID--//
@@ -367,7 +339,11 @@ function GetFollowUpDetailsByFollowUpID(ID) {
 
 //--To reset FollowUp Modal on reset button click--//
 function Reset() {
+    debugger;
+    var ID=$("#hdnFollowUpID").val()
     $('#ModelReset').trigger('click');
+    if(ID)
+    FollowUp(ID,1);
 }
 
 //--To Edit Enquiry Table with row details with particular enquiry ID--//
@@ -468,7 +444,6 @@ function Add() {
     $("#lblEnquiryNo").text("Add New");
     $("#btnResetEnquiry").trigger('click');
     $("#lblEnquiryStatus").text('Open');   
-    $("#btnAddFollowup").show();
     $("#flist").empty();
     $("#ID").val(emptyGUID);
     openNav();
@@ -694,13 +669,11 @@ function FollowUpDelete(ID)
             if (ds.Result == "OK")
             {
                 debugger;               
-                $("#btnFollowUps").modal('hide');                                               
+                $("#btnFollowUps").modal('hide');
                 notyAlert('success', ds.Record.Message);
                 GetRecentFollowUpCount();
                 var id = $('#ID').val();               
                 FollowUpList(id);
-               
-                
             }
            
             if (ds.Result == "ERROR") {
