@@ -9,6 +9,12 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatablecheckbox")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableSelect")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 20px !important;
+    }
+</style>
 }
 
 <style>
@@ -124,10 +130,11 @@
                         <th>Invoice No</th>
                         <th>Customer Name</th>
                         <th>Subject</th>
-                        <th>ValidTillDate</th>
-                        <th>Total</th>
+                        <th>Valid Till Date</th>
+                        <th>Gross Amount</th>
                         <th>Discount</th>
-                        <th>Tax Amount</th>                       
+                        <th>Tax Amount</th>
+                        <th>Total Amount</th>                       
                         <th>...</th>
 
                     </tr>
@@ -226,7 +233,7 @@
             <div class="col-md-10">
 
               
-                @Html.DropDownListFor(model => model.CustomerID,Model.CustomerList, "-- Select Customer --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlCust", onchange = "GetCustomerDetails(this);" })
+                @Html.DropDownListFor(model => model.CustomerID,Model.CustomerList, "-- Select Customer --", new { @class = "form-control BlockEnter", style = "padding:4px 12px;", @id = "ddlCustomer", onchange = "GetCustomerDetails(this);" })
                 @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-1 mandatory"></div>
@@ -407,7 +414,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control HeaderBox Amount", onkeypress = "return isNumber(event)", onblur = "RoundTxtBox(this)", onkeyup = "AmountSummary()" } })
+                                        @Html.EditorFor(model => model.Discount, new { htmlattributes = new { @class = "form-control HeaderBox Amount",onfocus= "SelectAllValue(this)", onkeypress = "return isNumber(event)", onblur = "RoundTxtBox(this)", onkeyup = "AmountSummary()" } })
                                         @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -627,11 +634,10 @@
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableSelect")
-
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/ProformaInvoice")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/editableGrid")
-
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
 }
 
 

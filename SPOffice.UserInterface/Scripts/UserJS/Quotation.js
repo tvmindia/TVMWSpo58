@@ -12,7 +12,9 @@ var footer="Terms and conditions :"+"that's not a reason to use Multiply,"+
 $(document).ready(function () {
     try {
         debugger;
-
+        //For implementating select2
+        $("#ddlCustomer").select2({
+        });
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
@@ -167,7 +169,7 @@ function EG_Columns() {
                //{ "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
                //{ "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
+                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(roundoff(data), 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
                //{ "data": "Amount",   "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
                 { "data": "ProductID",   "defaultContent": "<i></i>" }
@@ -506,7 +508,8 @@ function Delete(curobj) {
                 $("#txtQuotationNo").val(jsresult.QuotationNo);
                 $("#QuotationDate").val(jsresult.QuotationDate);
                 $("#ValidTillDate").val(jsresult.ValidTillDate);
-                $("#ddlCustomer").val(jsresult.CustomerID);
+                $("#ddlCustomer").select2();
+                $("#ddlCustomer").val(jsresult.CustomerID).trigger('change'); 
                 $("#SentToAddress").val(jsresult.SentToAddress);
                 $("#ContactPerson").val(jsresult.ContactPerson);
                 $("#ddlSalesPerson").val(jsresult.SalesPersonID);
@@ -574,6 +577,8 @@ function Delete(curobj) {
         $('#ID').val('');
         $("#DetailJSON").val('');
         //Reset();  
+        $("#ddlCustomer").select2();
+        $("#ddlCustomer").val('').trigger('change');
         $("#ddlQuoteStage").val('DFT');
         $("#lblQuoteStage").text('Draft');
         $("#lblEmailSent").text('No');

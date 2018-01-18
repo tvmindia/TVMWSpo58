@@ -147,7 +147,7 @@ function PostDataToServer(page, formData, callback)
         type: "POST",
         url: appAddress+page,
         async: true,
-        data: formData,
+       data: formData,
         beforeSend: function () {
             showLoader();
         },

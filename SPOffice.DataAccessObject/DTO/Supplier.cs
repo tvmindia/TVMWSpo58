@@ -56,6 +56,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string EmailSentYN { get; set; }
         //public string SupplierName { get; set; }
         public string POStatus { get; set; }
+        public string POStatusDesc { get; set; }
         public string Description { get; set; }
         public string duration { get; set; }
         public bool IsFinalApproved { get; set; }
@@ -71,6 +72,9 @@ namespace SPOffice.DataAccessObject.DTO
         public List<ReqDetailLink> reqDetailLinkObj { get; set; }
         public string reqDetailObjXML { get; set; }
         public string reqDetailLinkObjXML { get; set; }
+        public string ToDate { get; set; }
+        public string FromDate { get; set; }
+        public string Status { get; set; }
 
     }
 
