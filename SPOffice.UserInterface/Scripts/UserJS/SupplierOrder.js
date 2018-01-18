@@ -40,7 +40,7 @@ $(document).ready(function () {
               { "data": "SuppliersObj.CompanyName", "defaultContent": "<i>-</i>" },
               { "data": "company.Name", "defaultContent": "<i>-</i>" },
               { "data": "TotalAmount", "defaultContent": "<i>-</i>" },
-              { "data": "POStatus", "defaultContent": "<i>-</i>" },
+              { "data": "POStatusDesc", "defaultContent": "<i>-</i>" },
             {
                 "data": "IsFinalApproved", render: function (data, type, row) {
                     if (data) {
@@ -55,9 +55,9 @@ $(document).ready(function () {
               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-right", "targets": [] },
-                  { className: "text-left", "targets": [1, 2, 3, 4, 5] },
-            { className: "text-center", "targets": [] }
+                 { className: "text-right", "targets": [5] },
+                  { className: "text-left", "targets": [1,3,4,6] },
+            { className: "text-center", "targets": [2,7] }
 
             ]
         });

@@ -55,7 +55,7 @@ namespace UserInterface.Models
         [Display(Name = "Quote Header")]
         [DataType(DataType.MultilineText)]
         public string QuoteBodyHead { get; set; }
-        [Required(ErrorMessage = "Quote Footer required")]
+        //[Required(ErrorMessage = "Quote Footer required")]
         [Display(Name = "Quote Footer")]
         [DataType(DataType.MultilineText)]
         public string QuoteBodyFoot { get; set; }

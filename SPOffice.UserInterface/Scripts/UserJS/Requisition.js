@@ -20,7 +20,7 @@ var FinalApproved = false;
 //This will fire on page loads
 $(document).ready(function () {
     try {
-        //$("#RequisitionDetailObj_MaterialID").select2({});
+        $("#RequisitionDetailObj_MaterialID").select2({});
         DataTables.RequisitionList = $('#tblRequisitionList').DataTable({
             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
             order: [],
@@ -102,9 +102,9 @@ $(document).ready(function () {
             { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit Item" class="actionLink ItemEditlink"  onclick="EditIemsFromGrid(this)" ><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-            //{ className: "text-left", "targets": [1, 2, 3, 4, 6] },
+            { className: "text-left", "targets": [1, 2, 3] },
             //{ className: "text-center", "targets": [6] },
-            { className: "text-right", "targets": [6] }
+            { className: "text-right", "targets": [4,5,6] }
 
             ]
         });
@@ -284,7 +284,7 @@ function ClearFormFields()
     $('#ReqForCompany').prop('disabled', false);
     $("#RequisitionDetailObj_MaterialID").prop('disabled', false);
     $('#RequisitionDetailObj_AppxRate').prop('readonly', false);
-    $('#RequisitionDetailObj_Description').prop('readonly', false);
+  //  $('#RequisitionDetailObj_Description').prop('readonly', false);
     $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', false);
     $('#RequisitionDetailObj_CurrStock').prop('readonly', false);
     $('#RequisitionDetailObj_RequestedQty').prop('readonly', false);
@@ -315,12 +315,13 @@ function EditIemsFromGrid(this_Obj)
     
     Rowindex = DataTables.RequisitionDetailList.row($(this_Obj).parents('tr')).index();
     var rowData = DataTables.RequisitionDetailList.row($(this_Obj).parents('tr')).data();
-    $("#RequisitionDetailObj_MaterialID ").val(rowData.MaterialID!==emptyGUID?rowData.MaterialID:"");
+    $("#RequisitionDetailObj_MaterialID").select2();
+    $("#RequisitionDetailObj_MaterialID ").val(rowData.MaterialID !== emptyGUID ? rowData.MaterialID : "").trigger('change');
     $('#RequisitionDetailObj_AppxRate').val(rowData.AppxRate);
     $('#RequisitionDetailObj_Description').val(rowData.Description);
     if (rowData.MaterialID !== emptyGUID)
     {
-        $('#RequisitionDetailObj_Description').prop("disabled", true);
+       // $('#RequisitionDetailObj_Description').prop("disabled", true);
     }
     $('#RequisitionDetailObj_ExtendedDescription').val(rowData.ExtendedDescription);
     $('#RequisitionDetailObj_CurrStock').val(rowData.CurrStock);
@@ -443,8 +444,15 @@ function GetRequisitionOverViewCount()
 }
 function GetItemDetails()
 {
-    
-    try{
+    debugger;
+    try {
+        $('#RequisitionDetailObj_Description').prop('readonly', true);
+        $("#RequisitionDetailObj_AppxRate").val('');
+        $('#RequisitionDetailObj_Description').val('');
+        $('#RequisitionDetailObj_ExtendedDescription').val('');
+        $('#RequisitionDetailObj_RequestedQty').val('');
+        $('#RequisitionDetailObj_CurrStock').val('');
+
         var curObj = $("#RequisitionDetailObj_MaterialID").val();
         if (curObj) {
             var data = { "MaterialID": curObj };
@@ -457,13 +465,17 @@ function GetItemDetails()
 
                 $("#RequisitionDetailObj_AppxRate").val(ds.Records.ApproximateRate);
                 $('#RequisitionDetailObj_Description').val(ds.Records.Description)
-                $('#RequisitionDetailObj_Description').prop("disabled", true);
+              //  $('#RequisitionDetailObj_Description').prop("disabled", true);
                 //AmountSummary();
                 return ds.Records;
             }
             if (ds.Result == "ERROR") {
                 return 0;
             }
+        }
+        else
+        {
+            $('#RequisitionDetailObj_Description').prop('readonly', false);
         }
     }
     catch(e)
@@ -546,6 +558,7 @@ function GetRequisitionDetailByID()
 }
 function AddItemsToTable()
 {
+    debugger;
     try {
         var ReqQty =$('#RequisitionDetailObj_RequestedQty');
         var Desc = $('#RequisitionDetailObj_Description');
@@ -625,7 +638,8 @@ function UpdateItemsToTable()
 }
 function ClearItemFields()
 {
-    $("#RequisitionDetailObj_MaterialID ").val('');
+    $("#RequisitionDetailObj_MaterialID").select2();
+    $("#RequisitionDetailObj_MaterialID ").val('').trigger('change');
     $('#RequisitionDetailObj_AppxRate').val('');
     $('#RequisitionDetailObj_Description').val('');
     $('#RequisitionDetailObj_ExtendedDescription').val('');
@@ -634,7 +648,7 @@ function ClearItemFields()
     Rowindex = -1;
     $('.ItemAdd').show();
     $('.ItemEdit').hide();
-    $('#RequisitionDetailObj_Description').prop("disabled", false);
+   // $('#RequisitionDetailObj_Description').prop("disabled", false);
 }
 function SaveRequisition()
 {
