@@ -132,18 +132,19 @@ namespace SPOffice.UserInterface.API
                 RequisitionObj.CommonObj.UpdatedDate = commonobj.GetCurrentDateTime();
                 //RequisitionObj.ID = Guid.Parse(userObj.ID);
                 RequisitionViewModel Requisition = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = Requisition, Message = "Approved" });
+                return JsonConvert.SerializeObject(new { Result =true, Record = Requisition, Message = "Approved" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = c.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
 
         }
         #endregion
 
         #region Insert and Update Requisitions
+        [HttpPost]
         public string InsertUpdateRequisition(RequisitionViewModel RequisitionObj)
         {
             try
@@ -182,15 +183,33 @@ namespace SPOffice.UserInterface.API
                             break;
                     }
 
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
+                    return JsonConvert.SerializeObject(new { Result = true, Record = result });
                 }
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = c.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
         #endregion Insert and Update Requisitions
+
+        #region Delete Requisition
+        [HttpPost]
+        public string DeleteRequisitionDetailByID(RequisitionViewModel ReqObj)
+        {
+            object result = null;
+            try
+            {
+                result = _requisitionBusiness.DeleteRequisitionDetailByID(ReqObj.ID);
+                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
+        #endregion Delete Requisition
     }
 }

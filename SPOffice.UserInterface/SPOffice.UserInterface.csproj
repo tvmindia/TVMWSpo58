@@ -657,6 +657,8 @@
     <Compile Include="API\EnquiryController.cs" />
     <Compile Include="API\FollowUpController.cs" />
     <Compile Include="API\LoginController.cs" />
+    <Compile Include="API\NotificationController.cs" />
+    <Compile Include="API\ProductController.cs" />
     <Compile Include="API\ProformaController.cs" />
     <Compile Include="API\QuotationController.cs" />
     <Compile Include="API\RequisitionController.cs" />

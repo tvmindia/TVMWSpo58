@@ -71,6 +71,36 @@ namespace SPOffice.BusinessService.Services
             return SPOList;
         }
 
+
+        public List<SupplierOrder> GetAllSupplierPurchaseOrdersList(SupplierOrder SupplierObj)
+        {
+            List<SupplierOrder> SPOList = null;
+            try
+            {
+                SPOList = _supplierRepository.GetAllSupplierPurchaseOrdersList(SupplierObj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return SPOList;
+        }
+
+        
+           public List<SupplierOrder> GetAllPendingSupplierPurchaseOrders()
+           {
+            List<SupplierOrder> SPOList = null;
+            try
+            {
+                SPOList = _supplierRepository.GetAllPendingSupplierPurchaseOrders();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return SPOList;
+           }
+
         public SupplierOrder GetSupplierPurchaseOrderByID(Guid ID)
         {
             SupplierOrder SPO = null;

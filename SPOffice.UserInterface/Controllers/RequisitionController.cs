@@ -32,7 +32,8 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public ActionResult Index(string id)
         {
-            ViewBag.value = id;
+            
+            ViewBag.value = id!= "TILEFILTER"?id:"";
             if(id== "TILEFILTER")
             { 
                 Permission _permission = Session["UserRightsOffice"] as Permission;
@@ -164,8 +165,9 @@ namespace SPOffice.UserInterface.Controllers
         {
             try
             {
+
                 AppUA _appUA = Session["AppUAOffice"] as AppUA;
-                RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails(Guid.Parse(ID),_appUA.UserName));
+                RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails(new Guid(ID),_appUA.UserName));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = requisitionViewModelObj });
             }
             catch (Exception ex)
@@ -173,7 +175,7 @@ namespace SPOffice.UserInterface.Controllers
                 AppConstMessage cm = c.GetMessage(ex.Message);
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
-        }
+         }
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         [ValidateAntiForgeryToken]
