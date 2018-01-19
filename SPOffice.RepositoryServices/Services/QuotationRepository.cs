@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Net.Mail;
+using System.Net;
 
 namespace SPOffice.RepositoryServices.Services
 {
@@ -487,6 +489,8 @@ namespace SPOffice.RepositoryServices.Services
                                         };
                                         quoteItem.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         quoteItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
+                                        quoteItem.company = new Company();
+                                        quoteItem.company.LogoURL = (sdr["LogoURL"].ToString() != "" ? sdr["LogoURL"].ToString() : quoteItem.company.LogoURL);
                                     }
                                     quoteItemList.Add(quoteItem);
                                 }
