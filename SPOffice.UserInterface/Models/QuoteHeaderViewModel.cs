@@ -18,7 +18,7 @@ namespace UserInterface.Models
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
-        public CustomerPOViewModel customer { get; set; }
+        public CustomerViewModel customer { get; set; }
         [Required(ErrorMessage = "Quotation Date required")]
         [Display(Name = "Quotation Date")]
         public string QuotationDate { get; set; }

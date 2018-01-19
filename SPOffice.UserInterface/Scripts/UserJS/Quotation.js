@@ -47,7 +47,7 @@ $(document).ready(function () {
                { "data": "QuotationDate", "defaultContent": "<i>-</i>" },
                { "data": "QuotationNo", "defaultContent": "<i>-</i>" },
                { "data": "QuoteSubject", "defaultContent": "<i>-</i>" },
-               { "data": "customer.CustomerName", "defaultContent": "<i>-</i>" },
+               { "data": "customer.CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "company.Name","defaultContent": "<i>-</i>" },
                { "data": "quoteStage.Description", "defaultContent": "<i>-</i>" },
@@ -525,9 +525,12 @@ function Delete(curobj) {
                 $("#GeneralNotes").val(jsresult.GeneralNotes);
 
                 $("#lblQuoteStage").text(jsresult.quoteStage.Description);
-                $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
-
-                $('#SentToEmails').val(jsresult.SentToEmails);
+                $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
+                debugger;
+                if (jsresult.SentToEmails != null)
+                    $('#SentToEmails').val(jsresult.SentToEmails);
+                else
+                $('#SentToEmails').val(jsresult.customer.ContactEmail);
                 $("#lblQuotationNo").text(jsresult.QuotationNo);
                 debugger;
                 EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
