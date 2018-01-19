@@ -188,6 +188,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[InsertProduct]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = product.Code;
+                        cmd.Parameters.Add("@OldCode", SqlDbType.VarChar, 20).Value = product.OldCode;
                         cmd.Parameters.Add("@Name", SqlDbType.VarChar, 250).Value = product.Name;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = product.Description;
                         cmd.Parameters.Add("@UnitCode", SqlDbType.VarChar, 15).Value = product.UnitCode;
@@ -257,6 +258,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = product.ID;
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = product.Code;
+                        cmd.Parameters.Add("@OldCode", SqlDbType.VarChar, 20).Value = product.OldCode;
                         cmd.Parameters.Add("@Name", SqlDbType.VarChar, 250).Value = product.Name;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = product.Description;
                         cmd.Parameters.Add("@UnitCode", SqlDbType.VarChar, 15).Value = product.UnitCode;

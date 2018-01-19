@@ -13,6 +13,7 @@ namespace UserInterface.Models
       public Guid? ID { get; set; }
         [Required(ErrorMessage = "Code is missing")]
         public string Code { get; set; }
+        public string OldCode { get; set; }
         [Required(ErrorMessage = "Name is missing")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Description is missing")]
@@ -26,6 +27,8 @@ namespace UserInterface.Models
       public List<SelectListItem> unitList { get; set; }
       public List<UnitViewModel> unitViewModelList;
         public UnitViewModel unit { get; set; }
+        public string AuthenticationKey { get; set; }
+        public UserViewModel userObj { get; set; }
     }
     public class UnitViewModel
     {
