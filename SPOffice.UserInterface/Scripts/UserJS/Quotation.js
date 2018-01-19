@@ -244,10 +244,6 @@ function CalculateGridAmount(row) {
 
 }
 
-function QuotationNoOnChange(curobj)
-{
-    $("#lblQuotationNo").text($(curobj).val());
-}
 
 function AmountSummary() {
     var total = 0.00;
@@ -423,7 +419,7 @@ function Delete(curobj) {
                     $('#deleteId').val(JsonResult.Record.ID);
                 }
                 BindAllQuotes();
-                EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                BindQuationDetails($("#ID").val());
                 break;
             case "ERROR":
                 notyAlert('error', JsonResult.Record.Message);
@@ -606,7 +602,7 @@ function Delete(curobj) {
                 ds = JSON.parse(ds);
             }
             if (ds.Result == "OK") {
-                BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed,ds.OnHold);
+                BindSummarBox(ds.Draft, ds.Converted, ds.Negotiation, ds.Lost);
                 return ds.Records;
             }
             if (ds.Result == "ERROR") {
@@ -622,18 +618,17 @@ function Delete(curobj) {
     }
 
     //--function to place Counts on Tiles--//
-    function BindSummarBox(Draft, Delivered, InProgress, Closed, OnHold) {
+    function BindSummarBox(Draft, Converted, Negotiation, Lost) {
+        debugger;
         $("#draftCount").text(Draft);
-        $("#deliveredCount").text(Delivered);
-        $("#inProgressCount").text(InProgress);
-        $("#closedCount").text(Closed);
-        $("#onHoldCount").text(OnHold);
+        $("#negotiationCount").text(Negotiation);
+        $("#convertedCount").text(Converted);
+        $("#lostCount").text(Lost);
         //--To place discription--//
         $("#draftCountDescription").text(Draft + 'Draft Quotation(s)');
-        $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
-        $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
-        $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');
-        $("#onHoldCountDescription").text(OnHold + ' On Hold Quotation(s)');
+        $("#negotiationCountDescription").text(Negotiation + ' Negotiation Quotation(s)');
+        $("#convertedCountDescription").text(Converted + ' Converted Quotation(s)');
+        $("#lostCountDescription").text(Lost + ' Lost Quotation(s)');
 
     }
 

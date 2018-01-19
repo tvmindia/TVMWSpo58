@@ -12,7 +12,6 @@ namespace UserInterface.Models
     public class QuoteHeaderViewModel
     {
         public Guid? ID { get; set; }
-        [Required(ErrorMessage = "Quotation No required")]
         [Display(Name = "Quotation No")]
         public string QuotationNo { get; set; }
         [Required(ErrorMessage = "Customer required")]
