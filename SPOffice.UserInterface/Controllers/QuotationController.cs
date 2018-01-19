@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using UserInterface.Models;
+using System.Net;
+using System.Net.Mail;
 
 namespace SPOffice.UserInterface.Controllers
 {
@@ -377,7 +379,10 @@ namespace SPOffice.UserInterface.Controllers
                     if (quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot != null)
                         quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot.Replace(Environment.NewLine,"<br/>");
 
+                                      
                     quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
+
+                    ViewBag.path = "http://"+HttpContext.Request.Url.Authority+quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList[0].company.LogoURL;
 
                     // quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity),2); return QI; }).ToList() : null;
                     //if(quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList!=null)
@@ -386,7 +391,8 @@ namespace SPOffice.UserInterface.Controllers
                     //    quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.GrossAmount - quoteMailPreviewViewModel.quoteHeaderViewModel.Discount;
                     //    quoteMailPreviewViewModel.quoteHeaderViewModel.TotalAmount = quoteMailPreviewViewModel.quoteHeaderViewModel.NetTaxableAmount + quoteMailPreviewViewModel.quoteHeaderViewModel.TaxAmount;
                     //}
-                   
+
+
                 }
              
             }

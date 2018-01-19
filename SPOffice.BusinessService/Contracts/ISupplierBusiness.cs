@@ -15,6 +15,8 @@ namespace SPOffice.BusinessService.Contracts
         Suppliers GetSupplierDetailsByID(Guid ID);
 
         List<SupplierOrder> GetAllSupplierPurchaseOrders();
+        List<SupplierOrder> GetAllSupplierPurchaseOrdersList(SupplierOrder SupplierObj);
+        List<SupplierOrder> GetAllPendingSupplierPurchaseOrders();
         SupplierOrder GetSupplierPurchaseOrderByID(Guid ID);
         object InsertPurchaseOrder(SupplierOrder SPO);
         object UpdatePurchaseOrder(SupplierOrder SPO);

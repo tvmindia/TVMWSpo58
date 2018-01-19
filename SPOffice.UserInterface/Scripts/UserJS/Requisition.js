@@ -130,7 +130,7 @@ $(document).ready(function () {
         PaintSearchTiles();
         //To check whether redirected from any of the pages
         if ($('#filter').val() != '')        {
-            
+            debugger;
             window.history.replaceState(null, null, "/"+window.location.pathname.split('/')[1]);
             var FilterFromDash = new Object();
             FilterFromDash.id = $('#filter').val();
@@ -145,7 +145,7 @@ $(document).ready(function () {
 });
 function FilterContent()
 {
-    
+    debugger;
     var FromDate = $('#txtFromDate');
     var ToDate = $('#txtToDate');
     var ReqStatus = $('#ddlReqStatus');
@@ -241,7 +241,7 @@ function PaintSearchTiles()
     }    
 }
 function Gridfilter(filter) {
-    
+    debugger;
     $('#FilterHeadSeperater').show();
     $('#OPENfilter').hide();
     $('#ALLfilter').hide();
@@ -374,7 +374,7 @@ function DeleteRequisitionDetail(ID)
 }
 function BindRequisitionDetail()
 {
-    
+    debugger;
     try{
         var RequisitionViewModel = GetRequisitionDetailByID()
         $('#ReqNo').val(RequisitionViewModel.ReqNo);
@@ -485,7 +485,7 @@ function GetItemDetails()
 }
 function GetUserRequisitionList(AdvanceSearchObject)
 {
-    
+    debugger;
     try {
         if (AdvanceSearchObject === 0)
         {
@@ -536,6 +536,7 @@ function GetRequisitionDetailList(ID) {
 }
 function GetRequisitionDetailByID()
 {
+    debugger;
     try{
         var data = { "ID": $('#ID').val() };
         var ds = {};

@@ -108,6 +108,7 @@ namespace UserInterface.Models
         public string ProductCode { get; set; }
         public ProductViewModel product { get; set; }
         public CommonViewModel commonObj { get; set; }
+        public CompanyViewModel company { get; set; }
     }
     public class QuoteStageViewModel
     {

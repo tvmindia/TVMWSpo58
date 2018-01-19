@@ -12,6 +12,6 @@ namespace SPOffice.DataAccessObject.DTO
       public string BillingAddress { get; set; }
       public string ShippingAddress { get; set; }
       public Common commonObj { get; set; }
-       
+      public string LogoURL { get; set; } 
     }
 }

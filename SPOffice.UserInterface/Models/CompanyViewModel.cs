@@ -15,6 +15,7 @@ namespace SPOffice.UserInterface.Models
         public string ShippingAddress { get; set; }
         public CommonViewModel commonObj { get; set; }
         public List<SelectListItem> CompanyList{get;set;}
+        public string LogoURL { get; set; }
         
     }
 }

@@ -222,6 +222,139 @@ namespace SPOffice.RepositoryServices.Services
             return SPOList;
 
         }
+
+
+        public List<SupplierOrder> GetAllSupplierPurchaseOrdersList(SupplierOrder SupplierObj)
+        {
+            List<SupplierOrder> SPOList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllSupplierPOList]";
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = SupplierObj.FromDate != "" ? SupplierObj.FromDate:null;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = SupplierObj.ToDate != "" ? SupplierObj.ToDate : null;
+                        cmd.Parameters.Add("@Status", SqlDbType.NVarChar,50).Value = SupplierObj.Status != "" ? SupplierObj.Status : null;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = SupplierObj.ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                SPOList = new List<SupplierOrder>();
+                                while (sdr.Read())
+                                {
+                                    SupplierOrder _SuppObj = new SupplierOrder();
+                                    {
+
+                                        _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
+                                        _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
+                                        _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
+                                        _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
+                                        _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
+                                        _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
+                                        _SuppObj.IsFinalApproved = (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);
+                                        _SuppObj.FinalApprovedDateString = (sdr["FinalApprovedDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovedDate"].ToString()).ToString(s.dateformat) : _SuppObj.FinalApprovedDateString);
+
+                                        _SuppObj.SuppliersObj = new Suppliers();
+                                        {
+                                            _SuppObj.SuppliersObj.ID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _SuppObj.SuppliersObj.ID);
+                                            _SuppObj.SuppliersObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _SuppObj.SuppliersObj.CompanyName);
+                                        }
+                                        _SuppObj.company = new Company();
+                                        {
+                                            _SuppObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : _SuppObj.company.Name);
+                                            _SuppObj.company.Code = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.company.Code);
+                                        }
+                                    }
+                                    SPOList.Add(_SuppObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return SPOList;
+
+        }
+
+
+        public List<SupplierOrder> GetAllPendingSupplierPurchaseOrders()
+        {
+            List<SupplierOrder> SPOList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllPendingSupplierOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                SPOList = new List<SupplierOrder>();
+                                while (sdr.Read())
+                                {
+                                    SupplierOrder _SuppObj = new SupplierOrder();
+                                    {
+
+                                        _SuppObj.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _SuppObj.ID);
+                                        _SuppObj.PONo = (sdr["PONo"].ToString() != "" ? sdr["PONo"].ToString() : _SuppObj.PONo);
+                                        _SuppObj.PODate = (sdr["PODate"].ToString() != "" ? DateTime.Parse(sdr["PODate"].ToString()).ToString(s.dateformat) : _SuppObj.PODate);
+                                        _SuppObj.POStatus = (sdr["POStatus"].ToString() != "" ? sdr["POStatus"].ToString() : _SuppObj.POStatus);
+                                        _SuppObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : _SuppObj.TotalAmount);
+                                        _SuppObj.POFromCompCode = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.POFromCompCode);
+                                        _SuppObj.IsFinalApproved = (sdr["FinalApproved"].ToString() != "" ? bool.Parse(sdr["FinalApproved"].ToString()) : _SuppObj.IsFinalApproved);
+                                        _SuppObj.FinalApprovedDateString = (sdr["FinalApprovedDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovedDate"].ToString()).ToString(s.dateformat) : _SuppObj.FinalApprovedDateString);
+
+                                        _SuppObj.SuppliersObj = new Suppliers();
+                                        {
+                                            _SuppObj.SuppliersObj.ID = (sdr["SupplierID"].ToString() != "" ? Guid.Parse(sdr["SupplierID"].ToString()) : _SuppObj.SuppliersObj.ID);
+                                            _SuppObj.SuppliersObj.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _SuppObj.SuppliersObj.CompanyName);
+                                        }
+                                        _SuppObj.company = new Company();
+                                        {
+                                            _SuppObj.company.Name = (sdr["Company"].ToString() != "" ? sdr["Company"].ToString() : _SuppObj.company.Name);
+                                            _SuppObj.company.Code = (sdr["POFromCompCode"].ToString() != "" ? sdr["POFromCompCode"].ToString() : _SuppObj.company.Code);
+                                        }
+                                    }
+                                    SPOList.Add(_SuppObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return SPOList;
+
+        }
+
         public SupplierOrder GetSupplierPurchaseOrderByID(Guid ID)
         {
             SupplierOrder _SuppObj = new SupplierOrder();

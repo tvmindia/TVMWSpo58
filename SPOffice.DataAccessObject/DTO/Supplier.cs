@@ -72,6 +72,9 @@ namespace SPOffice.DataAccessObject.DTO
         public List<ReqDetailLink> reqDetailLinkObj { get; set; }
         public string reqDetailObjXML { get; set; }
         public string reqDetailLinkObjXML { get; set; }
+        public string ToDate { get; set; }
+        public string FromDate { get; set; }
+        public string Status { get; set; }
 
     }
 

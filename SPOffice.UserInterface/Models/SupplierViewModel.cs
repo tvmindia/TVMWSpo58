@@ -100,7 +100,9 @@ namespace SPOffice.UserInterface.Models
 
         public string Description { get; set; }
         public string duration { get; set; }
-
+        public string ToDate { get; set; }
+        public string FromDate { get; set; }
+        public string Status { get; set; }
 
         public string CompanyName { get; set; }
         public string hdfRequisitionDetail { get; set; }
@@ -124,6 +126,7 @@ namespace SPOffice.UserInterface.Models
         public List<ReqDetailLinkViewModel> reqDetailLinkObj { get; set; }
         public SupplierPOMailPreviewViewModel mailPreviewVMObj { get; set; }
         public SupplierPODetailViewModel SPODObj { get; set; }
+        public UserViewModel userObj { get; set; }
         //file upload 
         public List<FileUpload> AttachmentLists { get; set; }
         public Guid hdnFileID { get; set; }
@@ -201,6 +204,9 @@ namespace SPOffice.UserInterface.Models
         public Guid ReqID { get; set; }
         public decimal Qty { get; set; }
     }
+
+
+ 
 
 
 }
