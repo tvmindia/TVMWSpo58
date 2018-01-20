@@ -429,8 +429,13 @@ namespace SPOffice.UserInterface.Controllers
                         //1 is meant for mail sent successfully
                         quoteHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _quotationBusiness.UpdateQuoteMailStatus(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
-                    }
                     return JsonConvert.SerializeObject(new { Result = "OK",MailResult= sendsuccess ,Message = c.MailSuccess});
+                    }
+                    else
+                    {
+                        return JsonConvert.SerializeObject(new { Result = "ERROR", MailResult = sendsuccess, Message = c.MailFailure });
+
+                    }
                 }
                 else
                 {

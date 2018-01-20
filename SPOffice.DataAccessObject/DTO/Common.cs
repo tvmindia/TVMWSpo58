@@ -93,6 +93,11 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "Approved Successfull!"; }
         }
+        public string MailFailure
+        {
+            get { return "Mail Sending Failed! "; }
+        }
+
         public string MailSuccess
         {
             get { return "Mail Send Successfully ! "; }
