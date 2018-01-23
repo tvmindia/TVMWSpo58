@@ -116,6 +116,12 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "Password is wrong"; }
         }
+
+        public string NotificationSuccess
+        {
+            get { return "Notification Send Successfully ! "; }
+        }
+
         public AppConstMessage GetMessage(string MsgCode)
         {
             AppConstMessage result = new AppConstMessage(MsgCode, "", "ERROR");

@@ -36,15 +36,15 @@ namespace SPOffice.UserInterface.API
             object result = null;
             try
             {
-                if (productVM.AuthenticationKey == auth)
+                if (productVM.APIKey == auth)
                 {
                     productVM.commonObj = new CommonViewModel();
-                    productVM.commonObj.CreatedBy = productVM.userObj.UserName;
+                    productVM.commonObj.CreatedBy = productVM.UserName;
                     Common commObj = new Common();
                     productVM.commonObj.CreatedDate = commObj.GetCurrentDateTime();
                     if (string.IsNullOrEmpty(productVM.ID.ToString()))
                     {
-                        result = _productBusiness.InsertProduct(Mapper.Map<ProductViewModel, Product>(productVM));
+                        result = _productBusiness.InsertProductDetails(Mapper.Map<ProductViewModel, Product>(productVM));
                     }
                 }
                 else
@@ -52,6 +52,7 @@ namespace SPOffice.UserInterface.API
                     return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
                 }
                     return JsonConvert.SerializeObject(new { Result = true, Record = result });
+
                 
             }
             catch (Exception ex)
@@ -69,18 +70,18 @@ namespace SPOffice.UserInterface.API
         /// </summary>
         /// <param name="proObj"></param>
         /// <returns></returns>
-        public string UpdateProduct(ProductViewModel proObj)
+        public string UpdateProductByCode(ProductViewModel proObj)
         {
             object result = null;
             try
             {
-                if (proObj.AuthenticationKey == auth)
+                if (proObj.APIKey == auth)
                 {
                     proObj.commonObj = new CommonViewModel();
-                    proObj.commonObj.UpdatedBy =proObj.userObj.UserName;
+                    proObj.commonObj.UpdatedBy =proObj.UserName;
                     Common commObj = new Common();
                     proObj.commonObj.UpdatedDate = commObj.GetCurrentDateTime();
-                    result = _productBusiness.UpdateProduct(Mapper.Map<ProductViewModel, Product>(proObj));
+                    result = _productBusiness.UpdateProductByCode(Mapper.Map<ProductViewModel, Product>(proObj));
                 }
                  else
                 {

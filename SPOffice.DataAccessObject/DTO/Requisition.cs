@@ -28,7 +28,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
         public bool IsApprover { get; set; }
-       
+        public string RequisitionBy { get; set; }
+
     }
     public class RequisitionDetail
     {

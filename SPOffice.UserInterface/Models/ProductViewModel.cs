@@ -27,7 +27,8 @@ namespace UserInterface.Models
       public List<SelectListItem> unitList { get; set; }
       public List<UnitViewModel> unitViewModelList;
         public UnitViewModel unit { get; set; }
-        public string AuthenticationKey { get; set; }
+        public string APIKey { get; set; }
+        public string UserName { get; set; }
         public UserViewModel userObj { get; set; }
     }
     public class UnitViewModel
