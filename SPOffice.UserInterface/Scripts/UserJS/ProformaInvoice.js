@@ -533,8 +533,8 @@ function BindProformaInvoiceDetails(ID) {
             $("#BodyFoot").val(jsresult.BodyFoot);       
 
             //$("#lblQuoteStage").text(jsresult.quoteStage.Description);
-             $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
-           // $('#SentToEmails').val(jsresult.SentToEmails);
+            $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
+            $('#SentToEmails').val(jsresult.SentToEmails);
             $("#lblInvoiceNo").text(jsresult.InvoiceNo);
             debugger;
             EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID),1);
@@ -607,6 +607,7 @@ function GetCustomerDetails(curobj) {
 
             $("#SentToAddress").val(ds.Record.BillingAddress);
             $("#ContactPerson").val(ds.Record.ContactPerson);
+            if( $("#SentToEmails").val()=="")
             $("#SentToEmails").val(ds.Record.ContactEmail);
             return ds.Record;
         }
@@ -700,7 +701,7 @@ function MailSuccess(data, status) {
             notyAlert('success', JsonResult.Message);
             switch (JsonResult.MailResult) {
                 case 1:
-                    $("#lblEmailSent").text('YES');                   
+                    $("#lblEmailSent").text('YES');
                     break;
                 case 0:
                     $("#lblEmailSent").text('NO');

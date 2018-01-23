@@ -12,14 +12,13 @@ namespace UserInterface.Models
     public class QuoteHeaderViewModel
     {
         public Guid? ID { get; set; }
-        [Required(ErrorMessage = "Quotation No required")]
         [Display(Name = "Quotation No")]
         public string QuotationNo { get; set; }
         [Required(ErrorMessage = "Customer required")]
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
-        public CustomerPOViewModel customer { get; set; }
+        public CustomerViewModel customer { get; set; }
         [Required(ErrorMessage = "Quotation Date required")]
         [Display(Name = "Quotation Date")]
         public string QuotationDate { get; set; }

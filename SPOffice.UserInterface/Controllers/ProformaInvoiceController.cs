@@ -355,8 +355,14 @@ namespace SPOffice.UserInterface.Controllers
                         //1 is meant for mail sent successfully
                         proformaHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _proformaInvoiceBusiness.UpdateQuoteMailStatus(Mapper.Map<ProformaHeaderViewModel, ProformaHeader>(proformaHeaderVM));
+                        return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess, Message = c.MailSuccess });
+
                     }
-                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, MailResult = sendsuccess,Message = c.MailSuccess });
+                    else
+                    {
+                        return JsonConvert.SerializeObject(new { Result = "ERROR", Record = result, MailResult = sendsuccess, Message = c.MailFailure });
+
+                    }
                 }
                 else
                 {

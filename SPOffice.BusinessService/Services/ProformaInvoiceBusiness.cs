@@ -138,7 +138,7 @@ namespace SPOffice.BusinessService.Services
                     {
                         Mail _mail = new Mail();
                         _mail.Body = proformaHeader.MailBody;
-                        _mail.Subject = pH.QuoteSubject;
+                        _mail.Subject = pH.Subject;
                         _mail.To = email;
                         sendsuccess = await _mailBusiness.MailSendAsync(_mail);
                     }

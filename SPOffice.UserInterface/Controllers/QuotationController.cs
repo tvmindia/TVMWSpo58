@@ -140,10 +140,9 @@ namespace SPOffice.UserInterface.Controllers
             {
                 List<QuoteHeaderViewModel> quoteHeaderViewModelList = Mapper.Map<List<QuoteHeader>, List<QuoteHeaderViewModel>>(_quotationBusiness.GetAllQuotations());
                 int draftCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q=>Q.Stage== "DFT").Select(T => T.ID).Count();
-                int deliveredCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "DVD").Select(T => T.ID).Count();
-                int inProgressCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "NGT"||Q.Stage=="CFD").Select(T => T.ID).Count();
-                int closedCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "CLT" || Q.Stage== "CWN").Select(T => T.ID).Count();
-                int onholdCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "OHD").Select(T => T.ID).Count();
+                int convertedCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "CVD").Select(T => T.ID).Count();
+                int negotiationCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "NGT").Select(T => T.ID).Count();
+                int lostCount = quoteHeaderViewModelList == null ? 0 : quoteHeaderViewModelList.Where(Q => Q.Stage == "LST").Select(T => T.ID).Count();
 
 
                 if (filter != null)
@@ -159,7 +158,7 @@ namespace SPOffice.UserInterface.Controllers
                     }                
                     
                 }
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = quoteHeaderViewModelList,Draft= draftCount,Delivered= deliveredCount,InProgress= inProgressCount,Closed=closedCount,OnHold=onholdCount });
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = quoteHeaderViewModelList,Draft= draftCount, Converted= convertedCount, Negotiation = negotiationCount, Lost= lostCount});
             }
             catch (Exception ex)
             {
@@ -430,8 +429,13 @@ namespace SPOffice.UserInterface.Controllers
                         //1 is meant for mail sent successfully
                         quoteHeaderVM.EmailSentYN = sendsuccess.ToString();
                         result = _quotationBusiness.UpdateQuoteMailStatus(Mapper.Map<QuoteHeaderViewModel, QuoteHeader>(quoteHeaderVM));
-                    }
                     return JsonConvert.SerializeObject(new { Result = "OK",MailResult= sendsuccess ,Message = c.MailSuccess});
+                    }
+                    else
+                    {
+                        return JsonConvert.SerializeObject(new { Result = "ERROR", MailResult = sendsuccess, Message = c.MailFailure });
+
+                    }
                 }
                 else
                 {

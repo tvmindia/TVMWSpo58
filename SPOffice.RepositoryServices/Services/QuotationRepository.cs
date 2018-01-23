@@ -52,11 +52,12 @@ namespace SPOffice.RepositoryServices.Services
                                         _quoteHeader.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _quoteHeader.ID);
                                         _quoteHeader.QuotationNo = (sdr["QuotationNo"].ToString() != "" ? sdr["QuotationNo"].ToString() : _quoteHeader.QuotationNo);
                                         _quoteHeader.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _quoteHeader.CustomerID);
-                                        _quoteHeader.customer = new CustomerPO();
+                                        _quoteHeader.customer = new Customer();
                                         {
                                             _quoteHeader.customer.ID = (Guid)_quoteHeader.CustomerID;
-                                            _quoteHeader.customer.CustomerName= (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _quoteHeader.customer.CustomerName);
+                                            _quoteHeader.customer.CompanyName= (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _quoteHeader.customer.CompanyName);
                                             _quoteHeader.customer.BillingAddress= (sdr["CustomerAddress"].ToString() != "" ? sdr["CustomerAddress"].ToString() : _quoteHeader.customer.BillingAddress);
+                                            _quoteHeader.customer.ContactEmail= (sdr["CustomerEmail"].ToString() != "" ? sdr["CustomerEmail"].ToString() : _quoteHeader.customer.ContactEmail);
                                         }
                                         _quoteHeader.QuotationDate = (sdr["QuotationDate"].ToString() != "" ? DateTime.Parse(sdr["QuotationDate"].ToString()).ToString(settings.dateformat) : _quoteHeader.QuotationDate);
                                         _quoteHeader.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()).ToString(settings.dateformat) : _quoteHeader.ValidTillDate);
@@ -126,7 +127,6 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[InsertQuotation]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@QuotationNo", SqlDbType.VarChar, 20).Value = quoteHeader.QuotationNo;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quoteHeader.CustomerID;
                         cmd.Parameters.Add("@QuotationDate", SqlDbType.DateTime).Value = quoteHeader.QuotationDate;
                         cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = quoteHeader.ValidTillDate;
@@ -207,7 +207,6 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[UpdateQuotation]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quoteHeader.ID;
-                        cmd.Parameters.Add("@QuotationNo", SqlDbType.VarChar, 20).Value = quoteHeader.QuotationNo;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quoteHeader.CustomerID;
                         cmd.Parameters.Add("@QuotationDate", SqlDbType.DateTime).Value = quoteHeader.QuotationDate;
                         cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = quoteHeader.ValidTillDate;

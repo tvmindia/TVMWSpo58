@@ -47,7 +47,7 @@ $(document).ready(function () {
                { "data": "QuotationDate", "defaultContent": "<i>-</i>" },
                { "data": "QuotationNo", "defaultContent": "<i>-</i>" },
                { "data": "QuoteSubject", "defaultContent": "<i>-</i>" },
-               { "data": "customer.CustomerName", "defaultContent": "<i>-</i>" },
+               { "data": "customer.CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "company.Name","defaultContent": "<i>-</i>" },
                { "data": "quoteStage.Description", "defaultContent": "<i>-</i>" },
@@ -244,10 +244,6 @@ function CalculateGridAmount(row) {
 
 }
 
-function QuotationNoOnChange(curobj)
-{
-    $("#lblQuotationNo").text($(curobj).val());
-}
 
 function AmountSummary() {
     var total = 0.00;
@@ -423,7 +419,7 @@ function Delete(curobj) {
                     $('#deleteId').val(JsonResult.Record.ID);
                 }
                 BindAllQuotes();
-                EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                BindQuationDetails($("#ID").val());
                 break;
             case "ERROR":
                 notyAlert('error', JsonResult.Record.Message);
@@ -529,9 +525,12 @@ function Delete(curobj) {
                 $("#GeneralNotes").val(jsresult.GeneralNotes);
 
                 $("#lblQuoteStage").text(jsresult.quoteStage.Description);
-                $("#lblEmailSent").text(jsresult.EmailSentYN=="True"?'YES':'NO');
-
-                $('#SentToEmails').val(jsresult.SentToEmails);
+                $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
+                debugger;
+                if (jsresult.SentToEmails != null)
+                    $('#SentToEmails').val(jsresult.SentToEmails);
+                else
+                $('#SentToEmails').val(jsresult.customer.ContactEmail);
                 $("#lblQuotationNo").text(jsresult.QuotationNo);
                 debugger;
                 EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
@@ -606,7 +605,7 @@ function Delete(curobj) {
                 ds = JSON.parse(ds);
             }
             if (ds.Result == "OK") {
-                BindSummarBox(ds.Draft, ds.Delivered, ds.InProgress,ds.Closed,ds.OnHold);
+                BindSummarBox(ds.Draft, ds.Converted, ds.Negotiation, ds.Lost);
                 return ds.Records;
             }
             if (ds.Result == "ERROR") {
@@ -622,18 +621,17 @@ function Delete(curobj) {
     }
 
     //--function to place Counts on Tiles--//
-    function BindSummarBox(Draft, Delivered, InProgress, Closed, OnHold) {
+    function BindSummarBox(Draft, Converted, Negotiation, Lost) {
+        debugger;
         $("#draftCount").text(Draft);
-        $("#deliveredCount").text(Delivered);
-        $("#inProgressCount").text(InProgress);
-        $("#closedCount").text(Closed);
-        $("#onHoldCount").text(OnHold);
+        $("#negotiationCount").text(Negotiation);
+        $("#convertedCount").text(Converted);
+        $("#lostCount").text(Lost);
         //--To place discription--//
         $("#draftCountDescription").text(Draft + 'Draft Quotation(s)');
-        $("#deliveredCountDescription").text(Delivered + ' Delivered Quotation (s)');
-        $("#inprogressCountDescription").text(InProgress + ' In Progress Quotation(s)');
-        $("#closedCountDescription").text(Closed + ' Closed Quotation(s)');
-        $("#onHoldCountDescription").text(OnHold + ' On Hold Quotation(s)');
+        $("#negotiationCountDescription").text(Negotiation + ' Negotiation Quotation(s)');
+        $("#convertedCountDescription").text(Converted + ' Converted Quotation(s)');
+        $("#lostCountDescription").text(Lost + ' Lost Quotation(s)');
 
     }
 
