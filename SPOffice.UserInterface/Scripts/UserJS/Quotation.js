@@ -93,7 +93,7 @@ $(document).ready(function () {
                 ],
                 columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
                     { "targets": [2, 3, 5], "width": "15%" },
-                    { "targets": [6], "width": "5%" },
+                    { "targets": [6], "width": "8%" },
                      { className: "text-right", "targets": [5] },
                       { className: "text-left", "targets": [2,3,4] },
                 { className: "text-center", "targets": [6] }

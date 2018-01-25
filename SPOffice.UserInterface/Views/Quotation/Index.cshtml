@@ -358,7 +358,7 @@
                                         @Html.DropDownListFor(model => model.SalesPersonID, Model.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
                                         @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1 mandatory"></div>
+                                    <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -422,12 +422,11 @@
 
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-10">
+                                    <div class="col-md-11">
                                         @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                         @Html.ValidationMessageFor(model => model.QuoteBodyHead, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1 mandatory"></div>
-                                    <div class="col-md-1"></div>
                                 </div>
 
                             </div>

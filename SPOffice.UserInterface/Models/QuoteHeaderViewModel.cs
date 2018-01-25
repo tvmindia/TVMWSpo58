@@ -24,7 +24,6 @@ namespace UserInterface.Models
         public string QuotationDate { get; set; }
         [Display(Name = "Valid Till Date")]
         public string ValidTillDate { get; set; }
-        [Required(ErrorMessage = "Sales Person required")]
         [Display(Name = "Sales Person")]
         public Guid? SalesPersonID { get; set; }
         public List<SelectListItem> SalesPersonList { get; set; }
@@ -51,7 +50,7 @@ namespace UserInterface.Models
         [DataType(DataType.MultilineText)]
         public string SentToAddress { get; set; }
         [Required(ErrorMessage = "Quote Header required")]
-        [Display(Name = "Quote Header")]
+        [Display(Name = "Quote Header (Mail)")]
         [DataType(DataType.MultilineText)]
         public string QuoteBodyHead { get; set; }
         //[Required(ErrorMessage = "Quote Footer required")]
