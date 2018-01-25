@@ -488,6 +488,7 @@ namespace SPOffice.RepositoryServices.Services
                                         };
                                         quoteItem.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         quoteItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
+                                        quoteItem.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
                                         quoteItem.company = new Company();
                                         quoteItem.company.LogoURL = (sdr["LogoURL"].ToString() != "" ? sdr["LogoURL"].ToString() : quoteItem.company.LogoURL);
                                     }

@@ -90,6 +90,7 @@ namespace UserInterface.Models
         public string DetailJSON { get; set; }
         public string MailBody { get; set; }
         public CommonViewModel commonObj { get; set; }
+        public QuoteItemViewModel quoteItemListObj { get; set; }
         public List<QuoteItemViewModel> quoteItemList { get; set; }
     }
 
@@ -97,18 +98,28 @@ namespace UserInterface.Models
     {
         public Guid? ID { get; set; }
         public Guid? QuoteID { get; set; }
+        [Display(Name = "Product Description")]
         public string ProductDescription { get; set; }
         public string UnitCode { get; set; }
         public string UnitDescription { get; set; }
         public UnitViewModel unit { get; set; }
+        [Display(Name = "Quantity")]
         public decimal? Quantity { get; set; }
         public decimal? Rate { get; set; }
         public decimal? Amount { get; set; }
         public Guid? ProductID { get; set; }
+        [Display(Name = "Product Code")]
         public string ProductCode { get; set; }
+        [Display(Name = "Old Product Code")]
+        public string OldProductCode { get; set; }
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+        [Display(Name = "Search Product")]
+        public string ProductSearch { get; set; }
         public ProductViewModel product { get; set; }
         public CommonViewModel commonObj { get; set; }
         public CompanyViewModel company { get; set; }
+        public List<SelectListItem> quoteItemList { get; set; }
     }
     public class QuoteStageViewModel
     {

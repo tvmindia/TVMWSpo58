@@ -94,6 +94,7 @@ namespace SPOffice.RepositoryServices.Services
                                     {
                                         _product.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _product.ID);
                                         _product.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : _product.Code);
+                                        _product.OldCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : _product.OldCode);
                                         _product.Name= (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : _product.Name);
                                         _product.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _product.Description);
                                         _product.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _product.UnitCode);

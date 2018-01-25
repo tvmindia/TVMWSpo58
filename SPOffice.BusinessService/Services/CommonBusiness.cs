@@ -110,10 +110,9 @@ namespace SPOffice.BusinessService.Services
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
             if (totalRows > 0)
             {
@@ -138,17 +137,12 @@ namespace SPOffice.BusinessService.Services
                 foreach (object some_object in myObj)
                 {
                     XML(some_object, mandIndx, ref result, ref totalRows);
-
                 }
-
                 result = result + "</Details>";
-
-
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
             if (totalRows > 0)
             {
@@ -158,7 +152,6 @@ namespace SPOffice.BusinessService.Services
             {
                 return "";
             }
-
         }
         public string GetXMLfromRequisitionDetailList(List<RequisitionDetail> myObj, string mandatoryProperties)
         {
@@ -168,16 +161,11 @@ namespace SPOffice.BusinessService.Services
             {
                 //-------------------------//
                 int mandIndx = getMAndatoryIndex(myObj[0], mandatoryProperties); //int mandIndx = 0;                
-
                 foreach (object some_object in myObj)
                 {
                     XML(some_object, mandIndx, ref result, ref totalRows);
-
                 }
-
-                result = result + "</Details>";
-
-
+                                result = result + "</Details>";
             }
             catch (Exception)
             {
@@ -201,16 +189,11 @@ namespace SPOffice.BusinessService.Services
         }
 
         //Send Message
-
-
         #region messageSending
-
         public string SendMessage(string message, string MobileNo, string provider, string type)
         {           
-
             return _commonRepository.SendMessage(message, MobileNo, provider, type);
         }
-
         #endregion messageSending
     }
 }

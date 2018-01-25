@@ -129,6 +129,22 @@ namespace SPOffice.UserInterface.Controllers
             }
 
             quoteHeaderVM.TaxTypeList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            foreach (ProductViewModel PVML in productViewModelList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = PVML.Name+'-'+ PVML.Code+'-'+ PVML.OldCode,
+                    Value = PVML.ID.ToString(),
+                    Selected = false
+                });
+            }
+            quoteHeaderVM.quoteItemListObj = new QuoteItemViewModel();
+            quoteHeaderVM.quoteItemListObj.quoteItemList = selectListItem;
+
+
             return View(quoteHeaderVM);
         }
         #region GetAllQuotations

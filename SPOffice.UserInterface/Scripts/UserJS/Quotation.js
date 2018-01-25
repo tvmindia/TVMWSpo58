@@ -2,6 +2,8 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 var _Products = [];
 var _Units = [];
+var _QuoteProductDetail = [];
+var _QuoteProductList = [];
 var footer="Terms and conditions :"+"that's not a reason to use Multiply,"+
     "that's a reason to understand integer overflow, using the correct type for the operation,"+
     "and typecasting/promotion. The correct thing to do if you find someone resorting to calling"+
@@ -15,6 +17,7 @@ $(document).ready(function () {
         //For implementating select2
         $("#ddlCustomer").select2({
         });
+        $("#ddlProductSearch").select2({ dropdownParent:$("#AddQuotationItemModal") });
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
@@ -68,55 +71,39 @@ $(document).ready(function () {
             $(this).select();
         });
 
-
-        DataTables.ItemDetailTable = $('#ItemDetailsTable').DataTable(
-      {
-          dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
-          ordering:false,
-          searching: false,
-          paging: false,
-          data: null,
-          autoWidth: false,
-          columns: EG_Columns(),
-          columnDefs: EG_Columns_Settings()
-      });
+        DataTables.ItemDetailsTable = $('#ItemDetailsTable').DataTable(
+            {
+                dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+                order: [],
+                searching: false,
+                paging: true,
+                data: null,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search"
+                },
+                columns: [
+                { "data": "ID", "defaultContent": "<i></i>" },
+                { "data": "ProductID", "defaultContent": "<i></i>" },
+                { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                { "data": "Rate", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
+                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+                ],
+                columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
+                    { "targets": [2, 3, 5], "width": "15%" },
+                    { "targets": [6], "width": "5%" },
+                     { className: "text-right", "targets": [5] },
+                      { className: "text-left", "targets": [2,3,4] },
+                { className: "text-center", "targets": [6] }
+                ]
+            }); 
 
         //--checking hidden field filter value--//
         if ($('#filter').val() != '') {
             dashboardBind($('#filter').val())
-        }
-        GetAllProductCodes();
-        GetAllUnitCodes();
-        EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
-        EG_ComboSource('Products', _Products, 'Code', 'Description');
-     
-        EG_GridDataTable = DataTables.ItemDetailTable;
-       // showLoader();
-       // List();
-
-        //$('.Roundoff').on('change', function () {
-        //    var CustomerInvoiceViewModel = new Object();
-        //    CustomerInvoiceViewModel.GrossAmount = $('#txtGrossAmt').val();
-        //    CustomerInvoiceViewModel.Discount = ((parseInt($('#txtDiscount').val())) > (parseInt($('#txtGrossAmt').val()))) ? "0.00" : $('#txtDiscount').val();
-        //    CustomerInvoiceViewModel.NetTaxableAmount = (CustomerInvoiceViewModel.GrossAmount - CustomerInvoiceViewModel.Discount)
-        //    CustomerInvoiceViewModel.TaxType = $('#ddlTaxType').val() != "" ? GetTaxRate($('#ddlTaxType').val()) : $('#txtTaxPercApp').val();
-        //    CustomerInvoiceViewModel.TaxPercentage = CustomerInvoiceViewModel.TaxType
-        //    CustomerInvoiceViewModel.TaxAmount = (CustomerInvoiceViewModel.NetTaxableAmount * CustomerInvoiceViewModel.TaxPercentage) / 100
-        //    CustomerInvoiceViewModel.TotalInvoiceAmount = (CustomerInvoiceViewModel.NetTaxableAmount + CustomerInvoiceViewModel.TaxAmount)
-        //    $('#txtNetTaxableAmt').val(CustomerInvoiceViewModel.NetTaxableAmount);
-        //    $('#txtTaxPercApp').val(CustomerInvoiceViewModel.TaxPercentage);
-        //    $('#txtTaxAmt').val(CustomerInvoiceViewModel.TaxAmount);
-        //    $('#txtTotalInvAmt').val(CustomerInvoiceViewModel.TotalInvoiceAmount);
-        //    if ((parseInt($('#txtDiscount').val())) > (parseInt($('#txtGrossAmt').val()))) {
-        //        $('#txtDiscount').val("0.00");
-        //    }
-
-        //});
-        //$('#txtTaxPercApp').on('keypress', function () {
-        //    debugger;
-        //    if ($('#ddlTaxType').val() != "")
-        //        $('#ddlTaxType').val('')
-        //});
+        } 
         if ($('#BindValue').val() != '') {
             debugger;
             quotationBind($('#BindValue').val())
@@ -125,151 +112,8 @@ $(document).ready(function () {
     }
     catch (x) {
         notyAlert('error', x.message);
-    }
-
-
-    //$('#MailPreviewModel').on('shown.bs.modal', function () {
-        
-       
-    //})
-});
-
-
-//-----------------------EDIT GRID DEFN-------------------------------------
-var EG_totalDetailRows = 0;
-var EG_GridData;//DATA SOURCE OBJ ARRAY
-var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
-var EG_SlColumn = 'SlNo';
-var EG_GridInputPerRow = 4;
-var EG_MandatoryFields = 'ProductCode,ProductDescription,Rate';
-
-
-function EG_TableDefn() {
-    var tempObj = new Object();
-    tempObj.ID = "";
-    tempObj.SlNo = 0;
-    tempObj.ProductCode = "";
-    tempObj.ProductDescription = "";
-    tempObj.UnitCode = "";
-    tempObj.Quantity = "";
-    tempObj.Rate = "";
-    tempObj.Amount = "";
-    tempObj.ProductID = "";
-    return tempObj
-}
-
-
-function EG_Columns() {
-    debugger;
-      var obj = [
-                { "data": "ID", "defaultContent": "<i></i>" },
-                { "data": "SlNo", "defaultContent": "<i></i>" },
-                { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Products', 'FillDescription')); } },
-                { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
-               //{ "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
-               //{ "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-               
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(roundoff(data), 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-               //{ "data": "Amount",   "defaultContent": "<i></i>" },
-                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
-                { "data": "ProductID",   "defaultContent": "<i></i>" }
-                ]
-
-      return obj;
-
-}
-
-function EG_Columns_Settings() {
- 
-    var obj = [
-            { "targets": [0,6], "visible": false, "searchable": false },
-            { "width": "5%", "targets": 1 },
-            { "width": "15%", "targets": 2 },
-            { "width": "20%", "targets": 3 },
-            //{ "width": "8%", "targets": 4 },
-           // { "width": "8%", "targets": 5 },
-            { "width": "8%", "targets": 4 },
-            //{ "width": "10%", "targets": 7 },
-            {className:"text-center", "width": "3%", "targets": 5 },
-            //{ "width": "10%", "targets": 11 },
-        //{ className: "text-right", "targets": [8] },
-        //{ className: "text-left disabled", "targets": [5] },
-        //{ className: "text-center", "targets": [3, 4, 6, 12] },
-        //{ className: "text-center disabled", "targets": [7] },
-        //{ className: "text-right disabled", "targets": [9, 10, 11] },
-        //{ "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }
-
-    ]
-
-    return obj;
-
-}
-
-function FillDescription(row) {
-
-    for (i = 0; i < _Products.length; i++) {
-        if (_Products[i].Code == EG_GridData[row - 1]['ProductCode']) {
-            EG_GridData[row - 1]['ProductDescription'] = _Products[i].Description;
-            EG_GridData[row - 1]['ProductID'] = _Products[i].ID;
-            EG_GridData[row - 1]['Rate'] = _Products[i].Rate;
-
-            //Description
-            EG_Rebind();
-            break;
-        }
-    }
-
-}
-
-
-function CalculateGridAmount(row) {
-    var qty = 0.00;
-    var rate = 0.00;
-    var EGqty = '';
-    var EGrate = '';
-    EGqty = EG_GridData[row - 1]["Quantity"];
-    EGrate = EG_GridData[row - 1]['Rate'];
-    qty = parseFloat(EGqty) || 0;
-    rate = parseFloat(EGrate) || 0;
-    EG_GridData[row - 1]['Rate'] = roundoff(rate);
-    EG_GridData[row - 1]['Amount'] = roundoff(qty * rate);
-    EG_Rebind();
-
-    var total = 0.00;
-    for (i = 0; i < EG_GridData.length; i++) {
-        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
-    }
-    $('#GrossAmount').val(roundoff(total));
-    AmountSummary();
-
-}
-
-
-function AmountSummary() {
-    var total = 0.00;
-    for (i = 0; i < EG_GridData.length; i++) {
-        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
-    }
-    $('#GrossAmount').val(roundoff(total));
-
-   
-   
-    var discount = parseFloat($('#Discount').val()) || 0;
-    var nettaxableamount = total - discount;
-    $('#NetTaxableAmount').val(roundoff(nettaxableamount));
-
-    var applicabletax=$("#TaxPercApplied").val();
-    $('#TaxAmount').val((roundoff(nettaxableamount) * applicabletax)/100);
-    var totamt = nettaxableamount + (roundoff(nettaxableamount) * applicabletax) / 100;
-    $("#TotalAmount").val(totamt);
-   
-    //var vatp = (parseFloat($('#vatpercentage').val()) || 0);
-    //if (vatp > 0) {
-    //    vatamount = (total * vatp) / 100;
-    //    $('#vatamount').val(roundoff(vatamount));
-    //}
-    //$('#grandtotal').val(roundoff(total + vatamount));
-}
+    } 
+}); 
 
 
 function BindAllQuotes() {
@@ -281,65 +125,25 @@ function BindAllQuotes() {
     }
 }
 
-function GetTaxPercentage()
-{
-   
-    try {
-        var curObj=$("#TaxTypeCode").val();
-        if (curObj)
-        {
-            $("#TaxPercApplied").val(0);
-            var data = { "Code": curObj };
-            var ds = {};
-            ds = GetDataFromServer("Quotation/GetTaxRate/", data);
-            if (ds != '') {
-                ds = JSON.parse(ds);
-            }
-            if (ds.Result == "OK") {
-               
-                $("#TaxPercApplied").val(ds.Records);
-                AmountSummary();
-             return ds.Records;
-            }
-            if (ds.Result == "ERROR") {
-                return 0;
-            }
-        }
-        else
-        {
-            $("#TaxPercApplied").val(0);
-        }
-        
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
-
 function Delete(curobj) {
-    var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
+    debugger;
+    var rowData = DataTables.ItemDetailsTable.row($(curobj).parents('tr')).data();
     if ((rowData != null) && (rowData.ID != null)) {
-        {
-            notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '",' + rowData[EG_SlColumn] + ')');
-        }
-
-
+            notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '")');
+    }
+    else {
+        DataTables.ItemDetailsTable.row($(curobj).parents('tr')).remove().draw(false);
+        notyAlert('success', 'Deleted Successfully');
     }
 }
 
-    function CheckAmount() {
 
-        if ($("#txtDiscount").val() == "")
-            $("#txtDiscount").val(roundoff(0));
-    }
+    function DeleteItem(ID) {
 
-    function DeleteItem(ID, rw) {
 
         try {
             debugger;
-            //Event Request Case
-            if (ID != '' && ID != null)
-            {
+           //Event Request Case 
                 var data = { "ID": ID };
                 var ds = {};
                 ds = GetDataFromServer("Quotation/DeleteItemByID/", data);
@@ -350,7 +154,7 @@ function Delete(curobj) {
                     switch (ds.Result) {
                         case "OK":
                             notyAlert('success', ds.Record.Message);
-                            EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                            BindQuationDetails($("#ID").val());
                             break;
                         case "ERROR":
                             notyAlert('error', ds.Message);
@@ -361,53 +165,32 @@ function Delete(curobj) {
                     return ds.Record;
                 }
 
-            }
-
-
-            else {
-                if (EG_GridData.length != 1) {
-                    EG_GridData.splice(rw - 1, 1);
-                    EG_Rebind_WithData(EG_GridData, 0);
-                }
-                else {
-                    reset();
-                    EG_Rebind();
-                }
-                notyAlert('success', 'Deleted Successfully');
-            }
-
+            
         }
         catch (e) {
-
             notyAlert('error', e.message);
         }
-
-
-
     }
 
     function saveInvoices() {
         debugger;
-        $("#DetailJSON").val('');//
-        var validation = EG_Validate();
-        if (validation == "") {
-
-            var result = JSON.stringify(EG_GridData);
+        $("#DetailJSON").val('');
+        _QuoteProductList = [];
+        AddQuoteProductList();
+        if (_QuoteProductList.length > 0) {
+            var result = JSON.stringify(_QuoteProductList);
             $("#DetailJSON").val(result);
             $('#btnSave').trigger('click');
         }
         else {
-            notyAlert('error', validation);
+            notyAlert('warning', 'Please Add Product Details!');
         }
-
-
-
     }
 
 
 
     function SaveSuccess(data, status) {
-
+        debugger;
         var JsonResult = JSON.parse(data)
         switch (JsonResult.Result) {
             case "OK":
@@ -422,10 +205,10 @@ function Delete(curobj) {
                 BindQuationDetails($("#ID").val());
                 break;
             case "ERROR":
-                notyAlert('error', JsonResult.Record.Message);
+                notyAlert('error', JsonResult.Message);
                 break;
             default:
-                notyAlert('error', JsonResult.Record.Message);
+                notyAlert('error', JsonResult.Message);
                 break;
         }
     }
@@ -438,6 +221,7 @@ function Delete(curobj) {
             validator.settings.success($(this));
         });
         $('#QuoteForm')[0].reset();
+        DataTables.ItemDetailsTable.clear().draw(false);
     }
 
 
@@ -453,7 +237,6 @@ function Delete(curobj) {
         $('#QuoteMAilHeaderID').val(rowData.ID);
 
         BindQuationDetails(rowData.ID);
-        GetTaxPercentage();
         ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Edit');
         openNav();
     }
@@ -461,22 +244,17 @@ function Delete(curobj) {
     {
         try
         {
-
             var QHID = $("#ID").val();
             if (QHID) {
                 //Bind mail html into model
                 GetMailPreview(QHID);
-
                 $("#MailPreviewModel").modal('show');
             }
-
-
         }
         catch(e)
         {
             notyAlert('error', e.Message);
         }
-
     }
     function GetMailPreview(ID) {
 
@@ -526,18 +304,15 @@ function Delete(curobj) {
 
                 $("#lblQuoteStage").text(jsresult.quoteStage.Description);
                 $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
-                debugger;
                 if (jsresult.SentToEmails != null)
                     $('#SentToEmails').val(jsresult.SentToEmails);
                 else
                 $('#SentToEmails').val(jsresult.customer.ContactEmail);
                 $("#lblQuotationNo").text(jsresult.QuotationNo);
-                debugger;
-                EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID), 1);
+                //bind details here
+                GetQuoteItemsList(ID)
                 clearUploadControl();
                 PaintImages(ID);
-
-
             }
 
         }
@@ -571,8 +346,7 @@ function Delete(curobj) {
     function AddNew() {
         ChangeButtonPatchView('Quotation', 'btnPatchAdd', 'Add');
         Resetform();
-        openNav();
-        EG_ClearTable();
+        openNav(); 
         $('#ID').val('');
         $("#DetailJSON").val('');
         //Reset();  
@@ -583,9 +357,7 @@ function Delete(curobj) {
         $("#lblEmailSent").text('No');
         $("#lblQuotationNo").text('New Quotation');
         $("#txtQuotationNo").focus();
-        clearUploadControl();
-        EG_AddBlankRows(5)
-        //  clearUploadControl();
+        clearUploadControl();  
         $("#QuoteBodyFoot").val(footer);
     }
 
@@ -633,6 +405,10 @@ function Delete(curobj) {
         $("#convertedCountDescription").text(Converted + ' Converted Quotation(s)');
         $("#lostCountDescription").text(Lost + ' Lost Quotation(s)');
 
+    }
+
+    function GetQuoteItemsList(ID) {
+        DataTables.ItemDetailsTable.clear().rows.add(GetAllQuoteItems(ID)).draw(false);
     }
 
     function GetAllQuoteItems(ID) {
@@ -787,13 +563,11 @@ function Delete(curobj) {
 
     }
 
-
     //Delete Quotation
     function DeleteClick() {
         debugger;
         notyConfirm('Are you sure to delete?', 'DeleteQuotation()');
     }
-
 
     function DeleteQuotation() {
         try {
@@ -825,14 +599,10 @@ function Delete(curobj) {
         }
     }
 
-
     // change quotestatus of label on dropdown selection
-
-
     function ChangeQuoteStatus()
     {
         debugger;
-
         if ($("#ddlQuoteStage").val() == "DFT") {
             $("#lblQuoteStage").text('Draft');
         }
@@ -857,11 +627,6 @@ function Delete(curobj) {
             $("#lblQuoteStage").text('On Hold');
         }
     }
-
-
-
-
-
 
     //------------------------------------------------ Filter clicks------------------------------------------------------------//
 
@@ -938,3 +703,145 @@ function Delete(curobj) {
         openNav();
         BindQuationDetails(ID);
     }
+
+//-------------------------------------------------------------------------------------------------//
+    function AddQuotationList()
+    {
+        debugger;
+        PopupClearFields();
+        $("#ddlProductSearch").prop('disabled', false);
+        $('#AddQuotationItemModal').modal('show');
+    }
+    
+    function PopupClearFields()
+    {
+        _QuoteProductDetail = [];
+        $("#ddlProductSearch").select2({ dropdownParent: $("#AddQuotationItemModal") });
+        $("#ddlProductSearch").val('').trigger('change');
+        $('#quoteItemListObj_ProductCode').val('');
+        $('#quoteItemListObj_OldProductCode').val('');
+        $('#quoteItemListObj_ProductName').val('');
+        $('#quoteItemListObj_ProductDescription').val('');
+        $('#quoteItemListObj_Rate').val('');
+    }
+
+    function ProductSearchOnchange(curObj) {
+        debugger;
+        if (curObj.value != "") {
+            _QuoteProductDetail = [];
+            var ds = GetProductByID(curObj.value);
+            QuoteProduct = new Object();
+            QuoteProduct.ID = null;
+            QuoteProduct.ProductID = ds.ID
+            QuoteProduct.OldProductCode = ds.OldCode;
+            QuoteProduct.ProductCode = ds.Code
+            QuoteProduct.ProductDescription = ds.Description;
+            QuoteProduct.ProductName = ds.Name;
+            QuoteProduct.Rate = ds.Rate;
+            _QuoteProductDetail.push(QuoteProduct);
+            $('#quoteItemListObj_ProductCode').val(_QuoteProductDetail[0].ProductCode);
+            $('#quoteItemListObj_OldProductCode').val(_QuoteProductDetail[0].OldProductCode);
+            $('#quoteItemListObj_ProductName').val(_QuoteProductDetail[0].ProductName);
+            $('#quoteItemListObj_ProductDescription').val(_QuoteProductDetail[0].ProductDescription);
+            $('#quoteItemListObj_Rate').val(roundoff(_QuoteProductDetail[0].Rate));
+        }
+    }
+
+    function GetProductByID(id) {
+        try {
+            var data = { "ID": id };
+            var ds = {};
+            ds = GetDataFromServer("Product/GetProductDetails/", data);
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            if (ds.Result == "OK") {
+                return ds.Records;
+            }
+            if (ds.Result == "ERROR") {
+                notyAlert('error', ds.Message);
+            }
+        }
+        catch (e) {
+            notyAlert('error', e.message);
+        }
+    }
+    
+    function AddQuotationItem()
+    {
+        debugger;
+        if ($("#ddlProductSearch").val() != "")
+        {
+            if (_QuoteProductDetail != null)
+            {
+                //check product existing or not if soo update the new
+                var allData = DataTables.ItemDetailsTable.rows().data(); 
+                if (allData.length>0)
+                {
+                    var checkPoint=0;
+                    for (var i = 0; i < allData.length; i++)
+                    {
+                        if (allData[i].ProductID == _QuoteProductDetail[0].ProductID)
+                        {
+                            allData[i].ProductDescription = $('#quoteItemListObj_ProductDescription').val();;
+                            allData[i].Rate = $('#quoteItemListObj_Rate').val();
+                            checkPoint = 1;
+                            break;
+                        }
+                    }
+
+                    if (!checkPoint) {
+                        _QuoteProductDetail[0].ProductDescription = $('#quoteItemListObj_ProductDescription').val();
+                        _QuoteProductDetail[0].Rate = $('#quoteItemListObj_Rate').val();
+                        DataTables.ItemDetailsTable.rows.add(_QuoteProductDetail).draw(false);
+                    }
+                    else
+                    {
+                        DataTables.ItemDetailsTable.clear().rows.add(allData).draw(false);
+                    }
+                  
+                }              
+                else
+                {
+                    _QuoteProductDetail[0].ProductDescription = $('#quoteItemListObj_ProductDescription').val();
+                    _QuoteProductDetail[0].Rate = $('#quoteItemListObj_Rate').val();
+                    DataTables.ItemDetailsTable.rows.add(_QuoteProductDetail).draw(false);
+                }
+            }
+            $('#AddQuotationItemModal').modal('hide');
+        }
+        else
+        {
+            notyAlert('warning', "Product is Empty");
+        } 
+    }
+
+    function AddQuoteProductList() {
+        var data = DataTables.ItemDetailsTable.rows().data();
+        for (var r = 0; r < data.length; r++) {
+            QuoteProduct = new Object();
+            QuoteProduct.ID = data[r].ID;
+            QuoteProduct.ProductID = data[r].ProductID;
+            QuoteProduct.ProductCode = data[r].ProductCode;
+            QuoteProduct.ProductDescription = data[r].ProductDescription;
+            QuoteProduct.ProductName = data[r].ProductName;
+            QuoteProduct.Rate = data[r].Rate; 
+            _QuoteProductList.push(QuoteProduct);
+        }
+    }
+
+    function ProductEdit(curObj) {
+        debugger;
+        $('#AddQuotationItemModal').modal('show');
+        $("#ddlProductSearch").prop('disabled', true);
+        PopupClearFields();
+        var rowData = DataTables.ItemDetailsTable.row($(curObj).parents('tr')).data();
+        if ((rowData != null) && (rowData.ProductID != null))
+        {
+            $("#ddlProductSearch").select2({ dropdownParent: $("#AddQuotationItemModal") });
+            $("#ddlProductSearch").val(rowData.ProductID).trigger('change');
+            $('#quoteItemListObj_ProductDescription').val(rowData.ProductDescription);
+            $('#quoteItemListObj_Rate').val(roundoff(rowData.Rate));
+           
+        }
+}

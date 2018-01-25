@@ -51,6 +51,7 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal? Rate { get; set; }
         public decimal? Amount { get; set; }
         public Guid? ProductID { get; set; }
+        public string OldProductCode { get; set; }
         public string ProductCode { get; set; }
         public Product product { get; set; }
         public Common commonObj { get; set; }

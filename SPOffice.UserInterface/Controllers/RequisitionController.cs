@@ -79,7 +79,7 @@ namespace SPOffice.UserInterface.Controllers
             {
                 selectListItem.Add(new SelectListItem
                 {
-                    Text = Rwl.MaterialCode,
+                    Text = Rwl.MaterialCode+"-"+Rwl.Description,
                     Value = Rwl.ID.ToString(),
                     Selected = false
                 });
