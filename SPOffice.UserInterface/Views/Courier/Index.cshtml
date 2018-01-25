@@ -184,25 +184,7 @@
 
                             </div>
                             <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.SourceAddress, htmlAttributes: new { @class = "control-label" })
 
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.SourceAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
-                                        @Html.ValidationMessageFor(model => model.SourceAddress, "", new { @class = "text-danger" })
-
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-                            
-                            <div class="form-group col-md-12"></div>
-                            <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.DestName, htmlAttributes: new { @class = "control-label" })
 
@@ -212,8 +194,27 @@
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.DestName, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.DestName, "", new { @class = "text-danger" })
+
                                     </div>
                                     <div class="col-md-1 mandatory"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                            
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-6">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.SourceAddress, htmlAttributes: new { @class = "control-label" })
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.SourceAddress, new { htmlAttributes = new { @class = "form-control HeaderBox",@rows="5" } })
+                                        @Html.ValidationMessageFor(model => model.SourceAddress, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
@@ -226,7 +227,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.DestAddress, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                        @Html.EditorFor(model => model.DestAddress, new { htmlAttributes = new { @class = "form-control HeaderBox",@rows="5" } })
                                         @Html.ValidationMessageFor(model => model.DestAddress, "", new { @class = "text-danger" })
 
                                     </div>
@@ -285,7 +286,7 @@
                                 </div>
 
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <div class="col-md-12">
                                     @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
 
@@ -293,7 +294,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                        @Html.EditorFor(model => model.GeneralNotes, new { htmlAttributes = new { @class = "form-control HeaderBox",rows="8" } })
                                         @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
 
                                     </div>
