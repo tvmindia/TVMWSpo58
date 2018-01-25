@@ -127,7 +127,7 @@ function TrackingRefnoOnChange(curobj)
 
 function TypeOnChange(curobj) {
     debugger;
-    if ($(curobj).val() == "Outbound") {
+    if ($(curobj).val() == "Outward") {
         $('#DistributedTo').val('');
         $('#DistributionDate').val('');
         $('#DistributedTo').prop('disabled', true);
