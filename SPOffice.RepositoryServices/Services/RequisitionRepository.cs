@@ -69,6 +69,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _requisitionObj.CompanyObj.Name= (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : _requisitionObj.CompanyObj.Name);
                                         _requisitionObj.ReqForCompany = (sdr["ReqForCompany"].ToString() != "" ? sdr["ReqForCompany"].ToString() : _requisitionObj.ReqForCompany);
                                         _requisitionObj.ReqStatus = (sdr["ReqStatus"].ToString() != "" ? (sdr["ReqStatus"].ToString()) : _requisitionObj.ReqStatus);
+                                        _requisitionObj.RequisitionBy = (sdr["RequisitionBy"].ToString() != "" ? (sdr["RequisitionBy"].ToString()) : _requisitionObj.RequisitionBy);
                                         _requisitionObj.ManagerApproved = (sdr["ManagerApproved"].ToString() != "" ? bool.Parse(sdr["ManagerApproved"].ToString()) : _requisitionObj.ManagerApproved);
                                         _requisitionObj.ManagerApprovalDate = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()) : _requisitionObj.ManagerApprovalDate);
                                         _requisitionObj.ManagerApprovalDateFormatted = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.ManagerApprovalDateFormatted);
@@ -146,6 +147,7 @@ namespace SPOffice.RepositoryServices.Services
         public Requisition GetRequisitionDetails(Guid ID, string LoginName)
         {
             Requisition _requisitionObj = null;
+            
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -180,6 +182,9 @@ namespace SPOffice.RepositoryServices.Services
                                         _requisitionObj.ManagerApproved = (sdr["ManagerApproved"].ToString() != "" ? bool.Parse(sdr["ManagerApproved"].ToString()) : _requisitionObj.ManagerApproved);
                                         _requisitionObj.ManagerApprovalDate = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()) : _requisitionObj.ManagerApprovalDate);
                                         _requisitionObj.ManagerApprovalDateFormatted = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.ManagerApprovalDateFormatted);
+                                        _requisitionObj.RequisitionBy = (sdr["RequisitionBy"].ToString() != "" ? (sdr["RequisitionBy"].ToString()) : _requisitionObj.RequisitionBy);
+                                        _requisitionObj.CommonObj = new Common();
+                                        _requisitionObj.CommonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? (sdr["CreatedBy"].ToString()) : _requisitionObj.CommonObj.CreatedBy);
                                         _requisitionObj.FinalApproval = (sdr["FinalApproval"].ToString() != "" ? bool.Parse(sdr["FinalApproval"].ToString()) : _requisitionObj.FinalApproval);
                                         _requisitionObj.FinalApprovalDate = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()) : _requisitionObj.FinalApprovalDate);
                                         _requisitionObj.FinalApprovalDateFormatted = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.FinalApprovalDateFormatted);
@@ -462,8 +467,62 @@ namespace SPOffice.RepositoryServices.Services
             }
             return RequisitionObj;
         }
+        public object UpdateNotification(Requisition requisitionObj)
+        {
 
-        
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateNotificationStatus]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = requisitionObj.ID;
+                        cmd.Parameters.Add("@IsNotificationSuccess", SqlDbType.Int).Value = 1;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+            };
+        }
+
+
     }
 
-    }
+}

@@ -211,5 +211,55 @@ namespace SPOffice.UserInterface.API
             }
         }
         #endregion Delete Requisition
+
+
+
+
+        [HttpPost]
+        public string SendRequisitionNotificationToManager(RequisitionViewModel reqObj)
+        {
+            object result = null;
+            try
+            {
+                RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails(Guid.Parse(reqObj.ID.ToString()), reqObj.userObj.UserName));
+                string titleString = "Pending Requisition";
+                string descriptionString = requisitionViewModelObj.ReqForCompany + ", Requisition: " + requisitionViewModelObj.ReqNo + ", RequisitionBy: " + requisitionViewModelObj.RequisitionBy + " ,RequisitionCreatedBy:"+ requisitionViewModelObj.CommonObj.CreatedBy+",RequisitionDate:"+ requisitionViewModelObj.ReqDate;
+                Boolean isCommon = true;
+                string CompanyCode = "";
+                _requisitionBusiness.SendToFCMManager(titleString, descriptionString, isCommon, CompanyCode);
+                //Update notification 
+                result = _requisitionBusiness.UpdateNotification(Mapper.Map<RequisitionViewModel, Requisition>(reqObj));
+                return JsonConvert.SerializeObject(new { Result = true, Message = c.NotificationSuccess, Records = result });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = "Failed!!Notification cannot be send" });
+            }
+        }
+
+
+        public string SendRequisitionNotificationToCEO(RequisitionViewModel reqObj)
+        {
+            object result = null;
+            try
+            {
+                RequisitionViewModel requisitionViewModelObj = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.GetRequisitionDetails(Guid.Parse(reqObj.ID.ToString()), reqObj.userObj.UserName));
+                string titleString = "Pending Requisition";
+                string descriptionString = requisitionViewModelObj.ReqForCompany + ", Requisition: " + requisitionViewModelObj.ReqNo + ", RequisitionBy: " + requisitionViewModelObj.RequisitionBy + " ,RequisitionCreatedBy:" + requisitionViewModelObj.CommonObj.CreatedBy + ",RequisitionDate:" + requisitionViewModelObj.ReqDate;
+                Boolean isCommon = true;
+                _requisitionBusiness.SendToFCMCEO(titleString, descriptionString, isCommon);
+                //Update notification 
+                result = _requisitionBusiness.UpdateNotification(Mapper.Map<RequisitionViewModel, Requisition>(reqObj));
+                return JsonConvert.SerializeObject(new { Result = true, Message = c.NotificationSuccess, Records = result });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = "Failed!!Notification cannot be send" });
+            }
+        }
     }
 }

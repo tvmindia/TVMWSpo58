@@ -16,6 +16,6 @@ namespace SPOffice.RepositoryServices.Contracts
         object DeleteRequisitionDetailByID(Guid ID);
         RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo);
         Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo);
-       
+        object UpdateNotification(Requisition requisitionObj);
     }
 }

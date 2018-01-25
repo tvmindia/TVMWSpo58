@@ -16,7 +16,8 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal Rate { get; set; }
         public Common commonObj { get; set; }
         public Unit unit { get; set; }
-        public string AuthenticationKey { get; set; }
+        public string APIKey { get; set; }
+        public string UserName { get; set; }
     }
 
     public class Unit

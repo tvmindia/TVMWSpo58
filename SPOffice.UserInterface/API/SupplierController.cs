@@ -18,7 +18,7 @@ namespace SPOffice.UserInterface.API
     public class SupplierController : ApiController
     {
         #region Constructor_Injection
-
+        AppConst c = new AppConst();
         ISupplierBusiness _supplierBusiness;
         SAMTool.BusinessServices.Contracts.IUserBusiness _userBusiness;
 
@@ -169,9 +169,30 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
             }
         }
-
-
         #endregion Delete Supplier PO
+
+        [HttpPost]
+        public string SendSupplierNotificationToCEO(SupplierOrderViewModel suppObj)
+        {
+            object result = null;
+            try
+            {
+                SupplierOrderViewModel supplierPO = Mapper.Map<SupplierOrder, SupplierOrderViewModel>(_supplierBusiness.GetSupplierPurchaseOrderByID(suppObj.ID != null && suppObj.ID.ToString() != "" ? Guid.Parse(suppObj.ID.ToString()) : Guid.Empty));
+                string titleString = "Pending Supplier PO";
+                string descriptionString = supplierPO.company.Name + ", Purchase Order: " + supplierPO.PONo + ", Amount: " + supplierPO.TotalAmount + ",PurchaseOrderCreatedBy:"+ supplierPO.SupplierName+",Purchase Order:"+ supplierPO.PODate;
+                Boolean isCommonForCEO = true;
+                _supplierBusiness.SendToFCMToCEO(titleString, descriptionString, isCommonForCEO);
+                //Update notification 
+                result = _supplierBusiness.UpdateNotificationToCEO(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(suppObj));
+                return JsonConvert.SerializeObject(new { Result = true, Message = c.NotificationSuccess, Records = result });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = "Failed!!Notification cannot be send" });
+            }
+        }
     }
 
 }

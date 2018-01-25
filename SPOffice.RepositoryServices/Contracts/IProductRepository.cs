@@ -12,7 +12,9 @@ namespace SPOffice.RepositoryServices.Contracts
         List<Unit> GetAllUnits();
         List<Product> GetAllProducts();
         object InsertProduct(Product product);
+        object InsertProductDetails(Product product);
         object UpdateProduct(Product product);
+        object UpdateProductByCode(Product product);
         object DeleteProduct(Guid ID);
     }
 }

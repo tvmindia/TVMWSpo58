@@ -13,7 +13,9 @@ namespace SPOffice.BusinessService.Contracts
         List<Product> GetAllProducts();
         Product GetProductDetails(Guid? ID);
         object InsertProduct(Product product);
+        object InsertProductDetails(Product product);
         object UpdateProduct(Product product);
+        object UpdateProductByCode(Product product);
         object DeleteProduct(Guid ID);
     }
 }

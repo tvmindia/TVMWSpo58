@@ -240,6 +240,75 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
+        public object InsertProductDetails(Product product)
+        {
+            SqlParameter outputStatus, outputID;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[InsertProduct]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = product.Code;
+                        cmd.Parameters.Add("@OldCode", SqlDbType.VarChar, 20).Value = product.OldCode;
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar, 250).Value = product.Name;
+                        cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = product.Description;
+                        cmd.Parameters.Add("@UnitCode", SqlDbType.VarChar, 15).Value = product.UnitCode;
+                        cmd.Parameters.Add("@Rate", SqlDbType.Decimal).Value = product.Rate;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = product.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = product.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.InsertFailure);
+
+                    case "1":
+                        //success
+
+                        return new
+                        {
+                            //ID = outputID.Value.ToString(),
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.InsertSuccess
+                        };
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                //ID = outputID.Value.ToString(),
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.InsertSuccess
+            };
+        }
+
         public object UpdateProduct(Product product)
         {
             SqlParameter outputStatus = null;
@@ -258,6 +327,70 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[UpdateProduct]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = product.ID;
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = product.Code;
+                        cmd.Parameters.Add("@OldCode", SqlDbType.VarChar, 20).Value = product.OldCode;
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar, 250).Value = product.Name;
+                        cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = product.Description;
+                        cmd.Parameters.Add("@UnitCode", SqlDbType.VarChar, 15).Value = product.UnitCode;
+                        cmd.Parameters.Add("@Rate", SqlDbType.Decimal).Value = product.Rate;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = product.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = product.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
+
+
+        public object UpdateProductByCode(Product product)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateProductByCode]";
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = product.Code;
                         cmd.Parameters.Add("@OldCode", SqlDbType.VarChar, 20).Value = product.OldCode;
                         cmd.Parameters.Add("@Name", SqlDbType.VarChar, 250).Value = product.Name;

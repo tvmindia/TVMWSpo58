@@ -76,9 +76,22 @@ namespace SPOffice.BusinessService.Services
          return _productRepository.InsertProduct(product);
         }
 
+        public object InsertProductDetails(Product product)
+        {
+
+            return _productRepository.InsertProductDetails(product);
+        }
+
+
         public object UpdateProduct(Product product)
         {
            return  _productRepository.UpdateProduct(product);
         }
+
+        public object UpdateProductByCode(Product product)
+        {
+            return _productRepository.UpdateProductByCode(product);
+        }
+        
     }
 }

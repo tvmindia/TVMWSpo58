@@ -1051,5 +1051,60 @@ namespace SPOffice.RepositoryServices.Services
                 Status = outputStatus.Value.ToString(),
             };
         }
+
+        public object UpdateNotificationToCEO(SupplierOrder supObj)
+        {
+
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[UpdateNotificationStatusToCEO]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = supObj.ID;
+                        cmd.Parameters.Add("@IsNotificationSuccess", SqlDbType.Int).Value = 1;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+            };
+        }
     }
 }

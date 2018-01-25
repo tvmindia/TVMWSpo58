@@ -28,7 +28,7 @@ namespace SPOffice.RepositoryServices.Contracts
         List<RequisitionDetail> GetRequisitionDetailsByIDs(string IDs, string SPOID);
         List<RequisitionDetail> EditPurchaseOrderDetail(string ID);
         object UpdateSupplierOrderMailStatus(SupplierOrder SPO);
-
+        object UpdateNotificationToCEO(SupplierOrder supObj);
 
     }
 }
