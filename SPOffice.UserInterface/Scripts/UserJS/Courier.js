@@ -33,20 +33,22 @@ $(document).ready(function () {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
              },
-             columns: [
+             columns: [               
                { "data": "ID", "defaultContent": "<i>-</i>" },
+               { "data": "CourierNO", "defaultContent": "<i>-</i>" },
                { "data": "Type", "defaultContent": "<i>-</i>" },
                { "data": "TransactionDate", "defaultContent": "<i>-</i>" },
+               { "data": "TrackingRefNo", "defaultContent": "<i>-</i>" },
                { "data": "Track", "defaultContent": "<i>-</i>" },
                { "data": "SourceName", "defaultContent": "<i>-</i>" },
                { "data": "DestName", "defaultContent": "<i>-</i>" },
-               { "data": "courierAgency.Name", "defaultContent": "<i>-</i>" },
-                { "data": "TrackingRefNo", "defaultContent": "<i>-</i>" },
+               { "data": "courierAgency.Name", "defaultContent": "<i>-</i>" },                
                { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [1, 2, 3, 4, 5,6,7] }
+               { className: "text-left", "targets": [1,2, 4, 5, 6, 7, 8] },
+               {className: "text-center","targets":[3]}
              ]
          });
 
@@ -120,7 +122,7 @@ function goBack() {
 
 function TrackingRefnoOnChange(curobj)
 {
-    $('#lblCourierRefNo').text($(curobj).val());
+    $('#lblCourierNO').text($(curobj).val());
 }
 
 function TypeOnChange(curobj) {
@@ -186,6 +188,7 @@ function DeleteCourier() {
 function ClearFields() {
 
     $("#ID").val("");
+    $("#txtCourierNO").val("");
     $("#ddlType").val("");
     $("#TransactionDate").val("");
     $("#SourceName").val("");
@@ -284,6 +287,7 @@ function FillCourierDetails(ID) {
     var thisItem = GetCourierByID(ID); //Binding Data
     //Hidden
     $("#ID").val(thisItem.ID);
+    $("#txtCourierNO").val(thisItem.CourierNO);
     $("#ddlType").val(thisItem.Type);
     $("#TransactionDate").val(thisItem.TransactionDate);
     $("#SourceName").val(thisItem.SourceName);
@@ -297,7 +301,7 @@ function FillCourierDetails(ID) {
     $("#TrackingRefNo").val(thisItem.TrackingRefNo);
     $("#GeneralNotes").val(thisItem.GeneralNotes);
     $("#TrackingURL").val(thisItem.TrackingURL);
-    $("#lblCourierRefNo").text(thisItem.TrackingRefNo);
+    $("#lblCourierNO").text(thisItem.CourierNO);
    
     clearUploadControl();
     PaintImages(ID);

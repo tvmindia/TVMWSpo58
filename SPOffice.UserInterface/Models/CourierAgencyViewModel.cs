@@ -15,14 +15,14 @@ namespace SPOffice.UserInterface.Models
         [Required(ErrorMessage = "Name is missing")]
         public string Name { get; set; }
         public string Website { get; set; }
-        [Required(ErrorMessage = "Phone is missing")]
+        //[Required(ErrorMessage = "Phone is missing")]
         public string Phone { get; set; }
         public string Fax { get; set; }
-        [Required(ErrorMessage = "Email is missing")]
+        //[Required(ErrorMessage = "Email is missing")]
         [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
         [MaxLength(150)]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Address is missing")]
+        //[Required(ErrorMessage = "Address is missing")]
         public string Address { get; set; }
         public CommonViewModel commonObj { get; set; }
         public string Operation { get; set; }
@@ -31,6 +31,8 @@ namespace SPOffice.UserInterface.Models
     {
         public Guid? ID { get; set; }
         public Guid hdnFileID { get; set; }
+        [Display(Name ="Courier No.")]
+        public string CourierNO { get; set; }
         [Required(ErrorMessage = "Please Choose Type")]
         [Display(Name = "Courier Type")]
         [MaxLength(10)]
@@ -44,7 +46,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Source Name")]
         [MaxLength(150)]
         public string SourceName { get; set; }
-        [Required(ErrorMessage = "Please Enter Source Address")]
+        //[Required(ErrorMessage = "Please Enter Source Address")]
         [Display(Name = "Source Address")]
         [DataType(DataType.MultilineText)]
         public string SourceAddress { get; set; }
@@ -52,7 +54,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Destination Name")]
         [MaxLength(150)]
         public string DestName { get; set; }
-        [Required(ErrorMessage = "Please Enter Destination Address")]
+        //[Required(ErrorMessage = "Please Enter Destination Address")]
         [Display(Name = "Destination Address")]
         [DataType(DataType.MultilineText)]
         public string DestAddress { get; set; }
@@ -61,13 +63,13 @@ namespace SPOffice.UserInterface.Models
         public string DistributedTo { get; set; }
         [Display(Name = "Distribution Date")]
         public string DistributionDate { get; set; }
-        [Required(ErrorMessage = "Please Choose Agency")]
+        //[Required(ErrorMessage = "Please Choose Agency")]
         [Display(Name = "Agency")]
         public string AgencyCode { get; set; }
         public CourierAgencyViewModel courierAgency { get; set; }
         public List<SelectListItem> AgencyList { get; set; }
         [Display(Name = "Tracking Reference No")]
-        [Required(ErrorMessage = "Please Enter Reference No")]
+        //[Required(ErrorMessage = "Please Enter Reference No")]
         [MaxLength(50)]
         public string TrackingRefNo { get; set; }
         [DataType(DataType.MultilineText)]

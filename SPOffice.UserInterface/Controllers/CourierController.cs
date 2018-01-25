@@ -42,14 +42,14 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = new List<SelectListItem>();
             selectListItem.Add(new SelectListItem
             {
-                Text = "Inbound",
-                Value = "Inbound",
+                Text = "Inward",
+                Value = "Inward",
                 Selected = false
             });
             selectListItem.Add(new SelectListItem
             {
-                Text = "Outbound",
-                Value = "Outbound",
+                Text = "Outward",
+                Value = "Outward",
                 Selected = false
             });
 
