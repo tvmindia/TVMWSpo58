@@ -7,7 +7,7 @@ namespace SPOffice.DataAccessObject.DTO
 {
     public class Customer
     {
-        public Guid ID { get; set; }
+        public Guid? ID { get; set; }
         public string CompanyName { get; set; }
         public string ContactPerson { get; set; }
         public string ContactEmail { get; set; }
