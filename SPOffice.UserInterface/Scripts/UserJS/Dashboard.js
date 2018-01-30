@@ -6,11 +6,11 @@ function OpenQuotationSummaryDashboard(filter) {
     
 }
 
-//--Function to move from Dashboard to Customer PO index page with URL ---//
-function OpenCustomerOrderDashboard(filter) {
-    var url = '../CustomerOrder/Index/__id__';
-    window.location.href = url.replace('__id__', filter);
-}
+////--Function to move from Dashboard to Customer PO index page with URL ---//
+//function OpenCustomerOrderDashboard(filter) {
+//    var url = '../CustomerOrder/Index/__id__';
+//    window.location.href = url.replace('__id__', filter);
+//}
 
 //--Function to move from Dashboard to Supplier Order index page with URL ---//
 function OpenSupplierOrderDashboard(filter) {
@@ -25,10 +25,22 @@ function OpenQuotationDashboardfilter(filter) {
     window.location.href = url.replace('__id__', filter);
 }
 
-//--Function to move from Dashboard to CustomerPo edit page with URL  ---//
-function OpenCustomerPODashboardfilter(filter) {
+////--Function to move from Dashboard to CustomerPo edit page with URL  ---//
+//function OpenCustomerPODashboardfilter(filter) {
    
-    var url = '../CustomerOrder/Index/__id__';
-    window.location.href = url.replace('__id__', filter);
+//    var url = '../CustomerOrder/Index/__id__';
+//    window.location.href = url.replace('__id__', filter);
+//}
+
+//--Function to move from Dashboard to Requisition index page with URL--//
+function OpenRequisitionDashboard(filter) {
+    var url = '../Requisition/Index/_id_';
+    window.location.href = url.replace('_id_', filter);
 }
 
+//--Function to move from Dashboard to Requisition edit page with URL--//
+function OpenRequisitionDashboardfilter(filter) {
+    debugger;
+    var url = '../Requisition/Index/_id_';
+    window.location.href = url.replace('_id_', filter);
+}

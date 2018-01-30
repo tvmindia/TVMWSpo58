@@ -38,7 +38,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
-            if (id == "Draft" || id == "OnHold" || id == "InProgress" || id == "Closed") {
+            if (id == "Draft" || id == "Negotiation" || id == "Converted" || id == "Lost") {
                 ViewBag.filter = id;
             }
             else if (id != "") {

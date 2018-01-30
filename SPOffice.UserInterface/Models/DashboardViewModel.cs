@@ -55,6 +55,7 @@ namespace UserInterface.Models
     public class POandQuoteSummaryViewModel {
         public CustomerPOSummaryViewModel CustomerPOSummary { get; set; }
         public QuotationSummaryViewModel QuoteSummary { get; set; }
+        public RequisitionOverViewCountViewModel RequisitionSummary { get; set; }
 
     }
 

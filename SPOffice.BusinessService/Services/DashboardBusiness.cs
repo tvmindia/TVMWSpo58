@@ -87,6 +87,11 @@ namespace SPOffice.BusinessService.Services
             return _quotationRepository.GetQuotationSummary();
 
         }
+
+        public RequisitionOverViewCount GetRequisitionSummary()
+        {
+            return _requisitionRepository.GetRequisitionSummary();
+        }
         
     }
 }

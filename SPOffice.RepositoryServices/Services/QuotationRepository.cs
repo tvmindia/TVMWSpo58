@@ -648,9 +648,9 @@ namespace SPOffice.RepositoryServices.Services
                                     {
                                         QS.Total = (sdr["Total"].ToString() != "" ? int.Parse(sdr["Total"].ToString()) : 0);
                                         QS.Draft = (sdr["Draft"].ToString() != "" ? int.Parse(sdr["Draft"].ToString()) : 0);
-                                        QS.OnHold = (sdr["OnHold"].ToString() != "" ? int.Parse(sdr["OnHold"].ToString()) : 0);
-                                        QS.Closed = (sdr["Closed"].ToString() != "" ? int.Parse(sdr["Closed"].ToString()) : 0);
-                                        QS.InProgress = (sdr["InProgress"].ToString() != "" ? int.Parse(sdr["InProgress"].ToString()) : 0);
+                                        QS.Negotiation = (sdr["Negotiation"].ToString() != "" ? int.Parse(sdr["Negotiation"].ToString()) : 0);
+                                        QS.Converted = (sdr["Converted"].ToString() != "" ? int.Parse(sdr["Converted"].ToString()) : 0);
+                                        QS.Lost = (sdr["Lost"].ToString() != "" ? int.Parse(sdr["Lost"].ToString()) : 0);
                                     }
                                     
                                 }
