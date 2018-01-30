@@ -54,7 +54,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _quoteHeader.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _quoteHeader.CustomerID);
                                         _quoteHeader.customer = new Customer();
                                         {
-                                            _quoteHeader.customer.ID = (Guid)_quoteHeader.CustomerID;
+                                            _quoteHeader.customer.ID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _quoteHeader.CustomerID);
                                             _quoteHeader.customer.CompanyName= (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _quoteHeader.customer.CompanyName);
                                             _quoteHeader.customer.BillingAddress= (sdr["CustomerAddress"].ToString() != "" ? sdr["CustomerAddress"].ToString() : _quoteHeader.customer.BillingAddress);
                                             _quoteHeader.customer.ContactEmail= (sdr["CustomerEmail"].ToString() != "" ? sdr["CustomerEmail"].ToString() : _quoteHeader.customer.ContactEmail);
@@ -128,6 +128,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[InsertQuotation]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quoteHeader.CustomerID;
+                        cmd.Parameters.Add("@CustomerName", SqlDbType.VarChar, 150).Value = quoteHeader.NewCustomer;
                         cmd.Parameters.Add("@QuotationDate", SqlDbType.DateTime).Value = quoteHeader.QuotationDate;
                         cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = quoteHeader.ValidTillDate;
                         cmd.Parameters.Add("@SalesPersonID", SqlDbType.UniqueIdentifier).Value = quoteHeader.SalesPersonID;

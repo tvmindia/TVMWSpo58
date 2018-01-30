@@ -285,8 +285,17 @@ function Delete(curobj) {
                 $("#txtQuotationNo").val(jsresult.QuotationNo);
                 $("#QuotationDate").val(jsresult.QuotationDate);
                 $("#ValidTillDate").val(jsresult.ValidTillDate);
-                $("#ddlCustomer").select2();
-                $("#ddlCustomer").val(jsresult.CustomerID).trigger('change'); 
+                if (jsresult.CustomerID != null) {
+                    $("#ISRegularCustomer").val('REG')
+                    CustomerTypeChange();
+                    $("#ddlCustomer").select2();
+                    $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
+                }
+                else {
+                    $("#ISRegularCustomer").val('NEW')
+                    $("#NewCustomer").val(jsresult.customer.CompanyName)
+                    CustomerTypeChange()
+                }
                 $("#SentToAddress").val(jsresult.SentToAddress);
                 $("#ContactPerson").val(jsresult.ContactPerson);
                 $("#ddlSalesPerson").val(jsresult.SalesPersonID);
@@ -353,6 +362,7 @@ function Delete(curobj) {
         $('#ID').val('');
         $("#DetailJSON").val('');
         //Reset();  
+        CustomerTypeChange();
         $("#ddlCustomer").select2();
         $("#ddlCustomer").val('').trigger('change');
         $("#ddlQuoteStage").val('DFT');
@@ -847,4 +857,17 @@ function Delete(curobj) {
             $('#quoteItemListObj_Rate').val(roundoff(rowData.Rate));
            
         }
-}
+    }
+
+    function CustomerTypeChange() {
+        debugger;
+        if ($("#ISRegularCustomer").val() == "REG") {
+            
+            $("#divCustomerID").show();
+            $("#divCustomerName").hide();
+        }
+        else {
+            $("#divCustomerID").hide();
+            $("#divCustomerName").show();
+        }
+    }

@@ -17,6 +17,8 @@ namespace UserInterface.Models
         [Required(ErrorMessage = "Customer required")]
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
+        public string NewCustomer { get; set; }
+        public string ISRegularCustomer { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
         public CustomerViewModel customer { get; set; }
         [Required(ErrorMessage = "Quotation Date required")]
