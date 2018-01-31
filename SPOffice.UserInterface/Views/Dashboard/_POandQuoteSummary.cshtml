@@ -25,24 +25,24 @@
                 <!-- /.col -->
                 <div class="col-sm-3 border-right">
                     <div class="description-block">
-                        <h5 class="description-header">@Model.QuoteSummary.OnHold</h5>
-                        <span class="description-text "onclick="OpenQuotationDashboardfilter('OnHold')">OnHold</span>
+                        <h5 class="description-header">@Model.QuoteSummary.Negotiation</h5>
+                        <span class="description-text "onclick="OpenQuotationDashboardfilter('Negotiation')">Negotiation</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-3 border-right">
                     <div class="description-block">
-                        <h5 class="description-header">@Model.QuoteSummary.InProgress</h5>
-                        <span class="description-text   " onclick="OpenQuotationDashboardfilter('InProgress')" >In Prog.</span>
+                        <h5 class="description-header">@Model.QuoteSummary.Converted</h5>
+                        <span class="description-text   " onclick="OpenQuotationDashboardfilter('Converted')" >Converted</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
 
                 <div class="col-sm-3  ">
                     <div class="description-block">
-                        <h5 class="description-header">@Model.QuoteSummary.Closed</h5>
-                        <span class="description-text  " onclick="OpenQuotationDashboardfilter('Closed')">Closed</span>
+                        <h5 class="description-header">@Model.QuoteSummary.Lost</h5>
+                        <span class="description-text  " onclick="OpenQuotationDashboardfilter('Lost')">Lost</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
@@ -58,10 +58,11 @@
     <!-- Widget: user widget style 1 -->
     <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header bg-purple-active"onclick="OpenCustomerOrderDashboard('CustomerPurchaseOrder')">
-            <h3 class="widget-user-username">Customer Orders</h3>
+        <a href="/Requisition/Index" >
+        <div class="widget-user-header bg-purple-active" >
+            <h3 class="widget-user-username">Requisition</h3>
             <h5 class="widget-user-desc">(Last 6 Months)</h5>
-        </div>
+        </div></a>
         <div class="widget-user-image">
             <img class="img-circle" src="~/Content/images/archives.png" alt="user">
         </div>
@@ -69,24 +70,24 @@
             <div class="row">
                 <div class="col-sm-4 border-right">
                     <div class="description-block">
-                        <h5 class="description-header">@Model.CustomerPOSummary.open</h5>
-                        <span class="description-text" onclick="OpenCustomerPODashboardfilter('Open')">Open</span>
+                        <h5 class="description-header">@Model.RequisitionSummary.OpenCount</h5>
+                        <span class="description-text" onclick="OpenRequisitionDashboardfilter('OPEN')">Open</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 border-right">
                     <div class="description-block">
-                        <h5 class="description-header">@Model.CustomerPOSummary.InProgress  </h5>
-                        <span class="description-text"onclick="OpenCustomerPODashboardfilter('InProgress')">In Progress</span>
+                        @*<h5 class="description-header">@Model.CustomerPOSummary.InProgress  </h5>
+                        <span class="description-text"onclick="OpenCustomerPODashboardfilter('InProgress')">In Progress</span>*@
                     </div>
                     <!-- /.description-block -->
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4">
                     <div class="description-block">
-                        <h5 class="description-header">@Model.CustomerPOSummary.Closed</h5>
-                        <span class="description-text"onclick="OpenCustomerPODashboardfilter('Closed')">Closed</span>
+                        <h5 class="description-header">@Model.RequisitionSummary.AllCount</h5>
+                        <span class="description-text"onclick="OpenRequisitionDashboardfilter('ALL')">All</span>
                     </div>
                     <!-- /.description-block -->
                 </div>

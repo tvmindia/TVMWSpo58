@@ -112,7 +112,7 @@ namespace UserInterface.Controllers
 
             data.CustomerPOSummary = Mapper.Map<CustomerPOSummary, CustomerPOSummaryViewModel>(_dashboardBusiness.GetCustomerPOSummary());
             data.QuoteSummary = Mapper.Map<QuotationSummary, QuotationSummaryViewModel>(_dashboardBusiness.GetQuotationSummary());
-
+            data.RequisitionSummary = Mapper.Map<RequisitionOverViewCount, RequisitionOverViewCountViewModel>(_dashboardBusiness.GetRequisitionSummary());
             return PartialView("_POandQuoteSummary", data);
         }
 

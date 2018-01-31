@@ -82,5 +82,10 @@ namespace SPOffice.UserInterface.Models
         public bool FinalApproved { get; set; }
     }
 
+    public  class RequisitionSummaryViewModel
+    {
+        public int Open { get; set; }
+        public int All { get; set; }
+    }
 
 }

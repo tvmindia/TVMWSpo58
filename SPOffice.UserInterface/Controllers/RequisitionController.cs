@@ -32,8 +32,9 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public ActionResult Index(string id)
         {
-            
-            ViewBag.value = id!= "TILEFILTER"?id:"";
+            //Here we set requisition id
+
+            ViewBag.value = (id!= "TILEFILTER"&& id != "OPEN" && id!="ALL") ?id:"";
             if(id== "TILEFILTER")
             { 
                 Permission _permission = Session["UserRightsOffice"] as Permission;
@@ -48,10 +49,19 @@ namespace SPOffice.UserInterface.Controllers
                                
                             ViewBag.filter = "PFMA";
                         }
-                    }
-               
+                        
+                    }                  
             }
-           
+            else if (id == "OPEN")
+            {
+                ViewBag.filter = "OPEN";
+            }
+            else if (id == "ALL")
+            {
+                ViewBag.filter = "ALL";
+            }
+
+
             RequisitionViewModel RVM = new RequisitionViewModel();
             RVM.CompanyObj = new CompanyViewModel();
             RVM.RequisitionDetailObj = new RequisitionDetailViewModel();

@@ -38,7 +38,7 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
-            if (id == "Draft" || id == "OnHold" || id == "InProgress" || id == "Closed") {
+            if (id == "Draft" || id == "Negotiation" || id == "Converted" || id == "Lost") {
                 ViewBag.filter = id;
             }
             else if (id != "") {
@@ -215,8 +215,8 @@ namespace SPOffice.UserInterface.Controllers
             try
             {
                 object result = null;
-                if (ModelState.IsValid)
-                {
+                //if (ModelState.IsValid)
+                //{
                     AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     quoteHeaderVM.commonObj = new CommonViewModel();
                     quoteHeaderVM.commonObj.CreatedBy = _appUA.UserName;
@@ -238,19 +238,19 @@ namespace SPOffice.UserInterface.Controllers
                     }
 
                     return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
-                }
-                else
-                {
-                    List<string> modelErrors = new List<string>();
-                    foreach (var modelState in ModelState.Values)
-                    {
-                        foreach (var modelError in modelState.Errors)
-                        {
-                            modelErrors.Add(modelError.ErrorMessage);
-                        }
-                    }
-                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
-                }
+                //}
+                //else
+                //{
+                //    List<string> modelErrors = new List<string>();
+                //    foreach (var modelState in ModelState.Values)
+                //    {
+                //        foreach (var modelError in modelState.Errors)
+                //        {
+                //            modelErrors.Add(modelError.ErrorMessage);
+                //        }
+                //    }
+                //    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                //}
             }
             catch(Exception ex)
             {
