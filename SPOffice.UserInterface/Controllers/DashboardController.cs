@@ -114,10 +114,10 @@ namespace UserInterface.Controllers
             POandQuoteSummaryViewModel data = new POandQuoteSummaryViewModel();
             bool isAdminOrCeo = false;
             AppUA appUA = Session["AppUAOffice"] as AppUA;
-            Permission _permission = _userBusiness.GetSecurityCode(appUA.UserName, "Requisition");
-            if (_permission.SubPermissionList != null)
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Requisition");
+            if (permission.SubPermissionList != null)
             {
-                if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
                 {
                     isAdminOrCeo = true;
                 }
