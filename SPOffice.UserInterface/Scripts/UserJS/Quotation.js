@@ -4,13 +4,16 @@ var _Products = [];
 var _Units = [];
 var _QuoteProductDetail = [];
 var _QuoteProductList = [];
-var footer="Terms and conditions :"+"that's not a reason to use Multiply,"+
-    "that's a reason to understand integer overflow, using the correct type for the operation,"+
-    "and typecasting/promotion. The correct thing to do if you find someone resorting to calling"+
-    "Multiply in such a case is to sit them down and have a discussion about numeric representations"+
-    "and choosing (casting to) the right type. Strictly speaking, the way this question is worded,"+
-    "this isn't really an answer either -- at least to me since 100 * 200 is much more readable,"+
-    "though I'd write it 100m * 200m to be consistent with the types.";
+var footer = "Terms and Conditions" + "\n"
+
+"Payment terms - 50% advance payment before production and balance 50% before delivery." + "\n"
+"Please accept the same and confirm." + "\n"
+"Awaiting your valuable order." + "\n" + "\n"
+
+
+"Regards," + "\n"
+"Manager";
+
 $(document).ready(function () {
     try {
         debugger;
