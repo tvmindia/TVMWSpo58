@@ -23,12 +23,15 @@ namespace UserInterface.Controllers
         AppConst c = new AppConst();
         IDashboardBusiness _dashboardBusiness;
         ICommonBusiness _commonBusiness;
+        IUserBusiness _userBusiness;
+        IRequisitionBusiness _requisitionBusiness; 
 
-        public DashboardController(IDashboardBusiness dashboardBusiness , ICommonBusiness commonBusiness)
+        public DashboardController(IDashboardBusiness dashboardBusiness , ICommonBusiness commonBusiness,IUserBusiness userBusiness,IRequisitionBusiness requisitionBusiness)
         {
             _dashboardBusiness = dashboardBusiness;
             _commonBusiness = commonBusiness;
-
+            _userBusiness = userBusiness;
+            _requisitionBusiness = requisitionBusiness;
         }
         #endregion Constructor_Injection 
 
@@ -109,10 +112,20 @@ namespace UserInterface.Controllers
         public ActionResult POandQuoteSummary()
         {
             POandQuoteSummaryViewModel data = new POandQuoteSummaryViewModel();
-
+            bool isAdminOrCeo = false;
+            AppUA appUA = Session["AppUAOffice"] as AppUA;
+            Permission _permission = _userBusiness.GetSecurityCode(appUA.UserName, "Requisition");
+            if (_permission.SubPermissionList != null)
+            {
+                if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                {
+                    isAdminOrCeo = true;
+                }
+            }
             data.CustomerPOSummary = Mapper.Map<CustomerPOSummary, CustomerPOSummaryViewModel>(_dashboardBusiness.GetCustomerPOSummary());
             data.QuoteSummary = Mapper.Map<QuotationSummary, QuotationSummaryViewModel>(_dashboardBusiness.GetQuotationSummary());
-            data.RequisitionSummary = Mapper.Map<RequisitionOverViewCount, RequisitionOverViewCountViewModel>(_dashboardBusiness.GetRequisitionSummary());
+            data.RequisitionSummary = Mapper.Map<RequisitionOverViewCount, RequisitionOverViewCountViewModel>(_requisitionBusiness.GetRequisitionOverViewCount(appUA.UserName, isAdminOrCeo));
+            //Mapper.Map<RequisitionOverViewCount, RequisitionOverViewCountViewModel>(_dashboardBusiness.GetRequisitionSummary());
             return PartialView("_POandQuoteSummary", data);
         }
 
