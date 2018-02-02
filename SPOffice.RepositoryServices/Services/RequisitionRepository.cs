@@ -565,6 +565,53 @@ namespace SPOffice.RepositoryServices.Services
         }
 
 
+
+        public RequisitionOverViewCount GetRequisitionCount(RequisitionOverViewCount reqObj,bool IsAdminORCeo)
+        {
+            RequisitionOverViewCount _requisitionOverviewCountObj = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetRequisitionCount]";
+                        cmd.Parameters.Add("@duration", SqlDbType.VarChar, 250).Value = reqObj.duration;
+                        cmd.Parameters.Add("@IsAdminOrCeo", SqlDbType.Bit).Value = IsAdminORCeo;
+                        cmd.Parameters.Add("@UserName", SqlDbType.VarChar, 250).Value = reqObj.UserName;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows) && (sdr.Read()))
+                            {
+                                _requisitionOverviewCountObj = new RequisitionOverViewCount();
+                                {
+                                    _requisitionOverviewCountObj.OpenCount = (sdr["OpenCount"].ToString() != "" ? int.Parse(sdr["OpenCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.AllCount = (sdr["AllCount"].ToString() != "" ? int.Parse(sdr["AllCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.CloseCount = (sdr["CloseCount"].ToString() != "" ? int.Parse(sdr["CloseCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.PendingManagerCount = (sdr["PendingManagerCount"].ToString() != "" ? int.Parse(sdr["PendingManagerCount"].ToString()) : -1);
+                                    _requisitionOverviewCountObj.PendingFinalCount = (sdr["PendingFinalCount"].ToString() != "" ? int.Parse(sdr["PendingFinalCount"].ToString()) : -1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return _requisitionOverviewCountObj;
+        }
+
+
     }
 
 }

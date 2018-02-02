@@ -67,9 +67,12 @@ namespace SPOffice.UserInterface.Models
     {
         public int? OpenCount { get; set; }
         public int? AllCount { get; set; }
+        public int? CloseCount { get; set; }
         public int? PendingManagerCount { get; set; }
         public int? PendingFinalCount { get; set; }
         public bool IsAdminOrCeo { get; set; }
+        public UserViewModel userObj { get; set; }
+        public string duration { get; set; }
     }
 
     public class ReqAdvanceSearchViewModel

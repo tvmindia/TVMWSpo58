@@ -53,8 +53,13 @@ namespace SPOffice.DataAccessObject.DTO
     {
         public int? OpenCount { get; set; }
         public int? AllCount { get; set; }
+        public int? CloseCount { get; set; }
         public int? PendingManagerCount { get; set; }
         public int? PendingFinalCount { get; set; }
+        public string duration { get; set; }
+        public Common CommonObj { get; set; }
+        public string UserName { get; set; }
+
     }
     public class ReqAdvanceSearch
     {
@@ -64,5 +69,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string ReqSearch { get; set; }
         public bool ManagerApproved { get; set; }
         public bool FinalApproved { get; set; }
+
     }
 }

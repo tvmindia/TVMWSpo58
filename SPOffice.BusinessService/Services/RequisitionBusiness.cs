@@ -56,6 +56,10 @@ namespace SPOffice.BusinessService.Services
         {
            return _requisitionRepository.ApproveRequisition(RequisitionObj,IsAdminORCeo);
         }
+        public RequisitionOverViewCount GetRequisitionCount(RequisitionOverViewCount reqObj,bool isAdminOrCeo)
+        {
+            return _requisitionRepository.GetRequisitionCount(reqObj, isAdminOrCeo);
+        }
 
         /// <summary>
         /// 

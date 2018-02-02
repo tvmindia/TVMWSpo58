@@ -19,5 +19,6 @@ namespace SPOffice.BusinessService.Contracts
         void SendToFCMManager(string titleString, string descriptionString, Boolean isCommon, string CompanyCode = "");
         void SendToFCMCEO(string titleString, string descriptionString, Boolean isCommon);
         object UpdateNotification(Requisition requisitionObj);
+        RequisitionOverViewCount GetRequisitionCount(RequisitionOverViewCount reqObj,bool isAdminOrCeo);
     }
 }
