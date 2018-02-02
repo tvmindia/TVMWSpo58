@@ -46,6 +46,9 @@ namespace SPOffice.UserInterface.Models
         public List<SelectListItem> DepartmentList { get; set; }
         public List<SelectListItem> CategoryList { get; set; }
         public List<SelectListItem> EmployeeTypeList { get; set; }
+        public string APIKey { get; set; }
+        public string UserName { get; set; }
+        public UserViewModel userObj { get; set; }
     }
     public class EmployeeTypeViewModel
     {

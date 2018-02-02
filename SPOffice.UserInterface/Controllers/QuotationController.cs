@@ -41,7 +41,13 @@ namespace SPOffice.UserInterface.Controllers
             if (id == "Draft" || id == "Negotiation" || id == "Converted" || id == "Lost") {
                 ViewBag.filter = id;
             }
-            else if (id != "") {
+
+            else if(id=="Quotation")
+            {
+                ViewBag.filter = id;
+            }
+            else if (id != "")
+            {
                 ViewBag.value = id;
             }
           

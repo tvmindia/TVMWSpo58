@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using UserInterface.Models;
 
 namespace SPOffice.UserInterface.API
 {
@@ -18,6 +19,7 @@ namespace SPOffice.UserInterface.API
 
         #region Constructor_Injection
         AppConst c = new AppConst();
+        string auth = System.Web.Configuration.WebConfigurationManager.AppSettings["APIkey"];
         ICustomerBusiness _customerBusiness;
 
 
@@ -52,7 +54,7 @@ namespace SPOffice.UserInterface.API
         {
             try
             {
-               
+
                 CustomerPOViewModel customerPOViewModel = Mapper.Map<CustomerPO, CustomerPOViewModel>(_customerBusiness.GetCustomerPODetailsByID(cust.ID != null && cust.ID.ToString() != "" ? Guid.Parse(cust.ID.ToString()) : Guid.Empty));
                 return JsonConvert.SerializeObject(new { Result = true, Record = customerPOViewModel });
             }
@@ -62,9 +64,74 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
-    
+
         #endregion GetCustomerDetailsByID
 
+        #region InsertCustomer
+        [HttpPost]
+        public string InsertCustomer(CustomerViewModel customersObj)
+        {
+            object result = null;
+            try
+            {
+                if (customersObj.APIKey == auth)
+                {
+                    customersObj.commonObj = new CommonViewModel();
+                    customersObj.commonObj.CreatedBy = customersObj.UserName;
+                    SAMTool.DataAccessObject.DTO.Common commObj = new SAMTool.DataAccessObject.DTO.Common();
+                    customersObj.commonObj.CreatedDate = commObj.GetCurrentDateTime();
+                    if ((customersObj.ID.ToString()) == Guid.Empty.ToString()) 
+                    {
+                        result = _customerBusiness.InsertCustomer(Mapper.Map<CustomerViewModel, Customer>(customersObj));
+                    }
 
+                }
+            else
+                {
+                return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
+            }
+            return JsonConvert.SerializeObject(new { Result = true, Record = result });
+
+
+        }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
+        #endregion InsertCustomer
+
+        #region UpdateCustomer
+        [HttpPost]
+        public string UpdateCustomer(CustomerViewModel customersObj)
+        {
+            object result = null;
+            try
+            {
+                if (customersObj.APIKey == auth)
+                {
+                    customersObj.commonObj = new CommonViewModel();
+                    customersObj.commonObj.UpdatedBy = customersObj.UserName;
+                    SAMTool.DataAccessObject.DTO.Common commObj = new SAMTool.DataAccessObject.DTO.Common();
+                    customersObj.commonObj.UpdatedDate = commObj.GetCurrentDateTime();
+
+                    result = _customerBusiness.UpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customersObj));
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
+                }
+                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
+        #endregion UpdateCustomer
     }
 }

@@ -111,9 +111,9 @@ $(document).ready(function () {
             debugger;
             quotationBind($('#BindValue').val())
         }
-        if ($('#filter').val() != '') {
-            dashboardBind($('#filter').val())
-        }
+        //if ($('#filter').val() != '') {
+        //    dashboardBind($('#filter').val())
+        //}
        
     }
     catch (x) {
