@@ -128,7 +128,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[InsertQuotation]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quoteHeader.CustomerID;
-                        cmd.Parameters.Add("@CustomerName", SqlDbType.VarChar, 150).Value = quoteHeader.NewCustomer;
+                        cmd.Parameters.Add("@NewCustomer", SqlDbType.VarChar, 150).Value = quoteHeader.NewCustomer;
                         cmd.Parameters.Add("@QuotationDate", SqlDbType.DateTime).Value = quoteHeader.QuotationDate;
                         cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = quoteHeader.ValidTillDate;
                         cmd.Parameters.Add("@SalesPersonID", SqlDbType.UniqueIdentifier).Value = quoteHeader.SalesPersonID;
