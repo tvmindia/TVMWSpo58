@@ -37,8 +37,13 @@
                                             <th><a href="@Model.EnquiryList[i].URL">@Model.EnquiryList[i].EnquiryNo</a></th>
                                             <td>@Model.EnquiryList[i].CompanyName</td>
                                             <td>@Model.EnquiryList[i].Mobile</td>
-
-                                            <td>@Model.EnquiryList[i].GeneralNotes</td>
+                                            @if(@Model.EnquiryList[i].Subject !=null && @Model.EnquiryList[i].Subject.Length>30){
+                                            <td title="@Model.EnquiryList[i].Subject">@Model.EnquiryList[i].Subject.Substring(0,30) ...</td>
+                                            }
+                                            else{
+                                            <td>@Model.EnquiryList[i].Subject</td>
+                                            }
+                                          
                                            
                                             <td>@Model.EnquiryList[i].EnquiryDate</td>
                                             @if (Model.EnquiryList[i].EnquiryStatusCode == "CE")

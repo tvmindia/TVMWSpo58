@@ -316,6 +316,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _enquiryObj.EnquiryStatusCode = (sdr["EnquiryStatusCode"].ToString() != "" ? sdr["EnquiryStatusCode"].ToString() : _enquiryObj.EnquiryStatusCode);
                                         _enquiryObj.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : _enquiryObj.GeneralNotes);
                                         _enquiryObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(s.dateformat) : _enquiryObj.EnquiryDate);
+                                        _enquiryObj.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : _enquiryObj.Subject);
                                     }
                                     EnquiryList.Add(_enquiryObj);
                                 }
