@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
+using SPOffice.UserInterface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,49 +13,52 @@ using UserInterface.Models;
 
 namespace SPOffice.UserInterface.API
 {
-    public class ProductController : ApiController
+    public class EmployeeController : ApiController
     {
         AppConst c = new AppConst();
         string auth = System.Web.Configuration.WebConfigurationManager.AppSettings["APIkey"];
         #region Constructor_Injection
 
-        IProductBusiness _productBusiness;
-        public ProductController(IProductBusiness productBusiness)
+        IEmployeeBusiness _employeeBusiness;
+        public EmployeeController(IEmployeeBusiness employeeBusiness)
         {
-            _productBusiness = productBusiness;
+            _employeeBusiness = employeeBusiness;
         }
         #endregion Constructor_Injection
 
-        #region Insert a product
+
+
+
+        #region Insert a Employee
         /// <summary>
         /// Insert a new product
         /// </summary>
-        /// <param name="productVM"></param>
+        /// <param name="employeeVM"></param>
         /// <returns></returns>
         [HttpPost]
-        public string InsertProduct(ProductViewModel productVM)
+        public string InsertEmployee(EmployeeViewModel employeeVM)
         {
             object result = null;
             try
             {
-                if (productVM.APIKey == auth)
+                if (employeeVM.APIKey == auth)
                 {
-                    productVM.commonObj = new CommonViewModel();
-                    productVM.commonObj.CreatedBy = productVM.UserName;
+                    employeeVM.commonObj = new CommonViewModel();
+                    employeeVM.commonObj.CreatedBy = employeeVM.UserName;
                     Common commObj = new Common();
-                    productVM.commonObj.CreatedDate = commObj.GetCurrentDateTime();
-                    if (string.IsNullOrEmpty(productVM.ID.ToString()))
+                    employeeVM.commonObj.CreatedDate = commObj.GetCurrentDateTime();
+                    if ((employeeVM.ID.ToString()) == Guid.Empty.ToString())
                     {
-                        result = _productBusiness.InsertProductDetails(Mapper.Map<ProductViewModel, Product>(productVM));
+                        result = _employeeBusiness.InsertEmployee(Mapper.Map<EmployeeViewModel, Employee>(employeeVM));
                     }
                 }
                 else
                 {
                     return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
                 }
-                    return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                return JsonConvert.SerializeObject(new { Result = true, Record = result });
 
-                
+
             }
             catch (Exception ex)
             {
@@ -69,23 +73,23 @@ namespace SPOffice.UserInterface.API
         /// <summary>
         /// Update an existing product
         /// </summary>
-        /// <param name="proObj"></param>
+        /// <param name="empObj"></param>
         /// <returns></returns>
         [HttpPost]
-        public string UpdateProductByCode(ProductViewModel proObj)
+        public string UpdateEmployee(EmployeeViewModel empObj)
         {
             object result = null;
             try
             {
-                if (proObj.APIKey == auth)
+                if (empObj.APIKey == auth)
                 {
-                    proObj.commonObj = new CommonViewModel();
-                    proObj.commonObj.UpdatedBy =proObj.UserName;
+                    empObj.commonObj = new CommonViewModel();
+                    empObj.commonObj.UpdatedBy = empObj.UserName;
                     Common commObj = new Common();
-                    proObj.commonObj.UpdatedDate = commObj.GetCurrentDateTime();
-                    result = _productBusiness.UpdateProductByCode(Mapper.Map<ProductViewModel, Product>(proObj));
+                    empObj.commonObj.UpdatedDate = commObj.GetCurrentDateTime();
+                    result = _employeeBusiness.UpdateEmployee(Mapper.Map<EmployeeViewModel, Employee>(empObj));
                 }
-                 else
+                else
                 {
                     return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
                 }
@@ -97,7 +101,6 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
-     #endregion Update a product
-
+        #endregion Update a product
     }
 }

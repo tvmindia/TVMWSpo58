@@ -99,5 +99,28 @@ namespace SPOffice.BusinessService.Services
             }
             return customer;
         }
+
+
+        public object InsertCustomer(Customer customerObj)
+        {
+            object result = null;
+            try
+            {
+                if (customerObj.ID == Guid.Empty)
+                {
+                    result = _customerRepository.InsertCustomer(customerObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public object UpdateCustomer(Customer customerObj)
+        {
+            return _customerRepository.UpdateCustomer(customerObj);
+        }
     }
 }

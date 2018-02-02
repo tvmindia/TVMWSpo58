@@ -11,5 +11,7 @@ namespace SPOffice.BusinessService.Contracts
     {
         List<Employee> GetAllEmployees();
         List<SalesPerson> GetAllSalesPersons();
+        object InsertEmployee(Employee employeeObj);
+        object UpdateEmployee(Employee empObj);
     }
 }

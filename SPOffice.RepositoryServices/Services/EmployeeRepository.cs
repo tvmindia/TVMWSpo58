@@ -132,5 +132,128 @@ namespace SPOffice.RepositoryServices.Services
             }
             return SalesPersonList;
         }
+
+
+        #region InsertEmployee
+        public Employee InsertEmployee(Employee _employeeObj)
+        {
+            try
+            {
+                SqlParameter outputStatus, outputID = null;
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Accounts].[InsertEmployee]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = _employeeObj.Code;
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar, 100).Value = _employeeObj.Name;
+                        cmd.Parameters.Add("@MobileNo", SqlDbType.VarChar, 50).Value = _employeeObj.MobileNo;
+                        cmd.Parameters.Add("@Department", SqlDbType.NVarChar, 100).Value = _employeeObj.Department;
+                        cmd.Parameters.Add("@EmployeeCategory", SqlDbType.NVarChar, 100).Value = _employeeObj.EmployeeCategory;
+                        cmd.Parameters.Add("@Address", SqlDbType.NVarChar, -1).Value = _employeeObj.Address;
+                        cmd.Parameters.Add("@EmpType", SqlDbType.VarChar, 5).Value = _employeeObj.EmployeeType;
+                        cmd.Parameters.Add("@CompanyID", SqlDbType.VarChar, 10).Value = _employeeObj.companyID;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _employeeObj.GeneralNotes;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _employeeObj.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = _employeeObj.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        AppConst Cobj = new AppConst();
+                        throw new Exception(Cobj.InsertFailure);
+                    case "1":
+                        _employeeObj.ID = Guid.Parse(outputID.Value.ToString());
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return _employeeObj;
+        }
+        #endregion InsertEmployee
+
+        #region UpdateEmployee
+        public object UpdateEmployee(Employee _employeeObj)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Accounts].[UpdateEmployee]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = _employeeObj.ID;
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = _employeeObj.Code;
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar, 100).Value = _employeeObj.Name;
+                        cmd.Parameters.Add("@Department", SqlDbType.NVarChar, 100).Value = _employeeObj.Department;
+                        cmd.Parameters.Add("@EmployeeCategory", SqlDbType.NVarChar, 100).Value = _employeeObj.EmployeeCategory;
+                        cmd.Parameters.Add("@MobileNo", SqlDbType.VarChar, 50).Value = _employeeObj.MobileNo;
+                        cmd.Parameters.Add("@Address", SqlDbType.NVarChar, -1).Value = _employeeObj.Address;
+                        cmd.Parameters.Add("@EmpType", SqlDbType.VarChar, 5).Value = _employeeObj.EmployeeType;
+                        cmd.Parameters.Add("@CompanyID", SqlDbType.VarChar, 10).Value = _employeeObj.companyID;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _employeeObj.GeneralNotes;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _employeeObj.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _employeeObj.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
+        #endregion UpdateEmployee
     }
 }
