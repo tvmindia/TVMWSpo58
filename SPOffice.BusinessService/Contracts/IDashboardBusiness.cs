@@ -15,6 +15,7 @@ namespace SPOffice.BusinessService.Contracts
         List<FollowUp> GetTodaysFollowUpDetails(DateTime onDate, string BaseURL);
         CustomerPOSummary GetCustomerPOSummary();
         QuotationSummary GetQuotationSummary();
+        RequisitionOverViewCount GetRequisitionSummary();
 
     }
 }

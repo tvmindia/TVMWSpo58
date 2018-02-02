@@ -522,6 +522,48 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
+        //Dashboard
+        public RequisitionOverViewCount GetRequisitionSummary()
+        {
+            RequisitionOverViewCount RS = new RequisitionOverViewCount();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if(con.State==ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetRequisitionSummary]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if((sdr!=null)&&(sdr.HasRows))
+                            {
+                                if(sdr.Read())
+                                {
+                                    {
+                                        RS.OpenCount = (sdr["Open"].ToString() != "" ? int.Parse(sdr["Open"].ToString()) : 0);
+                                        RS.AllCount = (sdr["All"].ToString() != "" ? int.Parse(sdr["All"].ToString()) : 0);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return RS;
+        }
+
 
     }
 

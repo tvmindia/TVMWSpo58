@@ -37,10 +37,10 @@ namespace SPOffice.UserInterface.Models
     public class QuotationSummaryViewModel
     {
         public int Total { get; set; }
-        public int Closed { get; set; }
+        public int Negotiation { get; set; }
         public int Draft { get; set; }
-        public int InProgress { get; set; }
-        public int OnHold { get; set; }
+        public int Converted { get; set; }
+        public int Lost { get; set; }
 
     }
 }
