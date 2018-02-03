@@ -210,9 +210,9 @@ namespace SPOffice.RepositoryServices.Services
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[Accounts].[UpdateEmployee]";
+                        cmd.CommandText = "[Office].[UpdateEmployee]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = _employeeObj.ID;
+                        //cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = _employeeObj.ID;
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar, 10).Value = _employeeObj.Code;
                         cmd.Parameters.Add("@Name", SqlDbType.VarChar, 100).Value = _employeeObj.Name;
                         cmd.Parameters.Add("@Department", SqlDbType.NVarChar, 100).Value = _employeeObj.Department;
