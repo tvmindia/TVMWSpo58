@@ -74,8 +74,8 @@ $(document).ready(function () {
             { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-            { className: "text-left", "targets": [1, 2, 3, 4, 6] },
-            { className: "text-center", "targets": [5] }
+            { className: "text-left", "targets": [1, 2, 4] },
+            { className: "text-center", "targets": [3,5,6,7] }
 
             ]
         });           
@@ -271,6 +271,7 @@ function Gridfilter(filter) {
 }
 function ClearFormFields()
 {
+    debugger;
     $('#btnReset').trigger('click');
     $('#ID').val(emptyGUID);
     $('#RequisitionDetailObj_RequisitionDetailObject').val('');
@@ -278,9 +279,9 @@ function ClearFormFields()
     $('#lblApprovalStatus').attr('title','');
     $('#lblReqStatus').text('Open');
     $("#lblReqNo").text('Requisition No');
-
+    
     $('#Title').prop('readonly', false);
-    $('#ReqDateFormatted').prop('readonly', false);
+    $('#ReqDateFormatted').prop('disabled', false);
     $('#ReqForCompany').prop('disabled', false);
     $("#RequisitionDetailObj_MaterialID").prop('disabled', false);
     $('#RequisitionDetailObj_AppxRate').prop('readonly', false);
@@ -295,6 +296,7 @@ function ClearFormFields()
     ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Add');
 }
 function AddNew() {
+    debugger;
     ClearFormFields();
     $('.Ivalidate').css("border-color", "");
     Rowindex = -1;
@@ -409,17 +411,37 @@ function BindRequisitionDetail()
         console.log(e.message);
     }
 }
-function DisableApproved(){
-    $('#Title').prop('readonly', true);
-    $('#ReqDateFormatted').prop('readonly', true);
-    $('#ReqForCompany').prop('disabled', true);            
-    $("#RequisitionDetailObj_MaterialID").prop('disabled', true);
-    $('#RequisitionDetailObj_AppxRate').prop('readonly', true);
-    $('#RequisitionDetailObj_Description').prop('readonly', true);
-    $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', true);
-    $('#RequisitionDetailObj_CurrStock').prop('readonly', true);
-    $('#RequisitionDetailObj_RequestedQty').prop('readonly', true);
-    $('.ItemEditlink').hide();
+function DisableApproved()
+{
+    debugger;
+    if (IsAdminOrCeo == true)
+    {
+        $('#Title').prop('readonly', false);
+        $('#ReqDateFormatted').prop('disabled', false);
+        $('#ReqForCompany').prop('disabled', false);
+        $("#RequisitionDetailObj_MaterialID").prop('disabled', false);
+        $('#RequisitionDetailObj_AppxRate').prop('readonly', false);
+        $('#RequisitionDetailObj_Description').prop('readonly', false);
+        $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', false);
+        $('#RequisitionDetailObj_CurrStock').prop('readonly', false);
+        $('#RequisitionDetailObj_RequestedQty').prop('readonly', false);
+        $('.ItemEditlink').hide();
+    }
+    else
+    {
+        $('#Title').prop('readonly', true);
+        $('#ReqDateFormatted').prop('disabled', true);
+        $('#ReqForCompany').prop('disabled', true);
+        $("#RequisitionDetailObj_MaterialID").prop('disabled', true);
+        $('#RequisitionDetailObj_AppxRate').prop('readonly', true);
+        $('#RequisitionDetailObj_Description').prop('readonly', true);
+        $('#RequisitionDetailObj_ExtendedDescription').prop('readonly', true);
+        $('#RequisitionDetailObj_CurrStock').prop('readonly', true);
+        $('#RequisitionDetailObj_RequestedQty').prop('readonly', true);
+        $('.ItemEditlink').hide();
+
+    }
+   
 }
 function GetRequisitionOverViewCount()
 {

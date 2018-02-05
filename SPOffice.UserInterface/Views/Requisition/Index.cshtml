@@ -171,7 +171,7 @@
                                         @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
                                         @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
@@ -187,10 +187,11 @@
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.ReqDateFormatted, new { htmlAttributes = new { @class = "form-control HeaderBox datepicker" } })
                                         @Html.ValidationMessageFor(model => model.ReqDateFormatted, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="col-md-1"></div>
+                                    </div>                                   
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
+                               
 
                             </div>
 
@@ -231,7 +232,7 @@
                                         @Html.DropDownListFor(model => model.ReqForCompany, Model.CompanyObj.CompanyList, "-- Select Company --", new { @class = "form-control", style = "padding:4px 12px;" })
                                         @Html.ValidationMessageFor(model => model.ReqForCompany, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 mandatory"></div>
                                     <div class="col-md-1"></div>
                                 </div>
 
