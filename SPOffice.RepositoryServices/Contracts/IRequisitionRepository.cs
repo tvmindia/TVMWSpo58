@@ -18,5 +18,6 @@ namespace SPOffice.RepositoryServices.Contracts
         Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo);
         object UpdateNotification(Requisition requisitionObj);
         RequisitionOverViewCount GetRequisitionSummary();
+        RequisitionOverViewCount GetRequisitionCount(RequisitionOverViewCount reqObj,bool isAdminOrCeo);
     }
 }

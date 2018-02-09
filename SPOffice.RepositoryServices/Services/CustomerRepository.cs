@@ -587,5 +587,143 @@ namespace SPOffice.RepositoryServices.Services
 
             return _customerObj;
         }
+
+
+
+        #region InsertCustomer
+        public Customer InsertCustomer(Customer customerObj)
+        {
+            try
+            {
+                SqlParameter outputStatus, outputID = null;
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Accounts].[InsertCustomers]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 150).Value = customerObj.CompanyName;
+                        cmd.Parameters.Add("@IsInternalComp", SqlDbType.Bit).Value = customerObj.IsInternalComp;
+                        cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = customerObj.ContactPerson;
+                        cmd.Parameters.Add("@ContactEmail", SqlDbType.VarChar, 150).Value = customerObj.ContactEmail;
+                        cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = customerObj.ContactTitle;
+                        cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = customerObj.Website;
+                        cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = customerObj.LandLine;
+                        cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = customerObj.Mobile;
+                        cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = customerObj.Fax;
+                        cmd.Parameters.Add("@OtherPhoneNos", SqlDbType.VarChar, 250).Value = customerObj.OtherPhoneNos;
+                        cmd.Parameters.Add("@BillingAddress", SqlDbType.NVarChar, -1).Value = customerObj.BillingAddress;
+                        cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = customerObj.ShippingAddress;
+                        cmd.Parameters.Add("@PaymentTermCode", SqlDbType.VarChar, 10).Value = customerObj.PaymentTermCode;
+                        cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customerObj.TaxRegNo;
+                        cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customerObj.PANNO;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customerObj.GeneralNotes;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = customerObj.commonObj.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = customerObj.commonObj.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        AppConst Cobj = new AppConst();
+                        throw new Exception(Cobj.InsertFailure);
+                    case "1":
+                        customerObj.ID = Guid.Parse(outputID.Value.ToString());
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return customerObj;
+        }
+        #endregion InsertCustomer
+
+        #region UpdateCustomer
+        public object UpdateCustomer(Customer _customerObj)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Accounts].[UpdateCustomer]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = _customerObj.ID;
+                        cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 150).Value = _customerObj.CompanyName;
+                        cmd.Parameters.Add("@IsInternalComp", SqlDbType.Bit).Value = _customerObj.IsInternalComp;
+                        cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = _customerObj.ContactPerson;
+                        cmd.Parameters.Add("@ContactEmail", SqlDbType.VarChar, 150).Value = _customerObj.ContactEmail;
+                        cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = _customerObj.ContactTitle;
+                        cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = _customerObj.Website;
+                        cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = _customerObj.LandLine;
+                        cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = _customerObj.Mobile;
+                        cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = _customerObj.Fax;
+                        cmd.Parameters.Add("@OtherPhoneNos", SqlDbType.VarChar, 250).Value = _customerObj.OtherPhoneNos;
+                        cmd.Parameters.Add("@BillingAddress", SqlDbType.NVarChar, -1).Value = _customerObj.BillingAddress;
+                        cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = _customerObj.ShippingAddress;
+                        cmd.Parameters.Add("@PaymentTermCode", SqlDbType.VarChar, 10).Value = _customerObj.PaymentTermCode;
+                        cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = _customerObj.TaxRegNo;
+                        cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = _customerObj.PANNO;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = _customerObj.GeneralNotes;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _customerObj.commonObj.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _customerObj.commonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.UpdateSuccess
+            };
+        }
+        #endregion UpdateCustomer
     }
 }

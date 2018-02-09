@@ -659,6 +659,7 @@
   <ItemGroup>
     <Compile Include="API\CustomerController.cs" />
     <Compile Include="API\DashBoardController.cs" />
+    <Compile Include="API\EmployeeController.cs" />
     <Compile Include="API\EnquiryController.cs" />
     <Compile Include="API\FollowUpController.cs" />
     <Compile Include="API\LoginController.cs" />

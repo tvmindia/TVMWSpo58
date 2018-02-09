@@ -29,5 +29,37 @@ namespace SPOffice.BusinessService.Services
             List<SalesPerson> salesPersonList = _employeeRepository.GetAllSalesPersons();
             return salesPersonList;
         }
+
+
+        public object InsertEmployee(Employee employeeObj)
+        {
+            object result = null;
+            try
+            {
+                    result = _employeeRepository.InsertEmployee(employeeObj);
+               
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+
+        public object UpdateEmployee(Employee empObj)
+        {
+            object result = null;
+            try
+            {
+              result = _employeeRepository.UpdateEmployee(empObj);
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
     }
 }

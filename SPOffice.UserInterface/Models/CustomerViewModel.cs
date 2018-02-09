@@ -66,6 +66,10 @@ namespace SPOffice.UserInterface.Models
         //public PaymentTermsViewModel PaymentTermsObj { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
         public List<SelectListItem> TitlesList { get; set; }
+        public string APIKey { get; set; }
+        public string UserName { get; set; }
+        public UserViewModel userObj { get; set; }
+        public bool IsInternalComp { get; set; }
     }
     public class CustomerPOViewModel
     {

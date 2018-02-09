@@ -12,6 +12,8 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         [Display(Name = "Requisition No.")]
         public string ReqNo { get; set; }
+        [Display(Name = "Title")]
+        [Required(ErrorMessage = "Title is missing")]
         public string Title { get; set; }        
         public DateTime ReqDate { get; set; }
         [Display(Name = "Requested Company")]
@@ -67,9 +69,12 @@ namespace SPOffice.UserInterface.Models
     {
         public int? OpenCount { get; set; }
         public int? AllCount { get; set; }
+        public int? CloseCount { get; set; }
         public int? PendingManagerCount { get; set; }
         public int? PendingFinalCount { get; set; }
         public bool IsAdminOrCeo { get; set; }
+        public UserViewModel userObj { get; set; }
+        public string duration { get; set; }
     }
 
     public class ReqAdvanceSearchViewModel

@@ -261,5 +261,32 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = "Failed!!Notification cannot be send" });
             }
         }
+
+        [HttpPost]
+        public string GetRequisitionCount(RequisitionOverViewCount reqObj)
+        {
+            try
+            {
+                bool isAdminOrCeo = false;
+            Permission _permission = _userBusiness.GetSecurityCode(reqObj.UserName, "Requisition");
+            if (_permission.SubPermissionList != null)
+            {
+                if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                {
+                    isAdminOrCeo = true;
+                }
+            }
+                RequisitionOverViewCountViewModel requisitionOverviewCountObj = Mapper.Map<RequisitionOverViewCount, RequisitionOverViewCountViewModel>(_requisitionBusiness.GetRequisitionCount(reqObj, isAdminOrCeo));
+                return JsonConvert.SerializeObject(new { Result = true, Records = requisitionOverviewCountObj });
+
+            }
+
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
+        }
     }
-}
+

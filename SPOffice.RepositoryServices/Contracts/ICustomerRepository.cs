@@ -17,5 +17,7 @@ namespace SPOffice.RepositoryServices.Contracts
         object UpdatePurchaseOrder(CustomerPO customerPO);
         object DeletePurchaseOrder(Guid ID);
         CustomerPOSummary GetCustomerPOSummary();
+        Customer InsertCustomer(Customer cuscustomerObj);
+        object UpdateCustomer(Customer cuscustomerObj);
     }
 }
