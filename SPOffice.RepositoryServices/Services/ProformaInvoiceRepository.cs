@@ -51,7 +51,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _proformaHeader.InvoiceNo = (sdr["InvoiceNo"].ToString() != "" ? sdr["InvoiceNo"].ToString() : _proformaHeader.InvoiceNo);
                                         _proformaHeader.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : _proformaHeader.CustomerID);
                                         _proformaHeader.customer = new CustomerPO();
-                                        _proformaHeader.customer.ID = (Guid)_proformaHeader.CustomerID;
+                                        _proformaHeader.customer.ID = _proformaHeader.CustomerID;
                                         _proformaHeader.customer.CustomerName = (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _proformaHeader.customer.CustomerName);
                                         _proformaHeader.InvoiceDate = (sdr["InvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["InvoiceDate"].ToString()).ToString(settings.dateformat) : _proformaHeader.InvoiceDate);
                                         _proformaHeader.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()).ToString(settings.dateformat) : _proformaHeader.ValidTillDate);
@@ -75,6 +75,9 @@ namespace SPOffice.RepositoryServices.Services
                                         _proformaHeader.BodyFoot = (sdr["BodyFooter"].ToString() != "" ? sdr["BodyFooter"].ToString() : _proformaHeader.BodyFoot);
                                         _proformaHeader.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? sdr["TaxTypeCode"].ToString() : _proformaHeader.TaxTypeCode);
                                         _proformaHeader.TaxPercApplied = (sdr["TaxPercApplied"].ToString() != "" ? decimal.Parse(sdr["TaxPercApplied"].ToString()) : _proformaHeader.TaxPercApplied);
+                                        _proformaHeader.CGST = (sdr["CGST"].ToString() != "" ? decimal.Parse(sdr["CGST"].ToString()) : _proformaHeader.CGST);
+                                        _proformaHeader.SGST = (sdr["SGST"].ToString() != "" ? decimal.Parse(sdr["SGST"].ToString()) : _proformaHeader.SGST);
+                                        _proformaHeader.IGST = (sdr["IGST"].ToString() != "" ? decimal.Parse(sdr["IGST"].ToString()) : _proformaHeader.IGST);
                                     }
                                     proformaHeaderList.Add(_proformaHeader);
                                 }
@@ -121,6 +124,9 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = proformaHeader.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = proformaHeader.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = proformaHeader.TaxPercApplied;
+                        cmd.Parameters.Add("@CGST", SqlDbType.Decimal).Value = proformaHeader.CGST;
+                        cmd.Parameters.Add("@SGST", SqlDbType.Decimal).Value = proformaHeader.SGST;
+                        cmd.Parameters.Add("@IGST", SqlDbType.Decimal).Value = proformaHeader.IGST;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = proformaHeader.TaxAmount;
                        // cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = proformaHeader.EmailSentYN;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = proformaHeader.DetailXML;
@@ -199,6 +205,9 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = proformaHeader.Discount;
                         cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = proformaHeader.TaxTypeCode;
                         cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = proformaHeader.TaxPercApplied;
+                        cmd.Parameters.Add("@CGST", SqlDbType.Decimal).Value = proformaHeader.CGST;
+                        cmd.Parameters.Add("@SGST", SqlDbType.Decimal).Value = proformaHeader.SGST;
+                        cmd.Parameters.Add("@IGST", SqlDbType.Decimal).Value = proformaHeader.IGST;
                         cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = proformaHeader.TaxAmount;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = proformaHeader.DetailXML;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = proformaHeader.commonObj.UpdatedBy;
@@ -352,6 +361,8 @@ namespace SPOffice.RepositoryServices.Services
                                         };
                                         proformaItem.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         proformaItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
+                                        proformaItem.company = new Company();
+                                        proformaItem.company.LogoURL = (sdr["LogoURL"].ToString() != "" ? sdr["LogoURL"].ToString() : proformaItem.company.LogoURL);
                                     }
                                     quoteItemList.Add(proformaItem);
                                 }

@@ -2,11 +2,14 @@ var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 var _Products = [];
 var _Units = [];
+var _ProformaProductDetail = [];
+var _ProformaProductList = [];
 $(document).ready(function () {
     try {
         //For implementating select2
         $("#ddlCustomer").select2({
         });
+        $("#ddlProductSearch").select2({ dropdownParent: $("#AddProformaItemModal") });
         $('#btnUpload').click(function () {
             //Pass the controller name
             var FileObject = new Object;
@@ -77,16 +80,29 @@ $(document).ready(function () {
           paging: false,
           data: null,
           autoWidth: false,
-          columns: EG_Columns(),
-          columnDefs: EG_Columns_Settings()
+          columns: [
+          { "data": "ID", "defaultContent": "<i></i>" },
+          { "data": "ProductID", "defaultContent": "<i></i>" },
+          { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+          { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+          { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+          { "data": "UnitCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+          { "data": "Quantity", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+          { "data": "Rate", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
+          { "data": "Amount", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
+          { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+          ],
+          columnDefs: [{ "targets": [0, 1], "visible": false, searchable: false },
+              { "targets": [2, 3, 5], "width": "15%" },
+              { className:"text-center","targets": [9], "width": "8%" },
+              { className: "text-right", "targets": [7, 8] },
+              {className:"text-left","targets":[2,3,4,5,6]}
+          ]
       });
 
         GetAllProductCodes();
         GetAllUnitCodes();
-        EG_ComboSource('UnitCodes', _Units, 'Code', 'Description');
-        EG_ComboSource('Products', _Products, 'Code', 'Description');
-     
-        EG_GridDataTable = DataTables.ItemDetailTable;
+      
 
     }
     catch (x) {
@@ -120,173 +136,12 @@ function GetAllProformaInvoices(filter) {
     }
 }
 
-//-----------------------EDIT GRID DEFN-------------------------------------
-var EG_totalDetailRows = 0;
-var EG_GridData;//DATA SOURCE OBJ ARRAY
-var EG_GridDataTable;//DATA TABLE ITSELF FOR REBIND PURPOSE
-var EG_SlColumn = 'SlNo';
-var EG_GridInputPerRow = 4;
-var EG_MandatoryFields = 'ProductCode,ProductDescription,UnitCode,Quantity,Rate';
-
-
-function EG_TableDefn() {
-    var tempObj = new Object();
-    tempObj.ID = "";
-    tempObj.InvoiceID = " ";
-    tempObj.SlNo = 0;
-    tempObj.ProductCode = "";
-    tempObj.ProductDescription = "";
-    tempObj.UnitCode = "";
-    tempObj.Quantity = "";
-    tempObj.Rate = "";
-    tempObj.Amount = "";
-    tempObj.ProductID = "";
-    return tempObj
-}
-
-
-function EG_Columns() {
-      var obj = [
-                { "data": "ID", "defaultContent": "<i></i>" },
-              
-                { "data": "SlNo", "defaultContent": "<i></i>" },
-                { "data": "ProductCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'ProductCode', 'Products', 'FillDescription')); } },
-                { "data": "ProductDescription", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductDescription', '')); }, "defaultContent": "<i></i>" },
-                 { "data": "UnitCode", render: function (data, type, row) { return (EG_createCombo(data, 'S', row, 'UnitCode', 'UnitCodes','')); }, "defaultContent": "<i></i>" },
-                { "data": "Quantity", render: function (data, type, row) { return (EG_createTextBox(data, 'N', row, 'Quantity', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-               
-                { "data": "Rate", render: function (data, type, row) { return (EG_createTextBox(roundoff(data), 'N', row, 'Rate', 'CalculateGridAmount')); }, "defaultContent": "<i></i>" },
-                { "data": "Amount", render: function (data, type, row) { return roundoff(data); }, "defaultContent": "<i></i>" },
-                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>' },
-                { "data": "ProductID", render: function (data, type, row) { return (EG_createTextBox(data, 'S', row, 'ProductID', '')); }, "defaultContent": "<i></i>" }
-                ]
-
-      return obj;
-
-}
-
-function EG_Columns_Settings() {
-
-    var obj = [
-        { "targets": [0,9], "visible": false, "searchable": false },
-            { "width": "5%", "targets": 1 },
-        { "width": "15%", "targets": 2 },
-         { "width": "20%", "targets": 3 },
-           { "width": "8%", "targets": 4 },
-        { "width": "8%", "targets": 5 },
-         { "width": "8%", "targets": 6 },
-          { "width": "10%", "targets": 7 },
-           { "width": "6%", "targets": 8 },
-           { className: "text-center", "targets": [8] },
-            //{ "width": "10%", "targets": 11 },
-        { className: "text-right", "targets": [5,6,7] },
-        //{ className: "text-left disabled", "targets": [5] },
-        //{ className: "text-center", "targets": [3, 4, 6, 12] },
-        //{ className: "text-center disabled", "targets": [7] },
-        //{ className: "text-right disabled", "targets": [9, 10, 11] },
-        //{ "orderable": false, "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }
-
-    ]
-
-    return obj;
-
-}
-
-function FillDescription(row) {
-    
-    for (i = 0; i < _Products.length; i++) {
-        if (_Products[i].Code == EG_GridData[row - 1]['ProductCode']) {
-            EG_GridData[row - 1]['ProductDescription'] = _Products[i].Description;
-            EG_GridData[row - 1]['ProductID'] = _Products[i].ID;
-            EG_GridData[row - 1]['Rate'] = _Products[i].Rate;
-
-            //Description
-            EG_Rebind();
-            break;
-        }
-    }
-
-}
-
-
-function CalculateGridAmount(row) {
-    var qty = 0.00;
-    var rate = 0.00;
-    var EGqty = '';
-    var EGrate = '';
-    EGqty = EG_GridData[row - 1]["Quantity"];
-    EGrate = EG_GridData[row - 1]['Rate'];
-    qty = parseFloat(EGqty) || 0;
-    rate = parseFloat(EGrate) || 0;
-    EG_GridData[row - 1]['Rate'] = roundoff(rate);
-    EG_GridData[row - 1]['Amount'] = roundoff(qty * rate);
-    EG_Rebind();
-
-    var total = 0.00;
-    for (i = 0; i < EG_GridData.length; i++) {
-        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
-    }
-    $('#GrossAmount').val(roundoff(total));
-    AmountSummary();
-
-}
 
 function InvoiceNoOnChange(curobj)
 {
     $("#lblInvoiceNo").text($(curobj).val());
 }
 
-function AmountSummary() {
-    var total = 0.00;
-    for (i = 0; i < EG_GridData.length; i++) {
-        total = total + (parseFloat(EG_GridData[i]['Amount']) || 0);
-    }
-    $('#GrossAmount').val(roundoff(total));
-
-   
-   
-    var discount = parseFloat($('#Discount').val()) || 0;
-    var nettaxableamount = total - discount;
-    $('#NetTaxableAmount').val(roundoff(nettaxableamount));
-
-    var applicabletax=$("#TaxPercApplied").val();
-    $('#TaxAmount').val(roundoff((nettaxableamount * applicabletax)/100));
-    var totamt = nettaxableamount + (roundoff(nettaxableamount) * applicabletax) / 100;
-    $("#TotalAmount").val(roundoff(totamt));
-    
-}
-
-function GetTaxPercentage() {
-
-    try {
-        var curObj = $("#TaxTypeCode").val();
-        if (curObj) {
-            $("#TaxPercApplied").val(0);
-            var data = { "Code": curObj };
-            var ds = {};
-            ds = GetDataFromServer("ProformaInvoice/GetTaxRate/", data);
-            if (ds != '') {
-                ds = JSON.parse(ds);
-            }
-            if (ds.Result == "OK") {
-
-                $("#TaxPercApplied").val(ds.Records);
-                AmountSummary();
-                return ds.Records;
-            }
-            if (ds.Result == "ERROR") {
-                return 0;
-            }
-        }
-        else {
-            $("#TaxPercApplied").val(0);
-        }
-
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-}
 
 function BindAllQuotes() {
    try {
@@ -302,8 +157,15 @@ function Delete(curobj) {
     debugger;
     var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
     if ((rowData != null)&&(rowData.ID != null)) {
-        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '",' + rowData[EG_SlColumn] + ')');
-    }   
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '")');
+        AmountSummary();
+    }
+    else
+    {
+        DataTables.ItemDetailTable.row($(curobj).parents('tr')).remove().draw(false);
+        notyAlert('success', 'Deleted Successfully');
+        AmountSummary();
+    }
 }
 
 //Delete ProformaInvoice
@@ -347,18 +209,17 @@ function DeleteProformaInvoice()
 
 
 function CheckAmount() {
-
+    debugger;
     if ($("#txtDiscount").val() == "")
         $("#txtDiscount").val(roundoff(0));
 }
 
-function DeleteItem(ID,rw) {
+function DeleteItem(ID) {
 
     try {
         debugger;
 
         //Event Request Case
-        if (ID != '' && ID != null) {
             var data = { "ID": ID };
             var ds = {};
             ds = GetDataFromServer("ProformaInvoice/DeleteItemByID/", data);
@@ -369,7 +230,7 @@ function DeleteItem(ID,rw) {
                 switch (ds.Result) {
                     case "OK":
                         notyAlert('success', ds.Message);                       
-                        EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+                        GetAllQuoteItems($("#ID").val());
                         break;
                     case "ERROR":
                         notyAlert('error', ds.Message);
@@ -379,20 +240,6 @@ function DeleteItem(ID,rw) {
                 }
                 return ds.Record;
             }
-                        
-        }
-        else {
-            if (EG_GridData.length != 1) {
-                EG_GridData.splice(rw - 1, 1);
-                EG_Rebind_WithData(EG_GridData, 0);
-            }
-            else {
-                reset();
-                EG_Rebind();
-            }
-            notyAlert('success', 'Deleted Successfully');
-        }
-
     }
     catch (e) {
 
@@ -403,15 +250,19 @@ function DeleteItem(ID,rw) {
 
 function saveInvoices() {
     debugger;
-    var validation = EG_Validate();
-    if (validation == "") {
-
-        var result = JSON.stringify(EG_GridData);
-        $("#DetailJSON").val(result);
-        $('#btnSave').trigger('click');
-    }
+    //if (validation == "") {
+        $("#DetailJSON").val('');
+        _ProformaProductList = [];
+        AddProformaProductList();
+        if (_ProformaProductList.length > 0)
+        {
+            var result = JSON.stringify(_ProformaProductList);
+            $("#DetailJSON").val(result);
+            $('#btnSave').trigger('click');
+        }
+   // }
     else {
-        notyAlert('error', validation);
+        notyAlert('warnig', 'Please Add Product Details!');
     }
 
     }
@@ -429,7 +280,7 @@ function SaveSuccess(data, status) {
                // $('#deleteId').val(JsonResult.Record.ID);
             }
             BindAllQuotes();
-            EG_Rebind_WithData(GetAllQuoteItems($("#ID").val()), 1);
+            GetAllQuoteItems($("#ID").val());
             break;
         case "ERROR":
             notyAlert('error', JsonResult.Record.Message);
@@ -460,20 +311,20 @@ break;
 
 
 function AddNew() {
+    debugger;
     ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Add');
     Resetform();
     openNav();
-    EG_ClearTable();
     // Reset();  
     $("#ddlCustomer").select2();
     $("#ddlCustomer").val('').trigger('change');
     $('#ID').val(emptyGUID);
     $('#ProformaForm')[0].reset();
+    DataTables.ItemDetailTable.clear().draw(false);
     $("#lblEmailSent").text('NO');
     $("#lblInvoiceNo").text('New ProformaInvoice');
-    clearUploadControl();
-    EG_AddBlankRows(5)
-    clearUploadControl();
+    $("#CGST").val('9');
+    $("#SGST").val('9');
 }
 
 function Reset() {
@@ -489,18 +340,19 @@ function Resetform() {
         validator.settings.success($(this));
     });
     $('#ProformaForm')[0].reset();
+    DataTables.ItemDetailTable.clear().draw(false);
 }
 
 function Edit(Obj) {
     debugger;
-   $('#ProformaForm')[0].reset();
+    $('#ProformaForm')[0].reset();
     var rowData = DataTables.ProformaInvoiceTable.row($(Obj).parents('tr')).data();
     $('#ID').val(rowData.ID);
     //$('#deleteId').val(rowData.ID);
     $('#QuoteMAilHeaderID').val(rowData.ID);
 
     BindProformaInvoiceDetails(rowData.ID);
-    GetTaxPercentage();
+    AmountSummary();
     ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Edit');
     openNav();
 }
@@ -527,21 +379,23 @@ function BindProformaInvoiceDetails(ID) {
             $("#GrossAmount").val(jsresult.GrossAmount);
             $("#Discount").val(roundoff(jsresult.Discount));
             $("#NetTaxableAmount").val(jsresult.NetTaxableAmount);
-            $("#TaxTypeCode").val(jsresult.TaxTypeCode);
-            $("#TaxPercApplied").val(jsresult.TaxPercApplied);
+            
+            $("#CGST").val(jsresult.CGST);
+            $("#SGST").val(jsresult.SGST);
+            $("#IGST").val(jsresult.IGST);
+
             $("#TotalAmount").val(jsresult.TotalAmount);
             $("#BodyFoot").val(jsresult.BodyFoot);       
 
-            //$("#lblQuoteStage").text(jsresult.quoteStage.Description);
+           // $("#lblQuoteStage").text(jsresult.quoteStage.Description);
             $("#lblEmailSent").text(jsresult.EmailSentYN == "True" ? 'YES' : 'NO');
             $('#SentToEmails').val(jsresult.SentToEmails);
             $("#lblInvoiceNo").text(jsresult.InvoiceNo);
             debugger;
-            EG_Rebind_WithData(GetAllQuoteItems(jsresult.ID),1);
+            GetQuoteItemsList(ID);
+            AmountSummary();
             clearUploadControl();
             PaintImages(ID);
-
-
         }
 
     }
@@ -571,6 +425,11 @@ function GetProformaInvoiceDetailsByID(ID) {
         notyAlert('error', e.message);
     }
 }
+
+function GetQuoteItemsList(ID) {
+    DataTables.ItemDetailTable.clear().rows.add(GetAllQuoteItems(ID)).draw(false);
+}
+
 //To bind values to detail table
 function GetAllQuoteItems(ID) {
     debugger;
@@ -663,9 +522,6 @@ function GetAllUnitCodes() {
         notyAlert('error', e.message);
     }
 }
-
-
-
 
 function ValidateEmail() {
     var ste = $('#SentToEmails').val();
@@ -779,6 +635,205 @@ function GetMailPreview(ID) {
 
 }
 
+//-------------------------------------------------------------------------------------------------//
+function AddProformaList() {
+    debugger;
+    PopupClearFields();
+    $("#ddlProductSearch").prop('disabled', false);
+    $('#AddProformaItemModal').modal('show');
+}
+
+function PopupClearFields() {
+    _ProformaProductDetail = [];
+    $("#ddlProductSearch").select2({ dropdownParent: $("#AddProformaItemModal") });
+    $("#ddlProductSearch").val('').trigger('change');
+    $('#proformaItemListObj_ProductCode').val('');
+    $('#proformaItemListObj_OldProductCode').val('');
+    $('#proformaItemListObj_ProductDescription').val('');
+    $('#proformaItemListObj_UnitCode').val('');
+    $('#proformaItemListObj_Quantity').val('');
+    $('#proformaItemListObj_Rate').val('');
+    $('#proformaItemListObj_Amount').val('');
+}
+
+// calculate amount W.R.T to qty
+function CalculateAmount(amt)
+{
+    debugger;
+    var qty = $('#proformaItemListObj_Quantity').val();
+    var rate = $('#proformaItemListObj_Rate').val();
+    var amount = roundoff(parseFloat(qty) * parseFloat(rate));
+    $('#proformaItemListObj_Amount').val(amount);
+}
+
+function AmountSummary()
+{
+    debugger;
+    var total = 0.00;
+    var table = DataTables.ItemDetailTable.rows().data();
+    for (i = 0; i < table.length; i++)
+    {
+        total = total + (parseFloat(table[i].Amount));
+    }
+    $('#GrossAmount').val(total);
+
+    var discount = parseFloat($('#Discount').val());
+    var nettaxableamount = total - discount;
+    $('#NetTaxableAmount').val(roundoff(nettaxableamount));
+
+    var cgst = parseFloat($('#CGST').val());
+    var sgst = parseFloat($('#SGST').val());
+    var igst = parseFloat($('#IGST').val());
+    var taxtotal = cgst + sgst + igst;
+    $('#TaxAmount').val(roundoff((nettaxableamount * taxtotal) / 100));
+    var totalamt = nettaxableamount + (roundoff(nettaxableamount) * taxtotal) / 100;
+    $('#TotalAmount').val(roundoff(totalamt));
+}
 
 
+
+function ProductSearchOnchange(curObj) {
+    debugger;
+    if (curObj.value != "") {
+        _ProformaProductDetail = [];
+        var ds = GetProductByID(curObj.value);
+        ProformaProduct = new Object();
+        ProformaProduct.ID = null;
+        ProformaProduct.ProductID = ds.ID       
+        ProformaProduct.ProductCode = ds.Code
+        ProformaProduct.OldProductCode = ds.OldCode;
+        ProformaProduct.ProductDescription = ds.Description;        
+        ProformaProduct.UnitCode = ds.UnitCode;
+        ProformaProduct.Quantity = ds.Quantity;
+        ProformaProduct.Rate = ds.Rate;
+      //  ProformaProduct.Amount = ds.Amount || 0;
+        _ProformaProductDetail.push(ProformaProduct);
+        $('#proformaItemListObj_ProductCode').val(_ProformaProductDetail[0].ProductCode);
+        $('#proformaItemListObj_OldProductCode').val(_ProformaProductDetail[0].OldProductCode);
+        $('#proformaItemListObj_ProductDescription').val(_ProformaProductDetail[0].ProductDescription);
+        $('#proformaItemListObj_UnitCode').val(_ProformaProductDetail[0].UnitCode);
+        $('#proformaItemListObj_Quantity').val(_ProformaProductDetail[0].Quantity);
+        $('#proformaItemListObj_Rate').val(roundoff(_ProformaProductDetail[0].Rate));
+       // $('#proformaItemListObj_Amount').val(roundoff(_ProformaProductDetail[0].Amount));
+        
+    }
+}
+
+function GetProductByID(id) {
+    try {
+        var data = { "ID": id };
+        var ds = {};
+        ds = GetDataFromServer("Product/GetProductDetails/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+
+function AddProformaItem() {
+    debugger;
+    if ($("#ddlProductSearch").val() != "")
+    {
+        if (_ProformaProductDetail != null)
+        {
+            //check product existing or not if soo update the new
+            var allData = DataTables.ItemDetailTable.rows().data();
+            if (allData.length > 0)
+            {
+                var checkPoint = 0;
+                for (var i = 0; i < allData.length; i++) {
+                    if (allData[i].ProductID == _ProformaProductDetail[0].ProductID) 
+                    {                       
+                        allData[i].ProductDescription = $('#proformaItemListObj_ProductDescription').val();
+                        allData[i].UnitCode = $('#proformaItemLisrObj_UnitCode').val();
+                        allData[i].Quantity = $('#proformaItemListObj_Quantity').val();                       
+                        allData[i].Rate = $('#proformaItemListObj_Rate').val();
+                        allData[i].Amount = $('#proformaItemListObj_Amount').val();
+                        checkPoint = 1;
+                       
+                        break;
+                    }
+                }
+
+                if (!checkPoint)
+                {                  
+                    _ProformaProductDetail[0].ProductDescription = $('#proformaItemListObj_ProductDescription').val();
+                    _ProformaProductDetail[0].UnitCode = $('#proformaItemListObj_UnitCode').val();
+                    _ProformaProductDetail[0].Quantity = $('#proformaItemListObj_Quantity').val();
+                    _ProformaProductDetail[0].Rate = $('#proformaItemListObj_Rate').val();
+                    _ProformaProductDetail[0].Amount = $('#proformaItemListObj_Amount').val();
+                    DataTables.ItemDetailTable.rows.add(_ProformaProductDetail).draw(false);
+                }
+                else
+                {
+                    DataTables.ItemDetailTable.clear().rows.add(allData).draw(false);
+                    
+                }
+
+            }
+            else
+            {
+                _ProformaProductDetail[0].ProductDescription = $('#proformaItemListObj_ProductDescription').val();
+                _ProformaProductDetail[0].UnitCode = $('#proformaItemListObj_UnitCode').val();
+                _ProformaProductDetail[0].Quantity = $('#proformaItemListObj_Quantity').val();
+                _ProformaProductDetail[0].Rate = $('#proformaItemListObj_Rate').val();
+                _ProformaProductDetail[0].Amount = $('#proformaItemListObj_Amount').val();
+                DataTables.ItemDetailTable.rows.add(_ProformaProductDetail).draw(false);
+            }
+        }        
+        $('#AddProformaItemModal').modal('hide');
+        //function call
+        AmountSummary();
+    }
+    else {
+        notyAlert('warning', "Product is Empty");
+    }
+   
+}
+
+
+function AddProformaProductList() {
+    debugger;
+    var data = DataTables.ItemDetailTable.rows().data();
+    for (var r = 0; r < data.length; r++) {
+        ProformaProduct = new Object();
+        ProformaProduct.ID = data[r].ID;
+        ProformaProduct.ProductID = data[r].ProductID;
+        ProformaProduct.ProductCode = data[r].ProductCode;
+        ProformaProduct.ProductDescription = data[r].ProductDescription;
+        ProformaProduct.UnitCode = data[r].UnitCode;
+        ProformaProduct.Quantity = data[r].Quantity;
+        ProformaProduct.Rate = data[r].Rate;
+        ProformaProduct.Amount = data[r].Amount;
+        _ProformaProductList.push(ProformaProduct);
+    }
+}
+
+function ProductEdit(curObj) {
+    debugger;
+    $('#AddProformaItemModal').modal('show');
+    $("#ddlProductSearch").prop('disabled', true);
+    PopupClearFields();
+    var rowData = DataTables.ItemDetailTable.row($(curObj).parents('tr')).data();
+    if ((rowData != null) && (rowData.ProductID != null)) {
+        $("#ddlProductSearch").select2({ dropdownParent: $("#AddProformaItemModal") });
+        $("#ddlProductSearch").val(rowData.ProductID).trigger('change');
+        $('#proformaItemListObj_ProductDescription').val(rowData.ProductDescription);
+        $('#proformaItemListObj_UnitCode').val(rowData.UnitCode);
+        $('#proformaItemListObj_Quantity').val(rowData.Quantity);
+        $('#proformaItemListObj_Rate').val(roundoff(rowData.Rate));
+        $('#proformaItemListObj_Amount').val(roundoff(rowData.Amount));
+
+    }
+}
 
