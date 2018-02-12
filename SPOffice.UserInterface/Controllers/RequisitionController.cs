@@ -32,12 +32,11 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Requisition", Mode = "R")]
         public ActionResult Index(string id)
         {
+            Permission _permission = Session["UserRightsOffice"] as Permission;
             //Here we set requisition id
-
             ViewBag.value = (id!= "TILEFILTER"&& id != "OPEN" && id!="ALL") ?id:"";
             if(id== "TILEFILTER")
             { 
-                Permission _permission = Session["UserRightsOffice"] as Permission;
                     if (_permission.SubPermissionList != null)
                     {
                         if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
@@ -60,7 +59,18 @@ namespace SPOffice.UserInterface.Controllers
             {
                 ViewBag.filter = "ALL";
             }
-
+            if (_permission.SubPermissionList != null)
+            {
+                ViewBag.viewOnly = false;
+                if (_permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("RWD"))
+                {
+                    ViewBag.viewOnly = false;
+                }
+                else if (_permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
+                {
+                    ViewBag.viewOnly = true;
+                }
+            }
 
             RequisitionViewModel RVM = new RequisitionViewModel();
             RVM.CompanyObj = new CompanyViewModel();
@@ -108,7 +118,7 @@ namespace SPOffice.UserInterface.Controllers
                 Permission _permission = Session["UserRightsOffice"] as Permission;
                 if (_permission.SubPermissionList != null)
                 {
-                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R") || _permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
                     {
                         isAdminOrCeo = true;
                     }
@@ -319,7 +329,7 @@ namespace SPOffice.UserInterface.Controllers
                 Permission _permission = Session["UserRightsOffice"] as Permission;
                 if(_permission.SubPermissionList!=null)
                 {
-                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R") || _permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
                     {
                         isAdminOrCeo = true;
                     }
@@ -351,7 +361,7 @@ namespace SPOffice.UserInterface.Controllers
                 Permission _permission = Session["UserRightsOffice"] as Permission;
                 if (_permission.SubPermissionList != null)
                 {
-                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R") )
                     {
                         isAdminOrCeo = true;
                     }
@@ -415,6 +425,17 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "AddNew();";
 
+                    ToolboxViewModelObj.savebtn.Visible = true;
+                    ToolboxViewModelObj.savebtn.Text = "Save";
+                    ToolboxViewModelObj.savebtn.Title = "Save";
+                    ToolboxViewModelObj.savebtn.Event = "SaveRequisition()";
+
+                    ToolboxViewModelObj.CloseBtn.Visible = true;
+                    ToolboxViewModelObj.CloseBtn.Text = "Close";
+                    ToolboxViewModelObj.CloseBtn.Title = "Close";
+                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+                    break;
+                case "View":  
                     ToolboxViewModelObj.savebtn.Visible = true;
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.Title = "Save";

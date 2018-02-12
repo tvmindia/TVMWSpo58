@@ -117,7 +117,7 @@ namespace UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Requisition");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R") || permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
                 {
                     isAdminOrCeo = true;
                 }

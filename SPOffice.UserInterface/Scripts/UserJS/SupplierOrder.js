@@ -553,18 +553,26 @@ function Save() {
             debugger;
             switch (JsonResult.Result) {
                 case "OK":
-                    notyAlert('success', JsonResult.Record.Message);
-                    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
-                    if (JsonResult.Record.ID) {
-                        $("#ID").val(JsonResult.Record.ID);
-                        BindPurchaseOrder($("#ID").val());
-                    } else
+                    if (JsonResult.Record.Status == "2")
                     {
+                        notyAlert('warning', JsonResult.Record.Message);
                         Reset();
+                    }
+                    else
+                    {
+                        notyAlert('success', JsonResult.Record.Message);
+                        ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+                        if (JsonResult.Record.ID) {
+                            $("#ID").val(JsonResult.Record.ID);
+                            BindPurchaseOrder($("#ID").val());
+                        } else
+                        {
+                            Reset();
+                        }
+                        BindAllPurchaseOrders();
                     }
                     reqDetail = [];
                     reqDetailLink = [];
-                    BindAllPurchaseOrders();
                     break;
                 case "Error":
                     notyAlert('error', JsonResult.Message);
@@ -584,9 +592,15 @@ function UpdateDetailLinkSave() {
     //validation main form 
     var $form = $('#SupplierPOForm');
     if ($form.valid()) {
-        SupplierOrderViewModel.ID = $('#ID').val(); 
+        SupplierOrderViewModel.ID = $('#ID').val();
         SupplierOrderViewModel.reqDetailObj = reqDetail;
         SupplierOrderViewModel.reqDetailLinkObj = reqDetailLink;
+        SupplierOrderViewModel.SupplierID = $('#ddlSupplier').val();
+        SupplierOrderViewModel.Discount = $('#Discount').val();
+        SupplierOrderViewModel.PODate = $('#PODate').val();
+        SupplierOrderViewModel.TaxAmount = $('#TaxAmount').val();
+        SupplierOrderViewModel.TaxTypeCode = $('#TaxTypeCode').val();
+        SupplierOrderViewModel.TaxPercApplied = $('#TaxPercApplied').val();
 
         var data = "{'SPOViewModel':" + JSON.stringify(SupplierOrderViewModel) + "}";
 
@@ -595,10 +609,18 @@ function UpdateDetailLinkSave() {
             debugger;
             switch (JsonResult.Result) {
                 case "OK":
-                    notyAlert('success', JsonResult.Record.Message);
-                    ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
-                    BindPurchaseOrder($("#ID").val());
-                    BindAllPurchaseOrders();
+                    if (JsonResult.Record.Status == "2") {
+                        notyAlert('warning', JsonResult.Record.Message);
+                        Reset();
+                    }
+                    else {
+                        notyAlert('success', JsonResult.Record.Message);
+                        ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'Edit');
+                        BindPurchaseOrder($("#ID").val());
+                        BindAllPurchaseOrders();
+                        reqDetail = [];
+                        reqDetailLink = [];
+                    }
                     break;
                 case "Error":
                     notyAlert('error', JsonResult.Message);
@@ -992,6 +1014,7 @@ function AddSPODetails()
 
     if (res) {
         debugger;
+        DataTables.PurchaseOrderDetailTable.rows.add(reqDetail).draw(false); //binding Detail table with new values added(not existing)
         CalculateGrossAmount();//Calculating GrossAmount after adding new rows 
         $('#RequisitionDetailsModal').modal('hide');
         Save();

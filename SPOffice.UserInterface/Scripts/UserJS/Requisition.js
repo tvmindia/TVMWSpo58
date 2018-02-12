@@ -388,7 +388,8 @@ function BindRequisitionDetail()
         $('#lblApprovalStatus').attr('title', (RequisitionViewModel.FinalApproval) ? "Finally approved " : ((RequisitionViewModel.ManagerApproved) ? "Pending for final approval" : "Pending for manager approval"))
         $("#lblReqNo").text(RequisitionViewModel.ReqNo);
         DataTables.RequisitionDetailList.clear().rows.add(GetRequisitionDetailList(RequisitionViewModel.ID)).draw(false);
-        if (RequisitionViewModel.FinalApproval || RequisitionViewModel.ManagerApproved)
+
+        if (RequisitionViewModel.FinalApproval || RequisitionViewModel.ManagerApproved || $('#ViewOnly').val()=='True')
         {
             DisableApproved();
         }
@@ -403,6 +404,10 @@ function BindRequisitionDetail()
         else {
             ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
         }
+        if ($('#ViewOnly').val() == 'True') {
+            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'View');
+        }
+
     }
     catch(e)
     {
