@@ -16,11 +16,28 @@ var RequisitionDetailLink = new Object();
 var SupplierOrderViewModel = new Object();
 
 $(document).ready(function () {
+    try {
     //For implementating select2
     $("#ddlSupplier").select2({
     });
+    $('#btnUpload').click(function () {
+        debugger;
+        //Pass the controller name
+        var FileObject = new Object;
+        if ($('#hdnFileDupID').val() != emptyGUID) {
+            FileObject.ParentID = (($('#ID').val()) != emptyGUID ? ($('#ID').val()) : $('#hdnFileDupID').val());
+        }
+        else {
+            FileObject.ParentID = ($('#ID').val() == emptyGUID) ? "" : $('#ID').val();
+        }
+
+
+        FileObject.ParentType = "SupplierOrder";
+        FileObject.Controller = "FileUpload";
+        UploadFile(FileObject);
+    });
     //----------------------------Table 1 :Supplier Purchase Order Table List---------------------//
-    try {
+  
         DataTables.PurchaseOrderTable = $('#tblSupplierPurchaseOrder').DataTable(
         {
             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -709,8 +726,8 @@ function OrderStatusChange()
         $("#lblStatus").text('N/A');
 }
 
-function SupplierOnChange(curobj) {
-    debugger;
+function SupplierOnChange(curobj){
+
     var supplierID = $(curobj).val();
     if (supplierID) {
         var data = { "ID": supplierID };
@@ -732,7 +749,6 @@ function SupplierOnChange(curobj) {
     }
 }
 function CompanyOnChange(curobj) {
-    debugger;
     var companyCode = $(curobj).val();
     if (companyCode) {
         var data = { "Code": companyCode };
@@ -829,7 +845,7 @@ function AmountSummary() {
         var applicabletax = $("#TaxPercApplied").val();
         $('#TaxAmount').val(roundoff((nettaxableamount * applicabletax) / 100));
         var totamt = roundoff(nettaxableamount + (nettaxableamount * applicabletax) / 100);
-        $("#TotalAmount").val(totamt);
+        $("#TotalAmount").val(roundoff(totamt));
     }
     else {
         $('#GrossTotal').val(roundoff(total));
@@ -1119,7 +1135,7 @@ function CalculateGrossAmount()
     {
         GrossAmount = GrossAmount + parseFloat(allData[i].Amount)
     }
-    $('#GrossTotal').val(GrossAmount);
+    $('#GrossTotal').val(roundoff(GrossAmount));
     AmountSummary();
 }
 

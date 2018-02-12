@@ -20,13 +20,15 @@ namespace SPOffice.UserInterface.Controllers
         IProformaInvoiceBusiness _proformaInvoiceBusiness;
         ICustomerBusiness _customerBusiness;
         ICompanyBusiness _companyBusiness;
+        ICommonBusiness _commonBusiness;
         IEmployeeBusiness _employeeBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
         IProductBusiness _productBusiness;
-        public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness, ICustomerBusiness customerBusiness, ICompanyBusiness companyBusiness, IEmployeeBusiness employeeBusiness, ITaxTypeBusiness taxTypeBusiness, IProductBusiness productBusiness)
+        public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness, ICustomerBusiness customerBusiness,ICommonBusiness commonBusiness, ICompanyBusiness companyBusiness, IEmployeeBusiness employeeBusiness, ITaxTypeBusiness taxTypeBusiness, IProductBusiness productBusiness)
         {
             _proformaInvoiceBusiness = proformaInvoiceBusiness;
             _customerBusiness = customerBusiness;
+            _commonBusiness = commonBusiness;
             _companyBusiness = companyBusiness;
             _employeeBusiness = employeeBusiness;
             _taxTypeBusiness = taxTypeBusiness;
@@ -98,6 +100,19 @@ namespace SPOffice.UserInterface.Controllers
             }
             proformaHeaderVM.CompanyList = selectListItem;
 
+            selectListItem = new List<SelectListItem>();
+            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            foreach(ProductViewModel PVML in productViewModelList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = PVML.Name + '-' + PVML.Code + '-' + PVML.OldCode,
+                    Value=PVML.ID.ToString(),
+                    Selected=false
+                });
+            }
+            proformaHeaderVM.proformaItemListObj = new ProformaItemViewModel();
+            proformaHeaderVM.proformaItemListObj.quoteItemList = selectListItem;
 
 
             return View(proformaHeaderVM);
@@ -112,8 +127,8 @@ namespace SPOffice.UserInterface.Controllers
             try
             {
                 object result = null;
-                if (ModelState.IsValid)
-                {
+                //if (ModelState.IsValid)
+                //{
 
                     AppUA _appUA = Session["AppUAOffice"] as AppUA;
                     proformaHeaderVM.commonObj = new CommonViewModel();
@@ -136,20 +151,20 @@ namespace SPOffice.UserInterface.Controllers
                     }
 
                     return JsonConvert.SerializeObject(new { Result = "OK", Record = result });
-                    }
+                //    }
 
-                else
-                    {
-                    List<string> modelErrors = new List<string>();
-                    foreach (var modelState in ModelState.Values)
-                    {
-                        foreach (var modelError in modelState.Errors)
-                        {
-                            modelErrors.Add(modelError.ErrorMessage);
-                        }
-                    }
-                    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
-                    }
+                //else
+                //    {
+                //    List<string> modelErrors = new List<string>();
+                //    foreach (var modelState in ModelState.Values)
+                //    {
+                //        foreach (var modelError in modelState.Errors)
+                //        {
+                //            modelErrors.Add(modelError.ErrorMessage);
+                //        }
+                //    }
+                //    return JsonConvert.SerializeObject(new { Result = "VALIDATION", Message = string.Join(",", modelErrors) });
+                //    }
             }
             catch(Exception ex)
             {
@@ -312,11 +327,17 @@ namespace SPOffice.UserInterface.Controllers
                         proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot = proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot.Replace(Environment.NewLine, "<br/>");
 
                     proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
+                    ViewBag.path = "http://" + HttpContext.Request.Url.Authority + proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList[0].company.LogoURL;
+
                     if (proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null)
                     {
                         proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount = (decimal)proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Sum(q => q.Amount);
                         proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount - proformaMailPreviewViewModel.proformaHeaderViewModel.Discount;
                         proformaMailPreviewViewModel.proformaHeaderViewModel.TotalAmount = proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount + proformaMailPreviewViewModel.proformaHeaderViewModel.TaxAmount;
+                        proformaMailPreviewViewModel.proformaHeaderViewModel.TotalAmountFormatted = _commonBusiness.ConvertCurrency(proformaMailPreviewViewModel.proformaHeaderViewModel.TotalAmount, 0);
+                        ViewBag.cgst = (proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount * proformaMailPreviewViewModel.proformaHeaderViewModel.CGST) / 100;
+                        ViewBag.sgst = (proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount * proformaMailPreviewViewModel.proformaHeaderViewModel.SGST) / 100;
+                        ViewBag.igst = (proformaMailPreviewViewModel.proformaHeaderViewModel.NetTaxableAmount * proformaMailPreviewViewModel.proformaHeaderViewModel.IGST) / 100;
                     }
 
                 }

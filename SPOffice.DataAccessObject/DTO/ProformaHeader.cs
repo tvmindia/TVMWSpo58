@@ -28,6 +28,9 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal Discount { get; set; }
         public string TaxTypeCode { get; set; }
         public decimal TaxPercApplied { get; set; }
+        public decimal CGST { get; set; }
+        public decimal SGST { get; set; }
+        public decimal IGST { get; set; }
         public decimal TaxAmount { get; set; }
         public string GeneralNotes { get; set; }
         public string EmailSentYN { get; set; }
@@ -59,8 +62,11 @@ namespace SPOffice.DataAccessObject.DTO
         public decimal? Amount { get; set; }
         public Guid? ProductID { get; set; }
         public string ProductCode { get; set; }
+        public string ProductSearch { get; set; }
+        public string OldProductCode { get; set; }
         public Product product { get; set; }
         public Common commonObj { get; set; }
+        public Company company { get; set; }
     }
     public class ProformaStage
     {

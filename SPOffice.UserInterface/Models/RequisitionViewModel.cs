@@ -12,6 +12,8 @@ namespace SPOffice.UserInterface.Models
         public Guid ID { get; set; }
         [Display(Name = "Requisition No.")]
         public string ReqNo { get; set; }
+        [Display(Name = "Title")]
+        [Required(ErrorMessage = "Title is missing")]
         public string Title { get; set; }        
         public DateTime ReqDate { get; set; }
         [Display(Name = "Requested Company")]
