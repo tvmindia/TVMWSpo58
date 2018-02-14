@@ -114,7 +114,7 @@ $(document).ready(function () {
         //if ($('#filter').val() != '') {
         //    dashboardBind($('#filter').val())
         //}
-       
+        $('#btnDownload').hide();
     }
     catch (x) {
         notyAlert('error', x.message);
@@ -195,7 +195,7 @@ function Delete(curobj) {
 
 
 
-    function SaveSuccess(data, status) {
+    function QuotationSaveSuccess(data, status) {
         debugger;
         var JsonResult = JSON.parse(data)
         switch (JsonResult.Result) {
@@ -553,9 +553,12 @@ function Delete(curobj) {
     }
 
 
-    function SendMailClick() {
+    function SendMailClick()
+    { 
         $('#btnFormSendMail').trigger('click');
+      
     }
+
     function GetCustomerDeails(curobj) {
         var customerid = $(curobj).val();
         if (customerid) {
@@ -874,3 +877,26 @@ function Delete(curobj) {
             $("#divCustomerName").show();
         }
     }
+
+
+
+    //To trigger download button
+    function DownloadMailPreview() {
+        debugger;
+        $('#btnDownload').trigger('click');
+    }
+
+    //To download file in PDF
+    function GetHtmlData() {
+        debugger;       
+        var bodyContent = $('#mailmodelcontent').html();
+        ///var bodyContent = $('#customtbl').html();
+        var headerContent = $('#headercontainer').html();
+        $("#hdnContent").val(bodyContent);
+       // $('#hdnHeadContent').val("<h1></h1>");
+        $('#hdnHeadContent').val(headerContent);
+    }
+
+
+
+
