@@ -70,7 +70,10 @@ namespace SPOffice.DataAccessObject.DTO
         {
             get { return "Values Saved Successfully ! "; }
         }
-
+        public string SPOFailure
+        {
+            get { return "Supplier PO Limit Exceeded ! PO Can't be saved !"; }
+        }
         public string UpdateFailure
         {
             get { return "Updation Not Successfull! "; }

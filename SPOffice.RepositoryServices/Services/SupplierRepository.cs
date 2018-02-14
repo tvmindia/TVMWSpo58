@@ -481,6 +481,13 @@ namespace SPOffice.RepositoryServices.Services
                             Status = outputStatus.Value.ToString(),
                             Message = Cobj.InsertSuccess
                         };
+                    case "2":
+                        //Exceed the limit
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.SPOFailure
+                        };
 
                     default:
                         break;
@@ -550,15 +557,20 @@ namespace SPOffice.RepositoryServices.Services
                 switch (outputStatus.Value.ToString())
                 {
                     case "0":
-
                         throw new Exception(Cobj.UpdateFailure);
 
                     case "1":
-
                         return new
                         {
                             Status = outputStatus.Value.ToString(),
                             Message = Cobj.UpdateSuccess
+                        };
+                    case "2":
+                        //Exceed the limit
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.SPOFailure
                         };
                     default:
                         break;
@@ -599,6 +611,14 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@reqDetailObjXML", SqlDbType.NVarChar, -1).Value = SPO.reqDetailObjXML;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = SPO.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = SPO.commonObj.UpdatedDate;
+
+                        cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = SPO.PODate;
+                        cmd.Parameters.Add("@SupplierID", SqlDbType.UniqueIdentifier).Value = SPO.SupplierID;
+                        cmd.Parameters.Add("@TaxTypeCode", SqlDbType.VarChar, 10).Value = SPO.TaxTypeCode;
+                        cmd.Parameters.Add("@TaxPercApplied", SqlDbType.Decimal).Value = SPO.TaxPercApplied;
+                        cmd.Parameters.Add("@TaxAmount", SqlDbType.Decimal).Value = SPO.TaxAmount;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = SPO.Discount;
+
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
@@ -619,6 +639,13 @@ namespace SPOffice.RepositoryServices.Services
                         {
                             Status = outputStatus.Value.ToString(),
                             Message = Cobj.UpdateSuccess
+                        };
+                    case "2":
+                        //Exceed the limit
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.SPOFailure
                         };
                     default:
                         break;

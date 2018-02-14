@@ -41,7 +41,8 @@ namespace SPOffice.UserInterface.Models
         public string FinalApprovalDateFormatted { get; set; }
         public string DetailXML { get; set; }
         public bool IsApprover { get; set; }
-       public ReqAdvanceSearchViewModel ReqAdvSearchObj { get; set; }
+        public bool ViewOnly { get; set; }
+        public ReqAdvanceSearchViewModel ReqAdvSearchObj { get; set; }
 
     }
     public class RequisitionDetailViewModel
