@@ -166,7 +166,7 @@
             </div>
 
             <div class="EntryForms" style="height:550px">
-                @using (Ajax.BeginForm("InsertUpdateProformaInvoices", "ProformaInvoice", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "ProformaForm" }))
+                @using (Ajax.BeginForm("InsertUpdateProformaInvoices", "ProformaInvoice", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "ProformaSaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "ProformaForm" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="col-md-12 headSeperator"><i class="fa fa-th ig-yellow" aria-hidden="true"></i> Basic Details</div>
@@ -443,19 +443,19 @@
 
                             </div>
                             @*<div class="form-group col-md-4">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "control-label " })
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-
-                                        @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;", onchange = "GetTaxPercentage();" })
-                                        @Html.ValidationMessageFor(model => model.TaxTypeCode, "", new { @class = "text-danger" })
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "control-label " })
                                     </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-                            </div>*@
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
+
+                                            @Html.DropDownListFor(model => model.TaxTypeCode, Model.TaxTypeList, "-- Select Tax Type --", new { @class = "form-control BlockEnter Roundoff", value = -1, style = "padding:4px 12px;", onchange = "GetTaxPercentage();" })
+                                            @Html.ValidationMessageFor(model => model.TaxTypeCode, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                </div>*@
                             <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-4">
                                 <div class="col-md-12">
@@ -464,7 +464,7 @@
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.CGST, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)",onchange="AmountSummary(this)"} })
+                                        @Html.EditorFor(model => model.CGST, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)", onchange = "AmountSummary(this)" } })
                                         @Html.ValidationMessageFor(model => model.CGST, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -479,7 +479,7 @@
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.SGST, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)",onchange="AmountSummary(this)"}})
+                                        @Html.EditorFor(model => model.SGST, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)", onchange = "AmountSummary(this)" } })
                                         @Html.ValidationMessageFor(model => model.SGST, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -494,7 +494,7 @@
                                 <div class="col-md-12">
 
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.IGST, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)",onchange="AmountSummary(this)"} })
+                                        @Html.EditorFor(model => model.IGST, new { htmlattributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)", onchange = "AmountSummary(this)" } })
                                         @Html.ValidationMessageFor(model => model.IGST, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
@@ -639,12 +639,24 @@
 
                     </div>
                     <div class="col-md-12" id="mailmodelcontent">
+
                     </div>
                 </div>
                 <div class="modal-footer" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 50px;padding: 7px;">
+                    <a class="btn btn-primary" onclick="DownloadPDF()" id="btnSend"><i class="glyphicon glyphicon-download-alt"></i>Download</a>
                     <a class="btn btn-primary" onclick="SendMailClick()" id="btnMail"><i class="glyphicon glyphicon-floppy-disk"></i> Send Mail</a>
 
                 </div>
+
+                @using (Html.BeginForm("Download", "PDFGenerator", new {HttpMethod="POST" ,@class = "form-horizontal", role = "form" }))
+                {
+                    @Html.HiddenFor(model => model.pdfToolsObj.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.HeaderText, htmlAttributes: new { @class = "", Value = "" })
+                    
+                     <input type="submit" id="btnSendDownload" value="Download" onclick="GetHtmlData();" />                        
+                }                
+
             </div>
         </div>
     </div>
@@ -792,7 +804,6 @@
 
 
 
-
 <datalist id="Products" onfocus='this.size=10;' onblur='this.size=1;'
           onchange='this.size=1; this.blur();'></datalist>
 <datalist id="UnitCodes" onfocus='this.size=10;' onblur='this.size=1;'
@@ -804,6 +815,7 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableSelect")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/ProformaInvoice")
+    <script src="~/Scripts/UserJS/PDF.js"></script>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/editableGrid")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
 }

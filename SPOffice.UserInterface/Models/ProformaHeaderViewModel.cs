@@ -102,7 +102,7 @@ namespace SPOffice.UserInterface.Models
         public string OriginCompCode { get; set; }
         public List<SelectListItem> CompanyList { get; set; }
         public CompanyViewModel company { get; set; }
-
+        public PDFTools pdfToolsObj { get; set; }
     }
 
     public class ProformaItemViewModel

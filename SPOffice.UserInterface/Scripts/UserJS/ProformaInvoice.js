@@ -102,7 +102,7 @@ $(document).ready(function () {
 
         GetAllProductCodes();
         GetAllUnitCodes();
-      
+        $('#btnSendDownload').hide();
 
     }
     catch (x) {
@@ -268,7 +268,7 @@ function saveInvoices() {
     }
 
 
-function SaveSuccess(data, status) {
+function ProformaSaveSuccess(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
@@ -633,6 +633,23 @@ function GetMailPreview(ID) {
     $("#mailmodelcontent").html(ds);
     $("#MailBody").val(ds);
 
+}
+
+//To trigger PDF download button
+function DownloadPDF()
+{
+    debugger;
+    $('#btnSendDownload').trigger('click');
+}
+
+//To download file in PDF
+function GetHtmlData() {
+    debugger;
+    var bodyContent = $('#mailmodelcontent').html();
+    var headerContent = $('#hdnHeadContent').html();
+    $('#hdnContent').val(bodyContent);
+    $('#hdnHeadContent').val(headerContent);
+    
 }
 
 //-------------------------------------------------------------------------------------------------//
