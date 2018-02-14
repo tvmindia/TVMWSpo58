@@ -158,7 +158,7 @@ function Delete(curobj) {
     var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
     if ((rowData != null)&&(rowData.ID != null)) {
         notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '")');
-        AmountSummary();
+        AmountSummary();       
     }
     else
     {
@@ -229,7 +229,8 @@ function DeleteItem(ID) {
             if (ds.Result == "OK") {
                 switch (ds.Result) {
                     case "OK":
-                        notyAlert('success', ds.Message);                       
+                        notyAlert('success', ds.Message);
+                        Reset();
                         GetAllQuoteItems($("#ID").val());
                         break;
                     case "ERROR":
@@ -576,6 +577,8 @@ function MailSuccess(data, status) {
 
 
 function SendMailClick() {
+    var PMH = $('#ID').val();
+    $('#QuoteMAilHeaderID').val(PMH);
     $('#btnFormSendMail').trigger('click');
 }
 function GetCustomerDeails(curobj) {
@@ -772,7 +775,7 @@ function AddProformaItem() {
                     if (allData[i].ProductID == _ProformaProductDetail[0].ProductID) 
                     {                       
                         allData[i].ProductDescription = $('#proformaItemListObj_ProductDescription').val();
-                        allData[i].UnitCode = $('#proformaItemLisrObj_UnitCode').val();
+                        allData[i].UnitCode = $('#proformaItemListObj_UnitCode').val();
                         allData[i].Quantity = $('#proformaItemListObj_Quantity').val();                       
                         allData[i].Rate = $('#proformaItemListObj_Rate').val();
                         allData[i].Amount = $('#proformaItemListObj_Amount').val();
