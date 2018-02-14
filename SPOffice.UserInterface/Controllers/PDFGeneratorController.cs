@@ -222,7 +222,7 @@ namespace UserInterface.Controllers
             //jpg.Alignment = Element.ALIGN_LEFT;
             string htmlBody = pDFToolsObj.Content == null ? "" : pDFToolsObj.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
             StringReader reader = new StringReader(htmlBody.ToString());
-            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 85f, 30f);
+            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 30f);
             byte[] bytes = null;
             using (MemoryStream memoryStream = new MemoryStream())
             {
