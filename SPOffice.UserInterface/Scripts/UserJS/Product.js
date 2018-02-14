@@ -18,6 +18,7 @@ $(document).ready(function () {
              columns: [
                   { "data": "ID", "defaultContent": "<i>-</i>" },
                     { "data": "Code", "defaultContent": "<i>-</i>" },
+                      { "data": "OldCode", "defaultContent": "<i>-</i>" },
                { "data": "Name", "defaultContent": "<i>-</i>" },
                   { "data": "Description", "defaultContent": "<i>-</i>" },
                    { "data": "unit.Description", "defaultContent": "<i>-</i>" },
@@ -27,9 +28,9 @@ $(document).ready(function () {
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
 
-               { className: "text-left", "targets": [1,2,3,4,6] },
+               { className: "text-left", "targets": [1,2,3,4,5,7] },
              { className: "text-center", "targets": [] },
-             { className: "text-right", "targets": [5] }
+             { className: "text-right", "targets": [6] }
 
              ]
          });
@@ -150,6 +151,7 @@ function ClearFields() {
     $("#Name").val("");
     $("#ID").val('');
     $("#Code").val("");
+    $("#OldCode").val("");
     $("#Name").val("");
     $("#Description").val('');
     $("#UnitCode").val('');
@@ -241,6 +243,7 @@ function FillProductDetails(id) {
     //Hidden
     $("#ID").val(thisItem.ID);
     $("#Code").val(thisItem.Code);
+    $("#OldCode").val(thisItem.OldCode);
     $("#Name").val(thisItem.Name);
     $("#Description").val(thisItem.Description);
     $("#UnitCode").val(thisItem.UnitCode);
