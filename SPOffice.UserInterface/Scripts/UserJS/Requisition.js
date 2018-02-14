@@ -419,7 +419,7 @@ function BindRequisitionDetail()
 function DisableApproved()
 {
     debugger;
-    if (IsAdminOrCeo == true)
+    if (IsAdminOrCeo == true && $('#ViewOnly').val() != 'True')
     {
         $('#Title').prop('readonly', false);
         $('#ReqDateFormatted').prop('disabled', false);

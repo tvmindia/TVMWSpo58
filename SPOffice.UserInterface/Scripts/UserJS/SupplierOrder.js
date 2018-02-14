@@ -656,8 +656,11 @@ function Reset()
 {
     if ($("#ID").val())
         BindPurchaseOrder($("#ID").val());
-    else
+    else {
         DataTables.PurchaseOrderDetailTable.clear().draw(false);
+        $("#TotalAmount").val(roundoff(0));
+        $("#GrossTotal").val(roundoff(0));
+    }      
 }
 
 function DeleteSupplierPO() {
