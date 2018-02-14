@@ -1,5 +1,13 @@
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
+var footer = "Terms and Conditions" + "\n" +
+"Payment terms - 50% advance payment before production and balance 50% before delivery." + "\n" +
+"Please accept the same and confirm." + "\n" +
+"Awaiting your valuable order." + "\n" + "\n" +
+"Regards," + "\n" +
+"Manager";
+
+
 var _Products = [];
 var _Units = [];
 var _ProformaProductDetail = [];
@@ -326,6 +334,7 @@ function AddNew() {
     $("#lblInvoiceNo").text('New ProformaInvoice');
     $("#CGST").val('9');
     $("#SGST").val('9');
+    $("#BodyFoot").val(footer);
 }
 
 function Reset() {
