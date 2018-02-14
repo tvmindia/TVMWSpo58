@@ -363,6 +363,7 @@ namespace SPOffice.RepositoryServices.Services
                                         proformaItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
                                         proformaItem.company = new Company();
                                         proformaItem.company.LogoURL = (sdr["LogoURL"].ToString() != "" ? sdr["LogoURL"].ToString() : proformaItem.company.LogoURL);
+                                        proformaItem.company.BankDetails = (sdr["BankDetails"].ToString() != "" ? sdr["BankDetails"].ToString() : proformaItem.company.BankDetails);
                                     }
                                     quoteItemList.Add(proformaItem);
                                 }

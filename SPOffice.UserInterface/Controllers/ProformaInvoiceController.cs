@@ -328,7 +328,7 @@ namespace SPOffice.UserInterface.Controllers
 
                     proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
                     ViewBag.path = "http://" + HttpContext.Request.Url.Authority + proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList[0].company.LogoURL;
-
+                    ViewBag.bankDetails = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList[0].company.BankDetails.Replace(Environment.NewLine, "<br/>"); ;
                     if (proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null)
                     {
                         proformaMailPreviewViewModel.proformaHeaderViewModel.GrossAmount = (decimal)proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Sum(q => q.Amount);
