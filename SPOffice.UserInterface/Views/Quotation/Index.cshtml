@@ -245,7 +245,7 @@
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", @value = Guid.Empty })
-                                    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })                                    
+                                    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })                                  
                                     @Html.LabelFor(model => model.QuotationNo, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
@@ -506,6 +506,7 @@
                                         <th>Product Code</th>
                                         <th>Old Product Code</th>
                                         <th>Description</th>
+                                        <th>Quantity</th>
                                         <th>Rate</th>
                                         <th>...</th>
                                     </tr>
@@ -853,6 +854,21 @@
                                     </div> 
                                 </div>
                             </div>
+
+
+                            <div class="col-md-6">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.quoteItemListObj.Quantity, htmlAttributes: new { @class = "control-label " })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.quoteItemListObj.Quantity, new { htmlAttributes = new { @class = "form-control HeaderBox text-right", onkeypress = "return isNumber(event)" } })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
                          
                             <div class="col-md-6">
                                 <div class="col-md-12">
@@ -866,7 +882,7 @@
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
-                        </div>
+                           
                     </div>
                 </div>
                 <div class="modal-footer" style="height: 50px;padding: 7px;">

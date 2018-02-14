@@ -91,15 +91,16 @@ $(document).ready(function () {
                 { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
                 { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
                 { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                {"data" : "Quantity",render:function(data,type,row){return data},"defaultContent":"<i></i>"},
                 { "data": "Rate", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="Delete(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
                 ],
                 columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
                     { "targets": [2, 3, 5], "width": "15%" },
                     { "targets": [6], "width": "8%" },
-                     { className: "text-right", "targets": [5] },
+                     { className: "text-right", "targets": [5,6] },
                       { className: "text-left", "targets": [2,3,4] },
-                { className: "text-center", "targets": [6] }
+                { className: "text-center", "targets": [7] }
                 ]
             }); 
 
@@ -249,7 +250,7 @@ function Delete(curobj) {
     function PreviewMail()
     {
         try
-        {
+        {            
             var QHID = $("#ID").val();
             if (QHID) {
                 //Bind mail html into model
@@ -263,7 +264,7 @@ function Delete(curobj) {
         }
     }
     function GetMailPreview(ID) {
-
+     
         var data = { "ID": ID };
         var ds = {};
         ds = GetDataFromServer("Quotation/GetMailPreview/", data);
@@ -429,7 +430,7 @@ function Delete(curobj) {
 
     function GetAllQuoteItems(ID) {
         try {
-
+      
             var data = { "ID": ID };
             var ds = {};
             ds = GetDataFromServer("Quotation/GetQuateItemsByQuateHeadID/", data);
@@ -554,9 +555,10 @@ function Delete(curobj) {
 
 
     function SendMailClick()
-    { 
-        $('#btnFormSendMail').trigger('click');
-      
+    {
+      var QMH = $('#ID').val();
+      $('#QuoteMAilHeaderID').val(QMH);   
+      $('#btnFormSendMail').trigger('click');         
     }
 
     function GetCustomerDeails(curobj) {
@@ -728,6 +730,7 @@ function Delete(curobj) {
     {
         debugger;
         PopupClearFields();
+        $('#quoteItemListObj_Quantity').val("1");
         $("#ddlProductSearch").prop('disabled', false);
         $('#AddQuotationItemModal').modal('show');
     }
@@ -741,6 +744,7 @@ function Delete(curobj) {
         $('#quoteItemListObj_OldProductCode').val('');
         $('#quoteItemListObj_ProductName').val('');
         $('#quoteItemListObj_ProductDescription').val('');
+        $('#quoteItemListObj_Quantity').val('1');
         $('#quoteItemListObj_Rate').val('');
     }
 
@@ -748,6 +752,7 @@ function Delete(curobj) {
         debugger;
         if (curObj.value != "") {
             _QuoteProductDetail = [];
+            $('#quoteItemListObj_Quantity').val('1');
             var ds = GetProductByID(curObj.value);
             QuoteProduct = new Object();
             QuoteProduct.ID = null;
@@ -755,18 +760,19 @@ function Delete(curobj) {
             QuoteProduct.OldProductCode = ds.OldCode;
             QuoteProduct.ProductCode = ds.Code
             QuoteProduct.ProductDescription = ds.Description;
-            QuoteProduct.ProductName = ds.Name;
+            QuoteProduct.ProductName = ds.Name;         
             QuoteProduct.Rate = ds.Rate;
             _QuoteProductDetail.push(QuoteProduct);
             $('#quoteItemListObj_ProductCode').val(_QuoteProductDetail[0].ProductCode);
             $('#quoteItemListObj_OldProductCode').val(_QuoteProductDetail[0].OldProductCode);
             $('#quoteItemListObj_ProductName').val(_QuoteProductDetail[0].ProductName);
-            $('#quoteItemListObj_ProductDescription').val(_QuoteProductDetail[0].ProductDescription);
+            $('#quoteItemListObj_ProductDescription').val(_QuoteProductDetail[0].ProductDescription);          
             $('#quoteItemListObj_Rate').val(roundoff(_QuoteProductDetail[0].Rate));
         }
     }
 
     function GetProductByID(id) {
+        debugger;
         try {
             var data = { "ID": id };
             var ds = {};
@@ -802,7 +808,8 @@ function Delete(curobj) {
                     {
                         if (allData[i].ProductID == _QuoteProductDetail[0].ProductID)
                         {
-                            allData[i].ProductDescription = $('#quoteItemListObj_ProductDescription').val();;
+                            allData[i].ProductDescription = $('#quoteItemListObj_ProductDescription').val();
+                            allData[i].Quantity = $('#quoteItemListObj_Quantity').val();
                             allData[i].Rate = $('#quoteItemListObj_Rate').val();
                             checkPoint = 1;
                             break;
@@ -811,6 +818,7 @@ function Delete(curobj) {
 
                     if (!checkPoint) {
                         _QuoteProductDetail[0].ProductDescription = $('#quoteItemListObj_ProductDescription').val();
+                        _QuoteProductDetail[0].Quantity = $('#quoteItemListObj_Quantity').val();
                         _QuoteProductDetail[0].Rate = $('#quoteItemListObj_Rate').val();
                         DataTables.ItemDetailsTable.rows.add(_QuoteProductDetail).draw(false);
                     }
@@ -823,6 +831,7 @@ function Delete(curobj) {
                 else
                 {
                     _QuoteProductDetail[0].ProductDescription = $('#quoteItemListObj_ProductDescription').val();
+                    _QuoteProductDetail[0].Quantity = $('#quoteItemListObj_Quantity').val();
                     _QuoteProductDetail[0].Rate = $('#quoteItemListObj_Rate').val();
                     DataTables.ItemDetailsTable.rows.add(_QuoteProductDetail).draw(false);
                 }
@@ -836,6 +845,7 @@ function Delete(curobj) {
     }
 
     function AddQuoteProductList() {
+        debugger;
         var data = DataTables.ItemDetailsTable.rows().data();
         for (var r = 0; r < data.length; r++) {
             QuoteProduct = new Object();
@@ -844,6 +854,7 @@ function Delete(curobj) {
             QuoteProduct.ProductCode = data[r].ProductCode;
             QuoteProduct.ProductDescription = data[r].ProductDescription;
             QuoteProduct.ProductName = data[r].ProductName;
+            QuoteProduct.Quantity = data[r].Quantity;
             QuoteProduct.Rate = data[r].Rate; 
             _QuoteProductList.push(QuoteProduct);
         }
@@ -851,7 +862,7 @@ function Delete(curobj) {
 
     function ProductEdit(curObj) {
         debugger;
-        $('#AddQuotationItemModal').modal('show');
+        $('#AddQuotationItemModal').modal('show');      
         $("#ddlProductSearch").prop('disabled', true);
         PopupClearFields();
         var rowData = DataTables.ItemDetailsTable.row($(curObj).parents('tr')).data();
@@ -860,6 +871,8 @@ function Delete(curobj) {
             $("#ddlProductSearch").select2({ dropdownParent: $("#AddQuotationItemModal") });
             $("#ddlProductSearch").val(rowData.ProductID).trigger('change');
             $('#quoteItemListObj_ProductDescription').val(rowData.ProductDescription);
+            $('#quoteItemListObj_Quantity').val(rowData.Quantity);
+
             $('#quoteItemListObj_Rate').val(roundoff(rowData.Rate));
            
         }
@@ -877,8 +890,7 @@ function Delete(curobj) {
             $("#divCustomerName").show();
         }
     }
-
-
+   
 
     //To trigger download button
     function DownloadMailPreview() {
