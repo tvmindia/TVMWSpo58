@@ -4,15 +4,13 @@ var _Products = [];
 var _Units = [];
 var _QuoteProductDetail = [];
 var _QuoteProductList = [];
-var footer = "Terms and Conditions" + "\n"
-
-"Payment terms - 50% advance payment before production and balance 50% before delivery." + "\n"
-"Please accept the same and confirm." + "\n"
-"Awaiting your valuable order." + "\n" + "\n"
-
-
-"Regards," + "\n"
+var footer =  "Terms and Conditions" + "\n"+
+"Payment terms - 50% advance payment before production and balance 50% before delivery.(GST 18% Extra)" + "\n"+
+"Please accept the same and confirm." + "\n"+
+"Awaiting your valuable order." + "\n" + "\n"+
+"Regards," + "\n"+
 "Manager";
+
 
 $(document).ready(function () {
     try {
