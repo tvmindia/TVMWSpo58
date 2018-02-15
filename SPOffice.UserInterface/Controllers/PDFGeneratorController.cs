@@ -276,14 +276,15 @@ namespace UserInterface.Controllers
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
             }
-            string fname = Path.Combine(Server.MapPath("~/Content/Uploads/"), "Report.pdf");
+            string contentFileName = pDFToolsObj.ContentFileName.ToString() == null? "Report.pdf": (pDFToolsObj.ContentFileName.ToString() + " - " + pDFToolsObj.CustomerName.ToString() + ".pdf");
+            string fname = Path.Combine(Server.MapPath("~/Content/Uploads/"), contentFileName);
             System.IO.File.WriteAllBytes(fname, bytes);
-            string contentType = "application/pdf";
+            string contentType = "application/pdf";           
             //Parameters to file are
             //1. The File Path on the File Server
             //2. The content type MIME type
             //3. The parameter for the file save by the browser
-            return File(fname, contentType, "Report.pdf");
+            return File(fname, contentType, contentFileName);
         }
 
     }

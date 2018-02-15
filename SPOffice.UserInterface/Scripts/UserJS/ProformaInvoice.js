@@ -661,6 +661,8 @@ function GetHtmlData() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
+    var customerName = $("#ddlCustomer option:selected").text();
+    $('#hdnCustomerName').val(customerName);
     
 }
 
