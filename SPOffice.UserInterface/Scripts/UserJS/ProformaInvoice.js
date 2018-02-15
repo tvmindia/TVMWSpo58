@@ -63,7 +63,7 @@ $(document).ready(function () {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                   { className: "text-right", "targets": [6,7,8] },
+                   { className: "text-right", "targets": [6,7,8,9] },
                    { className: "text-left", "targets": [2,4] },
                    { className: "text-center", "targets": [1,3,5] }
 
