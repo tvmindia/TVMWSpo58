@@ -294,19 +294,19 @@
                              <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.ISRegularCustomer, htmlAttributes: new { @class = "control-label " })
+                                    @Html.LabelFor(model => model.IsRegularCustomer, htmlAttributes: new { @class = "control-label " })
                                      
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
                                         @{
-                                            List<SelectListItem> ISRegularList = new List<SelectListItem>();
-                                            ISRegularList.Add(new SelectListItem
+                                            List<SelectListItem> IsRegularList = new List<SelectListItem>();
+                                            IsRegularList.Add(new SelectListItem
                                             { Text = "Regular Customer", Value = "REG", Selected = true });
-                                            ISRegularList.Add(new SelectListItem
+                                            IsRegularList.Add(new SelectListItem
                                             { Text = "New Customer", Value = "NEW"});
                                         }
-                                        @Html.DropDownListFor(model => model.ISRegularCustomer, ISRegularList, new { @class = "form-control",onchange="CustomerTypeChange()" })
+                                        @Html.DropDownListFor(model => model.IsRegularCustomer, IsRegularList, new { @class = "form-control",onchange="CustomerTypeChange()" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -769,6 +769,8 @@
                     @Html.HiddenFor(model => model.pdfToolsObj.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
                     @Html.HiddenFor(model => model.pdfToolsObj.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
                     @Html.HiddenFor(model => model.pdfToolsObj.HeaderText, htmlAttributes: new { @class = "", Value = "" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.ContentFileName, htmlAttributes:new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName"})
                     <input type="submit" value="Download" id="btnDownload" onclick="GetHtmlData();" />
                 </form>             
                        

@@ -653,7 +653,9 @@
                     @Html.HiddenFor(model => model.pdfToolsObj.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
                     @Html.HiddenFor(model => model.pdfToolsObj.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
                     @Html.HiddenFor(model => model.pdfToolsObj.HeaderText, htmlAttributes: new { @class = "", Value = "" })
-                    
+                    @Html.HiddenFor(model => model.pdfToolsObj.ContentFileName,htmlAttributes: new { @class = "", Value = "Proforma", @id="hdnContentFileName" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
+
                      <input type="submit" id="btnSendDownload" value="Download" onclick="GetHtmlData();" />                        
                 }                
 

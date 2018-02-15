@@ -290,13 +290,13 @@ function Delete(curobj) {
                 $("#QuotationDate").val(jsresult.QuotationDate);
                 $("#ValidTillDate").val(jsresult.ValidTillDate);
                 if (jsresult.CustomerID != null) {
-                    $("#ISRegularCustomer").val('REG')
+                    $("#IsRegularCustomer").val('REG')
                     CustomerTypeChange();
                     $("#ddlCustomer").select2();
                     $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
                 }
                 else {
-                    $("#ISRegularCustomer").val('NEW')
+                    $("#IsRegularCustomer").val('NEW')
                     $("#NewCustomer").val(jsresult.customer.CompanyName)
                     CustomerTypeChange()
                 }
@@ -880,7 +880,7 @@ function Delete(curobj) {
 
     function CustomerTypeChange() {
         debugger;
-        if ($("#ISRegularCustomer").val() == "REG") {
+        if ($("#IsRegularCustomer").val() == "REG") {
             
             $("#divCustomerID").show();
             $("#divCustomerName").hide();
@@ -901,12 +901,12 @@ function Delete(curobj) {
     //To download file in PDF
     function GetHtmlData() {
         debugger;       
-        var bodyContent = $('#mailmodelcontent').html();
-        ///var bodyContent = $('#customtbl').html();
+        var bodyContent = $('#mailmodelcontent').html();       
         var headerContent = $('#headercontainer').html();
-        $("#hdnContent").val(bodyContent);
-       // $('#hdnHeadContent').val("<h1></h1>");
+        $("#hdnContent").val(bodyContent);      
         $('#hdnHeadContent').val(headerContent);
+        var customerName = $("#ddlCustomer option:selected").text();
+        $('#hdnCustomerName').val(customerName);
     }
 
 
