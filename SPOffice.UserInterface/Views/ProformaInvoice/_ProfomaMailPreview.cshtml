@@ -39,14 +39,19 @@
 
         <table>
             <tr style="width:100%;">
-                <td style="width:400px;text-align:left;font-size:15px">
-                    <b>From</b><br />  @Model.proformaHeaderViewModel.company.Name<br />
-                    @Model.proformaHeaderViewModel.company.BillingAddress<br />
+                <td><b>From</b></td>
+                <td></td>
+                <td><b>To</b></td>
+            </tr>
+            <tr style="width:100%;">
+                <td style="width:400px;text-align:left;font-size:15px;vertical-align:top;">
+                      @Model.proformaHeaderViewModel.company.Name<br />
+                    @Html.Raw(@Model.proformaHeaderViewModel.company.BillingAddress)<br />
                 </td>
                 <td style="width:200px;"></td>
-                <td style="width:400px;text-align:left;font-size:15px">
-                    <b>To</b> <br /> @Model.proformaHeaderViewModel.customer.CustomerName<br />
-                    @Model.proformaHeaderViewModel.SentToAddress<br />
+                <td style="width:400px;text-align:left;font-size:15px;vertical-align:top;">
+                     @Model.proformaHeaderViewModel.customer.CustomerName<br />
+                    @Html.Raw(@Model.proformaHeaderViewModel.SentToAddress)<br />
                 </td>
             </tr>
 

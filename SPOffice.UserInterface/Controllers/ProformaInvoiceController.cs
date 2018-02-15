@@ -326,6 +326,9 @@ namespace SPOffice.UserInterface.Controllers
                     if (proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot != null)
                         proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot = proformaMailPreviewViewModel.proformaHeaderViewModel.BodyFoot.Replace(Environment.NewLine, "<br/>");
 
+                    proformaMailPreviewViewModel.proformaHeaderViewModel.company.BillingAddress = proformaMailPreviewViewModel.proformaHeaderViewModel.company.BillingAddress.Replace(Environment.NewLine, "<br/>");
+                    proformaMailPreviewViewModel.proformaHeaderViewModel.SentToAddress = proformaMailPreviewViewModel.proformaHeaderViewModel.SentToAddress.Replace(Environment.NewLine, "<br/>");
+
                     proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList != null ? proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList.Select(QI => { QI.Amount = decimal.Round(decimal.Multiply((decimal)QI.Rate, (decimal)QI.Quantity), 2); return QI; }).ToList() : null;
                     ViewBag.path = "http://" + HttpContext.Request.Url.Authority + proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList[0].company.LogoURL;
                     ViewBag.bankDetails = proformaMailPreviewViewModel.proformaHeaderViewModel.quoteItemList[0].company.BankDetails.Replace(Environment.NewLine, "<br/>"); ;

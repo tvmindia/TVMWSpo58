@@ -40,12 +40,17 @@
         
         <table>
             <tr style="width:100%;">
-                <td style="width:400px;text-align:left;font-size:15px"><b>From</b><br/>  @Model.quoteHeaderViewModel.company.Name<br/>
-                                @Model.quoteHeaderViewModel.company.BillingAddress<br/>
+                <td><b>From</b></td>
+                <td></td>
+                <td><b>To</b></td>
+            </tr>
+            <tr style="width:100%;">
+                <td style="width:400px;text-align:left;font-size:15px;vertical-align:top;">  @Model.quoteHeaderViewModel.company.Name<br/>
+                                @Html.Raw(@Model.quoteHeaderViewModel.company.BillingAddress)<br/>
                                 </td>
                 <td style="width:200px;"></td>
-                <td style="width:400px;text-align:left;font-size:15px"><b>To</b> <br /> @Model.quoteHeaderViewModel.customer.CompanyName<br/>
-                                @Model.quoteHeaderViewModel.customer.BillingAddress<br/>
+                <td style="width:400px;text-align:left;font-size:15px;vertical-align:top;">  @Model.quoteHeaderViewModel.customer.CompanyName<br/>
+                                @Html.Raw(@Model.quoteHeaderViewModel.SentToAddress)<br/>
                                 </td>
             </tr>
 

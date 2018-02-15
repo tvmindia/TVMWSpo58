@@ -401,6 +401,8 @@ namespace SPOffice.UserInterface.Controllers
                     if (quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot != null)
                         quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot = quoteMailPreviewViewModel.quoteHeaderViewModel.QuoteBodyFoot.Replace(Environment.NewLine,"<br/>");
 
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.company.BillingAddress = quoteMailPreviewViewModel.quoteHeaderViewModel.company.BillingAddress.Replace(Environment.NewLine, "<br/>");
+                    quoteMailPreviewViewModel.quoteHeaderViewModel.SentToAddress = quoteMailPreviewViewModel.quoteHeaderViewModel.SentToAddress.Replace(Environment.NewLine, "<br/>");
                                       
                     quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList = quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList != null ? quoteMailPreviewViewModel.quoteHeaderViewModel.quoteItemList.Select(QI => {return QI; }).ToList() : null;
 
