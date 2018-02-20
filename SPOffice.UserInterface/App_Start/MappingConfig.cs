@@ -105,6 +105,7 @@ namespace UserInterface.App_Start
                 config.CreateMap<ReqAdvanceSearchViewModel, ReqAdvanceSearch>().ReverseMap();
                 //--for send message
                 config.CreateMap<MessageViewModel, Message>().ReverseMap();
+                config.CreateMap<EnquiryItemViewModel, EnquiryItem>().ReverseMap();
             });
         }
     }

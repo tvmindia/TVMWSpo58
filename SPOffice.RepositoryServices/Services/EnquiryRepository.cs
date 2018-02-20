@@ -101,7 +101,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
                         cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
                         cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = _enquiriesObj.Subject;
-
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = _enquiriesObj.DetailXML;
                         //-----------------------//
 
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.CreatedBy;
@@ -179,6 +179,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = _enquiriesObj.IndustryCode;
                         cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = _enquiriesObj.ProgressStatus;
                         cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = _enquiriesObj.EnquiryOwnerID;
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = _enquiriesObj.DetailXML;
                         //-----------------------//
 
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = _enquiriesObj.commonObj.UpdatedBy;
@@ -566,6 +567,57 @@ namespace SPOffice.RepositoryServices.Services
         }
         #endregion DeleteEnquiry
 
+        #region DeleteEnquiryItem
+        public object DeleteEnquiryItem(Guid? ID)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[DeleteEnquiryItemByID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = ID;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = Cobj.DeleteSuccess
+            };
+        }
+
+
+        #endregion DeleteEnquiryItem
 
         public string GetEnquiryMessage()
         {
@@ -599,6 +651,65 @@ namespace SPOffice.RepositoryServices.Services
 
             return textMessage.ToString();
         }
+
+
+        #region GetAllEnquiryItems
+        public List<EnquiryItem> GetAllEnquiryItems(Guid? ID)
+        {
+            List<EnquiryItem> enquiryItemList = new List<EnquiryItem>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetEnquiryItems]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = ID;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    EnquiryItem enquiryItem = new EnquiryItem();
+                                    {
+                                        enquiryItem.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiryItem.ID);
+                                        enquiryItem.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryItem.EnquiryID);
+                                        enquiryItem.ProductDescription = (sdr["ProductDescription"].ToString() != "" ? sdr["ProductDescription"].ToString() : enquiryItem.ProductDescription);
+                                        enquiryItem.product = new Product()
+                                        {
+                                            ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
+                                            Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty),
+                                            Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : string.Empty)
+                                        };
+                                        enquiryItem.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
+                                        enquiryItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
+                                        enquiryItem.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
+                                       
+                                    }
+                                    enquiryItemList.Add(enquiryItem);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return enquiryItemList;
+        }
+
+
+        #endregion GetQuotationDetails
 
     }
 }
