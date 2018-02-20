@@ -42,13 +42,16 @@ $(document).ready(function () {
                { "data": "Track", "defaultContent": "<i>-</i>" },
                { "data": "SourceName", "defaultContent": "<i>-</i>" },
                { "data": "DestName", "defaultContent": "<i>-</i>" },
-               { "data": "courierAgency.Name", "defaultContent": "<i>-</i>" },                
+               { "data": "courierAgency.Name", "defaultContent": "<i>-</i>" },
+               {"data":"GeneralNotes","defaultContent":"<i>-</i>"},
                { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [1,2, 4, 5, 6, 7, 8] },
-               {className: "text-center","targets":[3]}
+               { className: "text-left", "targets": [1,2, 4, 5, 6, 7, 8,9] },
+               { className: "text-center", "targets": [3] },
+               { className: "text-center", "targets": [1, 2, 3, 4, 5, 6, 7, 8], "width": "8%" },
+             { className: "text-center", "targets":[10],"width":"3%"}
              ]
          });
 

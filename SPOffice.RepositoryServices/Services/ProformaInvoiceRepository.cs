@@ -53,6 +53,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _proformaHeader.customer = new CustomerPO();
                                         _proformaHeader.customer.ID = _proformaHeader.CustomerID;
                                         _proformaHeader.customer.CustomerName = (sdr["CustomerName"].ToString() != "" ? sdr["CustomerName"].ToString() : _proformaHeader.customer.CustomerName);
+                                        _proformaHeader.customer.BillingAddress = (sdr["CustomerAddress"].ToString() != "" ? sdr["CustomerAddress"].ToString() : _proformaHeader.customer.BillingAddress);
                                         _proformaHeader.InvoiceDate = (sdr["InvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["InvoiceDate"].ToString()).ToString(settings.dateformat) : _proformaHeader.InvoiceDate);
                                         _proformaHeader.ValidTillDate = (sdr["ValidTillDate"].ToString() != "" ? DateTime.Parse(sdr["ValidTillDate"].ToString()).ToString(settings.dateformat) : _proformaHeader.ValidTillDate);
                                         _proformaHeader.OriginCompCode = (sdr["OriginCompCode"].ToString() != "" ? sdr["OriginCompCode"].ToString() : _proformaHeader.OriginCompCode);
@@ -363,6 +364,7 @@ namespace SPOffice.RepositoryServices.Services
                                         proformaItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
                                         proformaItem.company = new Company();
                                         proformaItem.company.LogoURL = (sdr["LogoURL"].ToString() != "" ? sdr["LogoURL"].ToString() : proformaItem.company.LogoURL);
+                                        proformaItem.company.BankDetails = (sdr["BankDetails"].ToString() != "" ? sdr["BankDetails"].ToString() : proformaItem.company.BankDetails);
                                     }
                                     quoteItemList.Add(proformaItem);
                                 }

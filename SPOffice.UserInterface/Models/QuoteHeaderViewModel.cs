@@ -18,7 +18,7 @@ namespace UserInterface.Models
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
         public string NewCustomer { get; set; }
-        public string ISRegularCustomer { get; set; }
+        public string IsRegularCustomer { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
         public CustomerViewModel customer { get; set; }
         [Required(ErrorMessage = "Quotation Date required")]
@@ -93,6 +93,7 @@ namespace UserInterface.Models
         public CommonViewModel commonObj { get; set; }
         public QuoteItemViewModel quoteItemListObj { get; set; }
         public List<QuoteItemViewModel> quoteItemList { get; set; }
+        public PDFTools pdfToolsObj { get; set; }       
     }
 
     public class QuoteItemViewModel

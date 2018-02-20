@@ -235,7 +235,7 @@
             </div>
 
             <div class="EntryForms" style="height:550px">
-                @using (Ajax.BeginForm("InsertUpdateQuotaion", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "QuoteForm" }))
+                @using (Ajax.BeginForm("InsertUpdateQuotaion", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "QuotationSaveSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "" }, new { @class = "form-horizontal", role = "form", @id = "QuoteForm" }))
                 {
                     @Html.Hidden("BindValue", "", htmlAttributes: new { @class = "", Value = ViewBag.value });
                     @Html.AntiForgeryToken()
@@ -245,7 +245,7 @@
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
                                     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", @value = Guid.Empty })
-                                    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
+                                    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })                                  
                                     @Html.LabelFor(model => model.QuotationNo, htmlAttributes: new { @class = "control-label " })
                                 </div>
                                 <div class="col-md-12">
@@ -294,19 +294,19 @@
                              <div class="form-group col-md-12"></div>
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.ISRegularCustomer, htmlAttributes: new { @class = "control-label " })
+                                    @Html.LabelFor(model => model.IsRegularCustomer, htmlAttributes: new { @class = "control-label " })
                                      
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-10">
                                         @{
-                                            List<SelectListItem> ISRegularList = new List<SelectListItem>();
-                                            ISRegularList.Add(new SelectListItem
+                                            List<SelectListItem> IsRegularList = new List<SelectListItem>();
+                                            IsRegularList.Add(new SelectListItem
                                             { Text = "Regular Customer", Value = "REG", Selected = true });
-                                            ISRegularList.Add(new SelectListItem
+                                            IsRegularList.Add(new SelectListItem
                                             { Text = "New Customer", Value = "NEW"});
                                         }
-                                        @Html.DropDownListFor(model => model.ISRegularCustomer, ISRegularList, new { @class = "form-control",onchange="CustomerTypeChange()" })
+                                        @Html.DropDownListFor(model => model.IsRegularCustomer, IsRegularList, new { @class = "form-control",onchange="CustomerTypeChange()" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
@@ -506,6 +506,7 @@
                                         <th>Product Code</th>
                                         <th>Old Product Code</th>
                                         <th>Description</th>
+                                        <th>Quantity</th>
                                         <th>Rate</th>
                                         <th>...</th>
                                     </tr>
@@ -744,13 +745,36 @@
                                 </div>
                             </div>
                         }
-                    </div>
+                    </div>  
+                    <div class="col-md-12" id="headercontainer"></div>                
                     <div class="col-md-12" id="mailmodelcontent">
                     </div>
-                </div>
+                </div>               
+                
                 <div class="modal-footer" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 50px;padding: 7px;">
-                    <a class="btn btn-primary"  onclick="SendMailClick()" id="btnMail"><i class="glyphicon glyphicon-floppy-disk"></i> Send Mail</a>
+                    <a class="btn btn-primary" onclick="DownloadMailPreview()" id="btnMailDownload"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
+                    <a class="btn btn-primary" onclick="SendMailClick()" id="btnMail"><i class="glyphicon glyphicon-floppy-disk"></i> Send Mail</a>
+
                 </div>
+                      
+                        @*@using (Html.BeginForm("Download", "PDFGenerator",  new  { HttpMethod = "POST", @class = "form-horizontal", role = "form", @id = "QuoteForm" }))
+                        {
+                        @Html.HiddenFor(model => model.pdfToolsObj.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
+                        @Html.HiddenFor(model => model.pdfToolsObj.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
+                        @Html.HiddenFor(model => model.pdfToolsObj.HeaderText, htmlAttributes: new { @class = "", Value = "" })                        
+                        <input type = "submit" value = "Download" id = "btnDownload" onclick = "GetHtmlData();" />
+                        }*@   
+                
+                <form action="/PDFGenerator/Download" class="form-horizontal"   id="QuoteForm" method="post" role="form">
+                    @Html.HiddenFor(model => model.pdfToolsObj.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.HeaderText, htmlAttributes: new { @class = "", Value = "" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.ContentFileName, htmlAttributes:new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
+                    @Html.HiddenFor(model => model.pdfToolsObj.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName"})
+                    <input type="submit" value="Download" id="btnDownload" onclick="GetHtmlData();" />
+                </form>             
+                       
+                        
             </div>
         </div>
     </div>
@@ -832,6 +856,21 @@
                                     </div> 
                                 </div>
                             </div>
+
+
+                            <div class="col-md-6">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.quoteItemListObj.Quantity, htmlAttributes: new { @class = "control-label " })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.quoteItemListObj.Quantity, new { htmlAttributes = new { @class = "form-control HeaderBox text-right", onkeypress = "return isNumber(event)" } })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
                          
                             <div class="col-md-6">
                                 <div class="col-md-12">
@@ -845,7 +884,7 @@
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
-                        </div>
+                           
                     </div>
                 </div>
                 <div class="modal-footer" style="height: 50px;padding: 7px;">
@@ -874,6 +913,7 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableSelect")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/Quotation")
+    <script src="~/Scripts/UserJS/PDF.js"></script>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/editableGrid")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
 }

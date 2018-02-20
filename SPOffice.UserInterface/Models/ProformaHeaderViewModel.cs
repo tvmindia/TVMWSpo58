@@ -25,7 +25,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Invoice Date")]
         public string InvoiceDate { get; set; }
 
-        [Required(ErrorMessage = "Valid Till Date required")]
+        //[Required(ErrorMessage = "Valid Till Date required")]
         [Display(Name = "Valid Till Date")]
         public string ValidTillDate { get; set; }             
        
@@ -102,7 +102,7 @@ namespace SPOffice.UserInterface.Models
         public string OriginCompCode { get; set; }
         public List<SelectListItem> CompanyList { get; set; }
         public CompanyViewModel company { get; set; }
-
+        public PDFTools pdfToolsObj { get; set; }
     }
 
     public class ProformaItemViewModel

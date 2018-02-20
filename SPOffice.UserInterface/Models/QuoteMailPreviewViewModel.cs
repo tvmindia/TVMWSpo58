@@ -9,5 +9,7 @@ namespace SPOffice.UserInterface.Models
     public class QuoteMailPreviewViewModel
     {
         public QuoteHeaderViewModel quoteHeaderViewModel { get; set; }
+        public PDFTools pdfToolsObj { get; set; }
+
     }
 }

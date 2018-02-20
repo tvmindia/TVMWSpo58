@@ -1,5 +1,13 @@
 var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
+var footer = "Terms and Conditions" + "\n" +
+"Payment terms - 50% advance payment before production and balance 50% before delivery." + "\n" +
+"Please accept the same and confirm." + "\n" +
+"Awaiting your valuable order." + "\n" + "\n" +
+"Regards," + "\n" +
+"Manager";
+
+
 var _Products = [];
 var _Units = [];
 var _ProformaProductDetail = [];
@@ -55,7 +63,7 @@ $(document).ready(function () {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                   { className: "text-right", "targets": [6,7,8] },
+                   { className: "text-right", "targets": [6,7,8,9] },
                    { className: "text-left", "targets": [2,4] },
                    { className: "text-center", "targets": [1,3,5] }
 
@@ -102,7 +110,7 @@ $(document).ready(function () {
 
         GetAllProductCodes();
         GetAllUnitCodes();
-      
+        $('#btnSendDownload').hide();
 
     }
     catch (x) {
@@ -158,7 +166,7 @@ function Delete(curobj) {
     var rowData = DataTables.ItemDetailTable.row($(curobj).parents('tr')).data();
     if ((rowData != null)&&(rowData.ID != null)) {
         notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '")');
-        AmountSummary();
+        AmountSummary();       
     }
     else
     {
@@ -229,7 +237,8 @@ function DeleteItem(ID) {
             if (ds.Result == "OK") {
                 switch (ds.Result) {
                     case "OK":
-                        notyAlert('success', ds.Message);                       
+                        notyAlert('success', ds.Message);
+                        Reset();
                         GetAllQuoteItems($("#ID").val());
                         break;
                     case "ERROR":
@@ -268,7 +277,7 @@ function saveInvoices() {
     }
 
 
-function SaveSuccess(data, status) {
+function ProformaSaveSuccess(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Result) {
@@ -325,6 +334,7 @@ function AddNew() {
     $("#lblInvoiceNo").text('New ProformaInvoice');
     $("#CGST").val('9');
     $("#SGST").val('9');
+    $("#BodyFoot").val(footer);
 }
 
 function Reset() {
@@ -576,6 +586,8 @@ function MailSuccess(data, status) {
 
 
 function SendMailClick() {
+    var PMH = $('#ID').val();
+    $('#QuoteMAilHeaderID').val(PMH);
     $('#btnFormSendMail').trigger('click');
 }
 function GetCustomerDeails(curobj) {
@@ -633,6 +645,25 @@ function GetMailPreview(ID) {
     $("#mailmodelcontent").html(ds);
     $("#MailBody").val(ds);
 
+}
+
+//To trigger PDF download button
+function DownloadPDF()
+{
+    debugger;
+    $('#btnSendDownload').trigger('click');
+}
+
+//To download file in PDF
+function GetHtmlData() {
+    debugger;
+    var bodyContent = $('#mailmodelcontent').html();
+    var headerContent = $('#hdnHeadContent').html();
+    $('#hdnContent').val(bodyContent);
+    $('#hdnHeadContent').val(headerContent);
+    var customerName = $("#ddlCustomer option:selected").text();
+    $('#hdnCustomerName').val(customerName);
+    
 }
 
 //-------------------------------------------------------------------------------------------------//
@@ -755,7 +786,7 @@ function AddProformaItem() {
                     if (allData[i].ProductID == _ProformaProductDetail[0].ProductID) 
                     {                       
                         allData[i].ProductDescription = $('#proformaItemListObj_ProductDescription').val();
-                        allData[i].UnitCode = $('#proformaItemLisrObj_UnitCode').val();
+                        allData[i].UnitCode = $('#proformaItemListObj_UnitCode').val();
                         allData[i].Quantity = $('#proformaItemListObj_Quantity').val();                       
                         allData[i].Rate = $('#proformaItemListObj_Rate').val();
                         allData[i].Amount = $('#proformaItemListObj_Amount').val();
