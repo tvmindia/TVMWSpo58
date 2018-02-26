@@ -19,5 +19,7 @@ namespace SPOffice.RepositoryServices.Contracts
         Enquiry GetEnquiryDetailsById(Guid ID);
         object DeleteEnquiry(Guid ID);
         string GetEnquiryMessage();
+        List<EnquiryItem> GetAllEnquiryItems(Guid? ID);
+        object DeleteEnquiryItem(Guid? ID);
     }
 }

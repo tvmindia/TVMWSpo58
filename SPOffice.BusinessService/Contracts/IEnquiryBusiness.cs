@@ -15,5 +15,7 @@ namespace SPOffice.BusinessService.Contracts
         Enquiry GetEnquiryDetailsByID(Guid ID);
         object DeleteEnquiry(Guid ID);
         string SendEnquiryMessage(string mobileNumber, string EQNumber);
+        List<EnquiryItem> GetAllEnquiryItems(Guid? ID);
+        object DeleteEnquiryItem(Guid? ID);
     }
 }

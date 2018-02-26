@@ -12,11 +12,12 @@ namespace SPOffice.BusinessService.Services
     {
         private IEnquiryRepository _enquiryRepository;
         private ICommonRepository _commonRepository;
-
-        public EnquiryBusiness(IEnquiryRepository enquiryRepository, ICommonRepository commonRepository)
+        ICommonBusiness _commonBusiness;
+        public EnquiryBusiness(IEnquiryRepository enquiryRepository, ICommonRepository commonRepository, ICommonBusiness commonBusiness)
         {
             _enquiryRepository = enquiryRepository;
             _commonRepository = commonRepository;
+            _commonBusiness = commonBusiness;
         }
         public Enquiry InsertUpdateEnquiry(Enquiry _enquiriesObj)
         {
@@ -25,10 +26,12 @@ namespace SPOffice.BusinessService.Services
             {
                 if (_enquiriesObj.ID == Guid.Empty)
                 {
+                    _enquiriesObj.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(_enquiriesObj.enquiryItemList, "ProductCode");
                     result = _enquiryRepository.InsertEnquiry(_enquiriesObj);
                 }
                 else
                 {
+                    _enquiriesObj.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(_enquiriesObj.enquiryItemList, "ProductCode");
                     result = _enquiryRepository.UpdateEnquiry(_enquiriesObj);
                 }
             }
@@ -74,6 +77,21 @@ namespace SPOffice.BusinessService.Services
             return eqlObj;
         }
 
+        public List<EnquiryItem> GetAllEnquiryItems(Guid? ID)
+        {
+            List<EnquiryItem> enquiryItemList = null;
+            try
+            {
+
+                enquiryItemList = _enquiryRepository.GetAllEnquiryItems(ID);
+             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return enquiryItemList;
+        }
+
 
         public List<Titles> GetAllTitles()
         {
@@ -92,6 +110,10 @@ namespace SPOffice.BusinessService.Services
             return _enquiryRepository.DeleteEnquiry(ID);
         }
 
+        public object DeleteEnquiryItem(Guid? ID)
+        {
+            return _enquiryRepository.DeleteEnquiryItem(ID);
+        }
 
         #region messageSending
 

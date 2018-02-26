@@ -27,10 +27,11 @@ namespace SPOffice.UserInterface.Controllers
         IReminderBusiness _reminderBusiness;
         IPriorityBusiness _priorityBusiness;
         ICommonBusiness _commonBusiness;
+        IProductBusiness _productBusiness;
         SecurityFilter.ToolBarAccess _tool;
         
 
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness, ICommonBusiness commonBusiness, SecurityFilter.ToolBarAccess tool)
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, IEmployeeBusiness employeeBusiness, IIndustryBusiness industryBusiness,IEnquirySourceBusiness enquirySourceBusiness,IEnquiryStatusBusiness enquiryStatusBusiness, IProgressStatusBusiness progressStatusBusiness, IFollowUpBusiness followupBusiness,IReminderBusiness reminderBusiness, IPriorityBusiness priorityBusiness, ICommonBusiness commonBusiness, IProductBusiness productBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _enquiryBusiness = enquiryBusiness;
             _industryBusiness = industryBusiness;
@@ -42,6 +43,7 @@ namespace SPOffice.UserInterface.Controllers
             _reminderBusiness = reminderBusiness;
             _priorityBusiness = priorityBusiness;
             _commonBusiness = commonBusiness;
+            _productBusiness = productBusiness; 
             _tool = tool;
 
         }
@@ -241,6 +243,20 @@ namespace SPOffice.UserInterface.Controllers
             }
             EVM.priorityObj.PriorityList = selectListItem;
 
+
+            selectListItem = new List<SelectListItem>();
+            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            foreach (ProductViewModel PVML in productViewModelList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = PVML.Name + '-' + PVML.Code + '-' + PVML.OldCode,
+                    Value = PVML.ID.ToString(),
+                    Selected = false
+                });
+            }
+            EVM.enquiryObjList = new EnquiryItemViewModel();
+            EVM.enquiryObjList.enquiryItemList = selectListItem;
             return View(EVM);
             }
         
@@ -344,7 +360,10 @@ namespace SPOffice.UserInterface.Controllers
                 _enquiriesObj.commonObj.CreatedDate = _appUA.DateTime;
                 _enquiriesObj.commonObj.UpdatedBy = _appUA.UserName;
                 _enquiriesObj.commonObj.UpdatedDate = _appUA.DateTime;
-                EnquiryViewModel enquiryObj = Mapper.Map <  Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
+                object ResultFromJS = JsonConvert.DeserializeObject(_enquiriesObj.DetailJSON);
+                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                _enquiriesObj.enquiryItemList = JsonConvert.DeserializeObject<List<EnquiryItemViewModel>>(ReadableFormat);
+                EnquiryViewModel enquiryObj = Mapper.Map <Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(_enquiriesObj)));
                
                 if (_enquiriesObj.ID == Guid.Empty)
                 {
@@ -380,6 +399,28 @@ namespace SPOffice.UserInterface.Controllers
 
         }
         #endregion GetEnquiryDetailsByID
+
+        #region GetEnquiryItemsByEnquiryID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string GetEnquiryItemsByEnquiryID(string ID)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID required");
+                }
+                List<EnquiryItemViewModel> enquiryItemViewModelList = Mapper.Map<List<EnquiryItem>, List<EnquiryItemViewModel>>(_enquiryBusiness.GetAllEnquiryItems(Guid.Parse(ID)));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryItemViewModelList });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetEnquiryItemsByEnquiryID
 
 
         #region GetFollowUpDetails
@@ -453,6 +494,29 @@ namespace SPOffice.UserInterface.Controllers
         }
         #endregion DeleteEnquiry
 
+        #region  DeleteItemByID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "D")]
+        public string DeleteItemByID(string ID)
+        {
+            object result = null;
+            try
+            {
+                if (string.IsNullOrEmpty(ID))
+                {
+                    throw new Exception("ID Missing");
+                }
+                result = _enquiryBusiness.DeleteEnquiryItem(Guid.Parse(ID));
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message = c.DeleteSuccess });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion DeleteItemByID
+
         #region DeleteFollowUp
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -509,6 +573,8 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         #endregion sendmessage
+
+   
 
         #region ButtonStyling
         [HttpGet]

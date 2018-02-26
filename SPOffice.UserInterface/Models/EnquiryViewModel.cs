@@ -55,7 +55,7 @@ namespace SPOffice.UserInterface.Models
         [Display(Name = "Industry")]
         public string IndustryName { get; set; }
         public List<EnquiryViewModel> IndustryList { get; set; }
-
+        public string DetailJSON { get; set; }
         public string IndustryCode { get; set; }
 
         [Display(Name = "Progress Status")]
@@ -123,7 +123,9 @@ namespace SPOffice.UserInterface.Models
         public Guid PriorityID { get; set; }
         public PriorityViewModel priorityObj { get;set;}
         public MessageViewModel messageObj { get; set; }
-       
+        public EnquiryItemViewModel enquiryObjList { get; set; }
+        public List<EnquiryItemViewModel> enquiryItemList { get; set; }
+
 
     }
 
@@ -143,5 +145,34 @@ namespace SPOffice.UserInterface.Models
     {
         public string Title { get; set; }
         public List<SelectListItem> TitleList { get; set; }
+    }
+
+
+    public class EnquiryItemViewModel
+    {
+        public Guid? ID { get; set; }
+        public Guid? EnquiryID { get; set; }
+        [Display(Name = "Product Description")]
+        public string ProductDescription { get; set; }
+        public string UnitCode { get; set; }
+        public string UnitDescription { get; set; }
+        public UnitViewModel unit { get; set; }
+        [Display(Name = "Quantity")]
+        public decimal? Quantity { get; set; }
+        public decimal? Rate { get; set; }
+        public decimal? Amount { get; set; }
+        public Guid? ProductID { get; set; }
+        [Display(Name = "Product Code")]
+        public string ProductCode { get; set; }
+        [Display(Name = "Old Product Code")]
+        public string OldProductCode { get; set; }
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+        [Display(Name = "Search Product")]
+        public string ProductSearch { get; set; }
+        public ProductViewModel product { get; set; }
+        public CommonViewModel commonObj { get; set; }
+        public CompanyViewModel company { get; set; }
+        public List<SelectListItem> enquiryItemList { get; set; }
     }
 }

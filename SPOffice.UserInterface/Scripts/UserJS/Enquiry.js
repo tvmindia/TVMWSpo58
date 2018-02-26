@@ -1,8 +1,13 @@
 ﻿var DataTables = {};
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
+var _Products = [];
+var _Units = [];
+var _EnquiryProductDetail = [];
+var _EnquiryProductList = [];
 //--Loading DOM--//
 $(document).ready(function () {
     try {
+        $("#ddlProductSearch").select2({ dropdownParent: $("#AddEnquiryItemModal") });
         //Fileupload 
         $('#btnUpload').click(function () {
             //Pass the controller name
@@ -71,15 +76,49 @@ $(document).ready(function () {
                  { className: "text-center", "targets": [ 2] }
              ]
          });
-
         //--For Editing Enquiry Table on row double click--//
-        $('#EnquiryTable tbody').on('dblclick', 'td', function () { 
+        $('#EnquiryTable tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
+        $('input[type="text"].Roundoff').on('focus', function () {
+            $(this).select();
+        });
 
+        DataTables.ItemDetailsTable = $('#ItemDetailsTable').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: true,
+             data: null,
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             columns: [
+             { "data": "ID", "defaultContent": "<i></i>" },
+             { "data": "ProductID", "defaultContent": "<i></i>" },
+             { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>"},
+             { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+             ],
+             columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
+                 { "targets": [2, 3, 4], "width": "15%" },
+                 { "targets": [5], "width": "8%" },
+                  { className: "text-right", "targets": [] },
+                   { className: "text-left", "targets": [2, 3,4] },
+             { className: "text-center", "targets": [5] }
+             ]
+         });
+
+       
+        if ($('#filter').val() != '') {
+            dashboardBind($('#filter').val())
+        }
         if ($('#BindValue').val() != '') {
             debugger;
-            dashboardBind($('#BindValue').val())
+            enquiryBind($('#BindValue').val())
         }
 
         
@@ -145,26 +184,64 @@ function BindSummarBox(Open, Converted, NotConverted) {
 //-- Saves Enquiry details to server on InsertUpdateEnquiry button trigger--//
 function Save() {
     debugger;
-    try {
-        $("#btnInsertUpdateEnquiry").trigger('click');
+   
+        $("#DetailJSON").val('');
+        _EnquiryProductList = [];
+        AddEnquiryProductList();
+        if (_EnquiryProductList.length > 0) {
+            var result = JSON.stringify(_EnquiryProductList);
+            $("#DetailJSON").val(result);
+            $("#btnInsertUpdateEnquiry").trigger('click');
+        }
+        else {
+            notyAlert('warning', 'Please Add Product Details!');
+        }
+       
     }
-    catch (e) {
-        notyAlert('error', e.message);
 
-    }
-}
 
 //--Clearing Enquiry table and Rebinding with all enquiry details --//
 function BindAllEnquiries() {
     debugger;
     try {
         DataTables.EnquiryTable.clear().rows.add(GetAllEnquiry()).draw(false);
+       
     }
+
     catch (e) {
         notyAlert('error', e.message);
     }
 }
 
+function GetEnquiryItemsDetailList(ID)
+{
+    DataTables.ItemDetailsTable.clear().rows.add(GetAllEnquiryItemDetails(ID)).draw(false);
+}
+
+function GetAllEnquiryItemDetails(ID)
+{
+    debugger;
+    try {
+
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Enquiry/GetEnquiryItemsByEnquiryID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+}
 //Function onsucess ajax post event for enquiry form save
 function SaveSuccess(data) {
     debugger;
@@ -356,7 +433,7 @@ function Edit(currentObj) {
     var rowData = DataTables.EnquiryTable.row($(currentObj).parents('tr')).data();
     if ((rowData != null) && (rowData.ID != null)) {
         FillEnquiryDetails(rowData.ID);
-       
+        
     }
 }
 
@@ -411,6 +488,8 @@ function FillEnquiryDetails(ID) {
             $("#btnAddFollowup").removeAttr("style");
             $("#btnAddFollowup").attr({ "title": "Add New FollowUps" });     
         }
+        GetEnquiryItemsDetailList(ID);
+        PaintImages(ID);
 }
 
 //--To Get Enquiry details from server corresponding to Enquiry ID--//
@@ -456,6 +535,7 @@ function Resetform() {
         validator.settings.success($(this));
     });
     $('#EnquiryForm')[0].reset();
+    DataTables.ItemDetailsTable.clear().draw(false);
 }
 
 //---drop down change enquiry status changes
@@ -717,4 +797,192 @@ function SendEnquiryMessage(DS)
     }
 }
 
+function AddEnquiryList() {
+    debugger;
+    PopupClearFields();
+    $("#ddlProductSearch").prop('disabled', false);
+    $('#AddEnquiryItemModal').modal('show');
+}
 
+function PopupClearFields() {
+    debugger;
+    _EnquiryProductDetail = [];
+    $("#ddlProductSearch").select2({ dropdownParent: $("#AddEnquiryItemModal") });
+    $("#ddlProductSearch").val('').trigger('change');
+    $('#enquiryObjList_ProductCode').val('');
+    $('#enquiryObjList_OldProductCode').val('');
+    $('#enquiryObjList_ProductName').val('');
+    $('#enquiryObjList_ProductDescription').val('');
+   
+}
+
+
+function AddEnquiryItem() {
+    debugger;
+    if ($("#ddlProductSearch").val() != "") {
+        if (_EnquiryProductDetail != null) {
+            //check product existing or not if soo update the new
+            var allData = DataTables.ItemDetailsTable.rows().data();
+            if (allData.length > 0) {
+                var checkPoint = 0;
+                for (var i = 0; i < allData.length; i++) {
+                    if (allData[i].ProductID == _EnquiryProductDetail[0].ProductID) {
+                        allData[i].ProductDescription = $('#enquiryObjList_ProductDescription').val();
+                        allData[i].ProductCode = $('#enquiryObjList_ProductCode').val();
+                        allData[i].OldProductCode = $('#enquiryObjList_OldProductCode').val();
+                        allData[i].ProductName = $('#enquiryObjList_ProductName').val();
+                        checkPoint = 1;
+                        break;
+                    }
+                }
+
+                if (!checkPoint) {
+                    _EnquiryProductDetail[0].ProductDescription = $('#enquiryObjList_ProductDescription').val();
+                    _EnquiryProductDetail[0].ProductCode = $('#enquiryObjList_ProductCode').val();
+                    _EnquiryProductDetail[0].OldProductCode = $('#enquiryObjList_OldProductCode').val();
+                    _EnquiryProductDetail[0].ProductName = $('#enquiryObjList_ProductName').val();
+                    DataTables.ItemDetailsTable.rows.add(_EnquiryProductDetail).draw(false);
+                }
+                else {
+                    DataTables.ItemDetailsTable.clear().rows.add(allData).draw(false);
+                }
+
+            }
+            else {
+                _EnquiryProductDetail[0].ProductDescription = $('#enquiryObjList_ProductDescription').val();
+                _EnquiryProductDetail[0].ProductCode = $('#enquiryObjList_ProductCode').val();
+                _EnquiryProductDetail[0].OldProductCode = $('#enquiryObjList_OldProductCode').val();
+                _EnquiryProductDetail[0].ProductName = $('#enquiryObjList_ProductName').val();
+                DataTables.ItemDetailsTable.rows.add(_EnquiryProductDetail).draw(false);
+            }
+        }
+        $('#AddEnquiryItemModal').modal('hide');
+    }
+    else {
+        notyAlert('warning', "Product is Empty");
+    }
+}
+
+function ProductSearchOnchange(curObj) {
+    debugger;
+    if (curObj.value != "") {
+        _EnquiryProductDetail = [];
+        var ds = GetProductByID(curObj.value);
+        EnquiryProduct = new Object();
+        EnquiryProduct.ID = null;
+        EnquiryProduct.ProductID = ds.ID
+        EnquiryProduct.OldProductCode = ds.OldCode;
+        EnquiryProduct.ProductCode = ds.Code
+        EnquiryProduct.ProductDescription = ds.Description;
+        EnquiryProduct.ProductName = ds.Name;
+        _EnquiryProductDetail.push(EnquiryProduct);
+        $('#enquiryObjList_ProductCode').val(_EnquiryProductDetail[0].ProductCode);
+        $('#enquiryObjList_OldProductCode').val(_EnquiryProductDetail[0].OldProductCode);
+        $('#enquiryObjList_ProductName').val(_EnquiryProductDetail[0].ProductName);
+        $('#enquiryObjList_ProductDescription').val(_EnquiryProductDetail[0].ProductDescription);
+    }
+}
+
+function GetProductByID(id) {
+    try {
+        debugger;
+        var data = { "ID": id };
+        var ds = {};
+        ds = GetDataFromServer("Product/GetProductDetails/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            notyAlert('error', ds.Message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+
+function ProductEdit(curObj) {
+    debugger;
+    $('#AddEnquiryItemModal').modal('show');
+    $("#ddlProductSearch").prop('disabled', true);
+    PopupClearFields();
+    var rowData = DataTables.ItemDetailsTable.row($(curObj).parents('tr')).data();
+    if ((rowData != null) && (rowData.ProductID != null)) {
+        $("#ddlProductSearch").select2({ dropdownParent: $("#AddEnquiryItemModal") });
+        $("#ddlProductSearch").val(rowData.ProductID).trigger('change');
+        $('#enquiryObjList_ProductDescription').val(rowData.ProductDescription);
+    }
+   }
+
+function enquiryBind(ID) {
+    debugger;
+    $('#ID').val(ID);
+    openNav();
+    FillEnquiryDetails(ID);
+}
+
+function DeleteClick(curobj) {
+    debugger;
+    var rowData = DataTables.ItemDetailsTable.row($(curobj).parents('tr')).data();
+    if ((rowData != null) && (rowData.ID != null)) {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + rowData.ID + '")');
+    }
+    else {
+        DataTables.ItemDetailsTable.row($(curobj).parents('tr')).remove().draw(false);
+        notyAlert('success', 'Deleted Successfully');
+    }
+}
+
+function DeleteItem(ID) {
+    try {
+        debugger;
+        //Event Request Case 
+        var data = { "ID": ID };
+        var ds = {};
+        ds = GetDataFromServer("Enquiry/DeleteItemByID/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            switch (ds.Result) {
+                case "OK":
+                    notyAlert('success', ds.Record.Message);
+                    FillEnquiryDetails($("#ID").val());
+                    break;
+                case "ERROR":
+                    notyAlert('error', ds.Message);
+                    break;
+                default:
+                    break;
+            }
+            return ds.Record;
+        }
+
+
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+
+
+function GetEnquiryItemsList() {
+    DataTables.ItemDetailsTable.clear().rows.add(GetAllEnquiryItems(ID)).draw(false);
+}
+
+function AddEnquiryProductList() {
+    var data = DataTables.ItemDetailsTable.rows().data();
+    for (var r = 0; r < data.length; r++) {
+        EnquiryProduct = new Object();
+        EnquiryProduct.ID = data[r].ID;
+        EnquiryProduct.ProductID = data[r].ProductID;
+        EnquiryProduct.ProductCode = data[r].ProductCode;
+        EnquiryProduct.ProductDescription = data[r].ProductDescription;
+        EnquiryProduct.OldProductCode = data[r].OldProductCode;
+        _EnquiryProductList.push(EnquiryProduct);
+    }
+}

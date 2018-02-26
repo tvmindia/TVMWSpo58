@@ -41,7 +41,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string EnquiryStatusCode { get; set; }
         public string Subject { get; set; }
         public Message messageObj { get; set; }
-
+        public string DetailXML { get; set; }
+        public List<EnquiryItem> enquiryItemList { get; set; }
     }
 
  
@@ -59,5 +60,27 @@ namespace SPOffice.DataAccessObject.DTO
     public class Titles
     {
         public string Title { get; set; }
+    }
+
+    public class EnquiryItem
+    {
+        public Guid? ID { get; set; }
+        public Guid? EnquiryID { get; set; }
+        public string ProductDescription { get; set; }
+        public string UnitCode { get; set; }
+        public string UnitDescription { get; set; }
+        public Unit unit { get; set; }
+        public decimal? Quantity { get; set; }
+        public decimal? Rate { get; set; }
+        public decimal? Amount { get; set; }
+        public Guid? ProductID { get; set; }
+        public string ProductCode { get; set; }
+        public string OldProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string ProductSearch { get; set; }
+        public Product product { get; set; }
+        public Common commonObj { get; set; }
+        public Company company { get; set; }
+       
     }
 }
