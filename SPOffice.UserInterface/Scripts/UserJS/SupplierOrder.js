@@ -411,7 +411,8 @@ function BindPurchaseOrder(ID) {
             $("#Discount").val(roundoff(jsresult.Discount));
             $("#TaxAmount").val(roundoff(jsresult.TaxAmount));
             $("#TotalAmount").val(roundoff(jsresult.TotalAmount));
-            
+            $('#lblSupplierPONo').text(jsresult.PONo);
+
             PurchaseOrderDetailBindTable() //------binding Details table
             if ((jsresult.IsFinalApproved) && (jsresult.IsApprover))
             {
@@ -441,7 +442,7 @@ function EnableSupplierPoForm()
 {
     $("#ddlSupplier").prop('disabled', false);
     $("#ddlCompany").prop('disabled', false);
-    $("#PONo").prop('disabled', false);
+ 
     $("#PODate").prop('disabled', false);
     $("#POIssuedDate").prop('disabled', false);
 
@@ -470,7 +471,7 @@ function DisableSupplierPoForm()
 {
     $("#ddlSupplier").prop('disabled', true);
     $("#ddlCompany").prop('disabled', true);
-    $("#PONo").prop('disabled', true);
+  
     $("#PODate").prop('disabled', true);
     $("#POIssuedDate").prop('disabled', true);
 
@@ -526,6 +527,7 @@ function AddNew() {
     ResetForm();
     RemovevalidationMsg()
     openNav();
+    $('#lblSupplierPONo').text("New Purchase Order");
     $("#ddlSupplier").select2();
     $("#ddlSupplier").val('').trigger('change');
     $('#TaxPercApplied').prop('disabled', true);

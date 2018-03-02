@@ -437,7 +437,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[InsertSupplierPurchaseOrder]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = SPO.PONo;
+                        //cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = SPO.PONo;
                         cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = SPO.PODate;
                         cmd.Parameters.Add("@POIssuedDate", SqlDbType.DateTime).Value = SPO.POIssuedDate;
                         cmd.Parameters.Add("@SupplierID", SqlDbType.UniqueIdentifier).Value = SPO.SupplierID;
@@ -524,7 +524,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[UpdateSupplierPurchaseOrder]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = SPO.ID;
-                        cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = SPO.PONo;
+                        //cmd.Parameters.Add("@PONo", SqlDbType.VarChar, 20).Value = SPO.PONo;
                         cmd.Parameters.Add("@PODate", SqlDbType.DateTime).Value = SPO.PODate;
                         cmd.Parameters.Add("@POIssuedDate", SqlDbType.DateTime).Value = SPO.POIssuedDate;
                         cmd.Parameters.Add("@SupplierID", SqlDbType.UniqueIdentifier).Value = SPO.SupplierID;

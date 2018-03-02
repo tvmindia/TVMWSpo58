@@ -286,8 +286,11 @@ function ProformaSaveSuccess(data, status) {
             ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
-               // $('#deleteId').val(JsonResult.Record.ID);
+                // $('#deleteId').val(JsonResult.Record.ID);
+                BindProformaInvoiceDetails(JsonResult.Record.ID)
+
             }
+          
             BindAllQuotes();
             GetAllQuoteItems($("#ID").val());
             break;

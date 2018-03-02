@@ -111,7 +111,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[InsertProformaInvoice]";
                         cmd.CommandType = CommandType.StoredProcedure;                       
-                        cmd.Parameters.Add("@InvoiceNo", SqlDbType.VarChar, 20).Value = proformaHeader.InvoiceNo;
+                        //cmd.Parameters.Add("@InvoiceNo", SqlDbType.VarChar, 20).Value = proformaHeader.InvoiceNo;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = proformaHeader.CustomerID;
                         cmd.Parameters.Add("@InvoiceDate", SqlDbType.DateTime).Value = proformaHeader.InvoiceDate;
                         cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = proformaHeader.ValidTillDate;
@@ -191,7 +191,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandText = "[Office].[UpdateProformaInvoice]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = proformaHeader.ID;
-                        cmd.Parameters.Add("@InvoiceNo", SqlDbType.VarChar, 20).Value = proformaHeader.InvoiceNo;
+                        //cmd.Parameters.Add("@InvoiceNo", SqlDbType.VarChar, 20).Value = proformaHeader.InvoiceNo;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = proformaHeader.CustomerID;
                         cmd.Parameters.Add("@InvoiceDate", SqlDbType.DateTime).Value = proformaHeader.InvoiceDate;
                         cmd.Parameters.Add("@ValidTillDate", SqlDbType.DateTime).Value = proformaHeader.ValidTillDate;

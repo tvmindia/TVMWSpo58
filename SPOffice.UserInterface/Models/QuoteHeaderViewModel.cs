@@ -44,7 +44,6 @@ namespace UserInterface.Models
         public string QuoteSubject { get; set; }
         [Display(Name = "Send To")]
         public string SentToEmails { get; set; }
-        [Required(ErrorMessage = "Customer Contact required")]
         [Display(Name = "Customer Contact")]
         public string ContactPerson { get; set; }
         [Required(ErrorMessage = "Mailing Address required")]
