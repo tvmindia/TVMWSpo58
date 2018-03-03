@@ -425,6 +425,24 @@ function BindPurchaseOrder(ID) {
             else if (!(jsresult.IsFinalApproved))
             {
                 EnableSupplierPoForm();
+              
+            }
+            if(!(jsresult.IsFinalApproved))
+            {
+                $('#btnMail').attr('disabled', true);
+                $('#btnMail').attr('title','Document is not Approved')
+            }
+            if (jsresult.IsFinalApproved) {
+                $("#lblApprovedOrNot").text('Approved');
+                ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'EditApprove');
+                $('#btnMail').attr('disabled', false);
+                $("#lblApprovalStatus").show();
+            }
+            else
+            {
+                $("#lblApprovedOrNot").text("");
+                $("#lblApprovalStatus").hide();
+
             }
             //Attachment below functions calls go to custom.js
             clearUploadControl();
