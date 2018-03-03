@@ -11,6 +11,8 @@ var footer =  "Terms and Conditions" + "\n"+
 "Regards," + "\n"+
 "Manager";
 
+var header="Dear Sir"+"\n"+
+"We would like to bring your notice that we are giving the price for required item in the following table."
 
 $(document).ready(function () {
     try {
@@ -374,6 +376,7 @@ function Delete(curobj) {
         $("#txtQuotationNo").focus();
         clearUploadControl();  
         $("#QuoteBodyFoot").val(footer);
+        $("#QuoteBodyHead").val(header);
     }
 
     function Reset() {

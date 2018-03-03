@@ -6,7 +6,8 @@ var footer = "Terms and Conditions" + "\n" +
 "Awaiting your valuable order." + "\n" + "\n" +
 "Regards," + "\n" +
 "Manager";
-
+var header = "Dear Sir" + "\n" +
+"We would like to bring your notice that we are giving the price for required item in the following table."
 
 var _Products = [];
 var _Units = [];
@@ -338,6 +339,7 @@ function AddNew() {
     $("#CGST").val('9');
     $("#SGST").val('9');
     $("#BodyFoot").val(footer);
+    $("#BodyHead").val(header);
 }
 
 function Reset() {
