@@ -18,6 +18,7 @@ namespace UserInterface.Models
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
         public string NewCustomer { get; set; }
+        [Display(Name = "Is Regular Customer")]
         public string IsRegularCustomer { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
         public CustomerViewModel customer { get; set; }

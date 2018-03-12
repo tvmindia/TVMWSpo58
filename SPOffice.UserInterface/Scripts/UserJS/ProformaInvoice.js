@@ -382,6 +382,17 @@ function BindProformaInvoiceDetails(ID) {
             //bind
             $("#txtInvoiceNo").val(jsresult.InvoiceNo);
             $("#txtInvoiceDate").val(jsresult.InvoiceDate);
+            if (jsresult.CustomerID != null) {
+                $("#IsCustomer").val('REG')
+                CustomerTypeChange();
+                $("#ddlCustomer").select2();
+                $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
+            }
+            else {
+                $("#IsCustomer").val('NEW')
+                $("#NewCustomer").val(jsresult.customer.CustomerName)
+                CustomerTypeChange()
+            }
             $("#ValidTillDate").val(jsresult.ValidTillDate);
             $("#ddlCustomer").select2();
             $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
@@ -675,6 +686,7 @@ function GetHtmlData() {
 function AddProformaList() {
     debugger;
     PopupClearFields();
+    $('#proformaItemListObj_Quantity').val("1");
     $("#ddlProductSearch").prop('disabled', false);
     $('#AddProformaItemModal').modal('show');
 }
@@ -870,6 +882,19 @@ function ProductEdit(curObj) {
         $('#proformaItemListObj_Rate').val(roundoff(rowData.Rate));
         $('#proformaItemListObj_Amount').val(roundoff(rowData.Amount));
 
+    }
+}
+
+function CustomerTypeChange() {
+    debugger;
+    if ($("#IsCustomer").val() == "REG") {
+
+        $("#divCustomerID").show();
+        $("#divCustomerName").hide();
+    }
+    else {
+        $("#divCustomerID").hide();
+        $("#divCustomerName").show();
     }
 }
 

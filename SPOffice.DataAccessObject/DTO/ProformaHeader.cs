@@ -46,6 +46,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string Subject { get; set; }       
         public decimal Total { get; set; }
         public string OriginCompCode { get; set; }
+        public string NewCustomer { get; set; }
     }
 
     public class ProformaItem
