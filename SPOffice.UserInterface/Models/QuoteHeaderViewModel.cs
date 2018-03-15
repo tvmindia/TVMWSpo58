@@ -18,6 +18,7 @@ namespace UserInterface.Models
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
         public string NewCustomer { get; set; }
+        [Display(Name = "Is Regular Customer")]
         public string IsRegularCustomer { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
         public CustomerViewModel customer { get; set; }
@@ -44,7 +45,6 @@ namespace UserInterface.Models
         public string QuoteSubject { get; set; }
         [Display(Name = "Send To")]
         public string SentToEmails { get; set; }
-        [Required(ErrorMessage = "Customer Contact required")]
         [Display(Name = "Customer Contact")]
         public string ContactPerson { get; set; }
         [Required(ErrorMessage = "Mailing Address required")]

@@ -6,7 +6,8 @@ var footer = "Terms and Conditions" + "\n" +
 "Awaiting your valuable order." + "\n" + "\n" +
 "Regards," + "\n" +
 "Manager";
-
+var header = "Dear Sir" + "\n" +
+"We would like to bring your notice that we are giving the price for required item in the following table."
 
 var _Products = [];
 var _Units = [];
@@ -286,8 +287,11 @@ function ProformaSaveSuccess(data, status) {
             ChangeButtonPatchView('ProformaInvoice', 'btnPatchAdd', 'Edit');
             if (JsonResult.Record.ID) {
                 $("#ID").val(JsonResult.Record.ID);
-               // $('#deleteId').val(JsonResult.Record.ID);
+                // $('#deleteId').val(JsonResult.Record.ID);
+                BindProformaInvoiceDetails(JsonResult.Record.ID)
+
             }
+          
             BindAllQuotes();
             GetAllQuoteItems($("#ID").val());
             break;
@@ -335,6 +339,7 @@ function AddNew() {
     $("#CGST").val('9');
     $("#SGST").val('9');
     $("#BodyFoot").val(footer);
+    $("#BodyHead").val(header);
 }
 
 function Reset() {
@@ -377,6 +382,17 @@ function BindProformaInvoiceDetails(ID) {
             //bind
             $("#txtInvoiceNo").val(jsresult.InvoiceNo);
             $("#txtInvoiceDate").val(jsresult.InvoiceDate);
+            if (jsresult.CustomerID != null) {
+                $("#IsCustomer").val('REG')
+                CustomerTypeChange();
+                $("#ddlCustomer").select2();
+                $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
+            }
+            else {
+                $("#IsCustomer").val('NEW')
+                $("#NewCustomer").val(jsresult.customer.CustomerName)
+                CustomerTypeChange()
+            }
             $("#ValidTillDate").val(jsresult.ValidTillDate);
             $("#ddlCustomer").select2();
             $("#ddlCustomer").val(jsresult.CustomerID).trigger('change');
@@ -670,6 +686,7 @@ function GetHtmlData() {
 function AddProformaList() {
     debugger;
     PopupClearFields();
+    $('#proformaItemListObj_Quantity').val("1");
     $("#ddlProductSearch").prop('disabled', false);
     $('#AddProformaItemModal').modal('show');
 }
@@ -865,6 +882,19 @@ function ProductEdit(curObj) {
         $('#proformaItemListObj_Rate').val(roundoff(rowData.Rate));
         $('#proformaItemListObj_Amount').val(roundoff(rowData.Amount));
 
+    }
+}
+
+function CustomerTypeChange() {
+    debugger;
+    if ($("#IsCustomer").val() == "REG") {
+
+        $("#divCustomerID").show();
+        $("#divCustomerName").hide();
+    }
+    else {
+        $("#divCustomerID").hide();
+        $("#divCustomerName").show();
     }
 }
 

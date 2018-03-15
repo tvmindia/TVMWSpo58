@@ -6,11 +6,11 @@
 
 
 
-    <div style="max-width: 800px; font-size: 16px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555; margin: auto; padding: 30px; border: 3px solid #adadad;">
+    <div style="max-width: 800px; font-size: 15px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555; margin: auto; padding: 30px; border: 3px solid #adadad;">
         <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;border-bottom-color:#944a83!important;border-bottom:thin solid">
             <tr class="top">
                 @*<td style="width:400px;vertical-align: top;  " valign="top"><img src=http://www.santhiplastics.com/images/logo.png style="width:100%; max-width:100px;"></td>*@
-                <td style="width:400px;vertical-align:top;" valign="top"><img src="@ViewBag.path" style="width:200px!important; height:100px!important;workAround:image"></td>
+                <td style="width:400px;vertical-align:top;" valign="top"><img src="@ViewBag.path" style="max-width:100px!important;workAround:image"></td>
                 <td colspan="2" style="vertical-align: top;  text-align:right" valign="top">
                     <table style="width: 100%; line-height: inherit; text-align: left;">
                         <tr><td style="text-align:right;"><span style="font-size:25px">Proforma Invoice</span></td></tr>
@@ -44,13 +44,13 @@
                 <td><b>To</b></td>
             </tr>
             <tr style="width:100%;">
-                <td style="width:400px;text-align:left;font-size:15px;vertical-align:top;">
-                      @Model.proformaHeaderViewModel.company.Name<br />
+                <td style="width:400px;text-align:left;font-size:14px;vertical-align:top;">
+                     
                     @Html.Raw(@Model.proformaHeaderViewModel.company.BillingAddress)<br />
                 </td>
                 <td style="width:200px;"></td>
-                <td style="width:400px;text-align:left;font-size:15px;vertical-align:top;">
-                     @Model.proformaHeaderViewModel.customer.CustomerName<br />
+                <td style="width:400px;text-align:left;font-size:14px;vertical-align:top;">
+                     
                     @Html.Raw(@Model.proformaHeaderViewModel.SentToAddress)<br />
                 </td>
             </tr>
@@ -74,7 +74,7 @@
             </tr>
         </table>
         <br />
-        <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: inherit; text-align: left;" cellspacing="0" width="100%">
+        <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: inherit; text-align: left;font-size:14px;" cellspacing="0" width="100%">
             <thead>
                 <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #ABABAB;">
                     <th style="text-align: center;padding: 8px;">SlNo.</th>
@@ -107,7 +107,7 @@
         </table>
         <br />
 
-        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: right;">
+        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: right;font-size:14px">
 
             <tr class="">
                 <td style="vertical-align: top; padding: 5px;" valign="top">
@@ -128,11 +128,11 @@
                 </td>
             </tr>
             <tr class="">
-                <td style="vertical-align: top; padding: 5px;font-size:18px;" valign="top">
+                <td style="vertical-align: top; padding: 5px;font-size:16px;" valign="top">
                     Net Taxable Amount
                 </td>
 
-                <td style="vertical-align: top; text-align: right; padding: 5px; font-size:18px;" align="right" valign="top">
+                <td style="vertical-align: top; text-align: right; padding: 5px; font-size:16px;" align="right" valign="top">
                     @Model.proformaHeaderViewModel.NetTaxableAmount
                 </td>
             </tr>
@@ -177,11 +177,11 @@
             </tr>
 
             <tr class="">
-                <td style="vertical-align: top; padding: 5px; font-size:18px;" valign="top">
+                <td style="vertical-align: top; padding: 5px; font-size:16px;" valign="top">
                     Tax Amount
                 </td>
 
-                <td style="vertical-align: top; text-align: right; padding: 5px;border-top-style:solid; border-top-width:2px; border-top-color:#ABABAB; font-size:18px" align="right" valign="top">
+                <td style="vertical-align: top; text-align: right; padding: 5px;border-top-style:solid; border-top-width:2px; border-top-color:#ABABAB; font-size:16px" align="right" valign="top">
                     @Model.proformaHeaderViewModel.TaxAmount
                 </td>
             </tr>
@@ -194,7 +194,7 @@
             <tr class="total">
                 <td style="vertical-align: top; padding: 5px;" valign="top"></td>
 
-                <td style="vertical-align: top; text-align: right; border-top-style: solid; border-top-width: 2px; border-top-color: #ABABAB; font-weight: bold; padding: 5px; font-size:18px;" align="right" valign="top">
+                <td style="vertical-align: top; text-align: right; border-top-style: solid; border-top-width: 2px; border-top-color: #ABABAB; font-weight: bold; padding: 5px; font-size:16px;" align="right" valign="top">
                     Total: @Model.proformaHeaderViewModel.TotalAmountFormatted
                 </td>
             </tr>

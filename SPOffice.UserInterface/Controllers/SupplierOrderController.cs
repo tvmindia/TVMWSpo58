@@ -541,6 +541,46 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
 
                     break;
+                case "EditApprove":
+                    ToolboxViewModelObj.addbtn.Visible = true;
+                    ToolboxViewModelObj.addbtn.Text = "Add";
+                    ToolboxViewModelObj.addbtn.Title = "Add New";
+                    ToolboxViewModelObj.addbtn.Event = "AddNew();";
+
+                    ToolboxViewModelObj.savebtn.Visible = true;
+                    ToolboxViewModelObj.savebtn.Text = "Save";
+                    ToolboxViewModelObj.savebtn.Title = "Save";
+                    ToolboxViewModelObj.savebtn.Event = "Save();";
+
+                    ToolboxViewModelObj.resetbtn.Visible = true;
+                    ToolboxViewModelObj.resetbtn.Text = "Reset";
+                    ToolboxViewModelObj.resetbtn.Title = "Reset";
+                    ToolboxViewModelObj.resetbtn.Event = "Reset();";
+
+                    ToolboxViewModelObj.CloseBtn.Visible = true;
+                    ToolboxViewModelObj.CloseBtn.Text = "Close";
+                    ToolboxViewModelObj.CloseBtn.Title = "Close";
+                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+
+                    ToolboxViewModelObj.EmailBtn.Visible = true;
+                    ToolboxViewModelObj.EmailBtn.Text = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Title = "Mail";
+                    ToolboxViewModelObj.EmailBtn.Event = "PreviewMail()";
+
+                    ToolboxViewModelObj.deletebtn.Visible = true;
+                    ToolboxViewModelObj.deletebtn.Text = "Delete";
+                    ToolboxViewModelObj.deletebtn.Title = "Delete";
+                    ToolboxViewModelObj.deletebtn.Event = "DeleteSupplierPO()";
+
+                    ToolboxViewModelObj.ApproveBtn.Visible = true;
+                    ToolboxViewModelObj.ApproveBtn.Disable = true;
+                    ToolboxViewModelObj.ApproveBtn.DisableReason = "Approved Order";
+                    ToolboxViewModelObj.ApproveBtn.Text = "Approve";
+                    ToolboxViewModelObj.ApproveBtn.Title = "Approve";
+                    ToolboxViewModelObj.ApproveBtn.Event = "ApproveSupplierPO()";
+                    ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+
+                    break;
                 case "EditDisable":
                     ToolboxViewModelObj.addbtn.Visible = true;
                     ToolboxViewModelObj.addbtn.Text = "Add";

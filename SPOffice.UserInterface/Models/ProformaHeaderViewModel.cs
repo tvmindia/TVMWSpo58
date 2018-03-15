@@ -103,6 +103,9 @@ namespace SPOffice.UserInterface.Models
         public List<SelectListItem> CompanyList { get; set; }
         public CompanyViewModel company { get; set; }
         public PDFTools pdfToolsObj { get; set; }
+        [Display(Name = "Is Customer")]
+        public string IsCustomer { get; set; }
+        public string NewCustomer { get; set; }
     }
 
     public class ProformaItemViewModel
