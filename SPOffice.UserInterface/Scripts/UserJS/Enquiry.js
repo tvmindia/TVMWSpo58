@@ -100,12 +100,14 @@ $(document).ready(function () {
              { "data": "ProductID", "defaultContent": "<i></i>" },
              { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>"},
              { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "TaxPerc", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
-                 { "targets": [2, 3, 4], "width": "15%" },
-                 { "targets": [5], "width": "8%" },
+                 { "targets": [2, 3] ,"width":"15%"},
+                 { "targets": [4,5,6], "width": "20%" },
                   { className: "text-right", "targets": [] },
                    { className: "text-left", "targets": [2, 3,4] },
              { className: "text-center", "targets": [5] }
@@ -802,6 +804,7 @@ function AddEnquiryList() {
     PopupClearFields();
     $("#ddlProductSearch").prop('disabled', false);
     $('#AddEnquiryItemModal').modal('show');
+    $('#enquiryObjList_TaxPerc').val("18");
 }
 
 function PopupClearFields() {
@@ -813,6 +816,8 @@ function PopupClearFields() {
     $('#enquiryObjList_OldProductCode').val('');
     $('#enquiryObjList_ProductName').val('');
     $('#enquiryObjList_ProductDescription').val('');
+    $('#enquiryObjList_Rate').val("");
+    $('#enquiryObjList_TaxPerc').val("18");
    
 }
 
@@ -831,6 +836,8 @@ function AddEnquiryItem() {
                         allData[i].ProductCode = $('#enquiryObjList_ProductCode').val();
                         allData[i].OldProductCode = $('#enquiryObjList_OldProductCode').val();
                         allData[i].ProductName = $('#enquiryObjList_ProductName').val();
+                        allData[i].Rate = $('#enquiryObjList_Rate').val();
+                        allData[i].TaxPerc = $('#enquiryObjList_TaxPerc').val();
                         checkPoint = 1;
                         break;
                     }
@@ -841,6 +848,8 @@ function AddEnquiryItem() {
                     _EnquiryProductDetail[0].ProductCode = $('#enquiryObjList_ProductCode').val();
                     _EnquiryProductDetail[0].OldProductCode = $('#enquiryObjList_OldProductCode').val();
                     _EnquiryProductDetail[0].ProductName = $('#enquiryObjList_ProductName').val();
+                    _EnquiryProductDetail[0].Rate = $('#enquiryObjList_Rate').val();
+                    _EnquiryProductDetail[0].TaxPerc = $('#enquiryObjList_TaxPerc').val();
                     DataTables.ItemDetailsTable.rows.add(_EnquiryProductDetail).draw(false);
                 }
                 else {
@@ -853,6 +862,8 @@ function AddEnquiryItem() {
                 _EnquiryProductDetail[0].ProductCode = $('#enquiryObjList_ProductCode').val();
                 _EnquiryProductDetail[0].OldProductCode = $('#enquiryObjList_OldProductCode').val();
                 _EnquiryProductDetail[0].ProductName = $('#enquiryObjList_ProductName').val();
+                _EnquiryProductDetail[0].Rate = $('#enquiryObjList_Rate').val();
+                _EnquiryProductDetail[0].TaxPerc = $('#enquiryObjList_TaxPerc').val();
                 DataTables.ItemDetailsTable.rows.add(_EnquiryProductDetail).draw(false);
             }
         }
@@ -867,6 +878,7 @@ function ProductSearchOnchange(curObj) {
     debugger;
     if (curObj.value != "") {
         _EnquiryProductDetail = [];
+        $('#enquiryObjList_TaxPerc').val('18');
         var ds = GetProductByID(curObj.value);
         EnquiryProduct = new Object();
         EnquiryProduct.ID = null;
@@ -875,11 +887,14 @@ function ProductSearchOnchange(curObj) {
         EnquiryProduct.ProductCode = ds.Code
         EnquiryProduct.ProductDescription = ds.Description;
         EnquiryProduct.ProductName = ds.Name;
+        EnquiryProduct.Rate = ds.Rate;
+        EnquiryProduct.TaxPerc = ds.TaxPerc;
         _EnquiryProductDetail.push(EnquiryProduct);
         $('#enquiryObjList_ProductCode').val(_EnquiryProductDetail[0].ProductCode);
         $('#enquiryObjList_OldProductCode').val(_EnquiryProductDetail[0].OldProductCode);
         $('#enquiryObjList_ProductName').val(_EnquiryProductDetail[0].ProductName);
         $('#enquiryObjList_ProductDescription').val(_EnquiryProductDetail[0].ProductDescription);
+        $('#enquiryObjList_Rate').val(_EnquiryProductDetail[0].Rate);
     }
 }
 
@@ -915,6 +930,8 @@ function ProductEdit(curObj) {
         $("#ddlProductSearch").select2({ dropdownParent: $("#AddEnquiryItemModal") });
         $("#ddlProductSearch").val(rowData.ProductID).trigger('change');
         $('#enquiryObjList_ProductDescription').val(rowData.ProductDescription);
+        $('#enquiryObjList_TaxPerc').val(rowData.TaxPerc);
+        $('#enquiryObjList_Rate').val(roundoff(rowData.Rate));
     }
    }
 
@@ -983,6 +1000,8 @@ function AddEnquiryProductList() {
         EnquiryProduct.ProductCode = data[r].ProductCode;
         EnquiryProduct.ProductDescription = data[r].ProductDescription;
         EnquiryProduct.OldProductCode = data[r].OldProductCode;
+        EnquiryProduct.Rate = data[r].Rate;
+        EnquiryProduct.TaxPerc = data[r].TaxPerc;
         _EnquiryProductList.push(EnquiryProduct);
     }
 }

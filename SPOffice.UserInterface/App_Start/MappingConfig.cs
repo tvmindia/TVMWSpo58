@@ -106,6 +106,7 @@ namespace UserInterface.App_Start
                 //--for send message
                 config.CreateMap<MessageViewModel, Message>().ReverseMap();
                 config.CreateMap<EnquiryItemViewModel, EnquiryItem>().ReverseMap();
+                config.CreateMap<MaterialTypeViewModel, MaterialType>().ReverseMap();
             });
         }
     }

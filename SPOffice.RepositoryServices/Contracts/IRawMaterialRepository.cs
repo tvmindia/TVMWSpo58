@@ -13,5 +13,6 @@ namespace SPOffice.RepositoryServices.Contracts
         object InsertRawMaterial(RawMaterial rawMaterial);
         object UpdateRawMaterial(RawMaterial rawMaterial);
         object DeleteRawMaterial(Guid ID);
+        List<MaterialType> GetAllMaterialType();
     }
 }

@@ -43,12 +43,13 @@ $(document).ready(function () {
                { "data": "SourceName", "defaultContent": "<i>-</i>" },
                { "data": "DestName", "defaultContent": "<i>-</i>" },
                { "data": "courierAgency.Name", "defaultContent": "<i>-</i>" },
+               { "data": "Content", "defaultContent": "<i>-</i>" },
                {"data":"GeneralNotes","defaultContent":"<i>-</i>"},
                { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [
                  { "targets": [0], "visible": false, "searchable": false },
-               { className: "text-left", "targets": [1,2, 4, 5, 6, 7, 8,9] },
+               { className: "text-left", "targets": [1,2, 4, 5, 6, 7, 8,9,10] },
                { className: "text-center", "targets": [3] },
                { className: "text-center", "targets": [1, 2, 3, 4, 5, 6, 7, 8], "width": "8%" },
              { className: "text-center", "targets":[10],"width":"3%"}
@@ -205,6 +206,7 @@ function ClearFields() {
     $("#TrackingRefNo").val("");
     $("#GeneralNotes").val("");
     $("#TrackingURL").val("");
+    $("#Content").val("");
     ResetForm();
     ChangeButtonPatchView("Courier", "btnPatchAdd", "Add"); //ControllerName,id of the container div,Name of the action
     clearUploadControl();
@@ -305,7 +307,7 @@ function FillCourierDetails(ID) {
     $("#GeneralNotes").val(thisItem.GeneralNotes);
     $("#TrackingURL").val(thisItem.TrackingURL);
     $("#lblCourierNO").text(thisItem.CourierNO);
-   
+    $("#Content").val(thisItem.Content);
     clearUploadControl();
     PaintImages(ID);
 

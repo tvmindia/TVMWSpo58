@@ -129,7 +129,7 @@ $(document).ready(function () {
 
             ]
         });
-
+        $('#btnDownload').hide();
         $('#tblPurchaseOrderDetail tbody').on('dblclick', 'td', function () {
             EditPurchaseOrderDetailTable(this);
         });
@@ -1435,3 +1435,18 @@ function MailSuccess(data, status) {
     }
 }
 
+function DownloadMailPreview() {
+    debugger;
+    $('#btnDownload').trigger('click');
+}
+
+//To download file in PDF
+function GetHtmlData() {
+    debugger;
+    var bodyContent = $('#mailmodelcontent').html();
+    var headerContent = $('#headercontainer').html();
+    $("#hdnContent").val(bodyContent);
+    $('#hdnHeadContent').val(headerContent);
+    var supplierName = $("#ddlSupplier option:selected").text();
+    $('#hdnSupplierName').val(supplierName);
+}

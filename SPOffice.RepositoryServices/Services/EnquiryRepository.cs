@@ -691,7 +691,9 @@ namespace SPOffice.RepositoryServices.Services
                                         enquiryItem.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         enquiryItem.ProductCode = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty);
                                         enquiryItem.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
-                                       
+                                        enquiryItem.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryItem.Rate);
+                                        enquiryItem.TaxPerc= (sdr["TaxPerc"].ToString() != "" ? decimal.Parse(sdr["TaxPerc"].ToString()) : enquiryItem.TaxPerc);
+
                                     }
                                     enquiryItemList.Add(enquiryItem);
                                 }

@@ -81,6 +81,6 @@ namespace SPOffice.DataAccessObject.DTO
         public Product product { get; set; }
         public Common commonObj { get; set; }
         public Company company { get; set; }
-       
+        public decimal TaxPerc { get; set; }
     }
 }

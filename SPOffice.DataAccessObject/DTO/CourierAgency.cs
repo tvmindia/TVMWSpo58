@@ -39,5 +39,6 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public string TrackingURL { get; set; }
         public Common commonObj { get; set; }
+        public string Content { get; set; }
     }
 }

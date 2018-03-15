@@ -131,6 +131,7 @@ namespace SPOffice.UserInterface.Models
         public List<FileUpload> AttachmentLists { get; set; }
         public Guid hdnFileID { get; set; }
         public string MailBody { get; set; }
+        public PDFTools pdfToolsObj { get; set; }
     }
 
     public class SuppliersViewModel

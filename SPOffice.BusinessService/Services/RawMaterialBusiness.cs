@@ -61,5 +61,20 @@ namespace SPOffice.BusinessService.Services
         {
             return _rawMaterialRepository.UpdateRawMaterial(rawMaterial);
         }
+
+        public List<MaterialType> GetAllMaterialType()
+        {
+            List<MaterialType> materialList = null;
+            try
+            {
+                materialList = _rawMaterialRepository.GetAllMaterialType();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return materialList;
+        }
+
     }
 }

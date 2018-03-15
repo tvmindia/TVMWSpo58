@@ -31,5 +31,6 @@ namespace UserInterface.Models
         public string ContentFileName { get; set; }
         
         public string CustomerName { get; set; }
+        public string SupplierName { get; set; }
     }
 }

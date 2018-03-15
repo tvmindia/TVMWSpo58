@@ -275,6 +275,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _courier.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _courier.ID);
                                         _courier.CourierNO = (sdr["CourierNO"].ToString() != "" ? sdr["CourierNO"].ToString() : _courier.CourierNO);
                                         _courier.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : _courier.Type);
+                                        _courier.Content = (sdr["Content"].ToString() != "" ? sdr["Content"].ToString() : _courier.Content);
                                         _courier.TransactionDate = (sdr["TransactionDate"].ToString() != "" ? DateTime.Parse(sdr["TransactionDate"].ToString()).ToString(s.dateformat) : _courier.TransactionDate);
                                         _courier.Track = (sdr["Track"].ToString() != "" ? sdr["Track"].ToString() : _courier.Track);
                                         _courier.SourceName = (sdr["SourceName"].ToString() != "" ? sdr["SourceName"].ToString() : _courier.SourceName);
@@ -342,7 +343,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@DistributionDate", SqlDbType.DateTime).Value = courier.DistributionDate;
                         cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar,10).Value = courier.AgencyCode;
                         cmd.Parameters.Add("@TrackingRefNo", SqlDbType.VarChar, 50).Value = courier.TrackingRefNo;
-                        
+                        cmd.Parameters.Add("@Content", SqlDbType.NVarChar, 50).Value = courier.Content;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
                         cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = courier.hdnFileID;
@@ -423,6 +424,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@DistributionDate", SqlDbType.DateTime).Value = courier.DistributionDate;
                         cmd.Parameters.Add("@AgencyCode", SqlDbType.VarChar, 10).Value = courier.AgencyCode;
                         cmd.Parameters.Add("@TrackingRefNo", SqlDbType.VarChar, 50).Value = courier.TrackingRefNo;
+                        cmd.Parameters.Add("@Content", SqlDbType.NVarChar, 50).Value = courier.Content;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = courier.GeneralNotes;
                         cmd.Parameters.Add("@TrackingURL", SqlDbType.VarChar, 500).Value = courier.TrackingURL;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = courier.commonObj.UpdatedBy;

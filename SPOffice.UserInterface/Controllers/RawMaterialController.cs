@@ -25,7 +25,24 @@ namespace SPOffice.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "R")]
         public ActionResult Index()
         {
-            return View();
+            RawMaterialViewModel rawMaterialViewModel = new RawMaterialViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            rawMaterialViewModel.materialTypeList = Mapper.Map<List<MaterialType>, List<MaterialTypeViewModel>>(_rawMaterialBusiness.GetAllMaterialType());
+            if (rawMaterialViewModel.materialTypeList != null)
+            {
+                foreach (MaterialTypeViewModel uvm in rawMaterialViewModel.materialTypeList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = uvm.Description,
+                        Value = uvm.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            }
+
+            rawMaterialViewModel.RawMaterialList = selectListItem;
+            return View(rawMaterialViewModel);
         }
 
         #region GetAllRawMaterials
@@ -138,7 +155,10 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "openNav();";
 
-
+                    ToolboxViewModelObj.PrintBtn.Visible = true;
+                    ToolboxViewModelObj.PrintBtn.Text = "Export";
+                    ToolboxViewModelObj.PrintBtn.Title = "Export";
+                    ToolboxViewModelObj.PrintBtn.Event = "PrintReport();";
                     break;
                 case "Edit":
 

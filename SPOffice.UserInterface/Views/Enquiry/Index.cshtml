@@ -321,6 +321,8 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                                             <th>ProductID</th>
                                                             <th>Product Code</th>
                                                             <th>Old Product Code</th>
+                                                            <th>Rate</th>
+                                                            <th>Tax Percentage</th>
                                                             <th>Description</th>
                                                             <th>...</th>
                                                         </tr>
@@ -480,7 +482,7 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                             <div class="col-md-12">
 
                                                 <div class="col-md-10">
-                                                    @Html.EditorFor(model => model.LandLine, new { htmlAttributes = new { @class = "form-control HeaderBox", @id = "LandLine" } })
+                                                    @Html.EditorFor(model => model.LandLine, new { htmlAttributes = new { @class = "form-control HeaderBox", onkeypress = "return isNumber(event)", @id = "LandLine" } })
                                                     @Html.ValidationMessageFor(model => model.LandLine, "", new { @class = "text-danger" })
 
 
@@ -885,6 +887,32 @@ Layout = "~/Views/Shared/_LayoutPage.cshtml";
                                 <div class="col-md-12">
                                     @Html.EditorFor(model => model.enquiryObjList.ProductDescription, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.enquiryObjList.Rate, htmlAttributes: new { @class = "control-label " })
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.enquiryObjList.Rate, new { htmlAttributes = new { @class = "form-control HeaderBox text-right", onkeypress = "return isNumber(event)" } })
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.enquiryObjList.TaxPerc, htmlAttributes: new { @class = "control-label " })
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.enquiryObjList.TaxPerc, new { htmlAttributes = new { @class = "form-control HeaderBox Roundoff ApplyPer", onkeypress = "return isNumber(event)" } })
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1"></div>
                             </div>
                         </div>
 

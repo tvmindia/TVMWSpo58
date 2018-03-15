@@ -174,5 +174,6 @@ namespace SPOffice.UserInterface.Models
         public CommonViewModel commonObj { get; set; }
         public CompanyViewModel company { get; set; }
         public List<SelectListItem> enquiryItemList { get; set; }
+        public decimal TaxPerc { get; set; }
     }
 }

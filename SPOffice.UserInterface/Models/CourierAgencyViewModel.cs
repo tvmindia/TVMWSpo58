@@ -81,5 +81,6 @@ namespace SPOffice.UserInterface.Models
        // [RegularExpression(@" ^ http(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$", ErrorMessage = "URL format is wrong")]
         public string TrackingURL { get; set; }
         public CommonViewModel commonObj { get; set; }
+        public string Content { get; set; }
     }
 }

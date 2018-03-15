@@ -95,6 +95,7 @@ namespace SPOffice.RepositoryServices.Services
                                     {
                                         _rawMaterial.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _rawMaterial.ID);
                                         _rawMaterial.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _rawMaterial.MaterialCode);
+                                        _rawMaterial.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : _rawMaterial.Code);
                                         _rawMaterial.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _rawMaterial.Description);
                                         _rawMaterial.ApproximateRate=(sdr["ApproximateRate"].ToString()!=""? decimal.Parse(sdr["ApproximateRate"].ToString()) :_rawMaterial.ApproximateRate);
                                         _rawMaterial.Type = (sdr["Type"].ToString());
@@ -138,6 +139,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@MaterialCode", SqlDbType.VarChar, 10).Value = rawMaterial.MaterialCode;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = rawMaterial.Description;
+                        cmd.Parameters.Add("@MaterialType", SqlDbType.VarChar, 250).Value = rawMaterial.Type;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = rawMaterial.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = rawMaterial.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -203,6 +205,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = rawMaterial.ID;
                         cmd.Parameters.Add("@MaterialCode", SqlDbType.VarChar, 50).Value = rawMaterial.MaterialCode;
+                        cmd.Parameters.Add("@MaterialType", SqlDbType.VarChar, 250).Value = rawMaterial.Type;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = rawMaterial.Description;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = rawMaterial.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = rawMaterial.commonObj.UpdatedDate;
@@ -242,6 +245,51 @@ namespace SPOffice.RepositoryServices.Services
                 Status = outputStatus.Value.ToString(),
                 Message = Cobj.UpdateSuccess
             };
+        }
+
+        public List<MaterialType> GetAllMaterialType()
+        {
+            List<MaterialType> materialTypeList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllMaterialsType]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                materialTypeList = new List<MaterialType>();
+                                while (sdr.Read())
+                                {
+                                    MaterialType materialType = new MaterialType();
+                                    {
+                                        materialType.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : materialType.Code);
+                                        materialType.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : materialType.Description);
+
+                                    }
+                                    materialTypeList.Add(materialType);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return materialTypeList;
         }
     }
 }

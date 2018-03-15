@@ -5,7 +5,14 @@ $(document).ready(function () {
 
         DataTables.RawMaterialTable = $('#rawMaterialTable').DataTable(
          {
-             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
+             buttons: [{
+                 extend: 'excel',
+                 exportOptions:
+                              {
+                                  columns: [1,2,3,4]
+                              }
+             }],
              order: [],
              searching: true,
              paging: true,
@@ -18,6 +25,7 @@ $(document).ready(function () {
              columns: [
                { "data": "ID", "defaultContent": "<i>-</i>" },
                { "data": "MaterialCode", "defaultContent": "<i>-</i>" },
+                { "data": "Type", "defaultContent": "<i>-</i>" },
                { "data": "Description", "defaultContent": "<i>-</i>" },
                { "data": "commonObj.CreatedDateString", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
@@ -30,7 +38,7 @@ $(document).ready(function () {
 
              ]
          });
-
+        $(".buttons-excel").hide();
         $('#rawMaterialTable tbody').on('dblclick', 'td', function () {
 
             Edit(this);
@@ -95,6 +103,16 @@ function goBack() {
     BindAllRawMaterials();
 }
 
+
+function PrintReport() {
+    try {
+        $(".buttons-excel").trigger('click');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
 function Save() {
 
     try {
@@ -146,7 +164,7 @@ function ClearFields() {
     $("#MaterialCode").val("");
     $("#ID").val('');
     $("#Description").val('');
-  
+    $("#Type").val('');
 
     ResetForm();
     ChangeButtonPatchView("RawMaterial", "btnPatchAdd", "Add"); //ControllerName,id of the container div,Name of the action
@@ -225,17 +243,19 @@ function GetRawMaterialByID(id) {
 
 //---------------------------------------Fill Customer Details--------------------------------------------------//
 function FillRawMaterialDetails(id) {
-
+    debugger;
     ChangeButtonPatchView("RawMaterial", "btnPatchAdd", "Edit"); //ControllerName,id of the container div,Name of the action
     var thisItem = GetRawMaterialByID(id); //Binding Data
     //Hidden
     $("#ID").val(thisItem.ID);
     $("#MaterialCode").val(thisItem.MaterialCode);
     $("#Description").val(thisItem.Description);
+    $("#Type").val(thisItem.Code);
 }
 
 //---------------------------------------Edit Bank--------------------------------------------------//
 function Edit(currentObj) {
+    debugger;
     //Tab Change on edit click
     openNav("0");
     ResetForm();

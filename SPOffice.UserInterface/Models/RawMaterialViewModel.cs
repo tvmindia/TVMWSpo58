@@ -16,8 +16,16 @@ namespace SPOffice.UserInterface.Models
         public string MaterialCode { get; set; }
         public decimal ApproximateRate { get; set; }
         public string Type { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
         public CommonViewModel commonObj { get; set; }
         public List<SelectListItem> RawMaterialList { get; set; }
+        public List<MaterialTypeViewModel> materialTypeList { get; set; }
+    }
+
+    public class MaterialTypeViewModel
+    {
+        public string Code { get; set; }
+        public string Description { get; set; }
     }
 }
