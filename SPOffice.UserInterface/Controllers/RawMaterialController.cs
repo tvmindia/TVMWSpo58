@@ -17,9 +17,11 @@ namespace SPOffice.UserInterface.Controllers
     {
         AppConst c = new AppConst();
         IRawMaterialBusiness _rawMaterialBusiness;
-        public RawMaterialController(IRawMaterialBusiness rawMaterialBusiness)
+        IUnitsBusiness _unitsBusiness;
+        public RawMaterialController(IRawMaterialBusiness rawMaterialBusiness, IUnitsBusiness unitsBusiness)
         {
             _rawMaterialBusiness = rawMaterialBusiness;
+            _unitsBusiness = unitsBusiness;
         }
         // GET: RawMaterial
         [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "R")]
@@ -42,6 +44,20 @@ namespace SPOffice.UserInterface.Controllers
             }
 
             rawMaterialViewModel.RawMaterialList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            List<UnitsViewModel> unitsList = Mapper.Map<List<Units>, List<UnitsViewModel>>(_unitsBusiness.GetAllUnits());
+            foreach (UnitsViewModel US in unitsList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = US.Description,
+                        Value = US.UnitsCode,
+                        Selected = false
+                    });
+
+                }
+        rawMaterialViewModel.UnitList = selectListItem;
             return View(rawMaterialViewModel);
         }
 

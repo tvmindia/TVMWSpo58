@@ -14,6 +14,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string Description { get; set; }
         public Common commonObj { get; set; }
         public string Code { get; set; }
+        public string Unit { get; set; }
+        public string UnitsCode { get; set; }
     }
 
     public class MaterialType

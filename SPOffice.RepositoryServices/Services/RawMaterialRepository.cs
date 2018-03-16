@@ -96,7 +96,9 @@ namespace SPOffice.RepositoryServices.Services
                                         _rawMaterial.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : _rawMaterial.ID);
                                         _rawMaterial.MaterialCode = (sdr["MaterialCode"].ToString() != "" ? sdr["MaterialCode"].ToString() : _rawMaterial.MaterialCode);
                                         _rawMaterial.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : _rawMaterial.Code);
+                                        _rawMaterial.UnitsCode = (sdr["UnitsCode"].ToString() != "" ? sdr["UnitsCode"].ToString() : _rawMaterial.UnitsCode);
                                         _rawMaterial.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _rawMaterial.Description);
+                                        _rawMaterial.Unit = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : _rawMaterial.Unit);
                                         _rawMaterial.ApproximateRate=(sdr["ApproximateRate"].ToString()!=""? decimal.Parse(sdr["ApproximateRate"].ToString()) :_rawMaterial.ApproximateRate);
                                         _rawMaterial.Type = (sdr["Type"].ToString());
                                         _rawMaterial.commonObj = new Common();
@@ -140,6 +142,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@MaterialCode", SqlDbType.VarChar, 10).Value = rawMaterial.MaterialCode;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = rawMaterial.Description;
                         cmd.Parameters.Add("@MaterialType", SqlDbType.VarChar, 250).Value = rawMaterial.Type;
+                        cmd.Parameters.Add("@Unit", SqlDbType.VarChar, 50).Value = rawMaterial.Unit;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = rawMaterial.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = rawMaterial.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
@@ -206,6 +209,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = rawMaterial.ID;
                         cmd.Parameters.Add("@MaterialCode", SqlDbType.VarChar, 50).Value = rawMaterial.MaterialCode;
                         cmd.Parameters.Add("@MaterialType", SqlDbType.VarChar, 250).Value = rawMaterial.Type;
+                        cmd.Parameters.Add("@Unit", SqlDbType.VarChar, 50).Value = rawMaterial.Unit;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = rawMaterial.Description;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = rawMaterial.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = rawMaterial.commonObj.UpdatedDate;

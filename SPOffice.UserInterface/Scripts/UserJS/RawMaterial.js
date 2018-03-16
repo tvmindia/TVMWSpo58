@@ -10,7 +10,7 @@ $(document).ready(function () {
                  extend: 'excel',
                  exportOptions:
                               {
-                                  columns: [1,2,3,4]
+                                  columns: [1,2,3,4,5]
                               }
              }],
              order: [],
@@ -26,6 +26,7 @@ $(document).ready(function () {
                { "data": "ID", "defaultContent": "<i>-</i>" },
                { "data": "MaterialCode", "defaultContent": "<i>-</i>" },
                 { "data": "Type", "defaultContent": "<i>-</i>" },
+                  { "data": "Unit", "defaultContent": "<i>-</i>" },
                { "data": "Description", "defaultContent": "<i>-</i>" },
                { "data": "commonObj.CreatedDateString", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" title="Edit OtherIncome" class="actionLink"  onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
@@ -165,7 +166,7 @@ function ClearFields() {
     $("#ID").val('');
     $("#Description").val('');
     $("#Type").val('');
-
+    $("#Unit").val('');
     ResetForm();
     ChangeButtonPatchView("RawMaterial", "btnPatchAdd", "Add"); //ControllerName,id of the container div,Name of the action
 }
@@ -251,6 +252,7 @@ function FillRawMaterialDetails(id) {
     $("#MaterialCode").val(thisItem.MaterialCode);
     $("#Description").val(thisItem.Description);
     $("#Type").val(thisItem.Code);
+    $("#Unit").val(thisItem.UnitsCode);
 }
 
 //---------------------------------------Edit Bank--------------------------------------------------//
