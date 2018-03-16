@@ -67,9 +67,9 @@ namespace SPOffice.UserInterface.API
             }
         }
 
-        #endregion Insert a product
+        #endregion Insert a Employee
 
-        #region Update a product
+        #region Update a Employee
         /// <summary>
         /// Update an existing product
         /// </summary>
@@ -101,6 +101,26 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
-        #endregion Update a product
+        #endregion Update a Employee
+
+
+        #region GetAllEmployee
+        [HttpGet]
+        public string GetEmployeeListForMobile()
+        {
+            try
+            {
+                List<EmployeeViewModel> EmployeeViewModel = Mapper.Map<List<Employee>, List<EmployeeViewModel>>(_employeeBusiness.GetAllRequisitionByEmployee());
+
+                return JsonConvert.SerializeObject(new { Result = true, Records = EmployeeViewModel });
+
+            }
+            catch (Exception ex)
+            {
+
+                return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
+            }
+        }
+        #endregion GetAllEmployee
     }
 }

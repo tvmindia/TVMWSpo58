@@ -23,7 +23,13 @@ namespace SPOffice.BusinessService.Services
             empList = empList != null ? empList.Where(e => e.EmployeeType=="EMP").ToList() : null;
             return empList;
         }
-
+        public List<Employee> GetAllRequisitionByEmployee()
+        {
+            List<Employee> empList = new List<Employee>();
+            empList = _employeeRepository.GetAllRequisitionByEmployee();
+            return empList;
+        }
+        
         public List<SalesPerson> GetAllSalesPersons()
         {
             List<SalesPerson> salesPersonList = _employeeRepository.GetAllSalesPersons();

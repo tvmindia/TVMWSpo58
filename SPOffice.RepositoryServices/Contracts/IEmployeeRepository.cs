@@ -13,5 +13,6 @@ namespace SPOffice.RepositoryServices.Contracts
         List<SalesPerson> GetAllSalesPersons();
         Employee InsertEmployee(Employee employeeObj);
         object UpdateEmployee(Employee empObj);
+        List<Employee> GetAllRequisitionByEmployee();
     }
 }

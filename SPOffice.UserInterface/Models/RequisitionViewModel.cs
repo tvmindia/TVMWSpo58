@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using UserInterface.Models;
 
 namespace SPOffice.UserInterface.Models
@@ -43,6 +44,8 @@ namespace SPOffice.UserInterface.Models
         public bool IsApprover { get; set; }
         public bool ViewOnly { get; set; }
         public ReqAdvanceSearchViewModel ReqAdvSearchObj { get; set; }
+        public List<SelectListItem> EmployeeList { get; set; }
+        public string RequisitionByEmpID { get; set; }
 
     }
     public class RequisitionDetailViewModel

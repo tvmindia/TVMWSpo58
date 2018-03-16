@@ -384,6 +384,7 @@ function BindRequisitionDetail()
         $('#ReqDateFormatted').val(RequisitionViewModel.ReqDateFormatted);
         $('#ReqStatus').val(RequisitionViewModel.ReqStatus);
         $('#ReqForCompany').val(RequisitionViewModel.ReqForCompany);
+        $('#RequisitionBy').val(RequisitionViewModel.RequisitionByEmpID);
         $('#lblReqStatus').text(RequisitionViewModel.ReqStatus);
         $('#hdnReqForCompany').val(RequisitionViewModel.ReqForCompany);
         $('#lblApprovalStatus').text((RequisitionViewModel.FinalApproval) ? "Final ✔ " : ((RequisitionViewModel.ManagerApproved) ? "Final ⏱ " : "Manager ⏱"))

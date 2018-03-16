@@ -243,6 +243,20 @@
                                 </div>
 
                             </div>
+                            <div class="form-group col-md-6">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.RequisitionBy, htmlAttributes: new { @class = "control-label " })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.RequisitionBy, Model.EmployeeList, "-- Select Employee --", new { @class = "form-control", style = "padding:4px 12px;" })
+                                        @Html.ValidationMessageFor(model => model.RequisitionBy, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
                             <div class="form-group col-md-12"></div>
                         </div>
                         <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">

@@ -183,6 +183,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _requisitionObj.ManagerApprovalDate = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()) : _requisitionObj.ManagerApprovalDate);
                                         _requisitionObj.ManagerApprovalDateFormatted = (sdr["ManagerApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["ManagerApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.ManagerApprovalDateFormatted);
                                         _requisitionObj.RequisitionBy = (sdr["RequisitionBy"].ToString() != "" ? (sdr["RequisitionBy"].ToString()) : _requisitionObj.RequisitionBy);
+                                        _requisitionObj.RequisitionByEmpID = (sdr["RequisitionByEmpID"].ToString() != "" ? (sdr["RequisitionByEmpID"].ToString()) : _requisitionObj.RequisitionByEmpID);
                                         _requisitionObj.CommonObj = new Common();
                                         _requisitionObj.CommonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? (sdr["CreatedBy"].ToString()) : _requisitionObj.CommonObj.CreatedBy);
                                         _requisitionObj.FinalApproval = (sdr["FinalApproval"].ToString() != "" ? bool.Parse(sdr["FinalApproval"].ToString()) : _requisitionObj.FinalApproval);
@@ -225,6 +226,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ReqDate", SqlDbType.DateTime).Value = RequisitionObj.ReqDateFormatted;
                         cmd.Parameters.Add("@ReqForCompany", SqlDbType.VarChar, 10).Value = RequisitionObj.ReqForCompany;
                         cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar, 50).Value = RequisitionObj.ReqStatus;
+                        cmd.Parameters.Add("@ReqByEmpID", SqlDbType.VarChar,50).Value = RequisitionObj.RequisitionBy;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = RequisitionObj.DetailXML;
                         cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = RequisitionObj.ManagerApproved;
                         cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = RequisitionObj.FinalApproval;
@@ -297,6 +299,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ReqDate", SqlDbType.DateTime).Value = RequisitionObj.ReqDateFormatted;
                         cmd.Parameters.Add("@ReqForCompany", SqlDbType.VarChar, 10).Value = RequisitionObj.ReqForCompany;
                         cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar, 50).Value = RequisitionObj.ReqStatus;
+                        cmd.Parameters.Add("@ReqByEmpID", SqlDbType.VarChar,50).Value = RequisitionObj.RequisitionBy;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = RequisitionObj.DetailXML;
                         //cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = RequisitionObj.ManagerApproved;
                         //cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = RequisitionObj.FinalApproval;

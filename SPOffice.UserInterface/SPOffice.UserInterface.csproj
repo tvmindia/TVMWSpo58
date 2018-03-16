@@ -666,6 +666,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\CompanyController.cs" />
     <Compile Include="API\CustomerController.cs" />
     <Compile Include="API\DashBoardController.cs" />
     <Compile Include="API\EmployeeController.cs" />
@@ -676,6 +677,7 @@
     <Compile Include="API\ProductController.cs" />
     <Compile Include="API\ProformaController.cs" />
     <Compile Include="API\QuotationController.cs" />
+    <Compile Include="API\RawMaterialController.cs" />
     <Compile Include="API\RequisitionController.cs" />
     <Compile Include="API\SupplierController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />

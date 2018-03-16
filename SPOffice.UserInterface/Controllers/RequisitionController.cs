@@ -20,12 +20,14 @@ namespace SPOffice.UserInterface.Controllers
         IRequisitionBusiness _requisitionBusiness;
         ICompanyBusiness _companyBusiness;
         IRawMaterialBusiness _rawMaterialBusiness;
+        IEmployeeBusiness _employeeBusiness;
         SecurityFilter.ToolBarAccess _tool;
-        public RequisitionController(IRequisitionBusiness requisitionBusiness, ICompanyBusiness companyBusiness, IRawMaterialBusiness rawMaterialBusiness, SecurityFilter.ToolBarAccess tool)
+        public RequisitionController(IRequisitionBusiness requisitionBusiness, ICompanyBusiness companyBusiness, IRawMaterialBusiness rawMaterialBusiness, IEmployeeBusiness employeeBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _requisitionBusiness = requisitionBusiness;
             _companyBusiness = companyBusiness;
             _rawMaterialBusiness = rawMaterialBusiness;
+            _employeeBusiness = employeeBusiness;
             _tool = tool;
         }
         // GET: Requisition
@@ -105,6 +107,20 @@ namespace SPOffice.UserInterface.Controllers
                 });
             }
             RVM.RequisitionDetailObj.RawMaterialObj.RawMaterialList = selectListItem;
+
+            RVM.EmployeeList = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            List<EmployeeViewModel> EmployeeViewModel = Mapper.Map<List<Employee>, List<EmployeeViewModel>>(_employeeBusiness.GetAllRequisitionByEmployee());
+            foreach (EmployeeViewModel Rwl in EmployeeViewModel)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Rwl.Name,
+                    Value = Rwl.ID.ToString(),
+                    Selected = false
+                });
+            }
+            RVM.EmployeeList = selectListItem;
             return View(RVM);
         }
         [HttpGet]
