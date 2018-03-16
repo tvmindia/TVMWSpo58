@@ -430,12 +430,16 @@ function BindPurchaseOrder(ID) {
             if(!(jsresult.IsFinalApproved))
             {
                 $('#btnMail').attr('disabled', true);
-                $('#btnMail').attr('title','Document is not Approved')
+                $('#btnMail').attr('title', 'Document is not Approved')
+                $('#btnMailDownload').attr('disabled', true);
+                $('#btnMailDownload').attr('title', 'Cannot Download,Document is not Approved')
+
             }
             if (jsresult.IsFinalApproved) {
                 $("#lblApprovedOrNot").text('Approved');
                 ChangeButtonPatchView('SupplierOrder', 'btnPatchAdd', 'EditApprove');
                 $('#btnMail').attr('disabled', false);
+                $('#btnMailDownload').attr('disabled', false);
                 $("#lblApprovalStatus").show();
             }
             else
