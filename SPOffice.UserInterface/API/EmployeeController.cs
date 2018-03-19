@@ -56,7 +56,7 @@ namespace SPOffice.UserInterface.API
                 {
                     return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
                 }
-                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
 
 
             }
@@ -93,7 +93,7 @@ namespace SPOffice.UserInterface.API
                 {
                     return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
                 }
-                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
             }
             catch (Exception ex)
             {

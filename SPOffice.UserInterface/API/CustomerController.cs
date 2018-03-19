@@ -56,7 +56,7 @@ namespace SPOffice.UserInterface.API
             {
 
                 CustomerPOViewModel customerPOViewModel = Mapper.Map<CustomerPO, CustomerPOViewModel>(_customerBusiness.GetCustomerPODetailsByID(cust.ID != null && cust.ID.ToString() != "" ? Guid.Parse(cust.ID.ToString()) : Guid.Empty));
-                return JsonConvert.SerializeObject(new { Result = true, Record = customerPOViewModel });
+                return JsonConvert.SerializeObject(new { Result = true, Records = customerPOViewModel });
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace SPOffice.UserInterface.API
                 {
                 return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
             }
-            return JsonConvert.SerializeObject(new { Result = true, Record = result });
+            return JsonConvert.SerializeObject(new { Result = true, Records = result });
 
 
         }
@@ -122,7 +122,7 @@ namespace SPOffice.UserInterface.API
                 {
                     return JsonConvert.SerializeObject(new { Result = false, Message = "Authentication Failed" });
                 }
-                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
 
 
             }

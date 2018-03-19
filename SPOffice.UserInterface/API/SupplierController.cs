@@ -88,7 +88,7 @@ namespace SPOffice.UserInterface.API
                     }
                 }
                 SupplierOrderViewModel supplierPOViewModel = Mapper.Map<SupplierOrder, SupplierOrderViewModel>(_supplierBusiness.GetSupplierPurchaseOrderByID(suppObj.ID != null && suppObj.ID.ToString() != "" ? Guid.Parse(suppObj.ID.ToString()) : Guid.Empty));
-                return JsonConvert.SerializeObject(new { Result = true, Record = supplierPOViewModel });
+                return JsonConvert.SerializeObject(new { Result = true, Records = supplierPOViewModel });
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace SPOffice.UserInterface.API
                 DataAccessObject.DTO.Common commonobj = new DataAccessObject.DTO.Common();
                 suppObj.commonObj.UpdatedDate = commonobj.GetCurrentDateTime();
                 object supplierObj =_supplierBusiness.ApproveSupplierOrder((Guid)suppObj.ID,commonobj.GetCurrentDateTime());
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = supplierObj , Message="Approved" });
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = supplierObj , Message="Approved" });
             }
             catch (Exception ex)
             {
@@ -162,7 +162,7 @@ namespace SPOffice.UserInterface.API
             try
             {
                 result = _supplierBusiness.DeletePurchaseOrder((Guid)supplierObj.ID);
-                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
             }
             catch (Exception ex)
             {

@@ -132,7 +132,7 @@ namespace SPOffice.UserInterface.API
                 RequisitionObj.CommonObj.UpdatedDate = commonobj.GetCurrentDateTime();
                 //RequisitionObj.ID = Guid.Parse(userObj.ID);
                 RequisitionViewModel Requisition = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));
-                return JsonConvert.SerializeObject(new { Result =true, Record = Requisition, Message = "Approved" });
+                return JsonConvert.SerializeObject(new { Result =true, Records = Requisition, Message = "Approved" });
             }
             catch (Exception ex)
             {
@@ -183,7 +183,7 @@ namespace SPOffice.UserInterface.API
                             break;
                     }
 
-                    return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                    return JsonConvert.SerializeObject(new { Result = true, Records = result });
                 }
             }
             catch (Exception ex)
@@ -202,7 +202,7 @@ namespace SPOffice.UserInterface.API
             try
             {
                 result = _requisitionBusiness.DeleteRequisitionDetailByID(ReqObj.ID);
-                return JsonConvert.SerializeObject(new { Result = true, Record = result });
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
             }
             catch (Exception ex)
             {
