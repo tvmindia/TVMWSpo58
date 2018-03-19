@@ -100,6 +100,7 @@ namespace SPOffice.UserInterface.API
 
 
         #region Approve PO
+        [HttpPost]
         public string ApproveSupplierOrder(SupplierOrderViewModel suppObj)
         {
             try
