@@ -23,7 +23,7 @@ namespace SPOffice.UserInterface.API
             _unitsBusiness = unitsBusiness;
         }
         #region GetAllMaterialType
-        [HttpGet]
+        [HttpPost]
         public string GetAllRawMaterials()
         {
             try

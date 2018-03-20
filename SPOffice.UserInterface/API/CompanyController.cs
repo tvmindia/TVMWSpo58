@@ -21,7 +21,7 @@ namespace SPOffice.UserInterface.API
             _companyBusiness = companyBusiness;
         }
         #region GetAllCompanies
-        [HttpGet]
+        [HttpPost]
         public string GetAllCompanies()
         {
             try
