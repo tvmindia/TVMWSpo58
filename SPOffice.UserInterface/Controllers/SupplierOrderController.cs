@@ -384,7 +384,8 @@ namespace SPOffice.UserInterface.Controllers
                         MPVM.SOVMobj.BodyHeader = MPVM.SOVMobj.BodyHeader.Replace("\n", "<br/>");
                     if (MPVM.SOVMobj.BodyFooter != null)
                         MPVM.SOVMobj.BodyFooter = MPVM.SOVMobj.BodyFooter.Replace("\n", "<br/>");
- 
+                    ViewBag.path = "http://" + HttpContext.Request.Url.Authority + MPVM.SOVMobj.company.LogoURL;
+
                 }
             }
             catch (Exception ex)
