@@ -48,6 +48,10 @@ namespace SPOffice.BusinessService.Services
         {
             return _requisitionRepository.DeleteRequisitionDetailByID(ID);
         }
+        public object DeleteRequisitionByID(Guid ID)
+        {
+            return _requisitionRepository.DeleteRequisitionByID(ID);
+        }
         public RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo)
         {
             return _requisitionRepository.GetRequisitionOverViewCount(UserName, IsAdminORCeo);

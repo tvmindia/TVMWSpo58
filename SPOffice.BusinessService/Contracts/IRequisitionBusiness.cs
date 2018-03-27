@@ -14,6 +14,7 @@ namespace SPOffice.BusinessService.Contracts
         object UpdateRequisition(Requisition RequisitionObj);
         Requisition GetRequisitionDetails(Guid ID, string LoginName);
         object DeleteRequisitionDetailByID(Guid ID);
+        object DeleteRequisitionByID(Guid ID);
         RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo);
         Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo);
         void SendToFCMManager(string titleString, string descriptionString, Boolean isCommon, string CompanyCode = "");

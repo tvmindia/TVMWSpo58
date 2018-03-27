@@ -304,6 +304,7 @@ function AddNew() {
 }
 function Edit(this_Obj)
 {
+    debugger;
     ClearFormFields();
     $('.Ivalidate').css("border-color", "");
     Rowindex = -1;
@@ -406,6 +407,10 @@ function BindRequisitionDetail()
         }
         else {
             ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'Edit');
+        }
+        if ((IsManagerApproved == 1) || (FinalApproved == 1))
+        {
+            ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'EditApproved');
         }
         if ($('#ViewOnly').val() == 'True') {
             ChangeButtonPatchView('Requisition', 'divbuttonPatchAddRequisition', 'View');
@@ -774,4 +779,43 @@ function RequisitionBind(ID) {
     $('#ID').val(ID);
     openNav();
     BindRequisitionDetail(ID);
+}
+
+function DeleteRequisition() {
+    var ID = $("#ID").val();
+    if (ID) {
+        notyConfirm('Are you sure to delete?', 'DeleteItem("' + ID + '");', '', "Yes, delete it!");
+    }
+}
+function DeleteItem(ID) {
+    try {
+        //Event Request Case
+        if (ID) {
+            var data = { "ID": ID };
+            var ds = {};
+            ds = GetDataFromServer("Requisition/DeleteRequisitionByID/", data);
+            debugger;
+            if (ds != '') {
+                ds = JSON.parse(ds);
+            }
+            switch (ds.Result) {
+                case "OK":
+                    notyAlert('success', ds.Message);
+                    DataTables.RequisitionList.clear().rows.add(GetUserRequisitionList()).draw(false);
+                    BindRequisitionDetail();
+                    closeNav();
+                    break;
+                case "ERROR":
+                    notyAlert('error', ds.Message);
+                    break;
+                default:
+                    break;
+            }
+            //return ds.Record;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
 }

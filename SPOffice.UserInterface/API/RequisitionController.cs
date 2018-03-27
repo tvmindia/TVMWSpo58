@@ -213,7 +213,37 @@ namespace SPOffice.UserInterface.API
         #endregion Delete Requisition
 
 
-
+        #region Delete Requisition by ID
+        [HttpPost]
+        public string DeleteRequisitionByID(RequisitionViewModel ReqObj)
+        {
+            object result = null;
+            try
+            {
+                    Permission _permission = _userBusiness.GetSecurityCode(ReqObj.userObj.UserName, "Requisition");
+                    if (_permission.SubPermissionList != null)
+                    {
+                        if (_permission.SubPermissionList.Exists(s => s.Name == "ButtonDelete" && s.AccessCode!=""))
+                        {
+                        result = _requisitionBusiness.DeleteRequisitionByID(ReqObj.ID);
+                      
+                        }
+                        else
+                        {
+                            result = "Access Denied";
+                        }
+                    
+                }
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+          
+        }
+        #endregion Delete Requisition by ID
 
         [HttpPost]
         public string SendRequisitionNotificationToManager(RequisitionViewModel reqObj)
