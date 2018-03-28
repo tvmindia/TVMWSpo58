@@ -272,7 +272,7 @@ function saveInvoices() {
         }
    // }
     else {
-        notyAlert('warnig', 'Please Add Product Details!');
+        notyAlert('warning', 'Please Add Product Details!');
     }
 
     }
