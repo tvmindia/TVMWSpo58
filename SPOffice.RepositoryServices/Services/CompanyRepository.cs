@@ -44,6 +44,7 @@ namespace SPOffice.RepositoryServices.Services
                                     {
                                         _companyObj.Code = (sdr["Code"].ToString() != "" ? (sdr["Code"].ToString()) : _companyObj.Code);
                                         _companyObj.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : _companyObj.Name);
+                                        _companyObj.UnitName = (sdr["UnitName"].ToString() != "" ? sdr["UnitName"].ToString() : _companyObj.UnitName);
                                         _companyObj.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : _companyObj.ShippingAddress);
                                         _companyObj.BillingAddress = (sdr["BillingAddress"].ToString() != "" ? sdr["BillingAddress"].ToString() : _companyObj.BillingAddress);
                                     }

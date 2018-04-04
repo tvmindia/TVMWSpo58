@@ -87,7 +87,7 @@ namespace SPOffice.UserInterface.Controllers
             {
                 selectListItem.Add(new SelectListItem
                 {
-                    Text = Cmp.Name,
+                    Text = Cmp.Name+'-'+ '('+Cmp.UnitName+')',
                     Value = Cmp.Code,
                     Selected = false
                 });
