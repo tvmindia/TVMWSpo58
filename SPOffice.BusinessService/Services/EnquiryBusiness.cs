@@ -24,14 +24,17 @@ namespace SPOffice.BusinessService.Services
             Enquiry result = null;
             try
             {
-                if (_enquiriesObj.ID == Guid.Empty)
+                if (_enquiriesObj.enquiryItemList.Count!=0)
                 {
                     _enquiriesObj.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(_enquiriesObj.enquiryItemList, "ProductCode");
+
+                }
+                if (_enquiriesObj.ID == Guid.Empty)
+                {
                     result = _enquiryRepository.InsertEnquiry(_enquiriesObj);
                 }
                 else
                 {
-                    _enquiriesObj.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(_enquiriesObj.enquiryItemList, "ProductCode");
                     result = _enquiryRepository.UpdateEnquiry(_enquiriesObj);
                 }
             }
