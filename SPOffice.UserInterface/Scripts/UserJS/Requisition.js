@@ -329,13 +329,13 @@ function EditIemsFromGrid(this_Obj)
     $('#RequisitionDetailObj_ExtendedDescription').val(rowData.ExtendedDescription);
     $('#RequisitionDetailObj_CurrStock').val(rowData.CurrStock);
     $('#RequisitionDetailObj_RequestedQty').val(rowData.RequestedQty);
-    $('#anchorDeleteItem').attr('onclick', 'DeleteItem("' + rowData.ID+ '")')
+    $('#anchorDeleteItem').attr('onclick', 'DeleteItemDetails("' + rowData.ID + '")')
     $('.ItemAdd').hide();
     $('.ItemEdit').show();    
 }
-function DeleteItem(ID)
+function DeleteItemDetails(ID)
 {
-    
+    debugger
     if(ID===emptyGUID)
     {
         var Itemtabledata = DataTables.RequisitionDetailList.rows().data();
