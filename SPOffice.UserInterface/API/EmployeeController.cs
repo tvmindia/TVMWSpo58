@@ -105,7 +105,7 @@ namespace SPOffice.UserInterface.API
 
 
         #region GetAllEmployee
-        [HttpGet]
+        [HttpPost]
         public string GetEmployeeListForMobile()
         {
             try
