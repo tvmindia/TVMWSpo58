@@ -173,6 +173,16 @@ namespace SPOffice.UserInterface.API
                     {
                         case true:
                             result = _requisitionBusiness.InsertRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo);
+                            try
+                            {
+                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Company:" + RequisitionObj.ReqForCompany, true, "");
+                            }
+                            catch (Exception)
+                            {
+
+                                
+                            }
+                          
                             break;
                         case false:
                             if (RequisitionObj.ReqForCompany == null)
