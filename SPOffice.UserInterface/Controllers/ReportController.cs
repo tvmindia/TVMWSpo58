@@ -514,7 +514,7 @@ namespace SPOffice.UserInterface.Controllers
         }
 
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "PaymentFollowupReport", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "EnquiryFollowUpReport", Mode = "R")]
         public ActionResult EnquiryFollowUpReport(string id)
         {
             AppUA _appUA = Session["AppUAOffice"] as AppUA;
@@ -547,6 +547,7 @@ namespace SPOffice.UserInterface.Controllers
             return View(result);
         }
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "EnquiryFollowUpReport", Mode = "R")]
         public string GetEnquiryFollowUpDetails(string enquiryFollowupAdvanceSearchObj)
         {
             try
