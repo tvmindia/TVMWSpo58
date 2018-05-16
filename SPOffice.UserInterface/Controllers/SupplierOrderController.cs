@@ -171,6 +171,15 @@ namespace SPOffice.UserInterface.Controllers
                     {
                         case true:
                             result = _supplierBusiness.InsertPurchaseOrder(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
+                        try
+                        {
+                            _supplierBusiness.SendToFCMToCEO("Pending for approval:" + SPOViewModel.PONo, "Supplier:" + SPOViewModel.SupplierName, false);
+                        }
+                        catch (Exception)
+                        {
+
+                            
+                        }
                             break;
                         case false:
                             result = _supplierBusiness.UpdatePurchaseOrder(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
