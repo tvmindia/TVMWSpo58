@@ -62,7 +62,19 @@ namespace SPOffice.BusinessService.Services
             return quotationList;
 
         }
-
+        public List<EnquiryFollowupReport> GetEnquiryFollowUpDetails(EnquiryFollowupReportAdvanceSearch advanceSearchObject)
+        {
+            List<EnquiryFollowupReport> followupList = null;
+            try
+            {
+                followupList = _reportRepository.GetEnquiryFollowUpDetails(advanceSearchObject);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return followupList;
+        }
 
         //CourierReport
         public List<CourierReport> GetCourierDetails(DateTime? FromDate, DateTime? ToDate, string AgencyCode, string search, string Type)

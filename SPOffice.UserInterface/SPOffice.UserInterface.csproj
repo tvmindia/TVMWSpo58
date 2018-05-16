@@ -643,6 +643,7 @@
     <Content Include="Scripts\UserJS\CustomerPOReport.js" />
     <Content Include="Scripts\UserJS\Dashboard.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
+    <Content Include="Scripts\UserJS\EnquiryFollowUpReport.js" />
     <Content Include="Scripts\UserJS\EnquiryReport.js" />
     <Content Include="Scripts\UserJS\PDF.js" />
     <Content Include="Scripts\UserJS\RequisitionReport.js" />
@@ -815,6 +816,7 @@
     <Content Include="Views\Report\CustomerPOReport.cshtml" />
     <Content Include="Views\Report\RequisitionReport.cshtml" />
     <Content Include="Views\SupplierOrder\_SupplierOrderMailPreview.cshtml" />
+    <Content Include="Views\Report\EnquiryFollowUpReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

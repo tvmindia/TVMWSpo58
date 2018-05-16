@@ -512,5 +512,71 @@ namespace SPOffice.UserInterface.Controllers
             }
 
         }
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "PaymentFollowupReport", Mode = "R")]
+        public ActionResult EnquiryFollowUpReport(string id)
+        {
+            AppUA _appUA = Session["AppUAOffice"] as AppUA;
+            DateTime dt = _appUA.DateTime;
+            ViewBag.fromdate = dt.AddDays(-30).ToString("dd-MMM-yyyy");
+            ViewBag.todate = dt.AddDays(30).ToString("dd-MMM-yyyy");
+            EnquiryFollowUpReportListViewModel result = new EnquiryFollowUpReportListViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            selectListItem = new List<SelectListItem>();
+            selectListItem.Add(new SelectListItem { Text = "Open", Value = "Open", Selected = true });
+            selectListItem.Add(new SelectListItem { Text = "Closed", Value = "Closed", Selected = false });
+            selectListItem.Add(new SelectListItem { Text = "All", Value = "ALL", Selected = false });
+            result.StatusFilter = selectListItem;
+            selectListItem = new List<SelectListItem>();
+            //result.customerObj = new CustomerViewModel();
+            //List<CustomerViewModel> customerList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomers());
+            //if (customerList != null)
+            //{
+            //    foreach (CustomerViewModel customerVM in customerList)
+            //    {
+            //        selectListItem.Add(new SelectListItem
+            //        {
+            //            Text = customerVM.CompanyName,
+            //            Value = customerVM.CompanyName.ToString(),
+            //            Selected = false
+            //        });
+            //    }
+            //}
+            //result.customerObj.CustomerList = selectListItem;
+            return View(result);
+        }
+        [HttpGet]
+        public string GetEnquiryFollowUpDetails(string enquiryFollowupAdvanceSearchObj)
+        {
+            try
+            {
+
+                EnquiryFollowupReportAdvanceSearch followupAdvanceSearchObj = enquiryFollowupAdvanceSearchObj != null ? JsonConvert.DeserializeObject<EnquiryFollowupReportAdvanceSearch>(enquiryFollowupAdvanceSearchObj) : new EnquiryFollowupReportAdvanceSearch();
+                AppUA appUA = Session["AppUAOffice"] as AppUA;
+                DateTime dt = appUA.DateTime;
+                if (enquiryFollowupAdvanceSearchObj == null)
+                {
+                    followupAdvanceSearchObj.FromDate = dt.AddDays(-30).ToString("dd-MMM-yyyy");
+                    followupAdvanceSearchObj.ToDate = dt.AddDays(30).ToString("dd-MMM-yyyy");
+                    // followupAdvanceSearchObj.ToDate = appUA.DateTime.ToString("dd-MMM-yyyy");
+                    followupAdvanceSearchObj.Status = "Open";
+
+                }
+                EnquiryFollowUpReportListViewModel result = new EnquiryFollowUpReportListViewModel();
+
+                result.FollowUpList = Mapper.Map<List<EnquiryFollowupReport>, List<EnquiryFollowupReportViewModel>>(_reportBusiness.GetEnquiryFollowUpDetails(followupAdvanceSearchObj));
+
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message });
+            }
+
+        }
+
+
+
     }
 }

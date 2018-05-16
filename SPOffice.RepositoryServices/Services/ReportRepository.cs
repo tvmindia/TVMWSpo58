@@ -140,6 +140,71 @@ namespace SPOffice.RepositoryServices.Services
             return enquiryList;
         }
 
+
+
+
+        public List<EnquiryFollowupReport> GetEnquiryFollowUpDetails(EnquiryFollowupReportAdvanceSearch advanceSearchObject)
+        {
+            List<EnquiryFollowupReport> enquiryList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = advanceSearchObject.FromDate;
+                        cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = advanceSearchObject.ToDate;
+                      //  cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 50).Value = advanceSearchObject.Customer != null ? string.Join(",", advanceSearchObject.Customer) : "ALL";
+                        cmd.Parameters.Add("@Status", SqlDbType.NVarChar, 50).Value = advanceSearchObject.Status;
+                        cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = advanceSearchObject.Search;
+                        cmd.CommandText = "[Office].[RPT_GetEnquiryFollowUpList]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                enquiryList = new List<EnquiryFollowupReport>();
+                                while (sdr.Read())
+                                {
+                                    EnquiryFollowupReport enquiryfollowup = new EnquiryFollowupReport();
+                                    {
+
+
+                                        enquiryfollowup.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiryfollowup.ID);
+                                        enquiryfollowup.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : enquiryfollowup.EnquiryNo);
+                                        enquiryfollowup.FollowUpDate = (sdr["FollowUpDate"].ToString() != "" ? DateTime.Parse(sdr["FollowUpDate"].ToString()).ToString(settings.dateformat) : enquiryfollowup.FollowUpDate);
+                                        enquiryfollowup.FollowUpTime = (sdr["FollowUpTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("hh:mm tt") : enquiryfollowup.FollowUpTime);
+                                        enquiryfollowup.CutomerName = (sdr["Customer"].ToString() != "" ? sdr["Customer"].ToString() : enquiryfollowup.CutomerName);
+                                       // enquiryfollowup.Remarks = (sdr["Remarks"].ToString() != "" ? sdr["Remarks"].ToString() : enquiryfollowup.Remarks);
+                                        enquiryfollowup.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : enquiryfollowup.ContactName);
+                                        enquiryfollowup.ContactNO = (sdr["ContactNO"].ToString() != "" ? sdr["ContactNO"].ToString() : enquiryfollowup.ContactNO);
+                                        enquiryfollowup.Status = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : enquiryfollowup.Status);
+                                        
+                                    }
+                                    enquiryList.Add(enquiryfollowup);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return enquiryList;
+        }
+
+
+
+
+
+
         /// <summary>
         ///To Get Quotation details in Report
         /// </summary>

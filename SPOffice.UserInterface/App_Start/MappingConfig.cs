@@ -103,6 +103,9 @@ namespace UserInterface.App_Start
                 config.CreateMap<CustomerPOReportViewModel, CustomerPOReport>().ReverseMap();
                 config.CreateMap<RequisitionReportViewModel, RequisitionReport>().ReverseMap();
                 config.CreateMap<ReqAdvanceSearchViewModel, ReqAdvanceSearch>().ReverseMap();
+                config.CreateMap<EnquiryFollowupReportViewModel, EnquiryFollowupReport>().ReverseMap();
+
+
                 //--for send message
                 config.CreateMap<MessageViewModel, Message>().ReverseMap();
                 config.CreateMap<EnquiryItemViewModel, EnquiryItem>().ReverseMap();
