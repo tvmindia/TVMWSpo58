@@ -22,9 +22,9 @@ namespace SPOffice.BusinessService.Services
             _requisitionRepository = requisitionRepository;
             _commonBusiness = commonBusiness;
         }
-       public List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj)
+       public List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj, bool ShowFinalApproved = false)
         {
-            return _requisitionRepository.GetUserRequisitionList(LoginName,AppID,  IsAdminOrCeo,  ReqAdvanceSearchObj);
+            return _requisitionRepository.GetUserRequisitionList(LoginName,AppID,  IsAdminOrCeo,  ReqAdvanceSearchObj, ShowFinalApproved);
         }
         public List<RequisitionDetail> GetRequisitionDetailList(Guid ID)
         {

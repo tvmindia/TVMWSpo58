@@ -17,7 +17,7 @@ namespace SPOffice.RepositoryServices.Services
         {
             _databaseFactory = databaseFactory;
         }
-        public List<Requisition> GetUserRequisitionList(string LoginName,Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj)
+        public List<Requisition> GetUserRequisitionList(string LoginName,Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj,bool ShowFinalApproved=false)
         {
 
             List<Requisition> RequisitionList = null;
@@ -40,14 +40,22 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar,250).Value = ReqAdvanceSearchObj.ReqStatus;
                         cmd.Parameters.Add("@ReqSearch", SqlDbType.NVarChar,250).Value = ReqAdvanceSearchObj.ReqSearch;
                         cmd.Parameters.Add("@IsAdminOrCeo", SqlDbType.Bit).Value = IsAdminOrCeo;
-                        if(ReqAdvanceSearchObj.ManagerApproved)
+
+                        //cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = ReqAdvanceSearchObj.ManagerApproved;
+                        //cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = ReqAdvanceSearchObj.FinalApproved;
+
+                        if (ReqAdvanceSearchObj.ManagerApproved)
                         {
                             cmd.Parameters.Add("@ManagerApproved", SqlDbType.Bit).Value = ReqAdvanceSearchObj.ManagerApproved;
                         }
-                        if(ReqAdvanceSearchObj.FinalApproved)
+                        if (ReqAdvanceSearchObj.FinalApproved)
                         {
                             cmd.Parameters.Add("@FinalApproved", SqlDbType.Bit).Value = ReqAdvanceSearchObj.FinalApproved;
-                        }                        
+                        }
+
+                        cmd.Parameters.Add("@ShowFinalApproved", SqlDbType.Bit).Value = ShowFinalApproved;
+
+
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         using (SqlDataReader sdr = cmd.ExecuteReader())

@@ -48,7 +48,14 @@ namespace SPOffice.UserInterface.API
                         isAdminOrCeo = true;
                     }
                 }
-                List<RequisitionViewModel> RequisitionObj = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(ReqObj.userObj.UserName, (Guid)ReqObj.userObj.RoleObj.AppID, isAdminOrCeo, ReqAdvanceSearchObj));
+
+                bool showApproved=false;
+                if (ReqObj.ReqAdvSearchObj.FinalApproved == false)
+                {
+                    showApproved =true;
+                }
+
+                List<RequisitionViewModel> RequisitionObj = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(ReqObj.userObj.UserName, (Guid)ReqObj.userObj.RoleObj.AppID, isAdminOrCeo, ReqAdvanceSearchObj, showApproved));
 
                 return JsonConvert.SerializeObject(new { Result = true, Records = RequisitionObj });
             }
@@ -175,7 +182,8 @@ namespace SPOffice.UserInterface.API
                             result = _requisitionBusiness.InsertRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo);
                             try
                             {
-                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Company:" + RequisitionObj.ReqForCompany, true, "");
+                                string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
+                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Req No : " + reqNo + " Req Date : " + RequisitionObj.ReqDateFormatted, true, "");
                             }
                             catch (Exception)
                             {

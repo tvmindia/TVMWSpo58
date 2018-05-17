@@ -8,7 +8,7 @@ namespace SPOffice.BusinessService.Contracts
 {
     public interface IRequisitionBusiness
     {
-        List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID,bool IsAdminOrCeo,ReqAdvanceSearch ReqAdvanceSearchObj);
+        List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID,bool IsAdminOrCeo,ReqAdvanceSearch ReqAdvanceSearchObj, bool ShowFinalApproved = false);
         List<RequisitionDetail> GetRequisitionDetailList(Guid ID);
         object InsertRequisition(Requisition RequisitionObj,bool isAdminOrCeo);
         object UpdateRequisition(Requisition RequisitionObj);
