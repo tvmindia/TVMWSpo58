@@ -179,7 +179,7 @@ function PaintSearchTiles()
         $('#FilterHeadSeperater').empty();
         $('#FilterHeadSeperater').append('<b>Filter:</b> ');
         if (RequisitionOverViewCount.OpenCount !== -1) {
-            var html = '<div class="col-md-2 col-sm-4 col-xs-12 " id="OPEN" onclick="Gridfilter(this);" style="cursor:pointer">'
+            var html = '<div class="col-md-3 col-sm-6 col-xs-12 " id="OPEN" onclick="Gridfilter(this);" style="cursor:pointer">'
                 + ' <div class="info-box">'
                      + '<span class="info-box-icon bg-green"></span>'
                      + '<div class="info-box-content">'
@@ -193,7 +193,7 @@ function PaintSearchTiles()
             $('#FilterHeadSeperater').append('<p id="OPENfilter" style="padding-right:20px;font-size:medium" class="fa fa-th ig-green"> Open</p>');
         }
         if (RequisitionOverViewCount.AllCount !== -1) {
-            var html = '<div class="col-md-2 col-sm-4 col-xs-12" id="ALL" onclick="Gridfilter(this);" style="cursor:pointer">'
+            var html = '<div class="col-md-3 col-sm-6 col-xs-12" id="ALL" onclick="Gridfilter(this);" style="cursor:pointer">'
                 + ' <div class="info-box">'
                      + '<span class="info-box-icon bg-aqua"></span>'
                      + '<div class="info-box-content">'
