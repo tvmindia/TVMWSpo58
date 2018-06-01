@@ -250,6 +250,17 @@ namespace SPOffice.UserInterface.Controllers
                     {
                         case true:
                             result = _requisitionBusiness.InsertRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo);
+                            try
+                            {
+                                string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
+                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Req No : " + reqNo + " Req Date : " + RequisitionObj.ReqDateFormatted, true, "");
+                            }
+                            catch (Exception)
+                            {
+
+                                
+                            }
+                          
                             break;
                         case false:
                             if(RequisitionObj.ReqForCompany==null)
