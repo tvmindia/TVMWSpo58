@@ -155,6 +155,25 @@ namespace SPOffice.UserInterface.API
         }
         #endregion PO pending for approval list
 
+
+        #region GetPurchaseOrderDetailTable
+        [HttpPost]
+        public string GetPurchaseOrderDetailTable(SupplierPODetailViewModel suppObj)
+        {
+
+            try
+            {
+                List<SupplierPODetailViewModel> suppliersList = Mapper.Map<List<SupplierPODetail>, List<SupplierPODetailViewModel>>(_supplierBusiness.GetPurchaseOrderDetailTable((Guid)suppObj.POID));
+                return JsonConvert.SerializeObject(new { Result = true, Records = suppliersList });
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
+            }
+            
+        }
+        #endregion GetPurchaseOrderDetailTable
+
         #region Delete Supplier PO
         [HttpPost]
         public string DeletePurchaseOrder(SupplierOrderViewModel supplierObj)
