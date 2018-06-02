@@ -173,7 +173,11 @@ namespace SPOffice.UserInterface.Controllers
                             result = _supplierBusiness.InsertPurchaseOrder(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(SPOViewModel));
                         try
                         {
-                            _supplierBusiness.SendToFCMToCEO("Pending for approval:" + SPOViewModel.PONo, "Supplier:" + SPOViewModel.SupplierName, false);
+                            string POID = result.GetType().GetProperty("ID").GetValue(result, null).ToString();
+                            SupplierOrder savedDetails = new SupplierOrder();
+                            savedDetails = _supplierBusiness.GetSupplierPurchaseOrderByID(new Guid(POID));
+
+                            _supplierBusiness.SendToFCMToCEO("Pending for approval:" + savedDetails.PONo, "Supplier:" + savedDetails.SuppliersObj.CompanyName, false);
                         }
                         catch (Exception)
                         {
