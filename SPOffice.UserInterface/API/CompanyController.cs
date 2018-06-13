@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace SPOffice.UserInterface.API
 {
@@ -21,12 +22,18 @@ namespace SPOffice.UserInterface.API
             _companyBusiness = companyBusiness;
         }
         #region GetAllCompanies
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public string GetAllCompanies()
         {
             try
             {
                 List<CompanyViewModel> CompaniesList = Mapper.Map<List<Company>, List<CompanyViewModel>>(_companyBusiness.GetAllCompanies());
+               
+                foreach (CompanyViewModel Cmp in CompaniesList)
+                {
+                    Cmp.Name = Cmp.UnitName != null ? Cmp.Name + '-' + '(' + Cmp.UnitName + ')' : Cmp.Name;
+                }
+
                 return JsonConvert.SerializeObject(new { Result = true, Records = CompaniesList });
             }
             catch (Exception ex)
