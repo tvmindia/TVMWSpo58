@@ -59,12 +59,16 @@
         </table>
 
         <br />
-
+      @{
+          if (Model.SOVMobj.BodyHeader != null)
+          {
         <table>
             <tr>
-                <td style="font-size:15px;">@Html.Raw(@Model.SOVMobj.BodyHeader)</td>
+              <td style="font-size:15px;">@Html.Raw(@Model.SOVMobj.BodyHeader)</td>                            
             </tr>
         </table>
+          }
+    }
         <br />
         <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: inherit; text-align: left;font-size:14px" cellspacing="0" width="100%">
             <thead>
@@ -145,6 +149,9 @@
             </tr>
 
         </table>
+@{
+    if (@Model.SOVMobj.BodyFooter != null)
+    {
         <table style="width: 100%; line-height: inherit; text-align: left;">
 
             <tr class="details">
@@ -154,6 +161,8 @@
                 </td>
             </tr>
         </table>
+        }
+    }
     </div>
 
 
