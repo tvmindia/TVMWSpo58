@@ -22,9 +22,21 @@ namespace SPOffice.BusinessService.Services
             _requisitionRepository = requisitionRepository;
             _commonBusiness = commonBusiness;
         }
-       public List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj, bool ShowFinalApproved = false)
+       public List<Requisition> GetUserRequisitionList(string LoginName, Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj, bool ShowFinalApproved = false, string duration = "All")
         {
-            return _requisitionRepository.GetUserRequisitionList(LoginName,AppID,  IsAdminOrCeo,  ReqAdvanceSearchObj, ShowFinalApproved);
+            if (duration != "All")
+            {
+                int duratn = Convert.ToInt32(duration);
+                // ReqAdvanceSearchObj.FromDate
+
+                Common commonobj = new Common();
+                DateTime dt = commonobj.GetCurrentDateTime();
+               // DateTime dt = Convert.ToDateTime(DateTime.Now.ToString());
+                ReqAdvanceSearchObj.FromDate = dt.AddDays(-(duratn)).ToString("dd-MMM-yyyy");
+                ReqAdvanceSearchObj.ToDate = dt.ToString("dd-MMM-yyyy"); 
+
+            }
+            return _requisitionRepository.GetUserRequisitionList(LoginName,AppID,  IsAdminOrCeo,  ReqAdvanceSearchObj, ShowFinalApproved,duration);
         }
         public List<RequisitionDetail> GetRequisitionDetailList(Guid ID)
         {

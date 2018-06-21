@@ -31,13 +31,13 @@ namespace SPOffice.UserInterface.API
 
         Const messages = new Const();
 
-        #region GetAllSuppliersForMobile
+        #region GetAllApprovedSupplierOrderForMobile
         [HttpPost]
-        public string GetAllSupplierPODetail(SupplierViewModel supplierObj)
+        public string GetAllSupplierPODetail(SupplierOrderViewModel supplierObj)
         {
             try
             {
-                List<SupplierViewModel> suppliersList = Mapper.Map<List<Supplier>, List<SupplierViewModel>>(_supplierBusiness.GetAllSupplierPOForMobile(supplierObj.duration));
+                List<SupplierOrderViewModel> suppliersList = Mapper.Map<List<SupplierOrder>, List<SupplierOrderViewModel>>(_supplierBusiness.GetAllSupplierPOForMobile(supplierObj.duration));
                 return JsonConvert.SerializeObject(new { Result = true, Records = suppliersList });
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = ex.Message });
             }
         }
-        #endregion  GetAllSuppliersForMobile
+        #endregion  GetAllApprovedSupplierOrderForMobile
 
         #region GetAllSupplierPendingPurchaseOrders
         [HttpPost]

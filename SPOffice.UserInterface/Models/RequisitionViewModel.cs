@@ -46,6 +46,7 @@ namespace SPOffice.UserInterface.Models
         public ReqAdvanceSearchViewModel ReqAdvSearchObj { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public string RequisitionByEmpID { get; set; }
+         public string duration { get; set; }
 
     }
     public class RequisitionDetailViewModel

@@ -28,7 +28,7 @@ namespace SPOffice.BusinessService.Services
 
       
 
-        public List<Supplier> GetAllSupplierPOForMobile(string duration)
+        public List<SupplierOrder> GetAllSupplierPOForMobile(string duration)
         {
             return _supplierRepository.GetAllSupplierPOForMobile(duration);
         }

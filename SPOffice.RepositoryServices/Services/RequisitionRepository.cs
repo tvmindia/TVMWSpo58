@@ -17,7 +17,7 @@ namespace SPOffice.RepositoryServices.Services
         {
             _databaseFactory = databaseFactory;
         }
-        public List<Requisition> GetUserRequisitionList(string LoginName,Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj,bool ShowFinalApproved=false)
+        public List<Requisition> GetUserRequisitionList(string LoginName,Guid AppID, bool IsAdminOrCeo, ReqAdvanceSearch ReqAdvanceSearchObj,bool ShowFinalApproved=false, string duration = "All")
         {
 
             List<Requisition> RequisitionList = null;

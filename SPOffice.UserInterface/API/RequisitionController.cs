@@ -335,6 +335,44 @@ namespace SPOffice.UserInterface.API
                 return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
+         [HttpPost]
+        public string GetApprovedRequisitionList(RequisitionViewModel ReqObj)
+        {
+            try
+            {
+                ReqAdvanceSearch ReqAdvanceSearchObj = new ReqAdvanceSearch();
+                ReqAdvanceSearchObj = Mapper.Map<ReqAdvanceSearchViewModel, ReqAdvanceSearch>(ReqObj.ReqAdvSearchObj);
+                if (ReqObj.ReqAdvSearchObj.ReqStatus == "ALL")
+                {
+                    ReqAdvanceSearchObj.ReqStatus = null;
+                }
+                bool isAdminOrCeo = true;
+                Permission _permission = _userBusiness.GetSecurityCode(ReqObj.userObj.UserName, "Requisition");
+                //if (_permission.SubPermissionList != null)
+                //{
+                //    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                //    {
+                //        isAdminOrCeo = true;
+                //    }
+                //}
+
+                bool showApproved = false;
+                if (ReqObj.ReqAdvSearchObj.FinalApproved == false)
+                {
+                    showApproved = true;
+                }
+
+                List<RequisitionViewModel> RequisitionObj = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(ReqObj.userObj.UserName, (Guid)ReqObj.userObj.RoleObj.AppID, isAdminOrCeo, ReqAdvanceSearchObj, showApproved, ReqObj.duration));
+            
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = RequisitionObj });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
         }
+
+    }
     }
 
