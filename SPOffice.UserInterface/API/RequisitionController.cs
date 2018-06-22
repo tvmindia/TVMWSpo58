@@ -346,15 +346,15 @@ namespace SPOffice.UserInterface.API
                 {
                     ReqAdvanceSearchObj.ReqStatus = null;
                 }
-                bool isAdminOrCeo = true;
+                bool isAdminOrCeo = false;
                 Permission _permission = _userBusiness.GetSecurityCode(ReqObj.userObj.UserName, "Requisition");
-                //if (_permission.SubPermissionList != null)
-                //{
-                //    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
-                //    {
-                //        isAdminOrCeo = true;
-                //    }
-                //}
+                if (_permission.SubPermissionList != null)
+                {
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    {
+                        isAdminOrCeo = true;
+                    }
+                }
 
                 bool showApproved = false;
                 if (ReqObj.ReqAdvSearchObj.FinalApproved == false)
