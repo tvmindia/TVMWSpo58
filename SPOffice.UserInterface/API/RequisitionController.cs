@@ -364,12 +364,12 @@ namespace SPOffice.UserInterface.API
 
                 List<RequisitionViewModel> RequisitionObj = Mapper.Map<List<Requisition>, List<RequisitionViewModel>>(_requisitionBusiness.GetUserRequisitionList(ReqObj.userObj.UserName, (Guid)ReqObj.userObj.RoleObj.AppID, isAdminOrCeo, ReqAdvanceSearchObj, showApproved, ReqObj.duration));
             
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = RequisitionObj });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
+                return JsonConvert.SerializeObject(new { Result = true, Records = RequisitionObj });//, Open = openCount, InProgress = inProgressCount, Closed = closedCount });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = c.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
             }
         }
 

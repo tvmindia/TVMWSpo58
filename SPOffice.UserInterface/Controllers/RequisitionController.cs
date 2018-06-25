@@ -316,8 +316,8 @@ namespace SPOffice.UserInterface.Controllers
                 RequisitionObj.CommonObj.CreatedBy = _appUA.UserName;
                 RequisitionObj.CommonObj.UpdatedDate = _appUA.DateTime;
                 RequisitionObj.ID = Guid.Parse(ID);
-                RequisitionViewModel Requisition = Mapper.Map <Requisition, RequisitionViewModel> (_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = Requisition, Message = "Approved" });
+                RequisitionViewModel Requisition = Mapper.Map <Requisition, RequisitionViewModel> (_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));               
+                return JsonConvert.SerializeObject(new { Result = "OK", Record = Requisition, Message = "Approved" });               
             }
             catch (Exception ex)
             {
