@@ -301,6 +301,7 @@ namespace SPOffice.UserInterface.Controllers
         {
             try
             {
+                 object result = null;
                 RequisitionViewModel RequisitionObj = new RequisitionViewModel();
                 bool isAdminOrCeo = false;
                 Permission _permission = Session["UserRightsOffice"] as Permission;
@@ -316,8 +317,26 @@ namespace SPOffice.UserInterface.Controllers
                 RequisitionObj.CommonObj.CreatedBy = _appUA.UserName;
                 RequisitionObj.CommonObj.UpdatedDate = _appUA.DateTime;
                 RequisitionObj.ID = Guid.Parse(ID);
-                RequisitionViewModel Requisition = Mapper.Map <Requisition, RequisitionViewModel> (_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));               
-                return JsonConvert.SerializeObject(new { Result = "OK", Record = Requisition, Message = "Approved" });               
+                //  RequisitionViewModel Requisition = Mapper.Map <Requisition, RequisitionViewModel> (_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));
+                result = Mapper.Map<Requisition, RequisitionViewModel>(_requisitionBusiness.ApproveRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj), isAdminOrCeo));
+                try
+                {
+                    string ManagerApproved = result.GetType().GetProperty("ManagerApproved").GetValue(result, null).ToString();
+                    if (ManagerApproved=="True")
+                    {
+            
+                        string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
+                        string Title = result.GetType().GetProperty("Title").GetValue(result, null).ToString();
+                        string ReqDateFormatted = result.GetType().GetProperty("ReqDateFormatted").GetValue(result, null).ToString();
+                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title, "Req No : " + reqNo + " Req Date : " + ReqDateFormatted, true);
+                    }
+                    return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message = "Approved" });
+                }
+                catch (Exception ex)
+                {
+                    AppConstMessage cm = c.GetMessage(ex.Message);
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Record = result, Message = cm.Message });
+                }   
             }
             catch (Exception ex)
             {

@@ -466,7 +466,7 @@ namespace SPOffice.RepositoryServices.Services
         }
         public Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo)
         {
-            SqlParameter outputStatus = null;
+            SqlParameter outputStatus, outputReqNo, outputReqDate, outputReqTitle = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -487,6 +487,12 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
+                        outputReqNo = cmd.Parameters.Add("@ReqNo", SqlDbType.VarChar, 250);
+                        outputReqNo.Direction = ParameterDirection.Output;
+                        outputReqDate = cmd.Parameters.Add("@ReqDate", SqlDbType.DateTime, 250);
+                        outputReqDate.Direction = ParameterDirection.Output;
+                        outputReqTitle = cmd.Parameters.Add("@ReqTitle", SqlDbType.VarChar, 250);
+                        outputReqTitle.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -503,6 +509,9 @@ namespace SPOffice.RepositoryServices.Services
                         else
                         {
                             RequisitionObj.ManagerApproved = true;
+                            RequisitionObj.ReqNo = outputReqNo.Value.ToString();
+                            RequisitionObj.ReqDateFormatted = DateTime.Parse(outputReqDate.Value.ToString()).ToString(settings.dateformat);
+                            RequisitionObj.Title= outputReqTitle.Value.ToString();
                         }
                         break;
                     default:
