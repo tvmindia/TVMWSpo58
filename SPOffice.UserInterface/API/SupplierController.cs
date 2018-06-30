@@ -138,7 +138,7 @@ namespace SPOffice.UserInterface.API
             {
                 List<SupplierOrderViewModel> SPOVMList = null;
                 Permission _permission = _userBusiness.GetSecurityCode(supplierObj.userObj.UserName, "SupplierOrder");
-                if (_permission.SubPermissionList.Exists(s => s.Name == "ApproveBtn") == false || _permission.SubPermissionList.First(s => s.Name == "ApproveBtn").AccessCode.Contains("R"))
+                if (_permission.SubPermissionList.Exists(s => s.Name == "ApproveBtn") == false || _permission.SubPermissionList.First(s => s.Name == "ApproveBtn").AccessCode.Contains("R")|| _permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
                 {
                     SPOVMList = Mapper.Map<List<SupplierOrder>, List<SupplierOrderViewModel>>(_supplierBusiness.GetAllPendingSupplierPurchaseOrders());
                 }

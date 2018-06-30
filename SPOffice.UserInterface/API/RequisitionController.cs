@@ -43,7 +43,7 @@ namespace SPOffice.UserInterface.API
                 Permission _permission = _userBusiness.GetSecurityCode(ReqObj.userObj.UserName, "Requisition");
                 if (_permission.SubPermissionList != null)
                 {
-                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R")|| _permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
                     {
                         isAdminOrCeo = true;
                     }
@@ -371,7 +371,7 @@ namespace SPOffice.UserInterface.API
                 Permission _permission = _userBusiness.GetSecurityCode(ReqObj.userObj.UserName, "Requisition");
                 if (_permission.SubPermissionList != null)
                 {
-                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R"))
+                    if (_permission.SubPermissionList.Exists(s => s.Name == "C_Approval") == false || _permission.SubPermissionList.First(s => s.Name == "C_Approval").AccessCode.Contains("R") || _permission.SubPermissionList.First(s => s.Name == "P_Manager").AccessCode.Contains("R"))
                     {
                         isAdminOrCeo = true;
                     }
