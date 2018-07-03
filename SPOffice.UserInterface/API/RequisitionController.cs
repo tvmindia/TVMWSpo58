@@ -149,7 +149,7 @@ namespace SPOffice.UserInterface.API
                         string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
                         string Title = result.GetType().GetProperty("Title").GetValue(result, null).ToString();
                         string ReqDateFormatted = result.GetType().GetProperty("ReqDateFormatted").GetValue(result, null).ToString();
-                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title, "Req No : " + reqNo + " Req Date : " + ReqDateFormatted, true);
+                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title, "Req.No : " + reqNo + " Appr. Date : " + ReqDateFormatted , true);
                     }
                     return JsonConvert.SerializeObject(new { Result = true, Records = result, Message = "Approved" });
                 }
