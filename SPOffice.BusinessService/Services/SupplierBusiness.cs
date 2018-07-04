@@ -287,7 +287,7 @@ namespace SPOffice.BusinessService.Services
             return result;
         }
 
-        public void SendToFCMToCEO(string titleString, string descriptionString, Boolean isCommonForCEO)
+        public void SendToFCMToCEO(string titleString, string descriptionString, Boolean isCommonForCEO,string click_action="")
         {
             //Validation
 
@@ -317,6 +317,8 @@ namespace SPOffice.BusinessService.Services
                         title = titleString,
                         body = descriptionString,
                         sound = "default",
+                        click_action= click_action,
+
 
                     }
                 };

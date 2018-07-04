@@ -177,7 +177,7 @@ namespace SPOffice.UserInterface.Controllers
                             SupplierOrder savedDetails = new SupplierOrder();
                             savedDetails = _supplierBusiness.GetSupplierPurchaseOrderByID(new Guid(POID));
 
-                            _supplierBusiness.SendToFCMToCEO("Pending for approval:" + savedDetails.PONo, "Supplier:" + savedDetails.SuppliersObj.CompanyName, false);
+                            _supplierBusiness.SendToFCMToCEO("Pending for approval:" + savedDetails.PONo, "Supplier:" + savedDetails.SuppliersObj.CompanyName, true,"sup");
                         }
                         catch (Exception)
                         {

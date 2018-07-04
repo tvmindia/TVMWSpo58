@@ -149,7 +149,7 @@ namespace SPOffice.UserInterface.API
                         string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
                         string Title = result.GetType().GetProperty("Title").GetValue(result, null).ToString();
                         string ReqDateFormatted = result.GetType().GetProperty("ReqDateFormatted").GetValue(result, null).ToString();
-                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title, "Req.No : " + reqNo + " Appr. Date : " + ReqDateFormatted , true);
+                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title, "Req.No : " + reqNo + " Appr. Date : " + ReqDateFormatted , true,"req");
                     }
                     return JsonConvert.SerializeObject(new { Result = true, Records = result, Message = "Approved" });
                 }
@@ -204,7 +204,7 @@ namespace SPOffice.UserInterface.API
                             try
                             {
                                 string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
-                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Req No : " + reqNo + " Req Date : " + RequisitionObj.ReqDateFormatted, true, "");
+                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Req No : " + reqNo + " Req Date : " + RequisitionObj.ReqDateFormatted, true, "", "req");
                             }
                             catch (Exception)
                             {
@@ -295,7 +295,7 @@ namespace SPOffice.UserInterface.API
                 string descriptionString = requisitionViewModelObj.ReqForCompany + ", Requisition: " + requisitionViewModelObj.ReqNo + ", RequisitionBy: " + requisitionViewModelObj.RequisitionBy + " ,RequisitionCreatedBy:"+ requisitionViewModelObj.CommonObj.CreatedBy+",RequisitionDate:"+ requisitionViewModelObj.ReqDate;
                 Boolean isCommon = true;
                 string CompanyCode = "";
-                _requisitionBusiness.SendToFCMManager(titleString, descriptionString, isCommon, CompanyCode);
+                _requisitionBusiness.SendToFCMManager(titleString, descriptionString, isCommon, CompanyCode, "req");
                 //Update notification 
                 result = _requisitionBusiness.UpdateNotification(Mapper.Map<RequisitionViewModel, Requisition>(reqObj));
                 return JsonConvert.SerializeObject(new { Result = true, Message = c.NotificationSuccess, Records = result });
@@ -318,7 +318,7 @@ namespace SPOffice.UserInterface.API
                 string titleString = "Pending Requisition";
                 string descriptionString = requisitionViewModelObj.ReqForCompany + ", Requisition: " + requisitionViewModelObj.ReqNo + ", RequisitionBy: " + requisitionViewModelObj.RequisitionBy + " ,RequisitionCreatedBy:" + requisitionViewModelObj.CommonObj.CreatedBy + ",RequisitionDate:" + requisitionViewModelObj.ReqDate;
                 Boolean isCommon = true;
-                _requisitionBusiness.SendToFCMCEO(titleString, descriptionString, isCommon);
+                _requisitionBusiness.SendToFCMCEO(titleString, descriptionString, isCommon, "req");
                 //Update notification 
                 result = _requisitionBusiness.UpdateNotification(Mapper.Map<RequisitionViewModel, Requisition>(reqObj));
                 return JsonConvert.SerializeObject(new { Result = true, Message = c.NotificationSuccess, Records = result });

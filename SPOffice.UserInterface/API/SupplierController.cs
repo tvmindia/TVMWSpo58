@@ -201,7 +201,7 @@ namespace SPOffice.UserInterface.API
                 string titleString = "Pending Supplier PO";
                 string descriptionString = supplierPO.company.Name + ", Purchase Order: " + supplierPO.PONo + ", Amount: " + supplierPO.TotalAmount + ",PurchaseOrderCreatedBy:"+ supplierPO.SupplierName+",Purchase Order:"+ supplierPO.PODate;
                 Boolean isCommonForCEO = true;
-                _supplierBusiness.SendToFCMToCEO(titleString, descriptionString, isCommonForCEO);
+                _supplierBusiness.SendToFCMToCEO(titleString, descriptionString, isCommonForCEO,"sup");
                 //Update notification 
                 result = _supplierBusiness.UpdateNotificationToCEO(Mapper.Map<SupplierOrderViewModel, SupplierOrder>(suppObj));
                 return JsonConvert.SerializeObject(new { Result = true, Message = c.NotificationSuccess, Records = result });

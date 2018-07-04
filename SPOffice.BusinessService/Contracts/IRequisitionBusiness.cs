@@ -17,8 +17,8 @@ namespace SPOffice.BusinessService.Contracts
         object DeleteRequisitionByID(Guid ID);
         RequisitionOverViewCount GetRequisitionOverViewCount(string UserName, bool IsAdminORCeo);
         Requisition ApproveRequisition(Requisition RequisitionObj, bool IsAdminORCeo);
-        void SendToFCMManager(string titleString, string descriptionString, Boolean isCommon, string CompanyCode = "");
-        void SendToFCMCEO(string titleString, string descriptionString, Boolean isCommon);
+        void SendToFCMManager(string titleString, string descriptionString, Boolean isCommon, string CompanyCode = "", string click_action = "");
+        void SendToFCMCEO(string titleString, string descriptionString, Boolean isCommon, string click_action = "");
         object UpdateNotification(Requisition requisitionObj);
         RequisitionOverViewCount GetRequisitionCount(RequisitionOverViewCount reqObj,bool isAdminOrCeo);
     }

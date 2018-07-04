@@ -84,7 +84,7 @@ namespace SPOffice.BusinessService.Services
         /// <param name="descriptionString"></param>
         /// <param name="isCommon"></param>
         /// <param name="CompanyCode"></param>
-        public void SendToFCMManager(string titleString, string descriptionString, Boolean isCommon, string CompanyCode = "")
+        public void SendToFCMManager(string titleString, string descriptionString, Boolean isCommon, string CompanyCode = "", string click_action = "")
         {
             //Validation
 
@@ -114,7 +114,7 @@ namespace SPOffice.BusinessService.Services
                         title = titleString,
                         body = descriptionString,
                         sound = "default",
-
+                        click_action = click_action,
                     }
                 };
                 JavaScriptSerializer js = new JavaScriptSerializer();
@@ -157,7 +157,7 @@ namespace SPOffice.BusinessService.Services
             }
         }
 
-        public void SendToFCMCEO(string titleString, string descriptionString, Boolean isCommon)
+        public void SendToFCMCEO(string titleString, string descriptionString, Boolean isCommon, string click_action = "")
         {
             //Validation
 
@@ -186,7 +186,7 @@ namespace SPOffice.BusinessService.Services
                         title = titleString,
                         body = descriptionString,
                         sound = "default",
-
+                        click_action = click_action,
                     }
                 };
                 JavaScriptSerializer js = new JavaScriptSerializer();

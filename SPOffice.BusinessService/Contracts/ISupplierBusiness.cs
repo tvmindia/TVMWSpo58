@@ -33,7 +33,7 @@ namespace SPOffice.BusinessService.Contracts
         SupplierOrder GetMailPreview(Guid ID);
         Task<bool> QuoteEmailPush(SupplierOrder SOObj);
         object UpdateSupplierOrderMailStatus(SupplierOrder SPO);
-        void SendToFCMToCEO(string titleString, string descriptionString, Boolean isCommonForCEO);
+        void SendToFCMToCEO(string titleString, string descriptionString, Boolean isCommonForCEO, string click_action = "");
         object UpdateNotificationToCEO(SupplierOrder supObj);
     }
 }

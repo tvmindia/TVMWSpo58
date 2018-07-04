@@ -253,7 +253,7 @@ namespace SPOffice.UserInterface.Controllers
                             try
                             {
                                 string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
-                                _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Req No : " + reqNo + " Req Date : " + RequisitionObj.ReqDateFormatted, true, "");
+                               _requisitionBusiness.SendToFCMManager(RequisitionObj.Title, "Req No : " + reqNo + " Req Date : " + RequisitionObj.ReqDateFormatted, true,"", "req");
                             }
                             catch (Exception)
                             {
@@ -328,7 +328,7 @@ namespace SPOffice.UserInterface.Controllers
                         string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
                         string Title = result.GetType().GetProperty("Title").GetValue(result, null).ToString();
                         string ReqDateFormatted = result.GetType().GetProperty("ReqDateFormatted").GetValue(result, null).ToString();                      
-                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title,"Req.No : " + reqNo + " Appr.Date : " + ReqDateFormatted , true);
+                        _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title,"Req.No : " + reqNo + " Appr.Date : " + ReqDateFormatted , true, "req");
                     }
                     return JsonConvert.SerializeObject(new { Result = "OK", Record = result, Message = "Approved" });
                 }
