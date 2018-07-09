@@ -30,7 +30,8 @@ namespace SPOffice.DataAccessObject.DTO
         public bool IsApprover { get; set; }
         public string RequisitionBy { get; set; }
         public string RequisitionByEmpID { get; set; }
-         public string duration { get; set; }
+        public string EmployeeName { get; set; }
+        public string duration { get; set; }
 
     }
     public class RequisitionDetail

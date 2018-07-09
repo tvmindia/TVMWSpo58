@@ -47,7 +47,7 @@ namespace SPOffice.UserInterface.Models
         public List<SelectListItem> EmployeeList { get; set; }
         public string RequisitionByEmpID { get; set; }
          public string duration { get; set; }
-
+        public string EmployeeName { get; set; }
     }
     public class RequisitionDetailViewModel
     {

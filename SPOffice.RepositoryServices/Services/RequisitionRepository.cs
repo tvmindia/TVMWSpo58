@@ -84,6 +84,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _requisitionObj.FinalApproval = (sdr["FinalApproval"].ToString() != "" ? bool.Parse(sdr["FinalApproval"].ToString()) : _requisitionObj.FinalApproval);
                                         _requisitionObj.FinalApprovalDate = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()) : _requisitionObj.FinalApprovalDate);
                                         _requisitionObj.FinalApprovalDateFormatted = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.FinalApprovalDateFormatted);
+                                        _requisitionObj.EmployeeName = (sdr["Name"].ToString() != "" ? (sdr["Name"].ToString()) : _requisitionObj.EmployeeName);
                                     }
                                     RequisitionList.Add(_requisitionObj);
                                 }
