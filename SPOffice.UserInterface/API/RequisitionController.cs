@@ -144,12 +144,21 @@ namespace SPOffice.UserInterface.API
                 try
                 {
                     string ManagerApproved = result.GetType().GetProperty("ManagerApproved").GetValue(result, null).ToString();
+                    string FinalApproval = result.GetType().GetProperty("FinalApproval").GetValue(result, null).ToString();
                     if (ManagerApproved == "True")
                     {
                         string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
                         string Title = result.GetType().GetProperty("Title").GetValue(result, null).ToString();
                         string ReqDateFormatted = result.GetType().GetProperty("ReqDateFormatted").GetValue(result, null).ToString();
                         _requisitionBusiness.SendToFCMCEO("Manger Approved :" + Title, "Req.No : " + reqNo + " Appr. Date : " + ReqDateFormatted , true,"req");
+                    }
+                    else if (FinalApproval == "True")
+                    {
+                        string reqNo = result.GetType().GetProperty("ReqNo").GetValue(result, null).ToString();
+                        string Title = result.GetType().GetProperty("Title").GetValue(result, null).ToString();
+                        string ReqDateFormatted = result.GetType().GetProperty("ReqDateFormatted").GetValue(result, null).ToString();
+                        _requisitionBusiness.SendToFCMMangerOnly("CEO Approved :" + Title, "Req.No : " + reqNo + " Appr.Date : " + ReqDateFormatted, true, "reqCEO");
+
                     }
                     return JsonConvert.SerializeObject(new { Result = true, Records = result, Message = "Approved" });
                 }

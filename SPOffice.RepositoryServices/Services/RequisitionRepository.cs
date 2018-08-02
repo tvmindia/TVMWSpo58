@@ -85,6 +85,8 @@ namespace SPOffice.RepositoryServices.Services
                                         _requisitionObj.FinalApprovalDate = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()) : _requisitionObj.FinalApprovalDate);
                                         _requisitionObj.FinalApprovalDateFormatted = (sdr["FinalApprovalDate"].ToString() != "" ? DateTime.Parse(sdr["FinalApprovalDate"].ToString()).ToString(settings.dateformat) : _requisitionObj.FinalApprovalDateFormatted);
                                         _requisitionObj.EmployeeName = (sdr["Name"].ToString() != "" ? (sdr["Name"].ToString()) : _requisitionObj.EmployeeName);
+                                        _requisitionObj.CommonObj = new Common(); 
+                                        _requisitionObj.CommonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? (sdr["CreatedBy"].ToString()) : _requisitionObj.CommonObj.CreatedBy);
                                     }
                                     RequisitionList.Add(_requisitionObj);
                                 }
@@ -506,6 +508,9 @@ namespace SPOffice.RepositoryServices.Services
                         if (IsAdminORCeo)
                         {
                             RequisitionObj.FinalApproval = true;
+                            RequisitionObj.ReqNo = outputReqNo.Value.ToString();
+                            RequisitionObj.ReqDateFormatted = DateTime.Parse(outputReqDate.Value.ToString()).ToString(settings.dateformat);
+                            RequisitionObj.Title= outputReqTitle.Value.ToString();
                         }
                         else
                         {
