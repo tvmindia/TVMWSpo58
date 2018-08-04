@@ -350,6 +350,61 @@ namespace SPOffice.RepositoryServices.Services
                 // Message = Cobj.UpdateSuccess
             };
         }
+        public object CloseRequisition(Requisition RequisitionObj)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[CloseRequisition]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = RequisitionObj.ID;
+                        cmd.Parameters.Add("@ReqStatus", SqlDbType.VarChar, 50).Value = RequisitionObj.ReqStatus;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = RequisitionObj.CommonObj.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                AppConst Cobj = new AppConst();
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(Cobj.UpdateFailure);
+
+                    case "1":
+
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = Cobj.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                // Message = Cobj.UpdateSuccess
+            };
+        }
         public object DeleteRequisitionDetailByID(Guid ID)
         {
             SqlParameter outputStatus = null;

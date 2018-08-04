@@ -242,6 +242,32 @@ namespace SPOffice.UserInterface.API
         }
         #endregion Insert and Update Requisitions
 
+        #region Close Requisition
+        [HttpPost]
+        public string CloseRequisition(RequisitionViewModel RequisitionObj)
+        {
+          
+            try
+            {
+                object result = null;
+               // Permission _permission = _userBusiness.GetSecurityCode(RequisitionObj.userObj.UserName, "Requisition");
+                RequisitionObj.CommonObj = new CommonViewModel();
+                DataAccessObject.DTO.Common commonobj = new DataAccessObject.DTO.Common();
+
+                RequisitionObj.CommonObj.UpdatedBy = RequisitionObj.userObj.UserName;
+                RequisitionObj.CommonObj.UpdatedDate = commonobj.GetCurrentDateTime();
+               
+                result = _requisitionBusiness.CloseRequisition(Mapper.Map<RequisitionViewModel, Requisition>(RequisitionObj));
+                return JsonConvert.SerializeObject(new { Result = true, Records = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = false, Message = cm.Message });
+            }
+        }
+        #endregion Close Requisition
+
         #region Delete Requisition
         [HttpPost]
         public string DeleteRequisitionDetailByID(RequisitionViewModel ReqObj)

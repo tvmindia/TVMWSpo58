@@ -52,6 +52,11 @@ namespace SPOffice.BusinessService.Services
             RequisitionObj.DetailXML = _commonBusiness.GetXMLfromRequisitionDetailList(RequisitionObj.RequisitionDetailList, "MaterialID");
             return _requisitionRepository.UpdateRequisition(RequisitionObj);
         }
+        public object CloseRequisition(Requisition RequisitionObj)
+        {
+            
+            return _requisitionRepository.CloseRequisition(RequisitionObj);
+        }
         public Requisition GetRequisitionDetails(Guid ID,string LoginName)
         {
             return _requisitionRepository.GetRequisitionDetails(ID,LoginName);

@@ -13,6 +13,7 @@ namespace SPOffice.RepositoryServices.Contracts
         List<RequisitionDetail> GetRequisitionDetailList(Guid ID);
         object InsertRequisition(Requisition RequisitionObj, bool isAdminOrCeo);
         object UpdateRequisition(Requisition RequisitionObj);
+        object CloseRequisition(Requisition RequisitionObj);
         Requisition GetRequisitionDetails(Guid ID, string LoginName);
         object DeleteRequisitionDetailByID(Guid ID);
         object DeleteRequisitionByID(Guid ID);
