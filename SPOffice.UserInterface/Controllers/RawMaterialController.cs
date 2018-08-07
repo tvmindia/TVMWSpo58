@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SPOffice.BusinessService.Contracts;
 using SPOffice.DataAccessObject.DTO;
 using SPOffice.UserInterface.Models;
 using SPOffice.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using UserInterface.Models;
@@ -18,6 +23,8 @@ namespace SPOffice.UserInterface.Controllers
         AppConst c = new AppConst();
         IRawMaterialBusiness _rawMaterialBusiness;
         IUnitsBusiness _unitsBusiness;
+        //string Key = "X-Api-Key";
+        //string Value = "JyFgHsICUOgloskIMuyM6PH4GYxyU30p";
         public RawMaterialController(IRawMaterialBusiness rawMaterialBusiness, IUnitsBusiness unitsBusiness)
         {
             _rawMaterialBusiness = rawMaterialBusiness;
@@ -106,7 +113,7 @@ namespace SPOffice.UserInterface.Controllers
         {
             object result = null;
             try
-            {
+             {
                 AppUA _appUA = Session["AppUAOffice"] as AppUA;
                 rawMaterialViewModel.commonObj = new CommonViewModel();
                 rawMaterialViewModel.commonObj.CreatedBy = _appUA.UserName;
@@ -117,9 +124,119 @@ namespace SPOffice.UserInterface.Controllers
                 {
                     case true:
                         result = _rawMaterialBusiness.InsertRawMaterial(Mapper.Map<RawMaterialViewModel, RawMaterial>(rawMaterialViewModel));
-                        break;
+                        //string Status = result.GetType().GetProperty("Status").GetValue(result, null).ToString();
+                        //if (Status == "1")
+                        //{
+
+
+                        //    string ID = result.GetType().GetProperty("ID").GetValue(result, null).ToString();
+
+                        //    string json_data;
+                        //    string response;
+                        //    if (rawMaterialViewModel.Type == "SP")
+                        //    {
+                        //        SpareAPI test = new SpareAPI();
+                        //        test.id = "8";
+                        //        test.name = rawMaterialViewModel.MaterialCode;
+                        //        test.sku = rawMaterialViewModel.MaterialCode;
+                        //        test.description = rawMaterialViewModel.Description;
+                        //        test.is_enable_serial_no = "0";
+                        //        test.uom = "1";
+
+                        //        json_data = "{ \"spare\" :" + JsonConvert.SerializeObject(test) + " } ";
+                        //        response = InvokePostRequest("http://secure.appdeal.in/sp2/rest/web/spare/save-spare#", json_data);
+                        //        ResponseAPI res = new ResponseAPI();
+                        //        res = JsonConvert.DeserializeObject<ResponseAPI>(response);
+                        //        if (res.status == "0")
+                        //        {
+                        //            object DelteRaw = _rawMaterialBusiness.DeleteRawMaterial(Guid.Parse(ID));
+                        //        }
+                        //        // dynamic stuff = JsonConvert.DeserializeObject(response);
+
+                        //    }
+                        //    else if (rawMaterialViewModel.Type == "RM")
+                        //    {
+                        //        MaterialAPI material = new MaterialAPI();
+                        //        material.id = "0";
+                        //        material.product_id = null;
+                        //        material.material_name = "dummy material";
+                        //        material.sku = rawMaterialViewModel.MaterialCode;
+                        //        material.description = rawMaterialViewModel.Description;
+                        //        material.uom = "0";
+                        //        material.msq = "200";
+
+                        //        json_data = "{ \"Phase1Material\" :" + JsonConvert.SerializeObject(material) + " } ";
+                        //        response = InvokePostRequest("http://secure.appdeal.in/sp2/rest/web/material/save-material#", json_data);
+                        //        ResponseAPI res = new ResponseAPI();
+                        //        res = JsonConvert.DeserializeObject<ResponseAPI>(response);
+                        //        if (res.status == "0")
+                        //        {
+                        //            object DelteRaw = _rawMaterialBusiness.DeleteRawMaterial(Guid.Parse(ID));
+                        //        }
+                        //    }
+
+                        //    //  string json_data = "{ \"spare\" :" + JsonConvert.SerializeObject(test) + " } ";
+
+                        //    //  var response = InvokePostRequest("http://secure.appdeal.in/sp2/rest/web/spare/save-spare#", json_data);
+                        //    //var  res = (JObject)JsonConvert.DeserializeObject(response);
+                        //    //  var result1 = res.SelectToken("spare.status").ToString();
+                        //    //string status = res.GetType().GetProperty("status").GetValue(res,null).ToString();
+                        //}
+                            break;
                     case false:
                         result = _rawMaterialBusiness.UpdateRawMaterial(Mapper.Map<RawMaterialViewModel, RawMaterial>(rawMaterialViewModel));
+                        //string Status1 = result.GetType().GetProperty("Status").GetValue(result, null).ToString();
+                        //if (Status1 == "1")
+                        //{
+
+
+                        //  //  string ID = result.GetType().GetProperty("ID").GetValue(result, null).ToString();
+
+                        //    string json_data;
+                        //    string response;
+                        //    if (rawMaterialViewModel.Type == "SP")
+                        //    {
+                        //        SpareAPI test = new SpareAPI();
+                        //        test.id = "8";
+                        //        test.name = rawMaterialViewModel.MaterialCode;
+                        //        test.sku = rawMaterialViewModel.MaterialCode;
+                        //        test.description = rawMaterialViewModel.Description;
+                        //        test.is_enable_serial_no = "0";
+                        //        test.uom = "1";
+
+                        //        json_data = "{ \"spare\" :" + JsonConvert.SerializeObject(test) + " } ";
+                        //        response = InvokePostRequest("http://secure.appdeal.in/sp2/rest/web/spare/save-spare#", json_data);
+                        //        ResponseAPI res = new ResponseAPI();
+                        //        res = JsonConvert.DeserializeObject<ResponseAPI>(response);
+                        //        //if (res.status == "0")
+                        //        //{
+                        //        //    object DelteRaw = _rawMaterialBusiness.DeleteRawMaterial(Guid.Parse(ID));
+                        //        //}
+                        //        // dynamic stuff = JsonConvert.DeserializeObject(response);
+
+                        //    }
+                        //    else if (rawMaterialViewModel.Type == "RM")
+                        //    {
+                        //        MaterialAPI material = new MaterialAPI();
+                        //        material.id = "0";
+                        //        material.product_id = null;
+                        //        material.material_name = "dummy material";
+                        //        material.sku = rawMaterialViewModel.MaterialCode;
+                        //        material.description = rawMaterialViewModel.Description;
+                        //        material.uom = "0";
+                        //        material.msq = "200";
+
+                        //        json_data = "{ \"Phase1Material\" :" + JsonConvert.SerializeObject(material) + " } ";
+                        //        response = InvokePostRequest("http://secure.appdeal.in/sp2/rest/web/material/save-material#", json_data);
+                        //        ResponseAPI res = new ResponseAPI();
+                        //        res = JsonConvert.DeserializeObject<ResponseAPI>(response);
+                        //        //if (res.status == "0")
+                        //        //{
+                        //        //    object DelteRaw = _rawMaterialBusiness.DeleteRawMaterial(Guid.Parse(ID));
+                        //        //}
+                        //    }
+                        // }
+
                         break;
                 }
 
@@ -132,6 +249,48 @@ namespace SPOffice.UserInterface.Controllers
             }
         }
         #endregion InsertUpdateRawMaterial
+        //public string InvokePostRequest(string requestUrl, string requestBody)
+        //{
+
+
+        //    try
+        //    {
+        //        var request = WebRequest.Create(requestUrl) as HttpWebRequest;
+        //      //  request.Headers.Add("Key", Key);
+        //        request.Headers.Add(Key, Value);
+        //        request.ContentType = "application/json";
+        //        request.Method = @"POST";
+
+        //        var requestWriter = new StreamWriter(request.GetRequestStream());
+        //        requestWriter.Write(requestBody);
+        //        requestWriter.Close();
+        //        var webResponse = (HttpWebResponse)request.GetResponse();
+
+        //        var responseReader = new StreamReader(webResponse.GetResponseStream());
+        //        return responseReader.ReadToEnd();
+        //    }
+        //    catch (WebException ex)
+        //    {
+        //        if (ex.Response != null)
+        //        {
+        //            //reading the custom messages sent by the server
+        //            using (var reader = new StreamReader(ex.Response.GetResponseStream()))
+        //            {
+        //                return reader.ReadToEnd();
+        //            }
+        //        }
+        //        return ex.Message + ex.InnerException + "--error. " + "RequestString:::::::::::: " + requestBody;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ex.Message + ex.InnerException + "--error. " + "RequestString:::::::::::: " + requestBody;
+        //    }
+
+
+        //}
+
+
+
 
         #region DeleteRawMaterial
         [HttpGet]
