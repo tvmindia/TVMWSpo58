@@ -30,6 +30,7 @@ namespace UserInterface.Models
         public string APIKey { get; set; }
         public string UserName { get; set; }
         public UserViewModel userObj { get; set; }
+        public List<SelectListItem> ProductLists { get; set; }
     }
     public class UnitViewModel
     {

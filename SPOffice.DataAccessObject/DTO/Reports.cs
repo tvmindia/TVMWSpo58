@@ -87,6 +87,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public string  EnquiryStatus { get; set; }
         public string Subject { get; set; }
+        public string Product { get; set; }
     }
     public class EnquiryFollowupReportAdvanceSearch
     {
@@ -124,6 +125,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string QuoteSubject { get; set; }
         public string ContactPerson { get; set; }
         public string CompanyName { get; set; }
+        public string Product { get; set; }
     }
 
     public class ReportAdvanceSearch
@@ -141,6 +143,7 @@ namespace SPOffice.DataAccessObject.DTO
         public bool ManagerApproved { get; set; }
         public bool FinalApproved { get; set; }
         public string RequisitionBy { get; set; }
+        public string Product { get; set; }
     }
 
     public class CustomerPOReport

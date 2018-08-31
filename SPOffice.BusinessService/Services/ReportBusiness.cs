@@ -33,12 +33,12 @@ namespace SPOffice.BusinessService.Services
             return systemReportList;
         }
 
-        public List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search)
+        public List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search,string Product)
         {
             List<EnquiryReport> enquiryReportList = null;
             try
             {
-                enquiryReportList = _reportRepository.GetEnquiryDetails(FromDate, ToDate, EnquiryStatus, search);
+                enquiryReportList = _reportRepository.GetEnquiryDetails(FromDate, ToDate, EnquiryStatus, search,Product);
             }
             catch (Exception ex)
             {

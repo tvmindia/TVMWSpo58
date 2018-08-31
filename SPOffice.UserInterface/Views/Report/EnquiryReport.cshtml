@@ -13,7 +13,14 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableButtons")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableFixedHeader")
+@Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
 
+<style>
+   
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        color: black;
+    }
+</style>
 }
 
 <div style="width:100%;">
@@ -43,29 +50,37 @@
 <div class="form-horizontal">
 
     <div class="col-md-9" style="margin-top:10px;">
-        <div class="col-md-3">
+        <div class="col-md-4">
             @Html.Label("From Date", htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
-                @Html.TextBox("fromdate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3", @onchange = "OnChangeCall()", @Value = ViewBag.fromdate })
+                @Html.TextBox("fromdate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3",  @Value = ViewBag.fromdate })
 
 
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             @Html.Label("To Date", htmlAttributes: new { @class = "control-label" })
             <div class="col-md-12">
-                @Html.TextBox("todate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3", @onchange = "OnChangeCall()", @Value = ViewBag.todate })
+                @Html.TextBox("todate", "", new { @class = "form-control datepicker HeaderBox BlockEnter col-md-3",  @Value = ViewBag.todate })
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
                 @Html.LabelFor(model => model.EnquiryStatus, htmlAttributes: new { @class = "control-label" })
                 <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.EnquiryStatus, Model.enquiryStatusObj.EnquiryStatusList, new { @class = "form-control BlockEnter", @onchange = "OnChangeCall()", value = -1, style = "padding:4px 12px;", @id = "statusList" })
+                    @Html.DropDownListFor(model => model.EnquiryStatus, Model.enquiryStatusObj.EnquiryStatusList, new { @class = "form-control BlockEnter", value = -1, style = "padding:4px 12px;", @id = "statusList" })
                     @Html.ValidationMessageFor(model => model.EnquiryStatus, "", new { @class = "text-danger" })
 
                 </div>
             </div>
-            <div class="col-md-9">
+        <div class="col-md-8">
+            @Html.LabelFor(model => model.Product, htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Html.DropDownListFor(model => model.Product, Model.ProductObj.ProductLists, new { @class = "form-control BlockEnter",  @multiple = "multiple", @id = "ProductList" })
+                @Html.ValidationMessageFor(model => model.Product, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+            <div class="col-md-8">
                 @Html.LabelFor(model => model.Search, htmlAttributes: new { @class = "control-label", style = "visibility:hidden" })
                 <div class="col-md-12">
                     <div class="input-group">
@@ -76,7 +91,9 @@
                     </div>
                 </div>
             </div>
-
+        <div class="col-md-4" style="margin-top:20px;">
+            <a class="btn btn-primary" style="margin-left: 14px;" id="btnadvancesearch" onclick="OnChangeCall()">Apply</a>
+        </div>
 
 
     </div>
@@ -119,6 +136,7 @@
                         <th>Industry</th>
                         <th>General Notes</th>
                         <th>Enquiry Status</th>
+                        <th>Product</th>
                     </tr>
                 </thead>
             </table>
@@ -136,6 +154,7 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableButtons")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/EnquiryReport");
+@Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
 
 
 }

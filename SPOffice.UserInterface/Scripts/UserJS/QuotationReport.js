@@ -17,6 +17,10 @@ $(document).ready(function () {
     debugger;
 
     try {
+        $("#ProductList").select2({
+            multiple: true,
+            placeholder: "Select a Product..",
+        });
 
         DataTables.QuotationReportTable = $('#quotationReportTable').DataTable(
          {
@@ -26,7 +30,7 @@ $(document).ready(function () {
                  extend: 'excel',
                  exportOptions:
                               {
-                                  columns: [1, 2, 3,4,5, 6, 7]
+                                  columns: [1, 2, 3,4,5, 6, 7,8]
                               }
              }],
              order: [],
@@ -42,26 +46,34 @@ $(document).ready(function () {
              //    searchPlaceholder: "Search"
              //},
              columns: [
-                { "data": "ID" },
-               { "data": "QuotationDate", "defaultContent": "<i>-</i>" },
-               { "data": "QuotationNo", "defaultContent": "<i>-</i>" },
-               { "data": "QuoteSubject", "defaultContent": "<i>-</i>" },
-               { "data": "CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "ContactPerson", "defaultContent": "<i>-</i>" },
-               { "data": "QuoteFromCompName", "defaultContent": "<i>-</i>" },
-               { "data": "QuoteStage", "defaultContent": "<i>-</i>" }
+                { "data": "ID", "width": "5%" },
+               { "data": "QuotationDate", "defaultContent": "<i>-</i>", "width": "10%" },
+               { "data": "QuotationNo", "defaultContent": "<i>-</i>", "width": "10%" },
+               { "data": "QuoteSubject", "defaultContent": "<i>-</i>", "width": "10%" },
+               { "data": "CompanyName", "defaultContent": "<i>-</i>", "width": "10%" },
+               { "data": "ContactPerson", "defaultContent": "<i>-</i>", "width": "10%" },
+               { "data": "QuoteFromCompName", "defaultContent": "<i>-</i>", "width": "15%" },
+               { "data": "QuoteStage", "defaultContent": "<i>-</i>", "width": "5%" },
+              {
+                  "data": "Product",
+                  render: function (data, type, row) {
+
+                      return '<span style="font-size : 10px">' + (data == null ? '-' : data) + '</span>'
+                  },
+                  "defaultContent": "<i>-</i>", "width": "25%"
+              },
 
              ],
 
              columnDefs: [{ "searchable": false, "targets": [0], "visible": false, },
-                  { className: "text-left", "targets": [ 2, 3, 4, 5,6,7] },
+                  { className: "text-left", "targets": [ 2, 3, 4, 5,6,7,8] },
                   { className: "text-right", "targets": [] },
                   { className: "text-center", "targets": [0,1] }],
 
          });
-        $('.advance-filter').on('change', function () {
-            FilterContent();
-        });
+        //$('.advance-filter').on('change', function () {
+        //    FilterContent();
+        //});
         //---hiding inbuilt export buttonand placing start date and end date
         $(".buttons-excel").hide();
         startdate = $("#todate").val();
@@ -83,12 +95,15 @@ function FilterContent() {
     var FromCompany = $('#ddlFromCompany');
     var QuoteStage = $('#ddlQuoteStage');
     var Search = $('#Search');
+    var Product = ($("#ProductList").val() != "" ? $("#ProductList").val().toString() : null);
+
     var ReptAdvanceSearch = new Object();
     ReptAdvanceSearch.FromDate = FromDate[0].value !== "" ? FromDate[0].value : null;
     ReptAdvanceSearch.ToDate = ToDate[0].value !== "" ? ToDate[0].value : null;
     ReptAdvanceSearch.FromCompany = FromCompany[0].value !== "" ? FromCompany[0].value : (FromCompany !== "" ? FromCompany : null);
     ReptAdvanceSearch.QuoteStage = QuoteStage[0].value !== "" ? QuoteStage[0].value : (QuoteStage !== "" ? QuoteStage : null);
     ReptAdvanceSearch.Search = Search[0].value !== "" ? Search[0].value : null;
+    ReptAdvanceSearch.Product = Product !== "" ? Product : null;
     DataTables.QuotationReportTable.clear().rows.add(GetQuotationReportDetails(ReptAdvanceSearch)).draw(false);
 }
 
@@ -148,5 +163,10 @@ function Reset() {
     $("#ddlFromCompany").val('ALL');
     $("#ddlQuoteStage").val('ALL');
     $('#Search').val('');
+    $("#ProductList").val('').trigger('change');
     FilterContent();
+}
+function OnChangeCall() {
+    FilterContent();
+
 }

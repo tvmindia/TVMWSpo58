@@ -79,7 +79,7 @@ namespace SPOffice.RepositoryServices.Services
         /// <param name="EnquiryStatus"></param>
         /// <param name="search"></param>
         /// <returns>List</returns>
-        public List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search)
+        public List<EnquiryReport> GetEnquiryDetails(DateTime? FromDate, DateTime? ToDate,string EnquiryStatus, string search,string Product)
         {
             List<EnquiryReport> enquiryList = null;
             try
@@ -97,6 +97,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ToDate;
                         cmd.Parameters.Add("@EnquiryStatus", SqlDbType.NVarChar, 50).Value = EnquiryStatus != "" ? EnquiryStatus : null;
                         cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = search != "" ? search : null;
+                        cmd.Parameters.Add("@Product", SqlDbType.NVarChar, 250).Value = Product != "" ? Product : null;
                         cmd.CommandText = "[Office].[RPT_GetEnquiryList]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
@@ -125,6 +126,7 @@ namespace SPOffice.RepositoryServices.Services
                                         enquiryReport.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiryReport.GeneralNotes);
                                         enquiryReport.EnquiryStatus = (sdr["EnquiryStatus"].ToString() != "" ? sdr["EnquiryStatus"].ToString() : enquiryReport.EnquiryStatus);
                                         enquiryReport.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : enquiryReport.Subject);
+                                        enquiryReport.Product = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : enquiryReport.Product);
                                     }
                                     enquiryList.Add(enquiryReport);
                                 }
@@ -228,6 +230,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@ToDate", SqlDbType.DateTime).Value = ReptAdvancedSearchObj.ToDate;
                         cmd.Parameters.Add("@FromCompany", SqlDbType.NVarChar, 250).Value = ReptAdvancedSearchObj.FromCompany;
                         cmd.Parameters.Add("@QuoteStage", SqlDbType.NVarChar, 250).Value = ReptAdvancedSearchObj.QuoteStage;
+                      cmd.Parameters.Add("@Product", SqlDbType.NVarChar, 250).Value = ReptAdvancedSearchObj.Product != "" ? ReptAdvancedSearchObj.Product : null;
                         cmd.Parameters.Add("@search", SqlDbType.NVarChar, 250).Value = ReptAdvancedSearchObj.Search;
                         cmd.CommandText = "[Office].[RPT_GetQuotationDetails]";
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -248,7 +251,7 @@ namespace SPOffice.RepositoryServices.Services
                                         quotationReport.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : quotationReport.CompanyName);
                                         quotationReport.QuoteSubject = (sdr["QuoteSubject"].ToString() != "" ? sdr["QuoteSubject"].ToString() : quotationReport.QuoteSubject);
                                         quotationReport.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : quotationReport.ContactPerson);
-                                      
+                                        quotationReport.Product = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : quotationReport.Product);
                                     }
                                     quotationList.Add(quotationReport);
                                 }

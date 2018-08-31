@@ -45,6 +45,10 @@ namespace SPOffice.UserInterface.Models
         public string Subject { get; set; }
         public string Search { get; set; }
         public EnquiryStatusViewModel enquiryStatusObj { get; set; }
+        public ProductViewModel ProductObj { get; set; }
+        [Display(Name = "Product")]
+        public string Product { get; set; }
+
     }
 
 
@@ -91,6 +95,9 @@ namespace SPOffice.UserInterface.Models
         public CompanyViewModel CompanyObj { get; set; }
         public QuoteStageViewModel QuoteStageObj { get; set; }
         public string Search { get; set; }
+        public ProductViewModel ProductObj { get; set; }
+        [Display(Name = "Product")]
+        public string Product { get; set; }
 
     }
 

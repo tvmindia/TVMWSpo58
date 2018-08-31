@@ -24,8 +24,8 @@ namespace SPOffice.UserInterface.Controllers
         IQuotationBusiness _quotationBusiness;
         ICustomerBusiness _customerBusiness;
         IUserBusiness _userBusiness;
-
-        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, IUserBusiness userBusiness)
+        IProductBusiness _productBusiness;
+        public ReportController(IReportBusiness reportBusiness, ICourierBusiness courierBusiness, IEnquiryStatusBusiness enquiryStatusBusiness, ICompanyBusiness companyBusiness, IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, IUserBusiness userBusiness, IProductBusiness productBusiness)
         {
             _reportBusiness = reportBusiness;
             _enquiryStatusBusiness = enquiryStatusBusiness;
@@ -34,6 +34,8 @@ namespace SPOffice.UserInterface.Controllers
             _quotationBusiness = quotationBusiness;
             _customerBusiness = customerBusiness;
             _userBusiness = userBusiness;
+            _productBusiness=productBusiness;
+
 
         }
 
@@ -93,19 +95,47 @@ namespace SPOffice.UserInterface.Controllers
             ERVM.enquiryStatusObj = new EnquiryStatusViewModel();
             ERVM.enquiryStatusObj.EnquiryStatusList = selectListItem;
 
+            selectListItem = null;
+            selectListItem = new List<SelectListItem>();
+            //List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            List<ProductViewModel> ProductList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            if (ProductList != null)
+            {
+                //selectListItem.Add(new SelectListItem
+                //{
+                //    Text = "All",
+                //    Value = "ALL",
+                //    Selected = false
+                //});
+
+                foreach (ProductViewModel pvm in ProductList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = '['+pvm.Code +']'+ '-' + pvm.Name ,
+                        Value = pvm.Name,
+                        Selected = false
+                    });
+                }
+            }
+            ERVM.ProductObj = new ProductViewModel();
+            ERVM.ProductObj.ProductLists= selectListItem;
+
+
+
             return View(ERVM);
         }
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "EnquiryReport", Mode = "R")]
-        public string GetEnquiryDetails(string FromDate, string ToDate, string EnquiryStatus, string search)
+        public string GetEnquiryDetails(string FromDate, string ToDate, string EnquiryStatus, string search, string Product)
         {
 
             try
             {
                 DateTime? FDate = string.IsNullOrEmpty(FromDate) ? (DateTime?)null : DateTime.Parse(FromDate);
                 DateTime? TDate = string.IsNullOrEmpty(ToDate) ? (DateTime?)null : DateTime.Parse(ToDate);
-                List<EnquiryReportViewModel> EnquiryReport = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryDetails(FDate, TDate, EnquiryStatus, search));
+                List<EnquiryReportViewModel> EnquiryReport = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryDetails(FDate, TDate, EnquiryStatus, search,  Product));
 
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = EnquiryReport });
 
@@ -182,6 +212,32 @@ namespace SPOffice.UserInterface.Controllers
             }
             QRVM.QuoteStageObj = new QuoteStageViewModel();
             QRVM.QuoteStageObj.quoteStageList = selectListItem;
+
+            selectListItem = null;
+            selectListItem = new List<SelectListItem>();
+            //List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            List<ProductViewModel> ProductList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            if (ProductList != null)
+            {
+                //selectListItem.Add(new SelectListItem
+                //{
+                //    Text = "All",
+                //    Value = "ALL",
+                //    Selected = false
+                //});
+
+                foreach (ProductViewModel pvm in ProductList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = '[' + pvm.Code + ']' + '-' + pvm.Name,
+                        Value = pvm.Name,
+                        Selected = false
+                    });
+                }
+            }
+            QRVM.ProductObj = new ProductViewModel();
+            QRVM.ProductObj.ProductLists = selectListItem;
 
 
             return View(QRVM);
