@@ -264,7 +264,7 @@ function Delete(curobj) {
         }
     }
     function GetMailPreview(ID) {
-     
+        debugger;
         var data = { "ID": ID };
         var ds = {};
         ds = GetDataFromServer("Quotation/GetMailPreview/", data);
@@ -302,6 +302,7 @@ function Delete(curobj) {
                 }
                 $("#SentToAddress").val(jsresult.SentToAddress);
                 $("#ContactPerson").val(jsresult.ContactPerson);
+                $("#ContactNo").val(jsresult.ContactNo);
                 $("#ddlSalesPerson").val(jsresult.SalesPersonID);
                 $("#ddlCompany").val(jsresult.company.Code);
                 $("#ddlQuoteStage").val(jsresult.quoteStage.Code);

@@ -79,6 +79,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _quoteHeader.QuoteSubject = (sdr["QuoteSubject"].ToString() != "" ? sdr["QuoteSubject"].ToString() : _quoteHeader.QuoteSubject);
                                         _quoteHeader.SentToEmails = (sdr["SentToEmails"].ToString() != "" ? sdr["SentToEmails"].ToString() : _quoteHeader.SentToEmails);
                                         _quoteHeader.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : _quoteHeader.ContactPerson);
+                                        _quoteHeader.ContactNo = (sdr["ContactNo"].ToString() != "" ? sdr["ContactNo"].ToString() : _quoteHeader.ContactNo);
                                         _quoteHeader.SentToAddress = (sdr["SentToAddress"].ToString() != "" ? sdr["SentToAddress"].ToString() : _quoteHeader.SentToAddress);
                                         _quoteHeader.QuoteBodyHead = (sdr["QuoteBodyHead"].ToString() != "" ? sdr["QuoteBodyHead"].ToString() : _quoteHeader.QuoteBodyHead);
                                         _quoteHeader.QuoteBodyFoot = (sdr["QuoteBodyFoot"].ToString() != "" ? sdr["QuoteBodyFoot"].ToString() : _quoteHeader.QuoteBodyFoot);
@@ -151,6 +152,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = quoteHeader.hdnFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.CreatedDate;
+                        cmd.Parameters.Add("@ContactNo", SqlDbType.VarChar,50).Value = quoteHeader.ContactNo;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
@@ -228,6 +230,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quoteHeader.DetailXML;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quoteHeader.commonObj.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quoteHeader.commonObj.UpdatedDate;
+                        cmd.Parameters.Add("@ContactNo", SqlDbType.VarChar, 100).Value = quoteHeader.ContactNo;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();

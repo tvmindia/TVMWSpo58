@@ -2,10 +2,17 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 $(document).ready(function () {
     try {
-
+        $("#CategoryList").select2();
         DataTables.ProductTable = $('#productTable').DataTable(
          {
-             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
+             buttons: [{
+                 extend: 'excel',
+                 exportOptions:
+                              {
+                                  columns: [1, 2, 3, 4, 5,6,7,8]
+                              }
+             }],
              order: [],
              searching: true,
              paging: true,
@@ -21,6 +28,7 @@ $(document).ready(function () {
                       { "data": "OldCode", "defaultContent": "<i>-</i>" },
                { "data": "Name", "defaultContent": "<i>-</i>" },
                   { "data": "Description", "defaultContent": "<i>-</i>" },
+                   { "data": "Category", "defaultContent": "<i>-</i>" },
                    { "data": "unit.Description", "defaultContent": "<i>-</i>" },
                     { "data": "Rate",render: function (data, type, row) { return roundoff(data, 1); }, "defaultContent": "<i>-</i>" },
                { "data": "commonObj.CreatedDateString", "defaultContent": "<i>-</i>" },
@@ -34,7 +42,7 @@ $(document).ready(function () {
 
              ]
          });
-
+        $(".buttons-excel").hide();
         $('#ProductTable tbody').on('dblclick', 'td', function () {
 
             Edit(this);
@@ -52,9 +60,11 @@ $(document).ready(function () {
 
 function GetAllProducts() {
     try {
-
-        var data = {};
+        debugger;
+        //var data = {};
         var ds = {};
+        var category = $("#CategoryList").val();
+        var data = { "Category": category }
         ds = GetDataFromServer("Product/GetAllProducts/", data);
         if (ds != '') {
             ds = JSON.parse(ds);
@@ -259,5 +269,19 @@ function Edit(currentObj) {
     var rowData = DataTables.ProductTable.row($(currentObj).parents('tr')).data();
     if ((rowData != null) && (rowData.ID != null)) {
         FillProductDetails(rowData.ID);
+    }
+}
+
+function OnChangeCall() {
+    BindAllProducts();
+
+}
+function PrintReport() {
+    debugger;
+    try {
+        $(".buttons-excel").trigger('click');
+    }
+    catch (e) {
+        console.log(e.message);
     }
 }

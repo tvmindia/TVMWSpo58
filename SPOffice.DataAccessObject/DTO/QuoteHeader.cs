@@ -37,6 +37,7 @@ namespace SPOffice.DataAccessObject.DTO
         public string DetailXML { get; set; }
         public string MailBody { get; set; }
         public Guid hdnFileID { get; set; }
+        public string ContactNo { get; set; }
     }
 
     public class QuoteItem

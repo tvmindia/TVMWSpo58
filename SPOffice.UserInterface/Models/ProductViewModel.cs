@@ -31,11 +31,20 @@ namespace UserInterface.Models
         public string UserName { get; set; }
         public UserViewModel userObj { get; set; }
         public List<SelectListItem> ProductLists { get; set; }
+        [Display(Name = "Category")]
+        public string Category { get; set; }
+        public List<SelectListItem> CategoryList { get; set; }
+
     }
     public class UnitViewModel
     {
         public string Code { get; set; }
         public string Description { get; set; }
+    }
+    public class CategoryViewModel
+    {
+        //public string Category { get; set; }
+      
     }
 
 }

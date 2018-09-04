@@ -96,7 +96,7 @@ namespace SPOffice.UserInterface.Controllers
 
             RVM.RequisitionDetailObj.RawMaterialObj.RawMaterialList = new List<SelectListItem>();
             selectListItem = new List<SelectListItem>();
-            List<RawMaterialViewModel> RawMaterialList = Mapper.Map<List<RawMaterial>, List<RawMaterialViewModel>>(_rawMaterialBusiness.GetAllRawMaterial());
+            List<RawMaterialViewModel> RawMaterialList = Mapper.Map<List<RawMaterial>, List<RawMaterialViewModel>>(_rawMaterialBusiness.GetAllRawMaterial(null));
             foreach (RawMaterialViewModel Rwl in RawMaterialList)
             {
                 selectListItem.Add(new SelectListItem

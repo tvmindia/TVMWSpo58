@@ -98,7 +98,7 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = null;
             selectListItem = new List<SelectListItem>();
             //List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
-            List<ProductViewModel> ProductList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            List<ProductViewModel> ProductList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts(null));
             if (ProductList != null)
             {
                 //selectListItem.Add(new SelectListItem
@@ -216,7 +216,7 @@ namespace SPOffice.UserInterface.Controllers
             selectListItem = null;
             selectListItem = new List<SelectListItem>();
             //List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
-            List<ProductViewModel> ProductList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            List<ProductViewModel> ProductList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts(null));
             if (ProductList != null)
             {
                 //selectListItem.Add(new SelectListItem

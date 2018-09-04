@@ -30,7 +30,8 @@ namespace SPOffice.DataAccessObject.DTO
         public string EmailSentYN { get; set; }
         public string CompanyName { get; set; }
         public decimal Amount { get; set; }
-        public string duration { get; set; }
+        public string duration { get; set; }  
+        public string ContactNo { get; set; }
     }
 
     public class QuotationSummary {

@@ -9,7 +9,7 @@ namespace SPOffice.RepositoryServices.Contracts
 {
     public interface IRawMaterialRepository
     {
-        List<RawMaterial> GetAllRawMaterial();
+        List<RawMaterial> GetAllRawMaterial(string Type);
         object InsertRawMaterial(RawMaterial rawMaterial);
         object UpdateRawMaterial(RawMaterial rawMaterial);
         object DeleteRawMaterial(Guid ID);

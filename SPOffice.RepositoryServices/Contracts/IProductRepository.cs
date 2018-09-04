@@ -10,7 +10,8 @@ namespace SPOffice.RepositoryServices.Contracts
     public interface IProductRepository
     {
         List<Unit> GetAllUnits();
-        List<Product> GetAllProducts();
+        List<Product> GetAllCategory();
+        List<Product> GetAllProducts(string Category);
         object InsertProduct(Product product);
         object InsertProductDetails(Product product);
         object UpdateProduct(Product product);

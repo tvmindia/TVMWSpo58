@@ -68,7 +68,7 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
-        public List<RawMaterial> GetAllRawMaterial()
+        public List<RawMaterial> GetAllRawMaterial(string Type)
         {
             List<RawMaterial> rawMaterialList = null;
             try
@@ -84,6 +84,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetAllRawMaterials]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@Type", SqlDbType.VarChar, 20).Value = Type != "" ? Type : null  ;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

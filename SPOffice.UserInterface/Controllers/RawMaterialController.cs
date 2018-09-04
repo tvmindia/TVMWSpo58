@@ -65,17 +65,27 @@ namespace SPOffice.UserInterface.Controllers
 
                 }
         rawMaterialViewModel.UnitList = selectListItem;
+
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = null,
+                Selected = false
+            });
+
+
+
             return View(rawMaterialViewModel);
         }
 
         #region GetAllRawMaterials
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "RawMaterial", Mode = "R")]
-        public string GetAllRawMaterials()
+        public string GetAllRawMaterials(string Type)
         {
             try
             {
-                List<RawMaterialViewModel> rawMaterialList = Mapper.Map<List<RawMaterial>, List<RawMaterialViewModel>>(_rawMaterialBusiness.GetAllRawMaterial());
+                List<RawMaterialViewModel> rawMaterialList = Mapper.Map<List<RawMaterial>, List<RawMaterialViewModel>>(_rawMaterialBusiness.GetAllRawMaterial(Type));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = rawMaterialList });
             }
             catch (Exception ex)

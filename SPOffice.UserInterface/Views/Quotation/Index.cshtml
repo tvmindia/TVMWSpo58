@@ -201,7 +201,7 @@
                         <th>Quote No.</th>
                         <th>Subject</th>
                         <th>To Company</th>
-                        <th>Contact Details</th>
+                        <th>Contact Person</th>
                         <th>From Company</th>
                         <th>Stage</th>
                         <th>...</th>
@@ -371,97 +371,111 @@
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                 </div>
-
+                               
                             </div>
-
-                            <div class="form-group col-md-12"></div>
-
                             <div class="form-group col-md-6">
                                 <div class="col-md-12">
-                                    @Html.LabelFor(model => model.SalesPersonID, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label " })
 
 
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12" >
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.SalesPersonID, Model.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
-                                        @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control HeaderBox" } })
+                                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                 </div>
-
                             </div>
+                                <div class="form-group col-md-12"></div>
 
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.QuoteFromCompCode, htmlAttributes: new { @class = "control-label " })
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.SalesPersonID, htmlAttributes: new { @class = "control-label" })
 
 
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                     
-                                        @Html.DropDownListFor(model => model.QuoteFromCompCode, Model.CompanyList, "-- Select Company --", new { @class = "form-control", value = -1, style = "padding:4px 12px;", @id = "ddlCompany" })
-                                        @Html.ValidationMessageFor(model => model.QuoteFromCompCode, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="col-md-1 mandatory"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group col-md-12"></div>
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.Stage, htmlAttributes: new { @class = "control-label " })
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.Stage, Model.QuoteStageList, new { @class = "form-control", value = -1, style = "padding:4px 12px;", @id = "ddlQuoteStage", @onchange ="ChangeQuoteStatus();" })
-                                        @Html.ValidationMessageFor(model => model.Stage, "", new { @class = "text-danger" })
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.SalesPersonID, Model.SalesPersonList, "-- Select Sales Person --", new { @class = "form-control", style = "padding:4px 12px;", @id = "ddlSalesPerson" })
+                                            @Html.ValidationMessageFor(model => model.SalesPersonID, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1"></div>
                                     </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1"></div>
+
                                 </div>
 
-                            </div>
-                        
-                            <div class="form-group col-md-6">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.QuoteSubject, htmlAttributes: new { @class = "control-label" })
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.QuoteSubject, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.QuoteSubject, "", new { @class = "text-danger" })
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.QuoteFromCompCode, htmlAttributes: new { @class = "control-label " })
+
+
                                     </div>
-                                    <div class="col-md-1 mandatory"></div>
-                                    <div class="col-md-1"></div>
-                                </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
 
-                            </div>
-                            <div class="form-group col-md-12"></div>
-
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.QuoteBodyHead, htmlAttributes: new { @class = "control-label" })
-
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-11">
-                                        @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
-                                        @Html.ValidationMessageFor(model => model.QuoteBodyHead, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.QuoteFromCompCode, Model.CompanyList, "-- Select Company --", new { @class = "form-control", value = -1, style = "padding:4px 12px;", @id = "ddlCompany" })
+                                            @Html.ValidationMessageFor(model => model.QuoteFromCompCode, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1 mandatory"></div>
+                                        <div class="col-md-1"></div>
                                     </div>
-                                    <div class="col-md-1 mandatory"></div>
+
                                 </div>
 
+                                <div class="form-group col-md-12"></div>
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.Stage, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.Stage, Model.QuoteStageList, new { @class = "form-control", value = -1, style = "padding:4px 12px;", @id = "ddlQuoteStage", @onchange = "ChangeQuoteStatus();" })
+                                            @Html.ValidationMessageFor(model => model.Stage, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.QuoteSubject, htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.QuoteSubject, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.QuoteSubject, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1 mandatory"></div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-12"></div>
+
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.QuoteBodyHead, htmlAttributes: new { @class = "control-label" })
+
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-11">
+                                            @Html.EditorFor(model => model.QuoteBodyHead, new { htmlAttributes = new { @class = "form-control", @rows = 5 } })
+                                            @Html.ValidationMessageFor(model => model.QuoteBodyHead, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-1 mandatory"></div>
+                                    </div>
+
+                                </div>
+
+
                             </div>
-
-
-                        </div>
                         <div class="col-md-4" id="CommonFigure" style="padding-top:2%;border-left:1px solid #64e564;white-space:nowrap;">
                             <div class="form-group col-md-12">
                                 <div class="col-md-12 text-right">

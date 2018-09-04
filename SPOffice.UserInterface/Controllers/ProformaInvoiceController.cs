@@ -101,7 +101,7 @@ namespace SPOffice.UserInterface.Controllers
             proformaHeaderVM.CompanyList = selectListItem;
 
             selectListItem = new List<SelectListItem>();
-            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts(null));
             foreach(ProductViewModel PVML in productViewModelList)
             {
                 selectListItem.Add(new SelectListItem
@@ -181,7 +181,7 @@ namespace SPOffice.UserInterface.Controllers
         {
             try
             {
-                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts(null));
                 if (productViewModelList != null)
                 {
                     productViewModelList = productViewModelList.Select(P => new ProductViewModel { ID = P.ID, Code = P.Code, Description = P.Description, Rate = P.Rate }).OrderBy(x => x.Code).ToList();

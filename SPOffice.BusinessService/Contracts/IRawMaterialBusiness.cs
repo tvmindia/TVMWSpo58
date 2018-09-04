@@ -9,7 +9,7 @@ namespace SPOffice.BusinessService.Contracts
 {
      public  interface IRawMaterialBusiness
     {
-        List<RawMaterial> GetAllRawMaterial();
+        List<RawMaterial> GetAllRawMaterial(string Type);
         RawMaterial GetRawMaterialDetails(Guid ID);
         object InsertRawMaterial(RawMaterial rawMaterial);
         object UpdateRawMaterial(RawMaterial rawMaterial);

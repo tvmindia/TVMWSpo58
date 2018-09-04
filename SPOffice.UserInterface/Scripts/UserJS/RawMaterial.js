@@ -2,7 +2,7 @@
 var emptyGUID = '00000000-0000-0000-0000-000000000000'
 $(document).ready(function () {
     try {
-
+        $("#TypeList").select2();
         DataTables.RawMaterialTable = $('#rawMaterialTable').DataTable(
          {
              dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
@@ -33,8 +33,8 @@ $(document).ready(function () {
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
 
-               { className: "text-left", "targets": [1, 2] },
-             { className: "text-center", "targets": [3,4] }
+               { className: "text-left", "targets": [1, 2,4] },
+             { className: "text-center", "targets": [3] }
             
 
              ]
@@ -57,8 +57,10 @@ $(document).ready(function () {
 
 function GetAllRawMaterials() {
     try {
-
-        var data = {};
+        debugger;
+        var Type = $("#TypeList").val();
+        var data = { "Type": Type }
+       // var data = {};
         var ds = {};
         ds = GetDataFromServer("RawMaterial/GetAllRawMaterials/", data);
         if (ds != '') {
@@ -265,4 +267,8 @@ function Edit(currentObj) {
     if ((rowData != null) && (rowData.ID != null)) {
         FillRawMaterialDetails(rowData.ID);
     }
+}
+function OnChangeCall() {
+    BindAllRawMaterials();
+
 }

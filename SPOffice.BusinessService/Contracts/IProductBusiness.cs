@@ -10,7 +10,8 @@ namespace SPOffice.BusinessService.Contracts
    public interface IProductBusiness
     {
         List<Unit> GetAllUnits();
-        List<Product> GetAllProducts();
+        List<Product> GetAllCategory();
+        List<Product> GetAllProducts(string Category);
         Product GetProductDetails(Guid? ID);
         object InsertProduct(Product product);
         object InsertProductDetails(Product product);

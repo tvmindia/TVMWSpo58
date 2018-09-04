@@ -21,12 +21,12 @@ namespace SPOffice.BusinessService.Services
             return _rawMaterialRepository.DeleteRawMaterial(ID);
         }
 
-        public List<RawMaterial> GetAllRawMaterial()
+        public List<RawMaterial> GetAllRawMaterial(string Type)
         {
             List<RawMaterial> RawMaterialList = null;
             try
             {
-                RawMaterialList = _rawMaterialRepository.GetAllRawMaterial();
+                RawMaterialList = _rawMaterialRepository.GetAllRawMaterial(Type);
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace SPOffice.BusinessService.Services
             RawMaterial rawMaterial = null;
             try
             {
-                RawMaterialList = GetAllRawMaterial();
+                RawMaterialList = GetAllRawMaterial(null);
                 rawMaterial = RawMaterialList != null ? RawMaterialList.Where(D => D.ID == ID).SingleOrDefault() : null;
 
             }

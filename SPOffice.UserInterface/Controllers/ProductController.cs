@@ -43,17 +43,41 @@ namespace SPOffice.UserInterface.Controllers
             }
 
             productViewModel.unitList = selectListItem;
+
+            selectListItem = new List<SelectListItem>();
+            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllCategory());
+
+            selectListItem.Add(new SelectListItem
+            {
+                Text = "ALL",
+                Value = null,
+                Selected = false
+            });
+
+
+            foreach (ProductViewModel Pdt in productViewModelList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = Pdt.Category,
+                    Value = Pdt.Category,
+                    Selected = false
+                });
+            }
+
+
+            productViewModel.CategoryList = selectListItem;     
             return View(productViewModel);
            
         }
         #region GetAllProducts
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
-        public string GetAllProducts()
+        public string GetAllProducts(string Category)
         {
             try
             {
-                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+                List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts(Category));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = productViewModelList });
             }
             catch (Exception ex)
@@ -156,6 +180,10 @@ namespace SPOffice.UserInterface.Controllers
                     ToolboxViewModelObj.addbtn.Title = "Add New";
                     ToolboxViewModelObj.addbtn.Event = "openNav();";
 
+                    ToolboxViewModelObj.PrintBtn.Visible = true;
+                    ToolboxViewModelObj.PrintBtn.Text = "Export";
+                    ToolboxViewModelObj.PrintBtn.Title = "Export";
+                    ToolboxViewModelObj.PrintBtn.Event = "PrintReport();";
 
                     break;
                 case "Edit":

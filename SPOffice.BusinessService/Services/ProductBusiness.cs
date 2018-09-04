@@ -23,12 +23,12 @@ namespace SPOffice.BusinessService.Services
 
         
 
-        public List<Product> GetAllProducts()
+        public List<Product> GetAllProducts(string Category)
         {
             List<Product> ProductList = null;
             try
             {
-                ProductList = _productRepository.GetAllProducts();
+                ProductList = _productRepository.GetAllProducts(Category);
             }
             catch (Exception ex)
             {
@@ -50,14 +50,26 @@ namespace SPOffice.BusinessService.Services
             }
             return unitList;
         }
-
+        public List<Product> GetAllCategory()
+        {
+            List<Product> categoryList = null;
+            try
+            {
+               categoryList = _productRepository.GetAllCategory();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return categoryList;
+        }
         public Product GetProductDetails(Guid? ID)
         {
             List<Product> ProductList = null;
             Product product = null;
             try
             {
-                ProductList = GetAllProducts();
+                ProductList = GetAllProducts(null);
                 product = ProductList != null ? ProductList.Where(D => D.ID == ID).SingleOrDefault() : null;
 
             }

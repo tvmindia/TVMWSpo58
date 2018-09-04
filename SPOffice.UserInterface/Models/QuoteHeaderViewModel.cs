@@ -15,7 +15,7 @@ namespace UserInterface.Models
         [Display(Name = "Quotation No")]
         public string QuotationNo { get; set; }
         [Required(ErrorMessage = "Customer required")]
-        [Display(Name = "Customer")]
+        [Display(Name = "Company Name")]
         public Guid? CustomerID { get; set; }
         public string NewCustomer { get; set; }
         [Display(Name = "Is Regular Customer")]
@@ -45,7 +45,7 @@ namespace UserInterface.Models
         public string QuoteSubject { get; set; }
         [Display(Name = "Send To")]
         public string SentToEmails { get; set; }
-        [Display(Name = "Customer Contact")]
+        [Display(Name = "Contact Person")]
         public string ContactPerson { get; set; }
         [Required(ErrorMessage = "Mailing Address required")]
         [Display(Name = "Customer Address")]
@@ -93,7 +93,9 @@ namespace UserInterface.Models
         public CommonViewModel commonObj { get; set; }
         public QuoteItemViewModel quoteItemListObj { get; set; }
         public List<QuoteItemViewModel> quoteItemList { get; set; }
-        public PDFTools pdfToolsObj { get; set; }       
+        public PDFTools pdfToolsObj { get; set; }
+        [Display(Name = "Contact No.")]
+        public string ContactNo { get; set; }
     }
 
     public class QuoteItemViewModel

@@ -67,7 +67,7 @@ namespace SPOffice.RepositoryServices.Services
             };
         }
 
-        public List<Product> GetAllProducts()
+        public List<Product> GetAllProducts(string Category)
         {
             List<Product> productList = null;
             try
@@ -83,6 +83,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Connection = con;
                         cmd.CommandText = "[Office].[GetAllProducts]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@category", SqlDbType.VarChar,20).Value = Category == "ALL" ? null :Category  ;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
@@ -99,6 +100,7 @@ namespace SPOffice.RepositoryServices.Services
                                         _product.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : _product.Description);
                                         _product.UnitCode = (sdr["UnitCode"].ToString() != "" ? sdr["UnitCode"].ToString() : _product.UnitCode);
                                         _product.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : _product.Rate);
+                                        _product.Category = (sdr["Category"].ToString() != "" ? sdr["Category"].ToString() : _product.Category);
                                         _product.commonObj = new Common();
                                         {
                                             _product.commonObj.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : _product.commonObj.CreatedBy);
@@ -170,7 +172,50 @@ namespace SPOffice.RepositoryServices.Services
 
             return UnitList;
         }
+        public List<Product> GetAllCategory()
+        {
+            List<Product> categoryList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[GetAllCategory]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                categoryList = new List<Product>();
+                                while (sdr.Read())
+                                {
+                                    Product product = new Product();
+                                    {
+                                        
+                                        product.Category = (sdr["Category"].ToString() != "" ? sdr["Category"].ToString() : product.Category);
 
+                                    }
+                                    categoryList.Add(product);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return categoryList;
+        }
         public object InsertProduct(Product product)
         {
             SqlParameter outputStatus, outputID;
@@ -194,6 +239,7 @@ namespace SPOffice.RepositoryServices.Services
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, -1).Value = product.Description;
                         cmd.Parameters.Add("@UnitCode", SqlDbType.VarChar, 15).Value = product.UnitCode;
                         cmd.Parameters.Add("@Rate", SqlDbType.Decimal).Value = product.Rate;
+                        cmd.Parameters.Add("@Category", SqlDbType.VarChar,20).Value = product.Category;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = product.commonObj.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = product.commonObj.CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);

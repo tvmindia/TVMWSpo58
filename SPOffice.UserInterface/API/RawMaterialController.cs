@@ -28,7 +28,7 @@ namespace SPOffice.UserInterface.API
         {
             try
             {
-                List<RawMaterialViewModel> rawMaterialList = Mapper.Map<List<RawMaterial>, List<RawMaterialViewModel>>(_rawMaterialBusiness.GetAllRawMaterial());
+                List<RawMaterialViewModel> rawMaterialList = Mapper.Map<List<RawMaterial>, List<RawMaterialViewModel>>(_rawMaterialBusiness.GetAllRawMaterial(null));
                 return JsonConvert.SerializeObject(new { Result = true, Records = rawMaterialList });
             }
             catch (Exception ex)

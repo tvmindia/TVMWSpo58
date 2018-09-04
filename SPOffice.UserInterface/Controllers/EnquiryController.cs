@@ -245,7 +245,7 @@ namespace SPOffice.UserInterface.Controllers
 
 
             selectListItem = new List<SelectListItem>();
-            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts());
+            List<ProductViewModel> productViewModelList = Mapper.Map<List<Product>, List<ProductViewModel>>(_productBusiness.GetAllProducts(null));
             foreach (ProductViewModel PVML in productViewModelList)
             {
                 selectListItem.Add(new SelectListItem
